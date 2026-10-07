@@ -2,7 +2,7 @@
 
 Run [Sionna RT](https://nvlabs.github.io/sionna/rt/) radio propagation simulations from a Houdini scene and bring the results back as geometry with attributes.
 
-![Paths and radio map in Houdini](Screenshot 2026-10-07 220245.png)
+![Paths and radio map in Houdini](Screenshot%202026-10-07%20220245.png)
 
 ## What it is
 
