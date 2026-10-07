@@ -61,23 +61,9 @@ source .venv/Scripts/activate      # Windows, Git Bash
 pip install -r requirements.txt    # sionna-rt==2.2.0
 ```
 
-In Houdini:
-
-1. Add a Null SOP at the end of the scene network.
-2. Add a String parm `functions` (Multi-line String, Size 1, Language Python) and paste in `sionna_sop.py`.
-3. Add one Button parm per function with this callback (Python), changing the function name:
-
-```python
-exec(hou.pwd().parm('functions').unexpandedString()); on_validate()
-```
-
-Functions: `on_validate`, `on_export`, `on_previz`, `on_solve`, `on_import`, `on_radiomap`.
-
 The venv Python is expected at `$HIP/../.venv/Scripts/python.exe`. Override with a string parm `python_exe`.
 
 ## Preparing a scene
-
-Merge everything into the Null. The scene stays Y up in Houdini; conversion to Sionna's Z up is done on export and reversed on import. Units are metres.
 
 **Geometry** (primitive attributes, triangulated):
 
