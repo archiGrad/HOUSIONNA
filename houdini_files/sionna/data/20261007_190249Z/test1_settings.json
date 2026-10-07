@@ -1,0 +1,10 @@
+{
+  "frequency": 3500000000.0,
+  "max_depth": 3,
+  "samples": 1000000,
+  "los": true,
+  "specular_reflection": true,
+  "diffuse_reflection": false,
+  "refraction": true,
+  "diffraction": false
+}

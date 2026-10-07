@@ -1,0 +1,2 @@
+N001 geometry is 10.00 x 10.00 x 1.00 m (x, y, z; z is up in sionna). is this correct?
+N002 exported to C:/Users/CreativeMakers/Documents/ECA-sionna-RT-testing/houdini_files/sionna/data/20261007_184010Z

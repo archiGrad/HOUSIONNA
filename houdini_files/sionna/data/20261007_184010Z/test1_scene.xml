@@ -1,0 +1,22 @@
+<scene version="2.1.0">
+    <bsdf type="itu-radio-material" id="concrete_t0p2_s0">
+        <string name="type" value="concrete"/>
+        <float name="thickness" value="0.2"/>
+        <float name="scattering_coefficient" value="0"/>
+    </bsdf>
+    <bsdf type="itu-radio-material" id="medium_dry_ground_t1_s0">
+        <string name="type" value="medium_dry_ground"/>
+        <float name="thickness" value="1"/>
+        <float name="scattering_coefficient" value="0"/>
+    </bsdf>
+    <shape type="ply" id="mesh-ground">
+        <string name="filename" value="meshes/ground.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="medium_dry_ground_t1_s0" name="bsdf"/>
+    </shape>
+    <shape type="ply" id="mesh-box">
+        <string name="filename" value="meshes/box.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="concrete_t0p2_s0" name="bsdf"/>
+    </shape>
+</scene>
