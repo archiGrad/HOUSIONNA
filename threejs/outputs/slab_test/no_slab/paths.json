@@ -1,0 +1,45 @@
+{
+  "description": "Valid Sionna paths and baseband-equivalent CIR coefficients; no RSS conversion applied.",
+  "cir_shape": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "delay_shape": [
+    1,
+    1,
+    1
+  ],
+  "valid_shape": [
+    1,
+    1,
+    1
+  ],
+  "receivers": [
+    {
+      "receiver": "RX",
+      "valid_path_count": 1
+    }
+  ],
+  "paths": [
+    {
+      "receiver": "RX",
+      "path_index": 0,
+      "delay_s": 1.3342563498497384e-08,
+      "delay_ns": 13.34256362915039,
+      "path_length_m_from_delay": 3.999999761581421,
+      "a_real": 0.0024610424879938364,
+      "a_imag": -0.00034477721783332527,
+      "magnitude": 0.002485075732693076,
+      "magnitude_db": -52.0932074320574,
+      "interaction_type_ids": [],
+      "interaction_types": [],
+      "interacted_objects": [],
+      "interaction_vertices_m": [],
+      "is_los": true
+    }
+  ]
+}

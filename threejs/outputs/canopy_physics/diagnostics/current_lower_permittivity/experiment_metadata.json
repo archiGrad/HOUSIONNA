@@ -1,0 +1,65 @@
+{
+  "case": "current_lower_permittivity",
+  "status": "CONTROLLED SENSITIVITY TEST",
+  "change": "Lower epsilon_r only relative to current.",
+  "canopy_material": {
+    "status": "CONTROLLED SENSITIVITY TEST",
+    "source": "Lower epsilon_r only relative to current.",
+    "canopy_present": true,
+    "properties": {
+      "relative_permittivity": 2.0,
+      "conductivity_s_per_m": 0.25,
+      "thickness_m": 0.8,
+      "scattering_coefficient": 0.0,
+      "xpd_coefficient": 0.0,
+      "scattering_pattern": "lambertian"
+    }
+  },
+  "solver": {
+    "path_solver": {
+      "max_depth": 2,
+      "samples_per_source": 16000,
+      "seed": 42,
+      "los": true,
+      "specular_reflection": true,
+      "refraction": true,
+      "diffraction": false,
+      "diffuse_reflection": false
+    },
+    "radio_map_solver": {
+      "max_depth": 2,
+      "samples_per_transmitter": 45000,
+      "seed": 42,
+      "los": true,
+      "specular_reflection": true,
+      "refraction": true,
+      "diffraction": false,
+      "diffuse_reflection": false
+    }
+  },
+  "object_id_to_name": {
+    "1": "floor",
+    "2": "greenhouse_shell_side_y0",
+    "3": "greenhouse_shell_side_ymax",
+    "4": "greenhouse_shell_end_x0",
+    "5": "greenhouse_shell_end_xmax",
+    "6": "greenhouse_shell_roof",
+    "7": "metal_structure_rail_01",
+    "8": "metal_structure_rail_02",
+    "9": "metal_structure_rail_03",
+    "10": "metal_structure_support_01",
+    "11": "metal_structure_support_02",
+    "12": "metal_structure_support_03",
+    "13": "metal_structure_support_04",
+    "14": "canopy_row_01",
+    "15": "canopy_row_02",
+    "16": "canopy_row_03"
+  },
+  "path_api_components": [
+    "valid",
+    "cir() coefficients/delays",
+    "interactions",
+    "objects",
+    "vertices"
+  ]
+}

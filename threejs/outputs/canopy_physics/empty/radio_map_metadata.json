@@ -1,0 +1,50 @@
+{
+  "quantity": "path_gain",
+  "units": "linear power ratio (unitless); not RSS or received power",
+  "display_transform": "10*log10(max(path_gain, 1e-15)) dB, for plotting only",
+  "raw_array_file": "radio_map.npy",
+  "raw_array_shape": [
+    1,
+    13,
+    18
+  ],
+  "raw_array_axes": [
+    "transmitter",
+    "y_cell",
+    "x_cell"
+  ],
+  "plotted_array_shape": [
+    13,
+    18
+  ],
+  "cell_centers_file": "radio_map_cell_centers.npy",
+  "cell_centers_shape": [
+    13,
+    18,
+    3
+  ],
+  "frequency_hz": 2400000000.0,
+  "center_m": [
+    6.5,
+    4.0,
+    1.5
+  ],
+  "orientation_rad": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "requested_size_m": [
+    9.0,
+    6.4
+  ],
+  "cell_size_m": [
+    0.5,
+    0.5
+  ],
+  "grid_x_cells": 18,
+  "grid_y_cells": 13,
+  "positive_cell_count": 234,
+  "min_positive_path_gain_linear": 1.2835918106191002e-08,
+  "max_path_gain_linear": 7.522961823269725e-05
+}

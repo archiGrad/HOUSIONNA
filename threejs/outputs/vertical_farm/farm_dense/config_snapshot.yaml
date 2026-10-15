@@ -1,0 +1,298 @@
+description: "Vertical farm \xB7 Dense RF proxy. Compact, semi-open indoor rack with\
+  \ 3 configurable growing levels. Dimensions and RF materials are artificial software-demo\
+  \ placeholders."
+frequency_hz: 2400000000.0
+environment:
+  label: Indoor vertical farm
+  width_m: 1.25
+  depth_m: 0.65
+  height_m: 2.1
+  panel_thickness_m: 0.035
+  floor_thickness_m: 0.06
+  front_open: true
+  shelf_levels_m:
+  - 0.27
+  - 0.87
+  - 1.47
+  shelf_thickness_m: 0.035
+  shelf_inset_x_m: 0.1
+  shelf_front_y_m: 0.08
+  shelf_depth_m: 0.48
+  frame_cross_section_m: 0.035
+  grow_light_thickness_m: 0.025
+  equipment_block_enabled: true
+  grow_light_positions_m:
+  - - 0.625
+    - 0.31999999999999995
+    - 0.8099999999999999
+  - - 0.625
+    - 0.31999999999999995
+    - 1.4100000000000001
+  - - 0.625
+    - 0.31999999999999995
+    - 2.02
+  shelf_count: 3
+rf_geometry:
+  plant_zone_height_m: 0.34
+  plant_zone_side_inset_m: 0.1
+  inter_zone_gap_m: 0.06
+  zones_per_level: 2
+visual_plants:
+  visualization_only: true
+  in_sionna_scene: false
+  crop: Compact leafy greens / lettuce-like rosettes
+  seed: 31415
+  columns: 5
+  rows: 2
+  plant_height_m: 0.42
+  leaf_count_min: 11
+  leaf_count_max: 15
+  label: Decorative instanced leafy crops; excluded from RF geometry
+  shelves:
+  - id: shelf_level_1
+    level: 1
+    bounds_m:
+      x_min: 0.135
+      x_max: 1.115
+      y_min: 0.08
+      y_max: 0.5599999999999999
+      z_min: 0.30500000000000005
+    columns: 5
+    rows: 2
+    plant_count: 10
+  - id: shelf_level_2
+    level: 2
+    bounds_m:
+      x_min: 0.135
+      x_max: 1.115
+      y_min: 0.08
+      y_max: 0.5599999999999999
+      z_min: 0.905
+    columns: 5
+    rows: 2
+    plant_count: 10
+  - id: shelf_level_3
+    level: 3
+    bounds_m:
+      x_min: 0.135
+      x_max: 1.115
+      y_min: 0.08
+      y_max: 0.5599999999999999
+      z_min: 1.505
+    columns: 5
+    rows: 2
+    plant_count: 10
+materials:
+  floor_placeholder:
+    relative_permittivity: 5.31
+    conductivity_s_per_m: 0.0548
+    thickness_m: 0.06
+    color_rgb:
+    - 0.63
+    - 0.65
+    - 0.66
+    note: DEMO PLACEHOLDER; generic floor material
+  enclosure_placeholder:
+    relative_permittivity: 4.0
+    conductivity_s_per_m: 0.02
+    thickness_m: 0.035
+    color_rgb:
+    - 0.64
+    - 0.74
+    - 0.74
+    note: DEMO PLACEHOLDER; generic enclosure panel, not a measured cabinet material
+  metal_placeholder:
+    relative_permittivity: 1.0
+    conductivity_s_per_m: 10000.0
+    thickness_m: 0.035
+    color_rgb:
+    - 0.31
+    - 0.39
+    - 0.42
+    note: DEMO PLACEHOLDER; generic conductive rack proxy
+  tray_placeholder:
+    relative_permittivity: 3.0
+    conductivity_s_per_m: 0.01
+    thickness_m: 0.035
+    color_rgb:
+    - 0.39
+    - 0.48
+    - 0.43
+    note: DEMO PLACEHOLDER; generic grow-tray proxy
+  equipment_placeholder:
+    relative_permittivity: 3.0
+    conductivity_s_per_m: 0.02
+    thickness_m: 0.08
+    color_rgb:
+    - 0.34
+    - 0.4
+    - 0.43
+    note: DEMO PLACEHOLDER; generic equipment enclosure
+  canopy_placeholder:
+    relative_permittivity: 8.0
+    conductivity_s_per_m: 0.25
+    thickness_m: 0.34
+    scattering_coefficient: 0.0
+    xpd_coefficient: 0.0
+    scattering_pattern: lambertian
+    color_rgb:
+    - 0.29
+    - 0.57
+    - 0.31
+    note: DEMO PLACEHOLDER; coarse solid canopy proxy, not a calibrated plant model
+antenna:
+  rows: 1
+  columns: 1
+  pattern: iso
+  polarization: V
+tx:
+  name: TX
+  position_m:
+  - 0.625
+  - -0.28
+  - 1.08
+  orientation_rad:
+  - 0.0
+  - 0.0
+  - 0.0
+  power_dbm: 23.0
+receiver_grid:
+  height_m: 1.08
+  x_min_m: -0.12
+  x_max_m: 1.37
+  y_min_m: -0.35
+  y_max_m: 0.85
+  spacing_m: 0.3
+  representative_receivers:
+  - name: RX_A
+    role: lower level front opening
+    position_m:
+    - 0.3
+    - -0.05
+    - 0.58
+  - name: RX_B
+    role: middle level front opening
+    position_m:
+    - 0.95
+    - -0.05
+    - 1.18
+  - name: RX_C
+    role: upper level front opening
+    position_m:
+    - 0.62
+    - -0.05
+    - 1.78
+path_solver:
+  max_depth: 3
+  samples_per_source: 9000
+  seed: 71
+  los: true
+  specular_reflection: true
+  diffuse_reflection: false
+  refraction: true
+  diffraction: false
+radio_map:
+  cell_size_m:
+  - 0.15
+  - 0.15
+  samples_per_transmitter: 18000
+  max_depth: 3
+  seed: 71
+  los: true
+  specular_reflection: true
+  diffuse_reflection: false
+  refraction: true
+  diffraction: false
+  center_m:
+  - 0.625
+  - 0.25
+  - 1.08
+  orientation_rad:
+  - 0.0
+  - 0.0
+  - 0.0
+  size_m:
+  - 1.4900000000000002
+  - 1.2
+scenarios:
+  farm_empty:
+    label: "Vertical farm \xB7 Empty rack"
+    zones_per_level: 0
+    material_status: No RF canopy proxy
+  farm_proxy:
+    label: "Vertical farm \xB7 RF plant proxy"
+    zones_per_level: 1
+    material_status: "Placeholder RF canopy proxy \xB7 one zone per level"
+  farm_dense:
+    label: "Vertical farm \xB7 Dense RF proxy"
+    zones_per_level: 2
+    material_status: "Placeholder RF canopy proxy \xB7 two zones per level"
+scenario: farm_dense
+material_status: "Placeholder RF canopy proxy \xB7 two zones per level"
+scene_dimensions_m:
+- 1.25
+- 0.65
+- 2.1
+greenhouse:
+  length_m: 1.25
+  width_m: 0.65
+  height_m: 2.1
+  wall_thickness_m: 0.035
+  floor_thickness_m: 0.06
+  include_roof: true
+structure:
+  type: vertical rack frame
+  shelf_levels_m: &id001
+  - 0.27
+  - 0.87
+  - 1.47
+  frame_cross_section_m: 0.035
+canopy:
+  enabled: true
+  zones_per_level: 2
+  level_count: 3
+  plant_zone_height_m: 0.34
+transmitter:
+  name: TX
+  position_m:
+  - 0.625
+  - -0.28
+  - 1.08
+  orientation_rad:
+  - 0.0
+  - 0.0
+  - 0.0
+  power_dbm: 23.0
+receivers:
+- name: RX_A
+  role: lower level front opening
+  position_m:
+  - 0.3
+  - -0.05
+  - 0.58
+- name: RX_B
+  role: middle level front opening
+  position_m:
+  - 0.95
+  - -0.05
+  - 1.18
+- name: RX_C
+  role: upper level front opening
+  position_m:
+  - 0.62
+  - -0.05
+  - 1.78
+model_metadata:
+  dimensions_m:
+    width: 1.25
+    depth: 0.65
+    height: 2.1
+  shelf_levels_m: *id001
+  rf_zones_per_level: 2
+  rf_plant_model_limitations:
+  - RF canopy zones are coarse solid boxes, not detailed leaf geometry.
+  - The crop material is an uncalibrated placeholder; no crop water-content or dielectric
+    measurements were supplied.
+  - Cabinet/rack dimensions and enclosure properties are software-demo assumptions,
+    not measured equipment data.
+  - No measurement validation; do not treat these results as real-farm coverage predictions.

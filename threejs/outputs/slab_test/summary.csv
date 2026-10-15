@@ -1,0 +1,5 @@
+case,material_status,valid_paths,direct_los_paths,refraction_paths,reflection_paths,strongest_path_db,strongest_path_delay_ns,strongest_refraction_db,strongest_refraction_delay_ns
+no_slab,NO SLAB,1,1,0,0,-52.093207,13.342563,,
+transparent,CONTROL,1,0,1,0,-52.093208,13.342563,-52.093208,13.342563
+weak_loss,WEAK-LOSS DEMO PLACEHOLDER,1,0,1,0,-61.586034,13.342563,-61.586034,13.342563
+current,CURRENT PLACEHOLDER,0,0,0,0,,,,

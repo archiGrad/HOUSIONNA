@@ -1,0 +1,378 @@
+{
+  "units": "m",
+  "up_axis": "z",
+  "bounds_m": {
+    "x_min": -0.18,
+    "x_max": 1.43,
+    "y_min": -0.4,
+    "y_max": 0.8,
+    "z_min": -0.06,
+    "z_max": 2.1
+  },
+  "objects": [
+    {
+      "id": "farm_floor",
+      "category": "floor",
+      "material_key": "floor_placeholder",
+      "bounds_m": {
+        "x_min": -0.18,
+        "x_max": 1.43,
+        "y_min": -0.4,
+        "y_max": 0.8,
+        "z_min": -0.06,
+        "z_max": 0.0
+      }
+    },
+    {
+      "id": "enclosure_left_panel",
+      "category": "enclosure_panel",
+      "material_key": "enclosure_placeholder",
+      "bounds_m": {
+        "x_min": 0.0,
+        "x_max": 0.035,
+        "y_min": 0.0,
+        "y_max": 0.65,
+        "z_min": 0.0,
+        "z_max": 2.1
+      }
+    },
+    {
+      "id": "enclosure_right_panel",
+      "category": "enclosure_panel",
+      "material_key": "enclosure_placeholder",
+      "bounds_m": {
+        "x_min": 1.215,
+        "x_max": 1.25,
+        "y_min": 0.0,
+        "y_max": 0.65,
+        "z_min": 0.0,
+        "z_max": 2.1
+      }
+    },
+    {
+      "id": "enclosure_back_panel",
+      "category": "enclosure_panel",
+      "material_key": "enclosure_placeholder",
+      "bounds_m": {
+        "x_min": 0.035,
+        "x_max": 1.215,
+        "y_min": 0.615,
+        "y_max": 0.65,
+        "z_min": 0.0,
+        "z_max": 2.065
+      }
+    },
+    {
+      "id": "enclosure_top_panel",
+      "category": "enclosure_panel",
+      "material_key": "enclosure_placeholder",
+      "bounds_m": {
+        "x_min": 0.0,
+        "x_max": 1.25,
+        "y_min": 0.0,
+        "y_max": 0.65,
+        "z_min": 2.065,
+        "z_max": 2.1
+      }
+    },
+    {
+      "id": "rack_post_01",
+      "category": "metal_structure",
+      "material_key": "metal_placeholder",
+      "bounds_m": {
+        "x_min": 0.0,
+        "x_max": 0.035,
+        "y_min": 0.0,
+        "y_max": 0.035,
+        "z_min": 0.0,
+        "z_max": 2.065
+      }
+    },
+    {
+      "id": "rack_post_02",
+      "category": "metal_structure",
+      "material_key": "metal_placeholder",
+      "bounds_m": {
+        "x_min": 0.0,
+        "x_max": 0.035,
+        "y_min": 0.5800000000000001,
+        "y_max": 0.615,
+        "z_min": 0.0,
+        "z_max": 2.065
+      }
+    },
+    {
+      "id": "rack_post_03",
+      "category": "metal_structure",
+      "material_key": "metal_placeholder",
+      "bounds_m": {
+        "x_min": 1.2149999999999999,
+        "x_max": 1.25,
+        "y_min": 0.0,
+        "y_max": 0.035,
+        "z_min": 0.0,
+        "z_max": 2.065
+      }
+    },
+    {
+      "id": "rack_post_04",
+      "category": "metal_structure",
+      "material_key": "metal_placeholder",
+      "bounds_m": {
+        "x_min": 1.2149999999999999,
+        "x_max": 1.25,
+        "y_min": 0.5800000000000001,
+        "y_max": 0.615,
+        "z_min": 0.0,
+        "z_max": 2.065
+      }
+    },
+    {
+      "id": "shelf_level_1_tray",
+      "category": "shelf_tray",
+      "material_key": "tray_placeholder",
+      "bounds_m": {
+        "x_min": 0.135,
+        "x_max": 1.115,
+        "y_min": 0.08,
+        "y_max": 0.5599999999999999,
+        "z_min": 0.23500000000000001,
+        "z_max": 0.27
+      }
+    },
+    {
+      "id": "shelf_level_1_front_support",
+      "category": "metal_structure",
+      "material_key": "metal_placeholder",
+      "bounds_m": {
+        "x_min": 0.135,
+        "x_max": 1.115,
+        "y_min": 0.08,
+        "y_max": 0.115,
+        "z_min": 0.2,
+        "z_max": 0.23500000000000001
+      }
+    },
+    {
+      "id": "shelf_level_1_rear_support",
+      "category": "metal_structure",
+      "material_key": "metal_placeholder",
+      "bounds_m": {
+        "x_min": 0.135,
+        "x_max": 1.115,
+        "y_min": 0.525,
+        "y_max": 0.5599999999999999,
+        "z_min": 0.2,
+        "z_max": 0.23500000000000001
+      }
+    },
+    {
+      "id": "shelf_level_1_grow_light",
+      "category": "grow_light",
+      "material_key": "equipment_placeholder",
+      "bounds_m": {
+        "x_min": 0.17500000000000002,
+        "x_max": 1.075,
+        "y_min": 0.12,
+        "y_max": 0.155,
+        "z_min": 0.8099999999999999,
+        "z_max": 0.835
+      }
+    },
+    {
+      "id": "rf_plant_zone_level_1_zone_1",
+      "category": "rf_plant_zone",
+      "material_key": "canopy_placeholder",
+      "bounds_m": {
+        "x_min": 0.23500000000000001,
+        "x_max": 0.595,
+        "y_min": 0.10500000000000001,
+        "y_max": 0.5349999999999999,
+        "z_min": 0.30500000000000005,
+        "z_max": 0.645
+      }
+    },
+    {
+      "id": "rf_plant_zone_level_1_zone_2",
+      "category": "rf_plant_zone",
+      "material_key": "canopy_placeholder",
+      "bounds_m": {
+        "x_min": 0.655,
+        "x_max": 1.0150000000000001,
+        "y_min": 0.10500000000000001,
+        "y_max": 0.5349999999999999,
+        "z_min": 0.30500000000000005,
+        "z_max": 0.645
+      }
+    },
+    {
+      "id": "shelf_level_2_tray",
+      "category": "shelf_tray",
+      "material_key": "tray_placeholder",
+      "bounds_m": {
+        "x_min": 0.135,
+        "x_max": 1.115,
+        "y_min": 0.08,
+        "y_max": 0.5599999999999999,
+        "z_min": 0.835,
+        "z_max": 0.87
+      }
+    },
+    {
+      "id": "shelf_level_2_front_support",
+      "category": "metal_structure",
+      "material_key": "metal_placeholder",
+      "bounds_m": {
+        "x_min": 0.135,
+        "x_max": 1.115,
+        "y_min": 0.08,
+        "y_max": 0.115,
+        "z_min": 0.7999999999999999,
+        "z_max": 0.835
+      }
+    },
+    {
+      "id": "shelf_level_2_rear_support",
+      "category": "metal_structure",
+      "material_key": "metal_placeholder",
+      "bounds_m": {
+        "x_min": 0.135,
+        "x_max": 1.115,
+        "y_min": 0.525,
+        "y_max": 0.5599999999999999,
+        "z_min": 0.7999999999999999,
+        "z_max": 0.835
+      }
+    },
+    {
+      "id": "shelf_level_2_grow_light",
+      "category": "grow_light",
+      "material_key": "equipment_placeholder",
+      "bounds_m": {
+        "x_min": 0.17500000000000002,
+        "x_max": 1.075,
+        "y_min": 0.12,
+        "y_max": 0.155,
+        "z_min": 1.4100000000000001,
+        "z_max": 1.435
+      }
+    },
+    {
+      "id": "rf_plant_zone_level_2_zone_1",
+      "category": "rf_plant_zone",
+      "material_key": "canopy_placeholder",
+      "bounds_m": {
+        "x_min": 0.23500000000000001,
+        "x_max": 0.595,
+        "y_min": 0.10500000000000001,
+        "y_max": 0.5349999999999999,
+        "z_min": 0.905,
+        "z_max": 1.245
+      }
+    },
+    {
+      "id": "rf_plant_zone_level_2_zone_2",
+      "category": "rf_plant_zone",
+      "material_key": "canopy_placeholder",
+      "bounds_m": {
+        "x_min": 0.655,
+        "x_max": 1.0150000000000001,
+        "y_min": 0.10500000000000001,
+        "y_max": 0.5349999999999999,
+        "z_min": 0.905,
+        "z_max": 1.245
+      }
+    },
+    {
+      "id": "shelf_level_3_tray",
+      "category": "shelf_tray",
+      "material_key": "tray_placeholder",
+      "bounds_m": {
+        "x_min": 0.135,
+        "x_max": 1.115,
+        "y_min": 0.08,
+        "y_max": 0.5599999999999999,
+        "z_min": 1.435,
+        "z_max": 1.47
+      }
+    },
+    {
+      "id": "shelf_level_3_front_support",
+      "category": "metal_structure",
+      "material_key": "metal_placeholder",
+      "bounds_m": {
+        "x_min": 0.135,
+        "x_max": 1.115,
+        "y_min": 0.08,
+        "y_max": 0.115,
+        "z_min": 1.4000000000000001,
+        "z_max": 1.435
+      }
+    },
+    {
+      "id": "shelf_level_3_rear_support",
+      "category": "metal_structure",
+      "material_key": "metal_placeholder",
+      "bounds_m": {
+        "x_min": 0.135,
+        "x_max": 1.115,
+        "y_min": 0.525,
+        "y_max": 0.5599999999999999,
+        "z_min": 1.4000000000000001,
+        "z_max": 1.435
+      }
+    },
+    {
+      "id": "shelf_level_3_grow_light",
+      "category": "grow_light",
+      "material_key": "equipment_placeholder",
+      "bounds_m": {
+        "x_min": 0.17500000000000002,
+        "x_max": 1.075,
+        "y_min": 0.12,
+        "y_max": 0.155,
+        "z_min": 2.02,
+        "z_max": 2.045
+      }
+    },
+    {
+      "id": "rf_plant_zone_level_3_zone_1",
+      "category": "rf_plant_zone",
+      "material_key": "canopy_placeholder",
+      "bounds_m": {
+        "x_min": 0.23500000000000001,
+        "x_max": 0.595,
+        "y_min": 0.10500000000000001,
+        "y_max": 0.5349999999999999,
+        "z_min": 1.505,
+        "z_max": 1.845
+      }
+    },
+    {
+      "id": "rf_plant_zone_level_3_zone_2",
+      "category": "rf_plant_zone",
+      "material_key": "canopy_placeholder",
+      "bounds_m": {
+        "x_min": 0.655,
+        "x_max": 1.0150000000000001,
+        "y_min": 0.10500000000000001,
+        "y_max": 0.5349999999999999,
+        "z_min": 1.505,
+        "z_max": 1.845
+      }
+    },
+    {
+      "id": "controller_equipment_block",
+      "category": "equipment",
+      "material_key": "equipment_placeholder",
+      "bounds_m": {
+        "x_min": 1.0050000000000001,
+        "x_max": 1.175,
+        "y_min": 0.495,
+        "y_max": 0.595,
+        "z_min": 0.05,
+        "z_max": 0.27
+      }
+    }
+  ]
+}

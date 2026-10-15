@@ -1,0 +1,260 @@
+{
+  "run_timestamp_utc": "2026-10-07T15:04:03.381905+00:00",
+  "scenario": "farm_empty",
+  "description": "Vertical farm \u00b7 Empty rack. Compact, semi-open indoor rack with 3 configurable growing levels. Dimensions and RF materials are artificial software-demo placeholders.",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "python_version": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "mitsuba_variant": "llvm_ad_mono_polarized",
+  "package_versions": {
+    "sionna-rt": "2.2.0",
+    "mitsuba": "3.9.1",
+    "drjit": "1.5.0",
+    "numpy": "2.5.3",
+    "matplotlib": "3.11.2",
+    "PyYAML": "6.0.3"
+  },
+  "frequency_hz": 2400000000.0,
+  "frequency_note": "2.4 GHz is a provisional demo value, not a study decision.",
+  "coordinate_convention": "x/y horizontal, z up; distances in meters; delays in seconds.",
+  "transmitter": {
+    "name": "TX",
+    "position_m": [
+      0.625,
+      -0.28,
+      1.08
+    ],
+    "orientation_rad": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "power_dbm": 23.0
+  },
+  "receivers": [
+    {
+      "name": "RX_A",
+      "role": "lower level front opening",
+      "position_m": [
+        0.3,
+        -0.05,
+        0.58
+      ]
+    },
+    {
+      "name": "RX_B",
+      "role": "middle level front opening",
+      "position_m": [
+        0.95,
+        -0.05,
+        1.18
+      ]
+    },
+    {
+      "name": "RX_C",
+      "role": "upper level front opening",
+      "position_m": [
+        0.62,
+        -0.05,
+        1.78
+      ]
+    }
+  ],
+  "antenna": {
+    "rows": 1,
+    "columns": 1,
+    "pattern": "iso",
+    "polarization": "V"
+  },
+  "materials": {
+    "floor_placeholder": {
+      "relative_permittivity": 5.31,
+      "conductivity_s_per_m": 0.0548,
+      "thickness_m": 0.06,
+      "color_rgb": [
+        0.63,
+        0.65,
+        0.66
+      ],
+      "note": "DEMO PLACEHOLDER; generic floor material"
+    },
+    "enclosure_placeholder": {
+      "relative_permittivity": 4.0,
+      "conductivity_s_per_m": 0.02,
+      "thickness_m": 0.035,
+      "color_rgb": [
+        0.64,
+        0.74,
+        0.74
+      ],
+      "note": "DEMO PLACEHOLDER; generic enclosure panel, not a measured cabinet material"
+    },
+    "metal_placeholder": {
+      "relative_permittivity": 1.0,
+      "conductivity_s_per_m": 10000.0,
+      "thickness_m": 0.035,
+      "color_rgb": [
+        0.31,
+        0.39,
+        0.42
+      ],
+      "note": "DEMO PLACEHOLDER; generic conductive rack proxy"
+    },
+    "tray_placeholder": {
+      "relative_permittivity": 3.0,
+      "conductivity_s_per_m": 0.01,
+      "thickness_m": 0.035,
+      "color_rgb": [
+        0.39,
+        0.48,
+        0.43
+      ],
+      "note": "DEMO PLACEHOLDER; generic grow-tray proxy"
+    },
+    "equipment_placeholder": {
+      "relative_permittivity": 3.0,
+      "conductivity_s_per_m": 0.02,
+      "thickness_m": 0.08,
+      "color_rgb": [
+        0.34,
+        0.4,
+        0.43
+      ],
+      "note": "DEMO PLACEHOLDER; generic equipment enclosure"
+    },
+    "canopy_placeholder": {
+      "relative_permittivity": 8.0,
+      "conductivity_s_per_m": 0.25,
+      "thickness_m": 0.34,
+      "scattering_coefficient": 0.0,
+      "xpd_coefficient": 0.0,
+      "scattering_pattern": "lambertian",
+      "color_rgb": [
+        0.29,
+        0.57,
+        0.31
+      ],
+      "note": "DEMO PLACEHOLDER; coarse solid canopy proxy, not a calibrated plant model"
+    }
+  },
+  "path_solver": {
+    "max_depth": 3,
+    "samples_per_source": 9000,
+    "seed": 71,
+    "los": true,
+    "specular_reflection": true,
+    "diffuse_reflection": false,
+    "refraction": true,
+    "diffraction": false
+  },
+  "radio_map_solver": {
+    "cell_size_m": [
+      0.15,
+      0.15
+    ],
+    "samples_per_transmitter": 18000,
+    "max_depth": 3,
+    "seed": 71,
+    "los": true,
+    "specular_reflection": true,
+    "diffuse_reflection": false,
+    "refraction": true,
+    "diffraction": false,
+    "center_m": [
+      0.625,
+      0.25,
+      1.08
+    ],
+    "orientation_rad": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "size_m": [
+      1.4900000000000002,
+      1.2
+    ]
+  },
+  "valid_path_counts_by_receiver": [
+    {
+      "receiver": "RX_A",
+      "valid_path_count": 3
+    },
+    {
+      "receiver": "RX_B",
+      "valid_path_count": 6
+    },
+    {
+      "receiver": "RX_C",
+      "valid_path_count": 4
+    }
+  ],
+  "radio_map": {
+    "quantity": "path_gain",
+    "units": "linear power ratio (unitless); not RSS or received power",
+    "display_transform": "10*log10(max(path_gain, 1e-15)) dB, for plotting only",
+    "raw_array_file": "radio_map.npy",
+    "raw_array_shape": [
+      1,
+      8,
+      10
+    ],
+    "raw_array_axes": [
+      "transmitter",
+      "y_cell",
+      "x_cell"
+    ],
+    "plotted_array_shape": [
+      8,
+      10
+    ],
+    "cell_centers_file": "radio_map_cell_centers.npy",
+    "cell_centers_shape": [
+      8,
+      10,
+      3
+    ],
+    "frequency_hz": 2400000000.0,
+    "center_m": [
+      0.625,
+      0.25,
+      1.08
+    ],
+    "orientation_rad": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "requested_size_m": [
+      1.4900000000000002,
+      1.2
+    ],
+    "cell_size_m": [
+      0.15,
+      0.15
+    ],
+    "grid_x_cells": 10,
+    "grid_y_cells": 8,
+    "positive_cell_count": 75,
+    "min_positive_path_gain_linear": 7.323227180222602e-08,
+    "max_path_gain_linear": 0.16050705313682556
+  },
+  "scene_model": {
+    "dimensions_m": {
+      "width": 1.25,
+      "depth": 0.65,
+      "height": 2.1
+    },
+    "shelf_levels_m": [
+      0.27,
+      0.87,
+      1.47
+    ],
+    "rf_zones_per_level": 0,
+    "rf_plant_model_limitations": [
+      "RF canopy zones are coarse solid boxes, not detailed leaf geometry.",
+      "The crop material is an uncalibrated placeholder; no crop water-content or dielectric measurements were supplied.",
+      "Cabinet/rack dimensions and enclosure properties are software-demo assumptions, not measured equipment data.",
+      "No measurement validation; do not treat these results as real-farm coverage predictions."
+    ]
+  }
+}

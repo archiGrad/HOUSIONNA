@@ -1,0 +1,4 @@
+scenario,mean_path_gain_db,median_path_gain_db,min_path_gain_db,max_path_gain_db,map_rows,map_columns
+empty,-52.38068835,-51.09033863,-78.91573062,-41.23611184,13,18
+narrow,-75.57326973,-62.92264786,-150.00000000,-40.16932822,13,18
+wide,-98.82208806,-74.94608319,-150.00000000,-40.53299928,13,18

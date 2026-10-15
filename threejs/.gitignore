@@ -1,0 +1,13 @@
+.venv/
+.runtime/
+__pycache__/
+*.py[cod]
+node_modules/
+dist/
+viewer/digital-twin-dist/
+optix7cache.db
+# regenerable
+outputs/live/
+outputs/digital_twin/
+outputs/integrations/
+outputs/performance_refinement/
