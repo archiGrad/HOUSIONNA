@@ -1,0 +1,1625 @@
+{
+  "run_timestamp_utc": "2026-10-07T14:36:19.162612+00:00",
+  "scenario": "canopy_physics_empty",
+  "description": "Narrow canopy physics sanity case: empty.",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "python_version": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "mitsuba_variant": "llvm_ad_mono_polarized",
+  "package_versions": {
+    "sionna-rt": "2.2.0",
+    "mitsuba": "3.9.1",
+    "drjit": "1.5.0",
+    "numpy": "2.5.3",
+    "matplotlib": "3.11.2",
+    "PyYAML": "6.0.3"
+  },
+  "frequency_hz": 2400000000.0,
+  "frequency_note": "2.4 GHz is a provisional demo value, not a study decision.",
+  "coordinate_convention": "x/y horizontal, z up; distances in meters; delays in seconds.",
+  "transmitter": {
+    "name": "TX",
+    "position_m": [
+      1.0,
+      2.6,
+      1.8
+    ],
+    "orientation_rad": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "power_dbm": 23.0
+  },
+  "receivers": [
+    {
+      "name": "RX_A",
+      "role": "near TX in open aisle",
+      "position_m": [
+        2.0,
+        2.6,
+        1.5
+      ]
+    },
+    {
+      "name": "RX_B",
+      "role": "far aisle between canopy rows",
+      "position_m": [
+        7.0,
+        2.6,
+        1.5
+      ]
+    },
+    {
+      "name": "RX_C",
+      "role": "far aisle beyond canopy row; nominal TX path crosses a canopy row",
+      "position_m": [
+        10.0,
+        5.0,
+        1.5
+      ]
+    }
+  ],
+  "antenna": {
+    "rows": 1,
+    "columns": 1,
+    "pattern": "iso",
+    "polarization": "V"
+  },
+  "materials": {
+    "floor_placeholder": {
+      "relative_permittivity": 5.31,
+      "conductivity_s_per_m": 0.0548,
+      "thickness_m": 0.08,
+      "color_rgb": [
+        0.63,
+        0.65,
+        0.66
+      ],
+      "note": "DEMO PLACEHOLDER; generic concrete-like floor"
+    },
+    "shell_glazing_placeholder": {
+      "relative_permittivity": 6.0,
+      "conductivity_s_per_m": 0.01,
+      "thickness_m": 0.04,
+      "color_rgb": [
+        0.57,
+        0.75,
+        0.83
+      ],
+      "note": "DEMO PLACEHOLDER; glazing-like envelope, not measured glass"
+    },
+    "metal_placeholder": {
+      "relative_permittivity": 1.0,
+      "conductivity_s_per_m": 10000.0,
+      "thickness_m": 0.06,
+      "color_rgb": [
+        0.43,
+        0.48,
+        0.53
+      ],
+      "note": "DEMO PLACEHOLDER; generic highly conductive structural proxy"
+    },
+    "canopy_placeholder": {
+      "relative_permittivity": 8.0,
+      "conductivity_s_per_m": 0.25,
+      "thickness_m": 0.8,
+      "scattering_coefficient": 0.0,
+      "xpd_coefficient": 0.0,
+      "scattering_pattern": "lambertian",
+      "color_rgb": [
+        0.29,
+        0.57,
+        0.31
+      ],
+      "note": "DEMO PLACEHOLDER; uncalibrated solid lossy canopy proxy"
+    }
+  },
+  "path_solver": {
+    "max_depth": 2,
+    "samples_per_source": 16000,
+    "seed": 42,
+    "los": true,
+    "specular_reflection": true,
+    "diffuse_reflection": false,
+    "refraction": true,
+    "diffraction": false
+  },
+  "radio_map_solver": {
+    "cell_size_m": [
+      0.5,
+      0.5
+    ],
+    "samples_per_transmitter": 45000,
+    "max_depth": 2,
+    "seed": 42,
+    "los": true,
+    "specular_reflection": true,
+    "diffuse_reflection": false,
+    "refraction": true,
+    "diffraction": false,
+    "center_m": [
+      6.5,
+      4.0,
+      1.5
+    ],
+    "orientation_rad": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "size_m": [
+      9.0,
+      6.4
+    ]
+  },
+  "valid_path_counts_by_receiver": [
+    {
+      "receiver": "RX_A",
+      "valid_path_count": 26
+    },
+    {
+      "receiver": "RX_B",
+      "valid_path_count": 25
+    },
+    {
+      "receiver": "RX_C",
+      "valid_path_count": 25
+    }
+  ],
+  "radio_map": {
+    "quantity": "path_gain",
+    "units": "linear power ratio (unitless); not RSS or received power",
+    "display_transform": "10*log10(max(path_gain, 1e-15)) dB, for plotting only",
+    "raw_array_file": "radio_map.npy",
+    "raw_array_shape": [
+      1,
+      13,
+      18
+    ],
+    "raw_array_axes": [
+      "transmitter",
+      "y_cell",
+      "x_cell"
+    ],
+    "plotted_array_shape": [
+      13,
+      18
+    ],
+    "cell_centers_file": "radio_map_cell_centers.npy",
+    "cell_centers_shape": [
+      13,
+      18,
+      3
+    ],
+    "frequency_hz": 2400000000.0,
+    "center_m": [
+      6.5,
+      4.0,
+      1.5
+    ],
+    "orientation_rad": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "requested_size_m": [
+      9.0,
+      6.4
+    ],
+    "cell_size_m": [
+      0.5,
+      0.5
+    ],
+    "grid_x_cells": 18,
+    "grid_y_cells": 13,
+    "positive_cell_count": 234,
+    "min_positive_path_gain_linear": 1.2835918106191002e-08,
+    "max_path_gain_linear": 7.522961823269725e-05
+  },
+  "cea": {
+    "greenhouse": {
+      "length_m": 12.0,
+      "width_m": 8.0,
+      "height_m": 4.0,
+      "wall_thickness_m": 0.04,
+      "floor_thickness_m": 0.08,
+      "include_roof": true
+    },
+    "structure": {
+      "include_rails": true,
+      "rail_count": 3,
+      "rail_cross_section_m": 0.06,
+      "support_frame_x_m": [
+        0.5,
+        11.5
+      ],
+      "support_offset_y_m": 0.18,
+      "support_cross_section_m": 0.08
+    },
+    "canopy": {
+      "enabled": false,
+      "row_count": 3,
+      "row_length_m": 9.0,
+      "row_width_m": 0.6,
+      "row_height_m": 1.6,
+      "row_spacing_m": 1.5,
+      "bottom_height_m": 0.2
+    },
+    "receiver_grid": {
+      "height_m": 1.5,
+      "x_min_m": 2.0,
+      "x_max_m": 11.0,
+      "y_min_m": 0.8,
+      "y_max_m": 7.2,
+      "spacing_m": 0.5,
+      "representative_receivers": [
+        {
+          "name": "RX_A",
+          "role": "near TX in open aisle",
+          "position_m": [
+            2.0,
+            2.6,
+            1.5
+          ]
+        },
+        {
+          "name": "RX_B",
+          "role": "far aisle between canopy rows",
+          "position_m": [
+            7.0,
+            2.6,
+            1.5
+          ]
+        },
+        {
+          "name": "RX_C",
+          "role": "far aisle beyond canopy row; nominal TX path crosses a canopy row",
+          "position_m": [
+            10.0,
+            5.0,
+            1.5
+          ]
+        }
+      ]
+    },
+    "scene_manifest": "scene_manifest.json",
+    "model_limitations": [
+      "Artificial geometry and arbitrary dimensions; not a KU Leuven greenhouse model.",
+      "Every custom RF property is a DEMO PLACEHOLDER.",
+      "Canopy is an uncalibrated solid lossy block proxy; no water-content calibration, leaf/stem geometry, or validated scattering/refraction model.",
+      "No measurement validation; do not draw real greenhouse coverage conclusions."
+    ]
+  },
+  "canopy_physics_experiment": {
+    "case": "empty",
+    "frequency_hz": 2400000000.0,
+    "transmitter": {
+      "name": "TX",
+      "position_m": [
+        1.0,
+        2.6,
+        1.8
+      ],
+      "orientation_rad": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "power_dbm": 23.0
+    },
+    "receivers": [
+      {
+        "name": "RX_A",
+        "role": "near TX in open aisle",
+        "position_m": [
+          2.0,
+          2.6,
+          1.5
+        ]
+      },
+      {
+        "name": "RX_B",
+        "role": "far aisle between canopy rows",
+        "position_m": [
+          7.0,
+          2.6,
+          1.5
+        ]
+      },
+      {
+        "name": "RX_C",
+        "role": "far aisle beyond canopy row; nominal TX path crosses a canopy row",
+        "position_m": [
+          10.0,
+          5.0,
+          1.5
+        ]
+      }
+    ],
+    "greenhouse": {
+      "length_m": 12.0,
+      "width_m": 8.0,
+      "height_m": 4.0,
+      "wall_thickness_m": 0.04,
+      "floor_thickness_m": 0.08,
+      "include_roof": true
+    },
+    "structure": {
+      "include_rails": true,
+      "rail_count": 3,
+      "rail_cross_section_m": 0.06,
+      "support_frame_x_m": [
+        0.5,
+        11.5
+      ],
+      "support_offset_y_m": 0.18,
+      "support_cross_section_m": 0.08
+    },
+    "canopy_geometry": {
+      "enabled": false,
+      "row_count": 3,
+      "row_length_m": 9.0,
+      "row_width_m": 0.6,
+      "row_height_m": 1.6,
+      "row_spacing_m": 1.5,
+      "bottom_height_m": 0.2
+    },
+    "canopy_material": {
+      "status": "CONTROL",
+      "source": "No canopy object in this reference case.",
+      "canopy_present": false,
+      "properties": null
+    },
+    "solver": {
+      "path_solver": {
+        "max_depth": 2,
+        "samples_per_source": 16000,
+        "seed": 42,
+        "los": true,
+        "specular_reflection": true,
+        "refraction": true,
+        "diffraction": false,
+        "diffuse_reflection": false
+      },
+      "radio_map_solver": {
+        "max_depth": 2,
+        "samples_per_transmitter": 45000,
+        "seed": 42,
+        "los": true,
+        "specular_reflection": true,
+        "refraction": true,
+        "diffraction": false,
+        "diffuse_reflection": false
+      }
+    },
+    "object_id_to_name": {
+      "1": "floor",
+      "2": "greenhouse_shell_side_y0",
+      "3": "greenhouse_shell_side_ymax",
+      "4": "greenhouse_shell_end_x0",
+      "5": "greenhouse_shell_end_xmax",
+      "6": "greenhouse_shell_roof",
+      "7": "metal_structure_rail_01",
+      "8": "metal_structure_rail_02",
+      "9": "metal_structure_rail_03",
+      "10": "metal_structure_support_01",
+      "11": "metal_structure_support_02",
+      "12": "metal_structure_support_03",
+      "13": "metal_structure_support_04"
+    },
+    "geometry_signature": [
+      {
+        "id": "floor",
+        "category": "floor",
+        "bounds_m": {
+          "x_min": 0.0,
+          "x_max": 12.0,
+          "y_min": 0.0,
+          "y_max": 8.0,
+          "z_min": -0.08,
+          "z_max": 0.0
+        },
+        "vertices": [
+          [
+            0.0,
+            0.0,
+            -0.08
+          ],
+          [
+            12.0,
+            0.0,
+            -0.08
+          ],
+          [
+            12.0,
+            8.0,
+            -0.08
+          ],
+          [
+            0.0,
+            8.0,
+            -0.08
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            12.0,
+            0.0,
+            0.0
+          ],
+          [
+            12.0,
+            8.0,
+            0.0
+          ],
+          [
+            0.0,
+            8.0,
+            0.0
+          ]
+        ],
+        "faces": [
+          [
+            1,
+            4,
+            3,
+            2
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            1,
+            2,
+            6,
+            5
+          ],
+          [
+            2,
+            3,
+            7,
+            6
+          ],
+          [
+            3,
+            4,
+            8,
+            7
+          ],
+          [
+            4,
+            1,
+            5,
+            8
+          ]
+        ]
+      },
+      {
+        "id": "greenhouse_shell_side_y0",
+        "category": "greenhouse_shell",
+        "bounds_m": {
+          "x_min": 0.0,
+          "x_max": 12.0,
+          "y_min": 0.0,
+          "y_max": 0.04,
+          "z_min": 0.0,
+          "z_max": 4.0
+        },
+        "vertices": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            12.0,
+            0.0,
+            0.0
+          ],
+          [
+            12.0,
+            0.04,
+            0.0
+          ],
+          [
+            0.0,
+            0.04,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            4.0
+          ],
+          [
+            12.0,
+            0.0,
+            4.0
+          ],
+          [
+            12.0,
+            0.04,
+            4.0
+          ],
+          [
+            0.0,
+            0.04,
+            4.0
+          ]
+        ],
+        "faces": [
+          [
+            1,
+            4,
+            3,
+            2
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            1,
+            2,
+            6,
+            5
+          ],
+          [
+            2,
+            3,
+            7,
+            6
+          ],
+          [
+            3,
+            4,
+            8,
+            7
+          ],
+          [
+            4,
+            1,
+            5,
+            8
+          ]
+        ]
+      },
+      {
+        "id": "greenhouse_shell_side_ymax",
+        "category": "greenhouse_shell",
+        "bounds_m": {
+          "x_min": 0.0,
+          "x_max": 12.0,
+          "y_min": 7.96,
+          "y_max": 8.0,
+          "z_min": 0.0,
+          "z_max": 4.0
+        },
+        "vertices": [
+          [
+            0.0,
+            7.96,
+            0.0
+          ],
+          [
+            12.0,
+            7.96,
+            0.0
+          ],
+          [
+            12.0,
+            8.0,
+            0.0
+          ],
+          [
+            0.0,
+            8.0,
+            0.0
+          ],
+          [
+            0.0,
+            7.96,
+            4.0
+          ],
+          [
+            12.0,
+            7.96,
+            4.0
+          ],
+          [
+            12.0,
+            8.0,
+            4.0
+          ],
+          [
+            0.0,
+            8.0,
+            4.0
+          ]
+        ],
+        "faces": [
+          [
+            1,
+            4,
+            3,
+            2
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            1,
+            2,
+            6,
+            5
+          ],
+          [
+            2,
+            3,
+            7,
+            6
+          ],
+          [
+            3,
+            4,
+            8,
+            7
+          ],
+          [
+            4,
+            1,
+            5,
+            8
+          ]
+        ]
+      },
+      {
+        "id": "greenhouse_shell_end_x0",
+        "category": "greenhouse_shell",
+        "bounds_m": {
+          "x_min": 0.0,
+          "x_max": 0.04,
+          "y_min": 0.04,
+          "y_max": 7.96,
+          "z_min": 0.0,
+          "z_max": 4.0
+        },
+        "vertices": [
+          [
+            0.0,
+            0.04,
+            0.0
+          ],
+          [
+            0.04,
+            0.04,
+            0.0
+          ],
+          [
+            0.04,
+            7.96,
+            0.0
+          ],
+          [
+            0.0,
+            7.96,
+            0.0
+          ],
+          [
+            0.0,
+            0.04,
+            4.0
+          ],
+          [
+            0.04,
+            0.04,
+            4.0
+          ],
+          [
+            0.04,
+            7.96,
+            4.0
+          ],
+          [
+            0.0,
+            7.96,
+            4.0
+          ]
+        ],
+        "faces": [
+          [
+            1,
+            4,
+            3,
+            2
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            1,
+            2,
+            6,
+            5
+          ],
+          [
+            2,
+            3,
+            7,
+            6
+          ],
+          [
+            3,
+            4,
+            8,
+            7
+          ],
+          [
+            4,
+            1,
+            5,
+            8
+          ]
+        ]
+      },
+      {
+        "id": "greenhouse_shell_end_xmax",
+        "category": "greenhouse_shell",
+        "bounds_m": {
+          "x_min": 11.96,
+          "x_max": 12.0,
+          "y_min": 0.04,
+          "y_max": 7.96,
+          "z_min": 0.0,
+          "z_max": 4.0
+        },
+        "vertices": [
+          [
+            11.96,
+            0.04,
+            0.0
+          ],
+          [
+            12.0,
+            0.04,
+            0.0
+          ],
+          [
+            12.0,
+            7.96,
+            0.0
+          ],
+          [
+            11.96,
+            7.96,
+            0.0
+          ],
+          [
+            11.96,
+            0.04,
+            4.0
+          ],
+          [
+            12.0,
+            0.04,
+            4.0
+          ],
+          [
+            12.0,
+            7.96,
+            4.0
+          ],
+          [
+            11.96,
+            7.96,
+            4.0
+          ]
+        ],
+        "faces": [
+          [
+            1,
+            4,
+            3,
+            2
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            1,
+            2,
+            6,
+            5
+          ],
+          [
+            2,
+            3,
+            7,
+            6
+          ],
+          [
+            3,
+            4,
+            8,
+            7
+          ],
+          [
+            4,
+            1,
+            5,
+            8
+          ]
+        ]
+      },
+      {
+        "id": "greenhouse_shell_roof",
+        "category": "greenhouse_shell",
+        "bounds_m": {
+          "x_min": 0.0,
+          "x_max": 12.0,
+          "y_min": 0.0,
+          "y_max": 8.0,
+          "z_min": 3.96,
+          "z_max": 4.0
+        },
+        "vertices": [
+          [
+            0.0,
+            0.0,
+            3.96
+          ],
+          [
+            12.0,
+            0.0,
+            3.96
+          ],
+          [
+            12.0,
+            8.0,
+            3.96
+          ],
+          [
+            0.0,
+            8.0,
+            3.96
+          ],
+          [
+            0.0,
+            0.0,
+            4.0
+          ],
+          [
+            12.0,
+            0.0,
+            4.0
+          ],
+          [
+            12.0,
+            8.0,
+            4.0
+          ],
+          [
+            0.0,
+            8.0,
+            4.0
+          ]
+        ],
+        "faces": [
+          [
+            1,
+            4,
+            3,
+            2
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            1,
+            2,
+            6,
+            5
+          ],
+          [
+            2,
+            3,
+            7,
+            6
+          ],
+          [
+            3,
+            4,
+            8,
+            7
+          ],
+          [
+            4,
+            1,
+            5,
+            8
+          ]
+        ]
+      },
+      {
+        "id": "metal_structure_rail_01",
+        "category": "metal_structure",
+        "bounds_m": {
+          "x_min": 0.04,
+          "x_max": 11.96,
+          "y_min": 1.97,
+          "y_max": 2.03,
+          "z_min": 3.75,
+          "z_max": 3.8099999999999996
+        },
+        "vertices": [
+          [
+            0.04,
+            1.97,
+            3.75
+          ],
+          [
+            11.96,
+            1.97,
+            3.75
+          ],
+          [
+            11.96,
+            2.03,
+            3.75
+          ],
+          [
+            0.04,
+            2.03,
+            3.75
+          ],
+          [
+            0.04,
+            1.97,
+            3.8099999999999996
+          ],
+          [
+            11.96,
+            1.97,
+            3.8099999999999996
+          ],
+          [
+            11.96,
+            2.03,
+            3.8099999999999996
+          ],
+          [
+            0.04,
+            2.03,
+            3.8099999999999996
+          ]
+        ],
+        "faces": [
+          [
+            1,
+            4,
+            3,
+            2
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            1,
+            2,
+            6,
+            5
+          ],
+          [
+            2,
+            3,
+            7,
+            6
+          ],
+          [
+            3,
+            4,
+            8,
+            7
+          ],
+          [
+            4,
+            1,
+            5,
+            8
+          ]
+        ]
+      },
+      {
+        "id": "metal_structure_rail_02",
+        "category": "metal_structure",
+        "bounds_m": {
+          "x_min": 0.04,
+          "x_max": 11.96,
+          "y_min": 3.97,
+          "y_max": 4.03,
+          "z_min": 3.75,
+          "z_max": 3.8099999999999996
+        },
+        "vertices": [
+          [
+            0.04,
+            3.97,
+            3.75
+          ],
+          [
+            11.96,
+            3.97,
+            3.75
+          ],
+          [
+            11.96,
+            4.03,
+            3.75
+          ],
+          [
+            0.04,
+            4.03,
+            3.75
+          ],
+          [
+            0.04,
+            3.97,
+            3.8099999999999996
+          ],
+          [
+            11.96,
+            3.97,
+            3.8099999999999996
+          ],
+          [
+            11.96,
+            4.03,
+            3.8099999999999996
+          ],
+          [
+            0.04,
+            4.03,
+            3.8099999999999996
+          ]
+        ],
+        "faces": [
+          [
+            1,
+            4,
+            3,
+            2
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            1,
+            2,
+            6,
+            5
+          ],
+          [
+            2,
+            3,
+            7,
+            6
+          ],
+          [
+            3,
+            4,
+            8,
+            7
+          ],
+          [
+            4,
+            1,
+            5,
+            8
+          ]
+        ]
+      },
+      {
+        "id": "metal_structure_rail_03",
+        "category": "metal_structure",
+        "bounds_m": {
+          "x_min": 0.04,
+          "x_max": 11.96,
+          "y_min": 5.97,
+          "y_max": 6.03,
+          "z_min": 3.75,
+          "z_max": 3.8099999999999996
+        },
+        "vertices": [
+          [
+            0.04,
+            5.97,
+            3.75
+          ],
+          [
+            11.96,
+            5.97,
+            3.75
+          ],
+          [
+            11.96,
+            6.03,
+            3.75
+          ],
+          [
+            0.04,
+            6.03,
+            3.75
+          ],
+          [
+            0.04,
+            5.97,
+            3.8099999999999996
+          ],
+          [
+            11.96,
+            5.97,
+            3.8099999999999996
+          ],
+          [
+            11.96,
+            6.03,
+            3.8099999999999996
+          ],
+          [
+            0.04,
+            6.03,
+            3.8099999999999996
+          ]
+        ],
+        "faces": [
+          [
+            1,
+            4,
+            3,
+            2
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            1,
+            2,
+            6,
+            5
+          ],
+          [
+            2,
+            3,
+            7,
+            6
+          ],
+          [
+            3,
+            4,
+            8,
+            7
+          ],
+          [
+            4,
+            1,
+            5,
+            8
+          ]
+        ]
+      },
+      {
+        "id": "metal_structure_support_01",
+        "category": "metal_structure",
+        "bounds_m": {
+          "x_min": 0.46,
+          "x_max": 0.54,
+          "y_min": 0.13999999999999999,
+          "y_max": 0.22,
+          "z_min": 0.0,
+          "z_max": 3.96
+        },
+        "vertices": [
+          [
+            0.46,
+            0.13999999999999999,
+            0.0
+          ],
+          [
+            0.54,
+            0.13999999999999999,
+            0.0
+          ],
+          [
+            0.54,
+            0.22,
+            0.0
+          ],
+          [
+            0.46,
+            0.22,
+            0.0
+          ],
+          [
+            0.46,
+            0.13999999999999999,
+            3.96
+          ],
+          [
+            0.54,
+            0.13999999999999999,
+            3.96
+          ],
+          [
+            0.54,
+            0.22,
+            3.96
+          ],
+          [
+            0.46,
+            0.22,
+            3.96
+          ]
+        ],
+        "faces": [
+          [
+            1,
+            4,
+            3,
+            2
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            1,
+            2,
+            6,
+            5
+          ],
+          [
+            2,
+            3,
+            7,
+            6
+          ],
+          [
+            3,
+            4,
+            8,
+            7
+          ],
+          [
+            4,
+            1,
+            5,
+            8
+          ]
+        ]
+      },
+      {
+        "id": "metal_structure_support_02",
+        "category": "metal_structure",
+        "bounds_m": {
+          "x_min": 0.46,
+          "x_max": 0.54,
+          "y_min": 7.78,
+          "y_max": 7.86,
+          "z_min": 0.0,
+          "z_max": 3.96
+        },
+        "vertices": [
+          [
+            0.46,
+            7.78,
+            0.0
+          ],
+          [
+            0.54,
+            7.78,
+            0.0
+          ],
+          [
+            0.54,
+            7.86,
+            0.0
+          ],
+          [
+            0.46,
+            7.86,
+            0.0
+          ],
+          [
+            0.46,
+            7.78,
+            3.96
+          ],
+          [
+            0.54,
+            7.78,
+            3.96
+          ],
+          [
+            0.54,
+            7.86,
+            3.96
+          ],
+          [
+            0.46,
+            7.86,
+            3.96
+          ]
+        ],
+        "faces": [
+          [
+            1,
+            4,
+            3,
+            2
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            1,
+            2,
+            6,
+            5
+          ],
+          [
+            2,
+            3,
+            7,
+            6
+          ],
+          [
+            3,
+            4,
+            8,
+            7
+          ],
+          [
+            4,
+            1,
+            5,
+            8
+          ]
+        ]
+      },
+      {
+        "id": "metal_structure_support_03",
+        "category": "metal_structure",
+        "bounds_m": {
+          "x_min": 11.46,
+          "x_max": 11.54,
+          "y_min": 0.13999999999999999,
+          "y_max": 0.22,
+          "z_min": 0.0,
+          "z_max": 3.96
+        },
+        "vertices": [
+          [
+            11.46,
+            0.13999999999999999,
+            0.0
+          ],
+          [
+            11.54,
+            0.13999999999999999,
+            0.0
+          ],
+          [
+            11.54,
+            0.22,
+            0.0
+          ],
+          [
+            11.46,
+            0.22,
+            0.0
+          ],
+          [
+            11.46,
+            0.13999999999999999,
+            3.96
+          ],
+          [
+            11.54,
+            0.13999999999999999,
+            3.96
+          ],
+          [
+            11.54,
+            0.22,
+            3.96
+          ],
+          [
+            11.46,
+            0.22,
+            3.96
+          ]
+        ],
+        "faces": [
+          [
+            1,
+            4,
+            3,
+            2
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            1,
+            2,
+            6,
+            5
+          ],
+          [
+            2,
+            3,
+            7,
+            6
+          ],
+          [
+            3,
+            4,
+            8,
+            7
+          ],
+          [
+            4,
+            1,
+            5,
+            8
+          ]
+        ]
+      },
+      {
+        "id": "metal_structure_support_04",
+        "category": "metal_structure",
+        "bounds_m": {
+          "x_min": 11.46,
+          "x_max": 11.54,
+          "y_min": 7.78,
+          "y_max": 7.86,
+          "z_min": 0.0,
+          "z_max": 3.96
+        },
+        "vertices": [
+          [
+            11.46,
+            7.78,
+            0.0
+          ],
+          [
+            11.54,
+            7.78,
+            0.0
+          ],
+          [
+            11.54,
+            7.86,
+            0.0
+          ],
+          [
+            11.46,
+            7.86,
+            0.0
+          ],
+          [
+            11.46,
+            7.78,
+            3.96
+          ],
+          [
+            11.54,
+            7.78,
+            3.96
+          ],
+          [
+            11.54,
+            7.86,
+            3.96
+          ],
+          [
+            11.46,
+            7.86,
+            3.96
+          ]
+        ],
+        "faces": [
+          [
+            1,
+            4,
+            3,
+            2
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            1,
+            2,
+            6,
+            5
+          ],
+          [
+            2,
+            3,
+            7,
+            6
+          ],
+          [
+            3,
+            4,
+            8,
+            7
+          ],
+          [
+            4,
+            1,
+            5,
+            8
+          ]
+        ]
+      }
+    ],
+    "material_api": {
+      "scattering_coefficient": null,
+      "xpd_coefficient": null,
+      "scattering_pattern": null
+    },
+    "status": "NOT VALIDATED",
+    "path_api": {
+      "components": [
+        "valid",
+        "cir() coefficients/delays",
+        "interactions",
+        "objects",
+        "vertices"
+      ],
+      "path_length_note": "Estimated as c0 multiplied by the absolute path delay returned by Paths.cir()."
+    }
+  }
+}

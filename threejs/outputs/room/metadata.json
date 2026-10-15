@@ -1,0 +1,198 @@
+{
+  "run_timestamp_utc": "2026-10-07T14:35:34.014154+00:00",
+  "scenario": "custom_room",
+  "description": "Small procedural room with illustrative material parameters",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "python_version": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "mitsuba_variant": "llvm_ad_mono_polarized",
+  "package_versions": {
+    "sionna-rt": "2.2.0",
+    "mitsuba": "3.9.1",
+    "drjit": "1.5.0",
+    "numpy": "2.5.3",
+    "matplotlib": "3.11.2",
+    "PyYAML": "6.0.3"
+  },
+  "frequency_hz": 2400000000.0,
+  "frequency_note": "2.4 GHz is a provisional demo value, not a study decision.",
+  "coordinate_convention": "x/y horizontal, z up; distances in meters; delays in seconds.",
+  "transmitter": {
+    "name": "tx0",
+    "position_m": [
+      1.2,
+      3.0,
+      1.4
+    ],
+    "power_dbm": 23.0
+  },
+  "receivers": [
+    {
+      "name": "rx0",
+      "position_m": [
+        3.0,
+        3.0,
+        1.4
+      ]
+    },
+    {
+      "name": "rx1",
+      "position_m": [
+        8.2,
+        3.0,
+        1.4
+      ]
+    },
+    {
+      "name": "rx2",
+      "position_m": [
+        8.2,
+        5.0,
+        1.4
+      ]
+    }
+  ],
+  "antenna": {
+    "rows": 1,
+    "columns": 1,
+    "pattern": "iso",
+    "polarization": "V"
+  },
+  "materials": {
+    "concrete_like": {
+      "relative_permittivity": 5.31,
+      "conductivity_s_per_m": 0.0548,
+      "color_rgb": [
+        0.62,
+        0.66,
+        0.71
+      ]
+    },
+    "panel_like": {
+      "relative_permittivity": 3.2,
+      "conductivity_s_per_m": 0.008,
+      "color_rgb": [
+        0.86,
+        0.5,
+        0.23
+      ]
+    },
+    "note": "Illustrative placeholders; not validated against a real site."
+  },
+  "path_solver": {
+    "max_depth": 2,
+    "samples_per_source": 20000,
+    "seed": 42,
+    "los": true,
+    "specular_reflection": true,
+    "diffuse_reflection": false,
+    "refraction": false,
+    "diffraction": false
+  },
+  "radio_map_solver": {
+    "center_m": [
+      5.0,
+      3.0,
+      1.4
+    ],
+    "orientation_rad": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "size_m": [
+      10.0,
+      6.0
+    ],
+    "cell_size_m": [
+      0.5,
+      0.5
+    ],
+    "samples_per_transmitter": 50000,
+    "max_depth": 2,
+    "seed": 42
+  },
+  "valid_path_counts_by_receiver": [
+    {
+      "receiver": "rx0",
+      "valid_path_count": 14
+    },
+    {
+      "receiver": "rx1",
+      "valid_path_count": 6
+    },
+    {
+      "receiver": "rx2",
+      "valid_path_count": 15
+    }
+  ],
+  "radio_map": {
+    "quantity": "path_gain",
+    "units": "linear power ratio (unitless); not RSS or received power",
+    "display_transform": "10*log10(max(path_gain, 1e-15)) dB, for plotting only",
+    "raw_array_file": "radio_map.npy",
+    "raw_array_shape": [
+      1,
+      12,
+      20
+    ],
+    "raw_array_axes": [
+      "transmitter",
+      "y_cell",
+      "x_cell"
+    ],
+    "plotted_array_shape": [
+      12,
+      20
+    ],
+    "cell_centers_file": "radio_map_cell_centers.npy",
+    "cell_centers_shape": [
+      12,
+      20,
+      3
+    ],
+    "frequency_hz": 2400000000.0,
+    "center_m": [
+      5.0,
+      3.0,
+      1.4
+    ],
+    "orientation_rad": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "requested_size_m": [
+      10.0,
+      6.0
+    ],
+    "cell_size_m": [
+      0.5,
+      0.5
+    ],
+    "grid_x_cells": 20,
+    "grid_y_cells": 12,
+    "positive_cell_count": 240,
+    "min_positive_path_gain_linear": 2.8761830694890023e-09,
+    "max_path_gain_linear": 0.015522755682468414
+  },
+  "room": {
+    "size_m": [
+      10.0,
+      6.0,
+      3.0
+    ],
+    "panel": {
+      "center_x_m": 4.65,
+      "thickness_x_m": 0.16,
+      "y_bounds_m": [
+        2.2,
+        3.8
+      ],
+      "z_bounds_m": [
+        0.0,
+        3.0
+      ]
+    }
+  },
+  "panel_center_x_m_used": null
+}

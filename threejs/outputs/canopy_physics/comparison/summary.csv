@@ -1,0 +1,5 @@
+scenario,mean_abs_delta_db_vs_empty,median_delta_db_vs_empty,min_delta_db_vs_empty,max_delta_db_vs_empty,positive_cells,negative_cells,zero_cells
+empty,0.00000000,0.00000000,0.00000000,0.00000000,0,0,234
+transparent,7.16739247,-2.68766779,-101.23982423,0.00000027,0,230,4
+weak_loss,14.96745178,-10.08493968,-101.43444227,9.89489111,30,203,1
+current,24.20046703,-10.08777005,-105.56984345,14.24074024,41,192,1

@@ -1,0 +1,54 @@
+description: Narrow-canopy RF physics sanity experiment; all non-canopy settings copied from cea_demo.yaml
+geometry_scenario: narrow
+receiver_overrides:
+  # Existing RX_C was inside the closed canopy proxy. Use the adjacent far aisle
+  # so its straight path crosses the row while the receiver remains outside it.
+  RX_C:
+    role: far aisle beyond canopy row; nominal TX path crosses a canopy row
+    position_m: [10.0, 5.0, 1.5]
+
+# Core controlled cases. All three material cases preserve the current canopy
+# RadioMaterial slab thickness so epsilon_r/conductivity are not confounded by it.
+materials:
+  transparent:
+    relative_permittivity: 1.0
+    conductivity_s_per_m: 0.0
+    thickness_m: 0.8
+    scattering_coefficient: 0.0
+    xpd_coefficient: 0.0
+    scattering_pattern: lambertian
+    status: CONTROL
+    source: Analytic free-space-matched Sionna material input; test control only, not vegetation.
+  weak_loss:
+    relative_permittivity: 2.0
+    conductivity_s_per_m: 0.01
+    thickness_m: 0.8
+    scattering_coefficient: 0.0
+    xpd_coefficient: 0.0
+    scattering_pattern: lambertian
+    status: WEAK-LOSS DEMO PLACEHOLDER
+    source: Arbitrary mild-loss test values chosen for sensitivity study; not crop data or validated.
+
+current_material_status:
+  status: CURRENT PLACEHOLDER
+  source: Existing config/cea_demo.yaml canopy_placeholder values; unchanged in the current case.
+
+# Single-factor diagnostics run in addition to the four primary cases.
+diagnostics:
+  current_refraction_off:
+    change: Set PathSolver and RadioMapSolver refraction to false; leave current material and geometry unchanged.
+  current_lower_permittivity:
+    relative_permittivity: 2.0
+    conductivity_s_per_m: 0.25
+    thickness_m: 0.8
+    change: Lower epsilon_r only relative to current.
+  current_lower_conductivity:
+    relative_permittivity: 8.0
+    conductivity_s_per_m: 0.01
+    thickness_m: 0.8
+    change: Lower conductivity only relative to current.
+  current_thinner_slab:
+    relative_permittivity: 8.0
+    conductivity_s_per_m: 0.25
+    thickness_m: 0.1
+    change: Lower RadioMaterial slab thickness only relative to current; mesh geometry is unchanged.

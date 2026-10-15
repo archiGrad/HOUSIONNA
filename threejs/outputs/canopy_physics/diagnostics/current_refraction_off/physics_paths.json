@@ -1,0 +1,1565 @@
+{
+  "receivers": [
+    {
+      "receiver": "RX_A",
+      "path_count": 15,
+      "los_present": true,
+      "strongest_path_coefficient_magnitude_db_re_1": -40.42627477015752,
+      "strongest_path_coefficient_power_db": -40.42627477015752,
+      "strongest_path_delay_ns": 3.482511281967163,
+      "strongest_path_length_m_from_delay": 1.0440306663513184,
+      "aggregate_path_coefficient_power_linear": 9.932149599946557e-05,
+      "aggregate_path_coefficient_power_db": -40.02956747641237,
+      "paths_with_specular_reflection": 14,
+      "paths_with_refraction": 0,
+      "paths_with_diffuse_scattering": 0,
+      "paths_with_diffraction": 0,
+      "paths_with_two_canopy_refractions": 0,
+      "interaction_classification_source": "paths.interactions and paths.objects from Sionna Paths API"
+    },
+    {
+      "receiver": "RX_B",
+      "path_count": 23,
+      "los_present": true,
+      "strongest_path_coefficient_magnitude_db_re_1": -55.62588111708501,
+      "strongest_path_coefficient_power_db": -55.62588111708501,
+      "strongest_path_delay_ns": 20.038846969604492,
+      "strongest_path_length_m_from_delay": 6.007494926452637,
+      "aggregate_path_coefficient_power_linear": 1.0578874721645064e-05,
+      "aggregate_path_coefficient_power_db": -49.75560525889769,
+      "paths_with_specular_reflection": 22,
+      "paths_with_refraction": 0,
+      "paths_with_diffuse_scattering": 0,
+      "paths_with_diffraction": 0,
+      "paths_with_two_canopy_refractions": 0,
+      "interaction_classification_source": "paths.interactions and paths.objects from Sionna Paths API"
+    },
+    {
+      "receiver": "RX_C",
+      "path_count": 6,
+      "los_present": false,
+      "strongest_path_coefficient_magnitude_db_re_1": -76.9091616483884,
+      "strongest_path_coefficient_power_db": -76.9091616483884,
+      "strongest_path_delay_ns": 34.68174743652344,
+      "strongest_path_length_m_from_delay": 10.39732551574707,
+      "aggregate_path_coefficient_power_linear": 3.361291321289737e-08,
+      "aggregate_path_coefficient_power_db": -74.73493845832886,
+      "paths_with_specular_reflection": 6,
+      "paths_with_refraction": 0,
+      "paths_with_diffuse_scattering": 0,
+      "paths_with_diffraction": 0,
+      "paths_with_two_canopy_refractions": 0,
+      "interaction_classification_source": "paths.interactions and paths.objects from Sionna Paths API"
+    }
+  ],
+  "paths": [
+    {
+      "receiver": "RX_A",
+      "path_index": 0,
+      "coefficient_real": -9.168098767986521e-05,
+      "coefficient_imag": -0.00037038183654658496,
+      "coefficient_magnitude": 0.00038156009794733094,
+      "coefficient_magnitude_db_re_1": -68.36874096800513,
+      "coefficient_power_linear": 1.4558810834557678e-07,
+      "delay_s": 2.324412839982415e-08,
+      "delay_ns": 23.244129180908203,
+      "path_length_m_from_delay": 6.968414306640625,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_roof",
+        "greenhouse_shell_side_y0"
+      ],
+      "interaction_vertices_m": [
+        [
+          1.467532992362976,
+          0.20624421536922455,
+          3.9600002765655518
+        ],
+        [
+          1.4999971389770508,
+          0.03999999910593033,
+          3.81001877784729
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_A",
+      "path_index": 1,
+      "coefficient_real": -7.938095222925767e-06,
+      "coefficient_imag": -2.081764250760898e-05,
+      "coefficient_magnitude": 2.2279757524327887e-05,
+      "coefficient_magnitude_db_re_1": -93.04179079996565,
+      "coefficient_power_linear": 4.963875953428451e-10,
+      "delay_s": 3.908010981490406e-08,
+      "delay_ns": 39.080108642578125,
+      "path_length_m_from_delay": 11.715921401977539,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_roof",
+        "greenhouse_shell_side_ymax"
+      ],
+      "interaction_vertices_m": [
+        [
+          1.467531681060791,
+          7.611932277679443,
+          3.9600000381469727
+        ],
+        [
+          1.4999959468841553,
+          7.960000514984131,
+          3.810018539428711
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_A",
+      "path_index": 2,
+      "coefficient_real": -0.0001521909871371463,
+      "coefficient_imag": 6.528554422402522e-06,
+      "coefficient_magnitude": 0.0001523309508557775,
+      "coefficient_magnitude_db_re_1": -76.34423694047288,
+      "coefficient_power_linear": 2.32047185886253e-08,
+      "delay_s": 7.146300617932866e-08,
+      "delay_ns": 71.46300506591797,
+      "path_length_m_from_delay": 21.424070358276367,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_roof",
+        "greenhouse_shell_end_xmax"
+      ],
+      "interaction_vertices_m": [
+        [
+          10.780750274658203,
+          2.59999942779541,
+          3.9600000381469727
+        ],
+        [
+          11.960000038146973,
+          2.5999996662139893,
+          3.699594736099243
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_A",
+      "path_index": 3,
+      "coefficient_real": 0.0001763249165378511,
+      "coefficient_imag": 0.000110211520222947,
+      "coefficient_magnitude": 0.00020793521919562643,
+      "coefficient_magnitude_db_re_1": -73.64143890919549,
+      "coefficient_power_linear": 4.323705538193321e-08,
+      "delay_s": 7.619261310765069e-08,
+      "delay_ns": 76.19261169433594,
+      "path_length_m_from_delay": 22.841970443725586,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_end_x0",
+        "greenhouse_shell_end_xmax"
+      ],
+      "interaction_vertices_m": [
+        [
+          0.03999999910593033,
+          2.6000001430511475,
+          1.7873908281326294
+        ],
+        [
+          11.960000038146973,
+          2.5999996662139893,
+          1.630824089050293
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_A",
+      "path_index": 4,
+      "coefficient_real": 0.00016806893108878285,
+      "coefficient_imag": 9.11574752535671e-05,
+      "coefficient_magnitude": 0.00019119845943921915,
+      "coefficient_magnitude_db_re_1": -74.37031222652699,
+      "coefficient_power_linear": 3.655685089193073e-08,
+      "delay_s": 8.286335884122309e-08,
+      "delay_ns": 82.86335754394531,
+      "path_length_m_from_delay": 24.841808319091797,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_end_xmax",
+        "greenhouse_shell_end_x0"
+      ],
+      "interaction_vertices_m": [
+        [
+          11.960000038146973,
+          2.5999996662139893,
+          1.6676337718963623
+        ],
+        [
+          0.03999999910593033,
+          2.6000003814697266,
+          1.5236718654632568
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_A",
+      "path_index": 5,
+      "coefficient_real": -0.005977594293653965,
+      "coefficient_imag": -0.0074107591062784195,
+      "coefficient_magnitude": 0.009521081034778191,
+      "coefficient_magnitude_db_re_1": -40.42627477015752,
+      "coefficient_power_linear": 9.065098407081295e-05,
+      "delay_s": 3.4825113903735883e-09,
+      "delay_ns": 3.482511281967163,
+      "path_length_m_from_delay": 1.0440306663513184,
+      "interaction_type_ids": [],
+      "interaction_types": [],
+      "interacted_objects": [],
+      "interaction_vertices_m": [],
+      "is_los": true
+    },
+    {
+      "receiver": "RX_A",
+      "path_index": 6,
+      "coefficient_real": 0.0009481355082243681,
+      "coefficient_imag": 0.0010787952924147248,
+      "coefficient_magnitude": 0.0014362312574554463,
+      "coefficient_magnitude_db_re_1": -56.85551251454019,
+      "coefficient_power_linear": 2.0627602248920524e-06,
+      "delay_s": 1.5767529504273625e-08,
+      "delay_ns": 15.767529487609863,
+      "path_length_m_from_delay": 4.726986408233643,
+      "interaction_type_ids": [
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_roof"
+      ],
+      "interaction_vertices_m": [
+        [
+          1.4675276279449463,
+          2.5999999046325684,
+          3.9600000381469727
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_A",
+      "path_index": 7,
+      "coefficient_real": 0.00230975984595716,
+      "coefficient_imag": -0.0003397281689103693,
+      "coefficient_magnitude": 0.0023346104117705027,
+      "coefficient_magnitude_db_re_1": -52.63571163930039,
+      "coefficient_power_linear": 5.450405774747236e-06,
+      "delay_s": 9.79134195944198e-09,
+      "delay_ns": 9.791341781616211,
+      "path_length_m_from_delay": 2.935370445251465,
+      "interaction_type_ids": [
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_end_x0"
+      ],
+      "interaction_vertices_m": [
+        [
+          0.03999999910593033,
+          2.5999996662139893,
+          1.701371192932129
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_A",
+      "path_index": 8,
+      "coefficient_real": 0.00032643016311340034,
+      "coefficient_imag": -3.6035769880982116e-05,
+      "coefficient_magnitude": 0.00032841319720918074,
+      "coefficient_magnitude_db_re_1": -69.67158798355113,
+      "coefficient_power_linear": 1.0785522810115624e-07,
+      "delay_s": 6.978878275276656e-08,
+      "delay_ns": 69.78878021240234,
+      "path_length_m_from_delay": 20.922149658203125,
+      "interaction_type_ids": [
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_end_xmax"
+      ],
+      "interaction_vertices_m": [
+        [
+          11.960000038146973,
+          2.59999942779541,
+          1.6428309679031372
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_A",
+      "path_index": 9,
+      "coefficient_real": -0.00036292290315032005,
+      "coefficient_imag": 0.0005990706267766654,
+      "coefficient_magnitude": 0.0007004274762583513,
+      "coefficient_magnitude_db_re_1": -63.092736516382516,
+      "coefficient_power_linear": 4.905986494976433e-07,
+      "delay_s": 1.150191586418714e-08,
+      "delay_ns": 11.50191593170166,
+      "path_length_m_from_delay": 3.4481875896453857,
+      "interaction_type_ids": [
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "floor"
+      ],
+      "interaction_vertices_m": [
+        [
+          1.5454514026641846,
+          2.5999996662139893,
+          0.0
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_A",
+      "path_index": 10,
+      "coefficient_real": -0.0001727672788547352,
+      "coefficient_imag": 0.00012044460163451731,
+      "coefficient_magnitude": 0.00021060729974473202,
+      "coefficient_magnitude_db_re_1": -73.53053160091048,
+      "coefficient_power_linear": 4.43554347057674e-08,
+      "delay_s": 2.5635522149514145e-08,
+      "delay_ns": 25.635522842407227,
+      "path_length_m_from_delay": 7.685336112976074,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_roof",
+        "floor"
+      ],
+      "interaction_vertices_m": [
+        [
+          1.2834616899490356,
+          2.5999999046325684,
+          3.9599997997283936
+        ],
+        [
+          1.803148627281189,
+          2.6000001430511475,
+          0.0
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_A",
+      "path_index": 11,
+      "coefficient_real": -1.306428930547554e-05,
+      "coefficient_imag": -0.0003492180840112269,
+      "coefficient_magnitude": 0.00034946236686591805,
+      "coefficient_magnitude_db_re_1": -69.131991719823,
+      "coefficient_power_linear": 1.221239458555295e-07,
+      "delay_s": 1.8230672083063837e-08,
+      "delay_ns": 18.23067283630371,
+      "path_length_m_from_delay": 5.465417861938477,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_end_x0",
+        "greenhouse_shell_roof"
+      ],
+      "interaction_vertices_m": [
+        [
+          0.03999999910593033,
+          2.5999999046325684,
+          3.3188886642456055
+        ],
+        [
+          0.44518062472343445,
+          2.5999999046325684,
+          3.9599997997283936
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_A",
+      "path_index": 12,
+      "coefficient_real": -0.00013436676817946136,
+      "coefficient_imag": 0.00010410595859866589,
+      "coefficient_magnitude": 0.00016997787799222653,
+      "coefficient_magnitude_db_re_1": -75.39215193608935,
+      "coefficient_power_linear": 2.889247900674025e-08,
+      "delay_s": 7.064446094773302e-08,
+      "delay_ns": 70.64446258544922,
+      "path_length_m_from_delay": 21.17867660522461,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_end_xmax",
+        "floor"
+      ],
+      "interaction_vertices_m": [
+        [
+          11.959999084472656,
+          2.599999189376831,
+          0.07113859057426453
+        ],
+        [
+          11.509500503540039,
+          2.5999999046325684,
+          0.0
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_A",
+      "path_index": 13,
+      "coefficient_real": 0.00017139918054454029,
+      "coefficient_imag": 0.00021648788242600858,
+      "coefficient_magnitude": 0.0002761243964749171,
+      "coefficient_magnitude_db_re_1": -71.17790440713807,
+      "coefficient_power_linear": 7.624468232863722e-08,
+      "delay_s": 1.4698183115058328e-08,
+      "delay_ns": 14.698183059692383,
+      "path_length_m_from_delay": 4.406404495239258,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_end_x0",
+        "floor"
+      ],
+      "interaction_vertices_m": [
+        [
+          0.03999999910593033,
+          2.5999996662139893,
+          0.7150853276252747
+        ],
+        [
+          0.6727187633514404,
+          2.5999999046325684,
+          0.0
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_A",
+      "path_index": 14,
+      "coefficient_real": -0.0001264501188416034,
+      "coefficient_imag": -0.00014900589303579181,
+      "coefficient_magnitude": 0.0001954287305245814,
+      "coefficient_magnitude_db_re_1": -74.18023178152953,
+      "coefficient_power_linear": 3.8192388714449454e-08,
+      "delay_s": 2.762111961374103e-08,
+      "delay_ns": 27.62112045288086,
+      "path_length_m_from_delay": 8.280603408813477,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "floor",
+        "greenhouse_shell_roof"
+      ],
+      "interaction_vertices_m": [
+        [
+          1.2189767360687256,
+          2.5999999046325684,
+          0.0
+        ],
+        [
+          1.7007275819778442,
+          2.5999999046325684,
+          3.9599997997283936
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_B",
+      "path_index": 0,
+      "coefficient_real": 0.00014718341117259115,
+      "coefficient_imag": 0.00010014999861596152,
+      "coefficient_magnitude": 0.00017802521941336606,
+      "coefficient_magnitude_db_re_1": -74.99036940593025,
+      "coefficient_power_linear": 3.169297874717713e-08,
+      "delay_s": 3.0584537569211534e-08,
+      "delay_ns": 30.584537506103516,
+      "path_length_m_from_delay": 9.169013023376465,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_end_x0",
+        "greenhouse_shell_roof"
+      ],
+      "interaction_vertices_m": [
+        [
+          0.03999999910593033,
+          2.5999999046325684,
+          2.3599889278411865
+        ],
+        [
+          2.78281831741333,
+          2.5999999046325684,
+          3.9600000381469727
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_B",
+      "path_index": 1,
+      "coefficient_real": -0.00011924576392630115,
+      "coefficient_imag": 0.00019275663362350315,
+      "coefficient_magnitude": 0.00022665981562736826,
+      "coefficient_magnitude_db_re_1": -72.89250937675638,
+      "coefficient_power_linear": 5.137467202023257e-08,
+      "delay_s": 3.049126107157463e-08,
+      "delay_ns": 30.491260528564453,
+      "path_length_m_from_delay": 9.1410493850708,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_roof",
+        "greenhouse_shell_side_y0"
+      ],
+      "interaction_vertices_m": [
+        [
+          3.8051905632019043,
+          0.20624452829360962,
+          3.9600000381469727
+        ],
+        [
+          3.9999747276306152,
+          0.03999999910593033,
+          3.8100194931030273
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_B",
+      "path_index": 2,
+      "coefficient_real": 3.5010769352084026e-05,
+      "coefficient_imag": -1.000563679554034e-05,
+      "coefficient_magnitude": 3.641245306634939e-05,
+      "coefficient_magnitude_db_re_1": -88.77500124291262,
+      "coefficient_power_linear": 1.3258667383090969e-09,
+      "delay_s": 4.377992723902935e-08,
+      "delay_ns": 43.77992630004883,
+      "path_length_m_from_delay": 13.12489128112793,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_roof",
+        "greenhouse_shell_side_ymax"
+      ],
+      "interaction_vertices_m": [
+        [
+          3.805190086364746,
+          7.611931800842285,
+          3.9600000381469727
+        ],
+        [
+          3.9999754428863525,
+          7.960000038146973,
+          3.810018539428711
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_B",
+      "path_index": 3,
+      "coefficient_real": -3.549372559064068e-05,
+      "coefficient_imag": 0.00010646463488228619,
+      "coefficient_magnitude": 0.00011222532261892683,
+      "coefficient_magnitude_db_re_1": -78.99818274879249,
+      "coefficient_power_linear": 1.259452303692221e-08,
+      "delay_s": 5.52943006937312e-08,
+      "delay_ns": 55.2943000793457,
+      "path_length_m_from_delay": 16.576814651489258,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_roof",
+        "greenhouse_shell_end_xmax"
+      ],
+      "interaction_vertices_m": [
+        [
+          8.443047523498535,
+          2.6000001430511475,
+          3.9600000381469727
+        ],
+        [
+          11.960000038146973,
+          2.6000001430511475,
+          2.9394099712371826
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_B",
+      "path_index": 4,
+      "coefficient_real": 0.00020275142742320895,
+      "coefficient_imag": 0.00017246870265807956,
+      "coefficient_magnitude": 0.0002661833855046363,
+      "coefficient_magnitude_db_re_1": -71.49638111162511,
+      "coefficient_power_linear": 7.085359471870983e-08,
+      "delay_s": 5.951624615363471e-08,
+      "delay_ns": 59.5162467956543,
+      "path_length_m_from_delay": 17.84252166748047,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_end_x0",
+        "greenhouse_shell_end_xmax"
+      ],
+      "interaction_vertices_m": [
+        [
+          0.03999999910593033,
+          2.5999999046325684,
+          1.7838566303253174
+        ],
+        [
+          11.960000038146973,
+          2.6000001430511475,
+          1.5834088325500488
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_B",
+      "path_index": 5,
+      "coefficient_real": 0.0001501487276982516,
+      "coefficient_imag": 5.281981430016458e-05,
+      "coefficient_magnitude": 0.0001591683800637161,
+      "coefficient_magnitude_db_re_1": -75.96286407465192,
+      "coefficient_power_linear": 2.5334573212107576e-08,
+      "delay_s": 9.954055002481255e-08,
+      "delay_ns": 99.5405502319336,
+      "path_length_m_from_delay": 29.84150505065918,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_end_xmax",
+        "greenhouse_shell_end_x0"
+      ],
+      "interaction_vertices_m": [
+        [
+          11.960000038146973,
+          2.6000001430511475,
+          1.6898131370544434
+        ],
+        [
+          0.03999999910593033,
+          2.6000001430511475,
+          1.5699735879898071
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_B",
+      "path_index": 6,
+      "coefficient_real": 0.00023444974794983864,
+      "coefficient_imag": 0.0007685973541811109,
+      "coefficient_magnitude": 0.000803559939996978,
+      "coefficient_magnitude_db_re_1": -61.89963444673657,
+      "coefficient_power_linear": 6.457085771679468e-07,
+      "delay_s": 2.6571557398824552e-08,
+      "delay_ns": 26.571557998657227,
+      "path_length_m_from_delay": 7.965952396392822,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_end_x0",
+        "canopy_row_01"
+      ],
+      "interaction_vertices_m": [
+        [
+          0.03999999538064003,
+          2.5030357837677,
+          1.763636827468872
+        ],
+        [
+          3.0399179458618164,
+          2.200000047683716,
+          1.6500029563903809
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_B",
+      "path_index": 7,
+      "coefficient_real": 0.001378771848976612,
+      "coefficient_imag": -0.0009147963137365878,
+      "coefficient_magnitude": 0.0016546492399165556,
+      "coefficient_magnitude_db_re_1": -55.62588111708501,
+      "coefficient_power_linear": 2.737864107156435e-06,
+      "delay_s": 2.0038847026171425e-08,
+      "delay_ns": 20.038846969604492,
+      "path_length_m_from_delay": 6.007494926452637,
+      "interaction_type_ids": [],
+      "interaction_types": [],
+      "interacted_objects": [],
+      "interaction_vertices_m": [],
+      "is_los": true
+    },
+    {
+      "receiver": "RX_B",
+      "path_index": 8,
+      "coefficient_real": -0.0004025589441880584,
+      "coefficient_imag": 0.0003671021549962461,
+      "coefficient_magnitude": 0.000544809779417268,
+      "coefficient_magnitude_db_re_1": -65.27510210748409,
+      "coefficient_power_linear": 2.968176957486922e-07,
+      "delay_s": 2.525950115739306e-08,
+      "delay_ns": 25.25950050354004,
+      "path_length_m_from_delay": 7.572607517242432,
+      "interaction_type_ids": [
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_roof"
+      ],
+      "interaction_vertices_m": [
+        [
+          3.8051648139953613,
+          2.5999996662139893,
+          3.9599997997283936
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_B",
+      "path_index": 9,
+      "coefficient_real": 0.0008548707701265812,
+      "coefficient_imag": 0.00014254105917643756,
+      "coefficient_magnitude": 0.0008666729412921317,
+      "coefficient_magnitude_db_re_1": -61.24289524977648,
+      "coefficient_power_linear": 7.511219871679547e-07,
+      "delay_s": 2.6437222189201748e-08,
+      "delay_ns": 26.43722152709961,
+      "path_length_m_from_delay": 7.925679683685303,
+      "interaction_type_ids": [
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_end_x0"
+      ],
+      "interaction_vertices_m": [
+        [
+          0.03999999910593033,
+          2.5999999046325684,
+          1.7636369466781616
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_B",
+      "path_index": 10,
+      "coefficient_real": 0.0004313140525482595,
+      "coefficient_imag": 1.2987424270249903e-05,
+      "coefficient_magnitude": 0.00043150954232181035,
+      "coefficient_magnitude_db_re_1": -67.30019191870268,
+      "coefficient_power_linear": 1.8620048511477823e-07,
+      "delay_s": 5.311283146625101e-08,
+      "delay_ns": 53.112831115722656,
+      "path_length_m_from_delay": 15.922825813293457,
+      "interaction_type_ids": [
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_end_xmax"
+      ],
+      "interaction_vertices_m": [
+        [
+          11.960000038146973,
+          2.5999996662139893,
+          1.593468189239502
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_B",
+      "path_index": 11,
+      "coefficient_real": -0.00021157953597139567,
+      "coefficient_imag": 0.0011877716751769185,
+      "coefficient_magnitude": 0.0012064690018373677,
+      "coefficient_magnitude_db_re_1": -58.36967664135214,
+      "coefficient_power_linear": 1.4555674523944543e-06,
+      "delay_s": 2.1340284206416982e-08,
+      "delay_ns": 21.34028434753418,
+      "path_length_m_from_delay": 6.397655963897705,
+      "interaction_type_ids": [
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "canopy_row_02"
+      ],
+      "interaction_vertices_m": [
+        [
+          3.999953269958496,
+          3.700000286102295,
+          1.6500022411346436
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_B",
+      "path_index": 12,
+      "coefficient_real": 0.0014766209060326219,
+      "coefficient_imag": -0.00018486229237169027,
+      "coefficient_magnitude": 0.001488147629529247,
+      "coefficient_magnitude_db_re_1": -56.54707966196395,
+      "coefficient_power_linear": 2.2145833672735174e-06,
+      "delay_s": 2.02157455220231e-08,
+      "delay_ns": 20.21574592590332,
+      "path_length_m_from_delay": 6.060527801513672,
+      "interaction_type_ids": [
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "canopy_row_01"
+      ],
+      "interaction_vertices_m": [
+        [
+          3.99993634223938,
+          2.200000047683716,
+          1.6500030755996704
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_B",
+      "path_index": 13,
+      "coefficient_real": 0.00013141603267285973,
+      "coefficient_imag": 8.204863115679473e-05,
+      "coefficient_magnitude": 0.00015492627768773728,
+      "coefficient_magnitude_db_re_1": -76.19749827013715,
+      "coefficient_power_linear": 2.4002151518177882e-08,
+      "delay_s": 2.284122579965242e-08,
+      "delay_ns": 22.84122657775879,
+      "path_length_m_from_delay": 6.84762716293335,
+      "interaction_type_ids": [
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "floor"
+      ],
+      "interaction_vertices_m": [
+        [
+          4.272709369659424,
+          2.5999996662139893,
+          0.0
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_B",
+      "path_index": 14,
+      "coefficient_real": -1.724254252621904e-05,
+      "coefficient_imag": 0.00015490468649659306,
+      "coefficient_magnitude": 0.00015586137164601193,
+      "coefficient_magnitude_db_re_1": -76.14523012209675,
+      "coefficient_power_linear": 2.4292767171376252e-08,
+      "delay_s": 3.235131629253374e-08,
+      "delay_ns": 32.351314544677734,
+      "path_length_m_from_delay": 9.69867992401123,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_roof",
+        "floor"
+      ],
+      "interaction_vertices_m": [
+        [
+          2.700774669647217,
+          2.5999999046325684,
+          3.9600002765655518
+        ],
+        [
+          5.8188910484313965,
+          2.5999999046325684,
+          0.0
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_B",
+      "path_index": 15,
+      "coefficient_real": 9.654065070208162e-05,
+      "coefficient_imag": 0.0007621569093316793,
+      "coefficient_magnitude": 0.0007682468689685621,
+      "coefficient_magnitude_db_re_1": -62.28998402116997,
+      "coefficient_power_linear": 5.902032516799991e-07,
+      "delay_s": 2.2398527477207608e-08,
+      "delay_ns": 22.398527145385742,
+      "path_length_m_from_delay": 6.714909553527832,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "canopy_row_02",
+        "canopy_row_01"
+      ],
+      "interaction_vertices_m": [
+        [
+          3.1999950408935547,
+          3.700000286102295,
+          1.6899999380111694
+        ],
+        [
+          6.199995994567871,
+          2.200000047683716,
+          1.5399999618530273
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_B",
+      "path_index": 16,
+      "coefficient_real": -0.00023012689780443907,
+      "coefficient_imag": 0.0003461748128756881,
+      "coefficient_magnitude": 0.00041568664900693214,
+      "coefficient_magnitude_db_re_1": -67.62467847815716,
+      "coefficient_power_linear": 1.727953901626124e-07,
+      "delay_s": 5.317982498809215e-08,
+      "delay_ns": 53.17982482910156,
+      "path_length_m_from_delay": 15.942910194396973,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "canopy_row_01",
+        "greenhouse_shell_end_xmax"
+      ],
+      "interaction_vertices_m": [
+        [
+          8.959880828857422,
+          2.200000047683716,
+          1.650001883506775
+        ],
+        [
+          11.960000038146973,
+          2.3507516384124756,
+          1.593468189239502
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_B",
+      "path_index": 17,
+      "coefficient_real": 0.0004909509443677962,
+      "coefficient_imag": 0.000502927228808403,
+      "coefficient_magnitude": 0.0007028290170820572,
+      "coefficient_magnitude_db_re_1": -63.06300632946338,
+      "coefficient_power_linear": 4.939686272525307e-07,
+      "delay_s": 2.7436817262582736e-08,
+      "delay_ns": 27.436817169189453,
+      "path_length_m_from_delay": 8.225350379943848,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_end_x0",
+        "canopy_row_02"
+      ],
+      "interaction_vertices_m": [
+        [
+          0.03999999910593033,
+          2.866659641265869,
+          1.7636370658874512
+        ],
+        [
+          3.039938449859619,
+          3.700000047683716,
+          1.6500022411346436
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_B",
+      "path_index": 18,
+      "coefficient_real": 9.651742584537715e-05,
+      "coefficient_imag": 0.0007621552795171738,
+      "coefficient_magnitude": 0.000768242333894533,
+      "coefficient_magnitude_db_re_1": -62.290035295402745,
+      "coefficient_power_linear": 5.901962835877192e-07,
+      "delay_s": 2.239852570085077e-08,
+      "delay_ns": 22.39852523803711,
+      "path_length_m_from_delay": 6.714909076690674,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "canopy_row_01",
+        "canopy_row_02"
+      ],
+      "interaction_vertices_m": [
+        [
+          1.7999825477600098,
+          2.200000047683716,
+          1.7600008249282837
+        ],
+        [
+          4.799970626831055,
+          3.700000047683716,
+          1.6100013256072998
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_B",
+      "path_index": 19,
+      "coefficient_real": -0.00010316618136130273,
+      "coefficient_imag": 0.0003750204632524401,
+      "coefficient_magnitude": 0.000388951936406991,
+      "coefficient_magnitude_db_re_1": -68.20208124047183,
+      "coefficient_power_linear": 1.5128360883474798e-07,
+      "delay_s": 5.3617394968341614e-08,
+      "delay_ns": 53.617393493652344,
+      "path_length_m_from_delay": 16.0740909576416,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "canopy_row_02",
+        "greenhouse_shell_end_xmax"
+      ],
+      "interaction_vertices_m": [
+        [
+          8.959907531738281,
+          3.700000047683716,
+          1.650001049041748
+        ],
+        [
+          11.960000038146973,
+          3.285433292388916,
+          1.593468189239502
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_B",
+      "path_index": 20,
+      "coefficient_real": -1.284884820051957e-05,
+      "coefficient_imag": 1.6270925698336214e-05,
+      "coefficient_magnitude": 2.0732484731955618e-05,
+      "coefficient_magnitude_db_re_1": -93.66697291546883,
+      "coefficient_power_linear": 4.2983592316077283e-10,
+      "delay_s": 2.8619798086992887e-08,
+      "delay_ns": 28.61979866027832,
+      "path_length_m_from_delay": 8.579998970031738,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_end_x0",
+        "floor"
+      ],
+      "interaction_vertices_m": [
+        [
+          0.03999999910593033,
+          2.5999999046325684,
+          1.4000107049942017
+        ],
+        [
+          3.3999767303466797,
+          2.5999999046325684,
+          0.0
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_B",
+      "path_index": 21,
+      "coefficient_real": 3.214967000531033e-05,
+      "coefficient_imag": -0.0001621400733711198,
+      "coefficient_magnitude": 0.00016529671707037156,
+      "coefficient_magnitude_db_re_1": -75.6347154358161,
+      "coefficient_power_linear": 2.7323004674242465e-08,
+      "delay_s": 5.4232266677445295e-08,
+      "delay_ns": 54.23226547241211,
+      "path_length_m_from_delay": 16.258424758911133,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "floor",
+        "greenhouse_shell_end_xmax"
+      ],
+      "interaction_vertices_m": [
+        [
+          9.683588981628418,
+          2.6000001430511475,
+          0.0
+        ],
+        [
+          11.960000038146973,
+          2.6000003814697266,
+          0.47184979915618896
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_B",
+      "path_index": 22,
+      "coefficient_real": -0.00014166126493364573,
+      "coefficient_imag": 5.720145418308675e-05,
+      "coefficient_magnitude": 0.00015277408269487444,
+      "coefficient_magnitude_db_re_1": -76.31900630490371,
+      "coefficient_power_linear": 2.3339920343260334e-08,
+      "delay_s": 3.3946335520340654e-08,
+      "delay_ns": 33.94633483886719,
+      "path_length_m_from_delay": 10.176855087280273,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "floor",
+        "greenhouse_shell_roof"
+      ],
+      "interaction_vertices_m": [
+        [
+          2.313861608505249,
+          2.5999996662139893,
+          0.0
+        ],
+        [
+          5.204365253448486,
+          2.5999996662139893,
+          3.9600002765655518
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_C",
+      "path_index": 0,
+      "coefficient_real": 2.461256372043863e-05,
+      "coefficient_imag": -0.00014060076500754803,
+      "coefficient_magnitude": 0.00014273875932486031,
+      "coefficient_magnitude_db_re_1": -76.9091616483884,
+      "coefficient_power_linear": 2.03743534136004e-08,
+      "delay_s": 3.468174725185236e-08,
+      "delay_ns": 34.68174743652344,
+      "path_length_m_from_delay": 10.39732551574707,
+      "interaction_type_ids": [
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_roof"
+      ],
+      "interaction_vertices_m": [
+        [
+          5.207747936248779,
+          3.7220659255981445,
+          3.9600000381469727
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_C",
+      "path_index": 1,
+      "coefficient_real": -5.200905889068963e-06,
+      "coefficient_imag": -2.997060164489085e-06,
+      "coefficient_magnitude": 6.00264872339866e-06,
+      "coefficient_magnitude_db_re_1": -104.43314141858417,
+      "coefficient_power_linear": 3.603179169651956e-11,
+      "delay_s": 4.0353093311296107e-08,
+      "delay_ns": 40.353092193603516,
+      "path_length_m_from_delay": 12.097552299499512,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_end_x0",
+        "greenhouse_shell_roof"
+      ],
+      "interaction_vertices_m": [
+        [
+          0.03999999910593033,
+          2.8109853267669678,
+          2.2061445713043213
+        ],
+        [
+          4.18540096282959,
+          3.7220661640167236,
+          3.9600000381469727
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_C",
+      "path_index": 2,
+      "coefficient_real": 1.1759741937567014e-05,
+      "coefficient_imag": 1.4645325791207142e-05,
+      "coefficient_magnitude": 1.8782361352310562e-05,
+      "coefficient_magnitude_db_re_1": -94.52499616705273,
+      "coefficient_power_linear": 3.5277709796876945e-10,
+      "delay_s": 4.204691705922414e-08,
+      "delay_ns": 42.04691696166992,
+      "path_length_m_from_delay": 12.605348587036133,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_side_y0",
+        "greenhouse_shell_roof"
+      ],
+      "interaction_vertices_m": [
+        [
+          4.063823223114014,
+          0.03999999910593033,
+          3.3727521896362305
+        ],
+        [
+          5.207747459411621,
+          0.9958071112632751,
+          3.9600000381469727
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_C",
+      "path_index": 3,
+      "coefficient_real": 1.6932459402596578e-05,
+      "coefficient_imag": 3.571285924408585e-05,
+      "coefficient_magnitude": 3.9523619480109226e-05,
+      "coefficient_magnitude_db_re_1": -88.06286581192086,
+      "coefficient_power_linear": 1.5621164968084695e-09,
+      "delay_s": 4.369139361415364e-08,
+      "delay_ns": 43.6913948059082,
+      "path_length_m_from_delay": 13.098349571228027,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_roof",
+        "greenhouse_shell_side_ymax"
+      ],
+      "interaction_vertices_m": [
+        [
+          5.207769393920898,
+          6.489832401275635,
+          3.9599997997283936
+        ],
+        [
+          6.798043727874756,
+          7.960000038146973,
+          3.1436707973480225
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_C",
+      "path_index": 4,
+      "coefficient_real": -5.8558689488563687e-05,
+      "coefficient_imag": 4.7452431317651644e-08,
+      "coefficient_magnitude": 5.855870871485519e-05,
+      "coefficient_magnitude_db_re_1": -84.648170170481,
+      "coefficient_power_linear": 3.4291223663512574e-09,
+      "delay_s": 4.646379281325608e-08,
+      "delay_ns": 46.46379470825195,
+      "path_length_m_from_delay": 13.92949390411377,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "greenhouse_shell_roof",
+        "greenhouse_shell_end_xmax"
+      ],
+      "interaction_vertices_m": [
+        [
+          7.040435791015625,
+          3.7220680713653564,
+          3.9600000381469727
+        ],
+        [
+          11.960000038146973,
+          4.635909557342529,
+          2.2008748054504395
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_C",
+      "path_index": 5,
+      "coefficient_real": -8.667931251693517e-05,
+      "coefficient_imag": 1.8579796233098023e-05,
+      "coefficient_magnitude": 8.864824897578043e-05,
+      "coefficient_magnitude_db_re_1": -81.04659676757073,
+      "coefficient_power_linear": 7.858512046471956e-09,
+      "delay_s": 4.143832654790458e-08,
+      "delay_ns": 41.43832778930664,
+      "path_length_m_from_delay": 12.422897338867188,
+      "interaction_type_ids": [
+        1,
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection",
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "floor",
+        "greenhouse_shell_roof"
+      ],
+      "interaction_vertices_m": [
+        [
+          2.970796823501587,
+          3.1255459785461426,
+          0.0
+        ],
+        [
+          7.306549072265625,
+          4.2817463874816895,
+          3.9600000381469727
+        ]
+      ],
+      "is_los": false
+    }
+  ],
+  "api_components": [
+    "valid",
+    "cir() coefficients/delays",
+    "interactions",
+    "objects",
+    "vertices"
+  ],
+  "path_length_note": "Estimated as c0 multiplied by the absolute path delay returned by Paths.cir()."
+}

@@ -1,0 +1,121 @@
+{
+  "description": "Valid Sionna paths and baseband-equivalent CIR coefficients; no RSS conversion applied.",
+  "cir_shape": [
+    3,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "delay_shape": [
+    3,
+    1,
+    1
+  ],
+  "valid_shape": [
+    3,
+    1,
+    1
+  ],
+  "receivers": [
+    {
+      "receiver": "rx0",
+      "valid_path_count": 1
+    },
+    {
+      "receiver": "rx1",
+      "valid_path_count": 1
+    },
+    {
+      "receiver": "rx2",
+      "valid_path_count": 1
+    }
+  ],
+  "paths": [
+    {
+      "receiver": "rx0",
+      "path_index": 0,
+      "delay_s": 1.4088888278251943e-08,
+      "delay_ns": 14.088888168334961,
+      "path_length_m_from_delay": 4.223742485046387,
+      "a_real": 0.0003516080032568425,
+      "a_imag": 0.0006521485047414899,
+      "magnitude": 0.0007408953388221562,
+      "magnitude_db": -62.60486274951806,
+      "interaction_type_ids": [
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "object_id_1"
+      ],
+      "interaction_vertices_m": [
+        [
+          -0.1000070571899414,
+          -0.499997615814209,
+          0.0
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "rx1",
+      "path_index": 0,
+      "delay_s": 1.3688325140037705e-08,
+      "delay_ns": 13.688324928283691,
+      "path_length_m_from_delay": 4.10365629196167,
+      "a_real": 0.0005391270969994366,
+      "a_imag": 0.0005862893303856254,
+      "magnitude": 0.0007964880205690861,
+      "magnitude_db": -61.97641503479288,
+      "interaction_type_ids": [
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "object_id_1"
+      ],
+      "interaction_vertices_m": [
+        [
+          -0.10000693798065186,
+          0.0,
+          0.0
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "rx2",
+      "path_index": 0,
+      "delay_s": 1.4088888278251943e-08,
+      "delay_ns": 14.088888168334961,
+      "path_length_m_from_delay": 4.223742485046387,
+      "a_real": 0.0003516080032568425,
+      "a_imag": 0.0006521485047414899,
+      "magnitude": 0.0007408953388221562,
+      "magnitude_db": -62.60486274951806,
+      "interaction_type_ids": [
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "object_id_1"
+      ],
+      "interaction_vertices_m": [
+        [
+          -0.1000070571899414,
+          0.4999973773956299,
+          0.0
+        ]
+      ],
+      "is_los": false
+    }
+  ]
+}

@@ -1,0 +1,3244 @@
+{
+  "method": "independent segment/AABB test from TX to each exported radio-map cell center",
+  "grid_shape_yx": [
+    13,
+    18
+  ],
+  "groups": {
+    "direct_segment_intersects_canopy": {
+      "cell_count": 180,
+      "mean_absolute_transparent_delta_db": 8.45153660760142,
+      "p95_absolute_transparent_delta_db": 25.36573562185107,
+      "max_absolute_transparent_delta_db": 101.23982423375779
+    },
+    "direct_segment_misses_canopy": {
+      "cell_count": 54,
+      "mean_absolute_transparent_delta_db": 2.886912018666524,
+      "p95_absolute_transparent_delta_db": 16.63791125421976,
+      "max_absolute_transparent_delta_db": 20.120179282403875
+    }
+  },
+  "cells": [
+    {
+      "y_index": 0,
+      "x_index": 0,
+      "position_m": [
+        2.25,
+        1.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 0.4617984544149103,
+      "absolute_transparent_delta_db": 0.08055516106239224
+    },
+    {
+      "y_index": 0,
+      "x_index": 1,
+      "position_m": [
+        2.75,
+        1.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 0.8109212487558046,
+      "absolute_transparent_delta_db": 0.6155216895280944
+    },
+    {
+      "y_index": 0,
+      "x_index": 2,
+      "position_m": [
+        3.25,
+        1.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 1.0414270557749112,
+      "absolute_transparent_delta_db": 1.7988492354286478
+    },
+    {
+      "y_index": 0,
+      "x_index": 3,
+      "position_m": [
+        3.75,
+        1.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 1.19838758859561,
+      "absolute_transparent_delta_db": 2.3642844801824907
+    },
+    {
+      "y_index": 0,
+      "x_index": 4,
+      "position_m": [
+        4.25,
+        1.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 1.3630876026506884,
+      "absolute_transparent_delta_db": 2.0972978041239116
+    },
+    {
+      "y_index": 0,
+      "x_index": 5,
+      "position_m": [
+        4.75,
+        1.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 1.5330346742653933,
+      "absolute_transparent_delta_db": 1.2519207690705727
+    },
+    {
+      "y_index": 0,
+      "x_index": 6,
+      "position_m": [
+        5.25,
+        1.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 1.7066620381610416,
+      "absolute_transparent_delta_db": 4.412382081227911
+    },
+    {
+      "y_index": 0,
+      "x_index": 7,
+      "position_m": [
+        5.75,
+        1.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 1.8829518879939553,
+      "absolute_transparent_delta_db": 0.23940561824763762
+    },
+    {
+      "y_index": 0,
+      "x_index": 8,
+      "position_m": [
+        6.25,
+        1.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 2.0612211944621572,
+      "absolute_transparent_delta_db": 3.215054112358466
+    },
+    {
+      "y_index": 0,
+      "x_index": 9,
+      "position_m": [
+        6.75,
+        1.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 2.2409976154605795,
+      "absolute_transparent_delta_db": 0.14073566879538646
+    },
+    {
+      "y_index": 0,
+      "x_index": 10,
+      "position_m": [
+        7.25,
+        1.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 2.4219455634881646,
+      "absolute_transparent_delta_db": 4.449623190962768
+    },
+    {
+      "y_index": 0,
+      "x_index": 11,
+      "position_m": [
+        7.75,
+        1.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 2.6038208103669502,
+      "absolute_transparent_delta_db": 3.4563042357933824
+    },
+    {
+      "y_index": 0,
+      "x_index": 12,
+      "position_m": [
+        8.25,
+        1.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 2.786441783439949,
+      "absolute_transparent_delta_db": 0.23397566986451324
+    },
+    {
+      "y_index": 0,
+      "x_index": 13,
+      "position_m": [
+        8.75,
+        1.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 2.9696709097979195,
+      "absolute_transparent_delta_db": 4.651592841900062
+    },
+    {
+      "y_index": 0,
+      "x_index": 14,
+      "position_m": [
+        9.25,
+        1.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 3.15340218058211,
+      "absolute_transparent_delta_db": 12.282652282643184
+    },
+    {
+      "y_index": 0,
+      "x_index": 15,
+      "position_m": [
+        9.75,
+        1.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 3.3375526681237564,
+      "absolute_transparent_delta_db": 8.26635112350833
+    },
+    {
+      "y_index": 0,
+      "x_index": 16,
+      "position_m": [
+        10.25,
+        1.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 3.5220566168788374,
+      "absolute_transparent_delta_db": 6.021484050548324
+    },
+    {
+      "y_index": 0,
+      "x_index": 17,
+      "position_m": [
+        10.75,
+        1.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 3.7068612480776784,
+      "absolute_transparent_delta_db": 0.11476602017646087
+    },
+    {
+      "y_index": 1,
+      "x_index": 0,
+      "position_m": [
+        2.25,
+        1.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 0.8613270560714211,
+      "absolute_transparent_delta_db": 0.2751301771331214
+    },
+    {
+      "y_index": 1,
+      "x_index": 1,
+      "position_m": [
+        2.75,
+        1.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 1.1392690131384777,
+      "absolute_transparent_delta_db": 0.114593473074585
+    },
+    {
+      "y_index": 1,
+      "x_index": 2,
+      "position_m": [
+        3.25,
+        1.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 1.3758543551595752,
+      "absolute_transparent_delta_db": 1.8021836697788913
+    },
+    {
+      "y_index": 1,
+      "x_index": 3,
+      "position_m": [
+        3.75,
+        1.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 1.6238155250840944,
+      "absolute_transparent_delta_db": 2.2116795536304323
+    },
+    {
+      "y_index": 1,
+      "x_index": 4,
+      "position_m": [
+        4.25,
+        1.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 1.8786534653775846,
+      "absolute_transparent_delta_db": 1.6622491173977352
+    },
+    {
+      "y_index": 1,
+      "x_index": 5,
+      "position_m": [
+        4.75,
+        1.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 2.1379104651562924,
+      "absolute_transparent_delta_db": 2.4197858042391616
+    },
+    {
+      "y_index": 1,
+      "x_index": 6,
+      "position_m": [
+        5.25,
+        1.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 2.4001549536754694,
+      "absolute_transparent_delta_db": 2.9188549632745193
+    },
+    {
+      "y_index": 1,
+      "x_index": 7,
+      "position_m": [
+        5.75,
+        1.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 2.664504977825995,
+      "absolute_transparent_delta_db": 2.94329108723597
+    },
+    {
+      "y_index": 1,
+      "x_index": 8,
+      "position_m": [
+        6.25,
+        1.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 2.9303907730274865,
+      "absolute_transparent_delta_db": 0.2988652510975456
+    },
+    {
+      "y_index": 1,
+      "x_index": 9,
+      "position_m": [
+        6.75,
+        1.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 3.1974292359657106,
+      "absolute_transparent_delta_db": 0.6130661822078736
+    },
+    {
+      "y_index": 1,
+      "x_index": 10,
+      "position_m": [
+        7.25,
+        1.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 3.4653539048631696,
+      "absolute_transparent_delta_db": 0.08849183181481379
+    },
+    {
+      "y_index": 1,
+      "x_index": 11,
+      "position_m": [
+        7.75,
+        1.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 3.733974020192304,
+      "absolute_transparent_delta_db": 0.5219268314014514
+    },
+    {
+      "y_index": 1,
+      "x_index": 12,
+      "position_m": [
+        8.25,
+        1.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 4.003149586459424,
+      "absolute_transparent_delta_db": 0.04506827209778663
+    },
+    {
+      "y_index": 1,
+      "x_index": 13,
+      "position_m": [
+        8.75,
+        1.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 4.272775628353066,
+      "absolute_transparent_delta_db": 8.080427033721804
+    },
+    {
+      "y_index": 1,
+      "x_index": 14,
+      "position_m": [
+        9.25,
+        1.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 4.542771935669249,
+      "absolute_transparent_delta_db": 12.890416302295534
+    },
+    {
+      "y_index": 1,
+      "x_index": 15,
+      "position_m": [
+        9.75,
+        1.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 4.813076197125789,
+      "absolute_transparent_delta_db": 0.12002012670006224
+    },
+    {
+      "y_index": 1,
+      "x_index": 16,
+      "position_m": [
+        10.25,
+        1.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 5.083639289893813,
+      "absolute_transparent_delta_db": 4.623519199129312
+    },
+    {
+      "y_index": 1,
+      "x_index": 17,
+      "position_m": [
+        10.75,
+        1.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 5.354421977276708,
+      "absolute_transparent_delta_db": 0.2915843922408996
+    },
+    {
+      "y_index": 2,
+      "x_index": 0,
+      "position_m": [
+        2.25,
+        2.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 0.47287536530370394,
+      "absolute_transparent_delta_db": 0.5376059061658296
+    },
+    {
+      "y_index": 2,
+      "x_index": 1,
+      "position_m": [
+        2.75,
+        2.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 0.6247221604663775,
+      "absolute_transparent_delta_db": 0.5453569278910706
+    },
+    {
+      "y_index": 2,
+      "x_index": 2,
+      "position_m": [
+        3.25,
+        2.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 0.782623792124927,
+      "absolute_transparent_delta_db": 1.2769167181671364
+    },
+    {
+      "y_index": 2,
+      "x_index": 3,
+      "position_m": [
+        3.75,
+        2.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 0.9435453236478782,
+      "absolute_transparent_delta_db": 0.23673328206489685
+    },
+    {
+      "y_index": 2,
+      "x_index": 4,
+      "position_m": [
+        4.25,
+        2.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 1.1061695670696754,
+      "absolute_transparent_delta_db": 1.00825035293731
+    },
+    {
+      "y_index": 2,
+      "x_index": 5,
+      "position_m": [
+        4.75,
+        2.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 1.2698425099200303,
+      "absolute_transparent_delta_db": 3.1043326123525716
+    },
+    {
+      "y_index": 2,
+      "x_index": 6,
+      "position_m": [
+        5.25,
+        2.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 1.4342051612110618,
+      "absolute_transparent_delta_db": 3.133603530455339
+    },
+    {
+      "y_index": 2,
+      "x_index": 7,
+      "position_m": [
+        5.75,
+        2.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 1.5990448537938042,
+      "absolute_transparent_delta_db": 0.3856134037516554
+    },
+    {
+      "y_index": 2,
+      "x_index": 8,
+      "position_m": [
+        6.25,
+        2.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 1.7642278764377366,
+      "absolute_transparent_delta_db": 0.3308626019820693
+    },
+    {
+      "y_index": 2,
+      "x_index": 9,
+      "position_m": [
+        6.75,
+        2.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 1.9296660620716521,
+      "absolute_transparent_delta_db": 2.996905200872071
+    },
+    {
+      "y_index": 2,
+      "x_index": 10,
+      "position_m": [
+        7.25,
+        2.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 2.0952989709771215,
+      "absolute_transparent_delta_db": 5.21148178238537
+    },
+    {
+      "y_index": 2,
+      "x_index": 11,
+      "position_m": [
+        7.75,
+        2.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 2.2610838109190046,
+      "absolute_transparent_delta_db": 3.046476833039428
+    },
+    {
+      "y_index": 2,
+      "x_index": 12,
+      "position_m": [
+        8.25,
+        2.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 2.426989447397287,
+      "absolute_transparent_delta_db": 0.07263045673293078
+    },
+    {
+      "y_index": 2,
+      "x_index": 13,
+      "position_m": [
+        8.75,
+        2.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 2.5929926939949373,
+      "absolute_transparent_delta_db": 4.5258148545196235
+    },
+    {
+      "y_index": 2,
+      "x_index": 14,
+      "position_m": [
+        9.25,
+        2.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 2.7590759322642815,
+      "absolute_transparent_delta_db": 0.19745593161781727
+    },
+    {
+      "y_index": 2,
+      "x_index": 15,
+      "position_m": [
+        9.75,
+        2.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 2.92522553736365,
+      "absolute_transparent_delta_db": 4.734801621897233
+    },
+    {
+      "y_index": 2,
+      "x_index": 16,
+      "position_m": [
+        10.25,
+        2.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 3.091430808613458,
+      "absolute_transparent_delta_db": 6.08009213065651
+    },
+    {
+      "y_index": 2,
+      "x_index": 17,
+      "position_m": [
+        10.75,
+        2.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_01"
+      ],
+      "total_inside_distance_m": 3.0070922084791265,
+      "absolute_transparent_delta_db": 17.37392452245676
+    },
+    {
+      "y_index": 3,
+      "x_index": 0,
+      "position_m": [
+        2.25,
+        2.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.3314366055582951
+    },
+    {
+      "y_index": 3,
+      "x_index": 1,
+      "position_m": [
+        2.75,
+        2.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.5467946481238499
+    },
+    {
+      "y_index": 3,
+      "x_index": 2,
+      "position_m": [
+        3.25,
+        2.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.6889198186672374
+    },
+    {
+      "y_index": 3,
+      "x_index": 3,
+      "position_m": [
+        3.75,
+        2.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 1.691389326293816
+    },
+    {
+      "y_index": 3,
+      "x_index": 4,
+      "position_m": [
+        4.25,
+        2.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.03815915986918128
+    },
+    {
+      "y_index": 3,
+      "x_index": 5,
+      "position_m": [
+        4.75,
+        2.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.044607815186843425
+    },
+    {
+      "y_index": 3,
+      "x_index": 6,
+      "position_m": [
+        5.25,
+        2.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 2.614582175485978
+    },
+    {
+      "y_index": 3,
+      "x_index": 7,
+      "position_m": [
+        5.75,
+        2.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 3.7542905384533682
+    },
+    {
+      "y_index": 3,
+      "x_index": 8,
+      "position_m": [
+        6.25,
+        2.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 6.647347479073254
+    },
+    {
+      "y_index": 3,
+      "x_index": 9,
+      "position_m": [
+        6.75,
+        2.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.03979012717962149
+    },
+    {
+      "y_index": 3,
+      "x_index": 10,
+      "position_m": [
+        7.25,
+        2.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 7.170360086270513
+    },
+    {
+      "y_index": 3,
+      "x_index": 11,
+      "position_m": [
+        7.75,
+        2.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.04793379466760683
+    },
+    {
+      "y_index": 3,
+      "x_index": 12,
+      "position_m": [
+        8.25,
+        2.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 7.695301870027329
+    },
+    {
+      "y_index": 3,
+      "x_index": 13,
+      "position_m": [
+        8.75,
+        2.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 17.997773055798184
+    },
+    {
+      "y_index": 3,
+      "x_index": 14,
+      "position_m": [
+        9.25,
+        2.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 16.421670693901646
+    },
+    {
+      "y_index": 3,
+      "x_index": 15,
+      "position_m": [
+        9.75,
+        2.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.18304428384901428
+    },
+    {
+      "y_index": 3,
+      "x_index": 16,
+      "position_m": [
+        10.25,
+        2.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 20.120179282403875
+    },
+    {
+      "y_index": 3,
+      "x_index": 17,
+      "position_m": [
+        10.75,
+        2.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 3.714802353934914
+    },
+    {
+      "y_index": 4,
+      "x_index": 0,
+      "position_m": [
+        2.25,
+        3.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.002122532965522339
+    },
+    {
+      "y_index": 4,
+      "x_index": 1,
+      "position_m": [
+        2.75,
+        3.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.25751649685049216
+    },
+    {
+      "y_index": 4,
+      "x_index": 2,
+      "position_m": [
+        3.25,
+        3.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.6946727192135
+    },
+    {
+      "y_index": 4,
+      "x_index": 3,
+      "position_m": [
+        3.75,
+        3.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.012129171563366015
+    },
+    {
+      "y_index": 4,
+      "x_index": 4,
+      "position_m": [
+        4.25,
+        3.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.010895194831626043
+    },
+    {
+      "y_index": 4,
+      "x_index": 5,
+      "position_m": [
+        4.75,
+        3.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 1.2399233575507935
+    },
+    {
+      "y_index": 4,
+      "x_index": 6,
+      "position_m": [
+        5.25,
+        3.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.01696176885439371
+    },
+    {
+      "y_index": 4,
+      "x_index": 7,
+      "position_m": [
+        5.75,
+        3.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.05206262223225622
+    },
+    {
+      "y_index": 4,
+      "x_index": 8,
+      "position_m": [
+        6.25,
+        3.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 2.729976584278063
+    },
+    {
+      "y_index": 4,
+      "x_index": 9,
+      "position_m": [
+        6.75,
+        3.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 6.898909377347813
+    },
+    {
+      "y_index": 4,
+      "x_index": 10,
+      "position_m": [
+        7.25,
+        3.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.09408550232515012
+    },
+    {
+      "y_index": 4,
+      "x_index": 11,
+      "position_m": [
+        7.75,
+        3.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.11192389292904892
+    },
+    {
+      "y_index": 4,
+      "x_index": 12,
+      "position_m": [
+        8.25,
+        3.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.11806285106418812
+    },
+    {
+      "y_index": 4,
+      "x_index": 13,
+      "position_m": [
+        8.75,
+        3.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 3.0391425138983905
+    },
+    {
+      "y_index": 4,
+      "x_index": 14,
+      "position_m": [
+        9.25,
+        3.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 17.039500866239116
+    },
+    {
+      "y_index": 4,
+      "x_index": 15,
+      "position_m": [
+        9.75,
+        3.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.11311217842843746
+    },
+    {
+      "y_index": 4,
+      "x_index": 16,
+      "position_m": [
+        10.25,
+        3.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.023525972111343663
+    },
+    {
+      "y_index": 4,
+      "x_index": 17,
+      "position_m": [
+        10.75,
+        3.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.13569982982680528
+    },
+    {
+      "y_index": 5,
+      "x_index": 0,
+      "position_m": [
+        2.25,
+        3.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.1843561529008113
+    },
+    {
+      "y_index": 5,
+      "x_index": 1,
+      "position_m": [
+        2.75,
+        3.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.3418876682041798
+    },
+    {
+      "y_index": 5,
+      "x_index": 2,
+      "position_m": [
+        3.25,
+        3.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.45139596926337333
+    },
+    {
+      "y_index": 5,
+      "x_index": 3,
+      "position_m": [
+        3.75,
+        3.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.02251524480078615
+    },
+    {
+      "y_index": 5,
+      "x_index": 4,
+      "position_m": [
+        4.25,
+        3.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 1.1245494699502459
+    },
+    {
+      "y_index": 5,
+      "x_index": 5,
+      "position_m": [
+        4.75,
+        3.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.009697574412591337
+    },
+    {
+      "y_index": 5,
+      "x_index": 6,
+      "position_m": [
+        5.25,
+        3.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 3.6296080312774635
+    },
+    {
+      "y_index": 5,
+      "x_index": 7,
+      "position_m": [
+        5.75,
+        3.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 2.7811341476384257
+    },
+    {
+      "y_index": 5,
+      "x_index": 8,
+      "position_m": [
+        6.25,
+        3.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.256636782639454
+    },
+    {
+      "y_index": 5,
+      "x_index": 9,
+      "position_m": [
+        6.75,
+        3.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 7.7514723186994345
+    },
+    {
+      "y_index": 5,
+      "x_index": 10,
+      "position_m": [
+        7.25,
+        3.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.01405322030522882
+    },
+    {
+      "y_index": 5,
+      "x_index": 11,
+      "position_m": [
+        7.75,
+        3.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 3.4223356237816915e-07
+    },
+    {
+      "y_index": 5,
+      "x_index": 12,
+      "position_m": [
+        8.25,
+        3.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 1.4674127851760375
+    },
+    {
+      "y_index": 5,
+      "x_index": 13,
+      "position_m": [
+        8.75,
+        3.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.13195408839359857
+    },
+    {
+      "y_index": 5,
+      "x_index": 14,
+      "position_m": [
+        9.25,
+        3.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 15.25870111105585
+    },
+    {
+      "y_index": 5,
+      "x_index": 15,
+      "position_m": [
+        9.75,
+        3.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.0
+    },
+    {
+      "y_index": 5,
+      "x_index": 16,
+      "position_m": [
+        10.25,
+        3.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 2.7371206101634016e-07
+    },
+    {
+      "y_index": 5,
+      "x_index": 17,
+      "position_m": [
+        10.75,
+        3.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [],
+      "total_inside_distance_m": 0,
+      "absolute_transparent_delta_db": 0.12926728007436594
+    },
+    {
+      "y_index": 6,
+      "x_index": 0,
+      "position_m": [
+        2.25,
+        4.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 0.4072838101874615,
+      "absolute_transparent_delta_db": 0.8071930577239428
+    },
+    {
+      "y_index": 6,
+      "x_index": 1,
+      "position_m": [
+        2.75,
+        4.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 0.48451795948264326,
+      "absolute_transparent_delta_db": 1.4519012539297051
+    },
+    {
+      "y_index": 6,
+      "x_index": 2,
+      "position_m": [
+        3.25,
+        4.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 0.571484372275482,
+      "absolute_transparent_delta_db": 0.6561125153919534
+    },
+    {
+      "y_index": 6,
+      "x_index": 3,
+      "position_m": [
+        3.75,
+        4.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 0.6643721141968923,
+      "absolute_transparent_delta_db": 0.10890298047372937
+    },
+    {
+      "y_index": 6,
+      "x_index": 4,
+      "position_m": [
+        4.25,
+        4.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 0.7610160367319895,
+      "absolute_transparent_delta_db": 1.0090228710196811
+    },
+    {
+      "y_index": 6,
+      "x_index": 5,
+      "position_m": [
+        4.75,
+        4.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 0.8601509715611269,
+      "absolute_transparent_delta_db": 0.19238025714734164
+    },
+    {
+      "y_index": 6,
+      "x_index": 6,
+      "position_m": [
+        5.25,
+        4.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 0.961006328421049,
+      "absolute_transparent_delta_db": 2.680300710806364
+    },
+    {
+      "y_index": 6,
+      "x_index": 7,
+      "position_m": [
+        5.75,
+        4.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.0630925718518258,
+      "absolute_transparent_delta_db": 0.24959331094476767
+    },
+    {
+      "y_index": 6,
+      "x_index": 8,
+      "position_m": [
+        6.25,
+        4.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.1660864689469745,
+      "absolute_transparent_delta_db": 0.17369330838157282
+    },
+    {
+      "y_index": 6,
+      "x_index": 9,
+      "position_m": [
+        6.75,
+        4.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.26976717293738,
+      "absolute_transparent_delta_db": 2.6499123921437757
+    },
+    {
+      "y_index": 6,
+      "x_index": 10,
+      "position_m": [
+        7.25,
+        4.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.37397921292537,
+      "absolute_transparent_delta_db": 2.791936571047785
+    },
+    {
+      "y_index": 6,
+      "x_index": 11,
+      "position_m": [
+        7.75,
+        4.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.4786102479376102,
+      "absolute_transparent_delta_db": 0.048462906067776146
+    },
+    {
+      "y_index": 6,
+      "x_index": 12,
+      "position_m": [
+        8.25,
+        4.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.58357722790355,
+      "absolute_transparent_delta_db": 0.12348569602546888
+    },
+    {
+      "y_index": 6,
+      "x_index": 13,
+      "position_m": [
+        8.75,
+        4.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.6888175128878584,
+      "absolute_transparent_delta_db": 5.763453637749123
+    },
+    {
+      "y_index": 6,
+      "x_index": 14,
+      "position_m": [
+        9.25,
+        4.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.7942830129642988,
+      "absolute_transparent_delta_db": 0.3700246656400452
+    },
+    {
+      "y_index": 6,
+      "x_index": 15,
+      "position_m": [
+        9.75,
+        4.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.8999362234194126,
+      "absolute_transparent_delta_db": 0.035963227100062056
+    },
+    {
+      "y_index": 6,
+      "x_index": 16,
+      "position_m": [
+        10.25,
+        4.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 2.005747481410277,
+      "absolute_transparent_delta_db": 27.251652404824625
+    },
+    {
+      "y_index": 6,
+      "x_index": 17,
+      "position_m": [
+        10.75,
+        4.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.8590118119073107,
+      "absolute_transparent_delta_db": 99.88736330742697
+    },
+    {
+      "y_index": 7,
+      "x_index": 0,
+      "position_m": [
+        2.25,
+        4.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 0.7244254577023868,
+      "absolute_transparent_delta_db": 0.937853906624305
+    },
+    {
+      "y_index": 7,
+      "x_index": 1,
+      "position_m": [
+        2.75,
+        4.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 0.8212044394071054,
+      "absolute_transparent_delta_db": 2.88025980457126
+    },
+    {
+      "y_index": 7,
+      "x_index": 2,
+      "position_m": [
+        3.25,
+        4.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 0.9347848494073059,
+      "absolute_transparent_delta_db": 1.5768833365342232
+    },
+    {
+      "y_index": 7,
+      "x_index": 3,
+      "position_m": [
+        3.75,
+        4.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.0597783701820944,
+      "absolute_transparent_delta_db": 2.330720522529205
+    },
+    {
+      "y_index": 7,
+      "x_index": 4,
+      "position_m": [
+        4.25,
+        4.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.1926018484704222,
+      "absolute_transparent_delta_db": 3.4958572648313435
+    },
+    {
+      "y_index": 7,
+      "x_index": 5,
+      "position_m": [
+        4.75,
+        4.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.330913085024411,
+      "absolute_transparent_delta_db": 5.446874405622317
+    },
+    {
+      "y_index": 7,
+      "x_index": 6,
+      "position_m": [
+        5.25,
+        4.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.473167202542942,
+      "absolute_transparent_delta_db": 0.22939828559871955
+    },
+    {
+      "y_index": 7,
+      "x_index": 7,
+      "position_m": [
+        5.75,
+        4.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.6183247724891552,
+      "absolute_transparent_delta_db": 3.1755267869030774
+    },
+    {
+      "y_index": 7,
+      "x_index": 8,
+      "position_m": [
+        6.25,
+        4.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.7656698524075298,
+      "absolute_transparent_delta_db": 0.664076675429591
+    },
+    {
+      "y_index": 7,
+      "x_index": 9,
+      "position_m": [
+        6.75,
+        4.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.9146974909876642,
+      "absolute_transparent_delta_db": 4.642849652184559
+    },
+    {
+      "y_index": 7,
+      "x_index": 10,
+      "position_m": [
+        7.25,
+        4.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 2.06504344558001,
+      "absolute_transparent_delta_db": 3.5228661860838315
+    },
+    {
+      "y_index": 7,
+      "x_index": 11,
+      "position_m": [
+        7.75,
+        4.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 2.216439459610016,
+      "absolute_transparent_delta_db": 4.526771565612968
+    },
+    {
+      "y_index": 7,
+      "x_index": 12,
+      "position_m": [
+        8.25,
+        4.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 2.368684195908056,
+      "absolute_transparent_delta_db": 3.0251606974687775
+    },
+    {
+      "y_index": 7,
+      "x_index": 13,
+      "position_m": [
+        8.75,
+        4.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 2.521623932631058,
+      "absolute_transparent_delta_db": 4.728184449671183
+    },
+    {
+      "y_index": 7,
+      "x_index": 14,
+      "position_m": [
+        9.25,
+        4.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 2.675139471342705,
+      "absolute_transparent_delta_db": 16.805615556082316
+    },
+    {
+      "y_index": 7,
+      "x_index": 15,
+      "position_m": [
+        9.75,
+        4.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 2.8291370805421585,
+      "absolute_transparent_delta_db": 0.15577600493760713
+    },
+    {
+      "y_index": 7,
+      "x_index": 16,
+      "position_m": [
+        10.25,
+        4.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 2.983542113948849,
+      "absolute_transparent_delta_db": 27.28659604831951
+    },
+    {
+      "y_index": 7,
+      "x_index": 17,
+      "position_m": [
+        10.75,
+        4.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 3.1382944359570524,
+      "absolute_transparent_delta_db": 0.15672671837094043
+    },
+    {
+      "y_index": 8,
+      "x_index": 0,
+      "position_m": [
+        2.25,
+        5.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 0.6806476695030987,
+      "absolute_transparent_delta_db": 0.5106397674211962
+    },
+    {
+      "y_index": 8,
+      "x_index": 1,
+      "position_m": [
+        2.75,
+        5.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 0.7463452619264086,
+      "absolute_transparent_delta_db": 2.6950348594004083
+    },
+    {
+      "y_index": 8,
+      "x_index": 2,
+      "position_m": [
+        3.25,
+        5.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 0.8258518329579462,
+      "absolute_transparent_delta_db": 3.0753643168150617
+    },
+    {
+      "y_index": 8,
+      "x_index": 3,
+      "position_m": [
+        3.75,
+        5.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 0.9155770038614989,
+      "absolute_transparent_delta_db": 3.390499415445248
+    },
+    {
+      "y_index": 8,
+      "x_index": 4,
+      "position_m": [
+        4.25,
+        5.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.012808594947732,
+      "absolute_transparent_delta_db": 3.740835396990896
+    },
+    {
+      "y_index": 8,
+      "x_index": 5,
+      "position_m": [
+        4.75,
+        5.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.1155856085482632,
+      "absolute_transparent_delta_db": 2.2141726008776956
+    },
+    {
+      "y_index": 8,
+      "x_index": 6,
+      "position_m": [
+        5.25,
+        5.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.2225102249061146,
+      "absolute_transparent_delta_db": 1.6402654053924266
+    },
+    {
+      "y_index": 8,
+      "x_index": 7,
+      "position_m": [
+        5.75,
+        5.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.3325844250928336,
+      "absolute_transparent_delta_db": 0.399946483553677
+    },
+    {
+      "y_index": 8,
+      "x_index": 8,
+      "position_m": [
+        6.25,
+        5.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.4450886650998265,
+      "absolute_transparent_delta_db": 0.1916198933870561
+    },
+    {
+      "y_index": 8,
+      "x_index": 9,
+      "position_m": [
+        6.75,
+        5.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.5594971144570926,
+      "absolute_transparent_delta_db": 0.05535024340561279
+    },
+    {
+      "y_index": 8,
+      "x_index": 10,
+      "position_m": [
+        7.25,
+        5.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.6754197235319865,
+      "absolute_transparent_delta_db": 8.078191638852537
+    },
+    {
+      "y_index": 8,
+      "x_index": 11,
+      "position_m": [
+        7.75,
+        5.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.7925627604075671,
+      "absolute_transparent_delta_db": 2.31495820741587
+    },
+    {
+      "y_index": 8,
+      "x_index": 12,
+      "position_m": [
+        8.25,
+        5.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.9107017689843688,
+      "absolute_transparent_delta_db": 9.338849666460277
+    },
+    {
+      "y_index": 8,
+      "x_index": 13,
+      "position_m": [
+        8.75,
+        5.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 2.0296628414591416,
+      "absolute_transparent_delta_db": 2.529288507350671
+    },
+    {
+      "y_index": 8,
+      "x_index": 14,
+      "position_m": [
+        9.25,
+        5.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 2.149309482136064,
+      "absolute_transparent_delta_db": 0.25344539472320093
+    },
+    {
+      "y_index": 8,
+      "x_index": 15,
+      "position_m": [
+        9.75,
+        5.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 2.2695332669956607,
+      "absolute_transparent_delta_db": 6.417079059663479
+    },
+    {
+      "y_index": 8,
+      "x_index": 16,
+      "position_m": [
+        10.25,
+        5.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 2.390247110656134,
+      "absolute_transparent_delta_db": 6.097154440673265
+    },
+    {
+      "y_index": 8,
+      "x_index": 17,
+      "position_m": [
+        10.75,
+        5.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 2.511380347537982,
+      "absolute_transparent_delta_db": 21.732958218413387
+    },
+    {
+      "y_index": 9,
+      "x_index": 0,
+      "position_m": [
+        2.25,
+        5.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 0.5906751613657533,
+      "absolute_transparent_delta_db": 0.13642151245356615
+    },
+    {
+      "y_index": 9,
+      "x_index": 1,
+      "position_m": [
+        2.75,
+        5.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 0.7035243366587296,
+      "absolute_transparent_delta_db": 1.3622765913450294
+    },
+    {
+      "y_index": 9,
+      "x_index": 2,
+      "position_m": [
+        3.25,
+        5.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 0.7619441308270463,
+      "absolute_transparent_delta_db": 1.1528172643909826
+    },
+    {
+      "y_index": 9,
+      "x_index": 3,
+      "position_m": [
+        3.75,
+        5.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 0.8292010107869685,
+      "absolute_transparent_delta_db": 1.1729442515827628
+    },
+    {
+      "y_index": 9,
+      "x_index": 4,
+      "position_m": [
+        4.25,
+        5.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 0.9033232343054985,
+      "absolute_transparent_delta_db": 1.86997270728083
+    },
+    {
+      "y_index": 9,
+      "x_index": 5,
+      "position_m": [
+        4.75,
+        5.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 0.9827586206896548,
+      "absolute_transparent_delta_db": 2.4848607877744158
+    },
+    {
+      "y_index": 9,
+      "x_index": 6,
+      "position_m": [
+        5.25,
+        5.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.06632042041836,
+      "absolute_transparent_delta_db": 0.2563477262687499
+    },
+    {
+      "y_index": 9,
+      "x_index": 7,
+      "position_m": [
+        5.75,
+        5.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.1531119039452387,
+      "absolute_transparent_delta_db": 1.934523476167584
+    },
+    {
+      "y_index": 9,
+      "x_index": 8,
+      "position_m": [
+        6.25,
+        5.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.2424564292549285,
+      "absolute_transparent_delta_db": 0.07713262306914004
+    },
+    {
+      "y_index": 9,
+      "x_index": 9,
+      "position_m": [
+        6.75,
+        5.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.3338410646442367,
+      "absolute_transparent_delta_db": 0.8530738152651836
+    },
+    {
+      "y_index": 9,
+      "x_index": 10,
+      "position_m": [
+        7.25,
+        5.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.426873885255212,
+      "absolute_transparent_delta_db": 3.0155755100397315
+    },
+    {
+      "y_index": 9,
+      "x_index": 11,
+      "position_m": [
+        7.75,
+        5.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.521252534812352,
+      "absolute_transparent_delta_db": 0.21620145451763761
+    },
+    {
+      "y_index": 9,
+      "x_index": 12,
+      "position_m": [
+        8.25,
+        5.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.6167413387677012,
+      "absolute_transparent_delta_db": 0.23266175828613456
+    },
+    {
+      "y_index": 9,
+      "x_index": 13,
+      "position_m": [
+        8.75,
+        5.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.7131546718978472,
+      "absolute_transparent_delta_db": 5.448896647207029
+    },
+    {
+      "y_index": 9,
+      "x_index": 14,
+      "position_m": [
+        9.25,
+        5.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.8103448275862062,
+      "absolute_transparent_delta_db": 3.291803200681642
+    },
+    {
+      "y_index": 9,
+      "x_index": 15,
+      "position_m": [
+        9.75,
+        5.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 1.9081931116237973,
+      "absolute_transparent_delta_db": 81.00619801935164
+    },
+    {
+      "y_index": 9,
+      "x_index": 16,
+      "position_m": [
+        10.25,
+        5.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 2.006603249096981,
+      "absolute_transparent_delta_db": 15.580281553905905
+    },
+    {
+      "y_index": 9,
+      "x_index": 17,
+      "position_m": [
+        10.75,
+        5.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_inside_distance_m": 2.105496459004925,
+      "absolute_transparent_delta_db": 0.3332413680812749
+    },
+    {
+      "y_index": 10,
+      "x_index": 0,
+      "position_m": [
+        2.25,
+        6.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 0.5773076905344079,
+      "absolute_transparent_delta_db": 8.020002059720255
+    },
+    {
+      "y_index": 10,
+      "x_index": 1,
+      "position_m": [
+        2.75,
+        6.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 0.9025147488946186,
+      "absolute_transparent_delta_db": 7.009448681202869
+    },
+    {
+      "y_index": 10,
+      "x_index": 2,
+      "position_m": [
+        3.25,
+        6.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 0.9619041093429905,
+      "absolute_transparent_delta_db": 4.743662645848467
+    },
+    {
+      "y_index": 10,
+      "x_index": 3,
+      "position_m": [
+        3.75,
+        6.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 1.0313427267737927,
+      "absolute_transparent_delta_db": 2.861833040760544
+    },
+    {
+      "y_index": 10,
+      "x_index": 4,
+      "position_m": [
+        4.25,
+        6.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 1.1089444465198088,
+      "absolute_transparent_delta_db": 18.03568475321927
+    },
+    {
+      "y_index": 10,
+      "x_index": 5,
+      "position_m": [
+        4.75,
+        6.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 1.1931175180026075,
+      "absolute_transparent_delta_db": 7.073322288639346
+    },
+    {
+      "y_index": 10,
+      "x_index": 6,
+      "position_m": [
+        5.25,
+        6.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 1.282568789173483,
+      "absolute_transparent_delta_db": 13.811817408305345
+    },
+    {
+      "y_index": 10,
+      "x_index": 7,
+      "position_m": [
+        5.75,
+        6.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 1.3762694674586147,
+      "absolute_transparent_delta_db": 16.581331711048136
+    },
+    {
+      "y_index": 10,
+      "x_index": 8,
+      "position_m": [
+        6.25,
+        6.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 1.473409059309518,
+      "absolute_transparent_delta_db": 13.969267383981403
+    },
+    {
+      "y_index": 10,
+      "x_index": 9,
+      "position_m": [
+        6.75,
+        6.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 1.57335073202117,
+      "absolute_transparent_delta_db": 0.685962041761897
+    },
+    {
+      "y_index": 10,
+      "x_index": 10,
+      "position_m": [
+        7.25,
+        6.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 1.675593165642364,
+      "absolute_transparent_delta_db": 21.841777085697913
+    },
+    {
+      "y_index": 10,
+      "x_index": 11,
+      "position_m": [
+        7.75,
+        6.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 1.779739882242037,
+      "absolute_transparent_delta_db": 19.095512727581358
+    },
+    {
+      "y_index": 10,
+      "x_index": 12,
+      "position_m": [
+        8.25,
+        6.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 1.8854753514798472,
+      "absolute_transparent_delta_db": 21.27645501460598
+    },
+    {
+      "y_index": 10,
+      "x_index": 13,
+      "position_m": [
+        8.75,
+        6.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 1.9925466655847395,
+      "absolute_transparent_delta_db": 18.11227113882333
+    },
+    {
+      "y_index": 10,
+      "x_index": 14,
+      "position_m": [
+        9.25,
+        6.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 2.1007495778715093,
+      "absolute_transparent_delta_db": 2.075210782205261
+    },
+    {
+      "y_index": 10,
+      "x_index": 15,
+      "position_m": [
+        9.75,
+        6.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 2.2099178772573067,
+      "absolute_transparent_delta_db": 26.920752515099863
+    },
+    {
+      "y_index": 10,
+      "x_index": 16,
+      "position_m": [
+        10.25,
+        6.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 2.319915283025484,
+      "absolute_transparent_delta_db": 14.563777635789705
+    },
+    {
+      "y_index": 10,
+      "x_index": 17,
+      "position_m": [
+        10.75,
+        6.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 2.1657529721147517,
+      "absolute_transparent_delta_db": 9.975271712091029
+    },
+    {
+      "y_index": 11,
+      "x_index": 0,
+      "position_m": [
+        2.25,
+        6.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 0.7791625926756969,
+      "absolute_transparent_delta_db": 5.410958203950884
+    },
+    {
+      "y_index": 11,
+      "x_index": 1,
+      "position_m": [
+        2.75,
+        6.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 1.302810798877995,
+      "absolute_transparent_delta_db": 16.838900370101335
+    },
+    {
+      "y_index": 11,
+      "x_index": 2,
+      "position_m": [
+        3.25,
+        6.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 1.388456211368429,
+      "absolute_transparent_delta_db": 5.622420838952536
+    },
+    {
+      "y_index": 11,
+      "x_index": 3,
+      "position_m": [
+        3.75,
+        6.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 1.4712229747458798,
+      "absolute_transparent_delta_db": 13.322088112726547
+    },
+    {
+      "y_index": 11,
+      "x_index": 4,
+      "position_m": [
+        4.25,
+        6.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 1.5647749710610686,
+      "absolute_transparent_delta_db": 16.191757308565585
+    },
+    {
+      "y_index": 11,
+      "x_index": 5,
+      "position_m": [
+        4.75,
+        6.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 1.6672977109097014,
+      "absolute_transparent_delta_db": 15.633074016473614
+    },
+    {
+      "y_index": 11,
+      "x_index": 6,
+      "position_m": [
+        5.25,
+        6.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 1.7772393990840967,
+      "absolute_transparent_delta_db": 19.383052162546193
+    },
+    {
+      "y_index": 11,
+      "x_index": 7,
+      "position_m": [
+        5.75,
+        6.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 1.8933080532801259,
+      "absolute_transparent_delta_db": 11.794030345154503
+    },
+    {
+      "y_index": 11,
+      "x_index": 8,
+      "position_m": [
+        6.25,
+        6.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 2.0144448777964783,
+      "absolute_transparent_delta_db": 101.23982423375779
+    },
+    {
+      "y_index": 11,
+      "x_index": 9,
+      "position_m": [
+        6.75,
+        6.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 2.139789294498892,
+      "absolute_transparent_delta_db": 18.457112147651287
+    },
+    {
+      "y_index": 11,
+      "x_index": 10,
+      "position_m": [
+        7.25,
+        6.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 2.2686439919322225,
+      "absolute_transparent_delta_db": 18.536534357114654
+    },
+    {
+      "y_index": 11,
+      "x_index": 11,
+      "position_m": [
+        7.75,
+        6.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 2.400443745959231,
+      "absolute_transparent_delta_db": 4.063077133819661
+    },
+    {
+      "y_index": 11,
+      "x_index": 12,
+      "position_m": [
+        8.25,
+        6.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 2.5347291908616016,
+      "absolute_transparent_delta_db": 99.18808059455628
+    },
+    {
+      "y_index": 11,
+      "x_index": 13,
+      "position_m": [
+        8.75,
+        6.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 2.6711254636582575,
+      "absolute_transparent_delta_db": 97.77980169103148
+    },
+    {
+      "y_index": 11,
+      "x_index": 14,
+      "position_m": [
+        9.25,
+        6.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 2.8093251311138197,
+      "absolute_transparent_delta_db": 6.534305985254306
+    },
+    {
+      "y_index": 11,
+      "x_index": 15,
+      "position_m": [
+        9.75,
+        6.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 2.949074671845108,
+      "absolute_transparent_delta_db": 25.283892627469584
+    },
+    {
+      "y_index": 11,
+      "x_index": 16,
+      "position_m": [
+        10.25,
+        6.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 3.090163818640606,
+      "absolute_transparent_delta_db": 0.0
+    },
+    {
+      "y_index": 11,
+      "x_index": 17,
+      "position_m": [
+        10.75,
+        6.5,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 3.232417162134113,
+      "absolute_transparent_delta_db": 33.664920891413246
+    },
+    {
+      "y_index": 12,
+      "x_index": 0,
+      "position_m": [
+        2.25,
+        7.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 0.6250826391647134,
+      "absolute_transparent_delta_db": 5.55235489610714
+    },
+    {
+      "y_index": 12,
+      "x_index": 1,
+      "position_m": [
+        2.75,
+        7.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 1.1245635596704044,
+      "absolute_transparent_delta_db": 9.080818318788246
+    },
+    {
+      "y_index": 12,
+      "x_index": 2,
+      "position_m": [
+        3.25,
+        7.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 1.3502754539918478,
+      "absolute_transparent_delta_db": 6.89563262022741
+    },
+    {
+      "y_index": 12,
+      "x_index": 3,
+      "position_m": [
+        3.75,
+        7.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 1.4174604808868678,
+      "absolute_transparent_delta_db": 10.74612032799142
+    },
+    {
+      "y_index": 12,
+      "x_index": 4,
+      "position_m": [
+        4.25,
+        7.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 1.4940999667839496,
+      "absolute_transparent_delta_db": 8.705328554505932
+    },
+    {
+      "y_index": 12,
+      "x_index": 5,
+      "position_m": [
+        4.75,
+        7.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 1.5788176871495314,
+      "absolute_transparent_delta_db": 12.719794229914818
+    },
+    {
+      "y_index": 12,
+      "x_index": 6,
+      "position_m": [
+        5.25,
+        7.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 1.6703849707217855,
+      "absolute_transparent_delta_db": 8.997298974740112
+    },
+    {
+      "y_index": 12,
+      "x_index": 7,
+      "position_m": [
+        5.75,
+        7.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 1.7677377334364035,
+      "absolute_transparent_delta_db": 14.751707460962571
+    },
+    {
+      "y_index": 12,
+      "x_index": 8,
+      "position_m": [
+        6.25,
+        7.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 1.869972598906506,
+      "absolute_transparent_delta_db": 13.534367346225544
+    },
+    {
+      "y_index": 12,
+      "x_index": 9,
+      "position_m": [
+        6.75,
+        7.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 1.9763320646470475,
+      "absolute_transparent_delta_db": 9.647174722686124
+    },
+    {
+      "y_index": 12,
+      "x_index": 10,
+      "position_m": [
+        7.25,
+        7.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 2.086185375628829,
+      "absolute_transparent_delta_db": 1.098550036445431
+    },
+    {
+      "y_index": 12,
+      "x_index": 11,
+      "position_m": [
+        7.75,
+        7.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 2.1990089803972523,
+      "absolute_transparent_delta_db": 17.992148821288296
+    },
+    {
+      "y_index": 12,
+      "x_index": 12,
+      "position_m": [
+        8.25,
+        7.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 2.3143685214097935,
+      "absolute_transparent_delta_db": 3.998146111732879
+    },
+    {
+      "y_index": 12,
+      "x_index": 13,
+      "position_m": [
+        8.75,
+        7.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 2.431903142101259,
+      "absolute_transparent_delta_db": 4.384469568551708
+    },
+    {
+      "y_index": 12,
+      "x_index": 14,
+      "position_m": [
+        9.25,
+        7.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 2.5513122535032875,
+      "absolute_transparent_delta_db": 19.316979929512506
+    },
+    {
+      "y_index": 12,
+      "x_index": 15,
+      "position_m": [
+        9.75,
+        7.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 2.672344592269998,
+      "absolute_transparent_delta_db": 12.939008753338271
+    },
+    {
+      "y_index": 12,
+      "x_index": 16,
+      "position_m": [
+        10.25,
+        7.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 2.794789277823644,
+      "absolute_transparent_delta_db": 22.571553145495088
+    },
+    {
+      "y_index": 12,
+      "x_index": 17,
+      "position_m": [
+        10.75,
+        7.0,
+        1.5
+      ],
+      "intersected_canopy_rows": [
+        "canopy_row_02",
+        "canopy_row_03"
+      ],
+      "total_inside_distance_m": 2.918468550059421,
+      "absolute_transparent_delta_db": 23.394939203850036
+    }
+  ]
+}

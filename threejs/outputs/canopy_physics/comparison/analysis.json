@@ -1,0 +1,4595 @@
+{
+  "description": "Narrow-canopy RF physics sanity experiment; all non-canopy settings copied from cea_demo.yaml",
+  "frequency_hz": 2400000000.0,
+  "map_shape_yx": [
+    13,
+    18
+  ],
+  "display_floor_linear_path_gain": 1e-15,
+  "core_map_differences": {
+    "empty": {
+      "mean_abs_delta_db_vs_empty": 0.0,
+      "median_delta_db_vs_empty": 0.0,
+      "min_delta_db_vs_empty": 0.0,
+      "max_delta_db_vs_empty": 0.0,
+      "positive_cells": 0,
+      "negative_cells": 0,
+      "zero_cells": 234
+    },
+    "transparent": {
+      "mean_abs_delta_db_vs_empty": 7.16739247169337,
+      "median_delta_db_vs_empty": -2.687667785103386,
+      "min_delta_db_vs_empty": -101.23982423375779,
+      "max_delta_db_vs_empty": 2.7371206101634016e-07,
+      "positive_cells": 0,
+      "negative_cells": 230,
+      "zero_cells": 4
+    },
+    "weak_loss": {
+      "mean_abs_delta_db_vs_empty": 14.967451782752924,
+      "median_delta_db_vs_empty": -10.084939681449917,
+      "min_delta_db_vs_empty": -101.43444226674848,
+      "max_delta_db_vs_empty": 9.894891113964043,
+      "positive_cells": 30,
+      "negative_cells": 203,
+      "zero_cells": 1
+    },
+    "current": {
+      "mean_abs_delta_db_vs_empty": 24.200467027338757,
+      "median_delta_db_vs_empty": -10.087770049004217,
+      "min_delta_db_vs_empty": -105.5698434522876,
+      "max_delta_db_vs_empty": 14.240740235762189,
+      "positive_cells": 41,
+      "negative_cells": 192,
+      "zero_cells": 1
+    }
+  },
+  "geometry_sanity": {
+    "tx_rx_identical": true,
+    "non_canopy_geometry_identical": true,
+    "canopy_geometry_identical_transparent_weak_current": true,
+    "radio_map_shapes": {
+      "empty": [
+        13,
+        18
+      ],
+      "transparent": [
+        13,
+        18
+      ],
+      "weak_loss": [
+        13,
+        18
+      ],
+      "current": [
+        13,
+        18
+      ]
+    },
+    "core_solver_settings_identical": true,
+    "all_other_config_identical": true,
+    "non_canopy_materials_identical": true
+  },
+  "transparent_closer_to_empty_than_current": true,
+  "geometry_only_mean_abs_difference_db": 7.16739247169337,
+  "transparent_control_cell_statistics": {
+    "mean_absolute_difference_db": 7.16739247169337,
+    "median_signed_difference_db": -2.687667785103386,
+    "p95_absolute_difference_db": 22.09719870662692,
+    "max_absolute_difference_db": 101.23982423375779,
+    "cells_over_1_db": 150,
+    "cells_over_3_db": 108,
+    "total_cells": 234,
+    "display_floor_linear_path_gain": 1e-15
+  },
+  "transparent_control_sensitivity": {
+    "reference": {
+      "solver": {
+        "path_solver": {
+          "max_depth": 2,
+          "samples_per_source": 16000,
+          "seed": 42,
+          "los": true,
+          "specular_reflection": true,
+          "refraction": true,
+          "diffraction": false,
+          "diffuse_reflection": false
+        },
+        "radio_map_solver": {
+          "max_depth": 2,
+          "samples_per_transmitter": 45000,
+          "seed": 42,
+          "los": true,
+          "specular_reflection": true,
+          "refraction": true,
+          "diffraction": false,
+          "diffuse_reflection": false
+        }
+      },
+      "mean_absolute_difference_db": 7.16739247169337,
+      "median_signed_difference_db": -2.687667785103386,
+      "p95_absolute_difference_db": 22.09719870662692,
+      "max_absolute_difference_db": 101.23982423375779,
+      "cells_over_1_db": 150,
+      "cells_over_3_db": 108,
+      "total_cells": 234
+    },
+    "profiles": {
+      "alternate_seed_43": {
+        "solver_change": {
+          "path_seed": 43,
+          "map_seed": 43
+        },
+        "solver_empty": {
+          "path_solver": {
+            "max_depth": 2,
+            "samples_per_source": 16000,
+            "seed": 43,
+            "los": true,
+            "specular_reflection": true,
+            "refraction": true,
+            "diffraction": false,
+            "diffuse_reflection": false
+          },
+          "radio_map_solver": {
+            "max_depth": 2,
+            "samples_per_transmitter": 45000,
+            "seed": 43,
+            "los": true,
+            "specular_reflection": true,
+            "refraction": true,
+            "diffraction": false,
+            "diffuse_reflection": false
+          }
+        },
+        "solver_transparent": {
+          "path_solver": {
+            "max_depth": 2,
+            "samples_per_source": 16000,
+            "seed": 43,
+            "los": true,
+            "specular_reflection": true,
+            "refraction": true,
+            "diffraction": false,
+            "diffuse_reflection": false
+          },
+          "radio_map_solver": {
+            "max_depth": 2,
+            "samples_per_transmitter": 45000,
+            "seed": 43,
+            "los": true,
+            "specular_reflection": true,
+            "refraction": true,
+            "diffraction": false,
+            "diffuse_reflection": false
+          }
+        },
+        "mean_absolute_difference_db": 7.9968252951208925,
+        "median_signed_difference_db": -2.6509629332037505,
+        "p95_absolute_difference_db": 24.451087300445792,
+        "max_absolute_difference_db": 101.76332440097664,
+        "cells_over_1_db": 151,
+        "cells_over_3_db": 111,
+        "total_cells": 234,
+        "path_counts_empty": [
+          {
+            "receiver": "RX_A",
+            "valid_path_count": 26
+          },
+          {
+            "receiver": "RX_B",
+            "valid_path_count": 25
+          },
+          {
+            "receiver": "RX_C",
+            "valid_path_count": 25
+          }
+        ],
+        "path_counts_transparent": [
+          {
+            "receiver": "RX_A",
+            "valid_path_count": 15
+          },
+          {
+            "receiver": "RX_B",
+            "valid_path_count": 15
+          },
+          {
+            "receiver": "RX_C",
+            "valid_path_count": 7
+          }
+        ],
+        "interpretation": "Difference remains conditional on this finite solver configuration; this pair changes only the listed solver parameter(s) and canopy presence/material."
+      },
+      "map_samples_90000": {
+        "solver_change": {
+          "map_samples": 90000
+        },
+        "solver_empty": {
+          "path_solver": {
+            "max_depth": 2,
+            "samples_per_source": 16000,
+            "seed": 42,
+            "los": true,
+            "specular_reflection": true,
+            "refraction": true,
+            "diffraction": false,
+            "diffuse_reflection": false
+          },
+          "radio_map_solver": {
+            "max_depth": 2,
+            "samples_per_transmitter": 90000,
+            "seed": 42,
+            "los": true,
+            "specular_reflection": true,
+            "refraction": true,
+            "diffraction": false,
+            "diffuse_reflection": false
+          }
+        },
+        "solver_transparent": {
+          "path_solver": {
+            "max_depth": 2,
+            "samples_per_source": 16000,
+            "seed": 42,
+            "los": true,
+            "specular_reflection": true,
+            "refraction": true,
+            "diffraction": false,
+            "diffuse_reflection": false
+          },
+          "radio_map_solver": {
+            "max_depth": 2,
+            "samples_per_transmitter": 90000,
+            "seed": 42,
+            "los": true,
+            "specular_reflection": true,
+            "refraction": true,
+            "diffraction": false,
+            "diffuse_reflection": false
+          }
+        },
+        "mean_absolute_difference_db": 5.784895126273795,
+        "median_signed_difference_db": -2.54095672726244,
+        "p95_absolute_difference_db": 18.954845350871796,
+        "max_absolute_difference_db": 97.09133002242844,
+        "cells_over_1_db": 174,
+        "cells_over_3_db": 104,
+        "total_cells": 234,
+        "path_counts_empty": [
+          {
+            "receiver": "RX_A",
+            "valid_path_count": 26
+          },
+          {
+            "receiver": "RX_B",
+            "valid_path_count": 25
+          },
+          {
+            "receiver": "RX_C",
+            "valid_path_count": 25
+          }
+        ],
+        "path_counts_transparent": [
+          {
+            "receiver": "RX_A",
+            "valid_path_count": 15
+          },
+          {
+            "receiver": "RX_B",
+            "valid_path_count": 15
+          },
+          {
+            "receiver": "RX_C",
+            "valid_path_count": 7
+          }
+        ],
+        "interpretation": "Difference remains conditional on this finite solver configuration; this pair changes only the listed solver parameter(s) and canopy presence/material."
+      },
+      "interaction_depth_4": {
+        "solver_change": {
+          "path_depth": 4,
+          "map_depth": 4
+        },
+        "solver_empty": {
+          "path_solver": {
+            "max_depth": 4,
+            "samples_per_source": 16000,
+            "seed": 42,
+            "los": true,
+            "specular_reflection": true,
+            "refraction": true,
+            "diffraction": false,
+            "diffuse_reflection": false
+          },
+          "radio_map_solver": {
+            "max_depth": 4,
+            "samples_per_transmitter": 45000,
+            "seed": 42,
+            "los": true,
+            "specular_reflection": true,
+            "refraction": true,
+            "diffraction": false,
+            "diffuse_reflection": false
+          }
+        },
+        "solver_transparent": {
+          "path_solver": {
+            "max_depth": 4,
+            "samples_per_source": 16000,
+            "seed": 42,
+            "los": true,
+            "specular_reflection": true,
+            "refraction": true,
+            "diffraction": false,
+            "diffuse_reflection": false
+          },
+          "radio_map_solver": {
+            "max_depth": 4,
+            "samples_per_transmitter": 45000,
+            "seed": 42,
+            "los": true,
+            "specular_reflection": true,
+            "refraction": true,
+            "diffraction": false,
+            "diffuse_reflection": false
+          }
+        },
+        "mean_absolute_difference_db": 3.0256633639639734,
+        "median_signed_difference_db": -1.2766521537359168,
+        "p95_absolute_difference_db": 13.263338278068474,
+        "max_absolute_difference_db": 21.800722145276957,
+        "cells_over_1_db": 130,
+        "cells_over_3_db": 75,
+        "total_cells": 234,
+        "path_counts_empty": [
+          {
+            "receiver": "RX_A",
+            "valid_path_count": 155
+          },
+          {
+            "receiver": "RX_B",
+            "valid_path_count": 167
+          },
+          {
+            "receiver": "RX_C",
+            "valid_path_count": 162
+          }
+        ],
+        "path_counts_transparent": [
+          {
+            "receiver": "RX_A",
+            "valid_path_count": 75
+          },
+          {
+            "receiver": "RX_B",
+            "valid_path_count": 75
+          },
+          {
+            "receiver": "RX_C",
+            "valid_path_count": 40
+          }
+        ],
+        "interpretation": "Difference remains conditional on this finite solver configuration; this pair changes only the listed solver parameter(s) and canopy presence/material."
+      }
+    }
+  },
+  "direct_tx_rx_canopy_intersections": [
+    {
+      "receiver": "RX_A",
+      "receiver_position_m": [
+        2.0,
+        2.6,
+        1.5
+      ],
+      "tx_rx_segment_length_m": 1.044030650891055,
+      "intersection_count": 0,
+      "surface_crossing_count": 0,
+      "intersected_canopy_rows": [],
+      "total_distance_inside_canopy_m": 0,
+      "intersections": [],
+      "method": "independent parametric segment/AABB slab intersection; positive-length intervals only"
+    },
+    {
+      "receiver": "RX_B",
+      "receiver_position_m": [
+        7.0,
+        2.6,
+        1.5
+      ],
+      "tx_rx_segment_length_m": 6.007495318350236,
+      "intersection_count": 0,
+      "surface_crossing_count": 0,
+      "intersected_canopy_rows": [],
+      "total_distance_inside_canopy_m": 0,
+      "intersections": [],
+      "method": "independent parametric segment/AABB slab intersection; positive-length intervals only"
+    },
+    {
+      "receiver": "RX_C",
+      "receiver_position_m": [
+        10.0,
+        5.0,
+        1.5
+      ],
+      "tx_rx_segment_length_m": 9.319334740205441,
+      "intersection_count": 1,
+      "surface_crossing_count": 2,
+      "intersected_canopy_rows": [
+        "canopy_row_02"
+      ],
+      "total_distance_inside_canopy_m": 2.3298336850513595,
+      "intersections": [
+        {
+          "canopy_row": "canopy_row_02",
+          "entry_t": 0.45833333333333337,
+          "exit_t": 0.7083333333333333,
+          "entry_m": [
+            5.125,
+            3.7,
+            1.6625
+          ],
+          "exit_m": [
+            7.374999999999999,
+            4.3,
+            1.5875
+          ],
+          "distance_inside_m": 2.3298336850513595
+        }
+      ],
+      "method": "independent parametric segment/AABB slab intersection; positive-length intervals only"
+    }
+  ],
+  "radio_map_cell_geometry_analysis": {
+    "method": "independent segment/AABB test from TX to each exported radio-map cell center",
+    "grid_shape_yx": [
+      13,
+      18
+    ],
+    "groups": {
+      "direct_segment_intersects_canopy": {
+        "cell_count": 180,
+        "mean_absolute_transparent_delta_db": 8.45153660760142,
+        "p95_absolute_transparent_delta_db": 25.36573562185107,
+        "max_absolute_transparent_delta_db": 101.23982423375779
+      },
+      "direct_segment_misses_canopy": {
+        "cell_count": 54,
+        "mean_absolute_transparent_delta_db": 2.886912018666524,
+        "p95_absolute_transparent_delta_db": 16.63791125421976,
+        "max_absolute_transparent_delta_db": 20.120179282403875
+      }
+    },
+    "cells": [
+      {
+        "y_index": 0,
+        "x_index": 0,
+        "position_m": [
+          2.25,
+          1.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 0.4617984544149103,
+        "absolute_transparent_delta_db": 0.08055516106239224
+      },
+      {
+        "y_index": 0,
+        "x_index": 1,
+        "position_m": [
+          2.75,
+          1.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 0.8109212487558046,
+        "absolute_transparent_delta_db": 0.6155216895280944
+      },
+      {
+        "y_index": 0,
+        "x_index": 2,
+        "position_m": [
+          3.25,
+          1.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 1.0414270557749112,
+        "absolute_transparent_delta_db": 1.7988492354286478
+      },
+      {
+        "y_index": 0,
+        "x_index": 3,
+        "position_m": [
+          3.75,
+          1.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 1.19838758859561,
+        "absolute_transparent_delta_db": 2.3642844801824907
+      },
+      {
+        "y_index": 0,
+        "x_index": 4,
+        "position_m": [
+          4.25,
+          1.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 1.3630876026506884,
+        "absolute_transparent_delta_db": 2.0972978041239116
+      },
+      {
+        "y_index": 0,
+        "x_index": 5,
+        "position_m": [
+          4.75,
+          1.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 1.5330346742653933,
+        "absolute_transparent_delta_db": 1.2519207690705727
+      },
+      {
+        "y_index": 0,
+        "x_index": 6,
+        "position_m": [
+          5.25,
+          1.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 1.7066620381610416,
+        "absolute_transparent_delta_db": 4.412382081227911
+      },
+      {
+        "y_index": 0,
+        "x_index": 7,
+        "position_m": [
+          5.75,
+          1.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 1.8829518879939553,
+        "absolute_transparent_delta_db": 0.23940561824763762
+      },
+      {
+        "y_index": 0,
+        "x_index": 8,
+        "position_m": [
+          6.25,
+          1.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 2.0612211944621572,
+        "absolute_transparent_delta_db": 3.215054112358466
+      },
+      {
+        "y_index": 0,
+        "x_index": 9,
+        "position_m": [
+          6.75,
+          1.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 2.2409976154605795,
+        "absolute_transparent_delta_db": 0.14073566879538646
+      },
+      {
+        "y_index": 0,
+        "x_index": 10,
+        "position_m": [
+          7.25,
+          1.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 2.4219455634881646,
+        "absolute_transparent_delta_db": 4.449623190962768
+      },
+      {
+        "y_index": 0,
+        "x_index": 11,
+        "position_m": [
+          7.75,
+          1.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 2.6038208103669502,
+        "absolute_transparent_delta_db": 3.4563042357933824
+      },
+      {
+        "y_index": 0,
+        "x_index": 12,
+        "position_m": [
+          8.25,
+          1.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 2.786441783439949,
+        "absolute_transparent_delta_db": 0.23397566986451324
+      },
+      {
+        "y_index": 0,
+        "x_index": 13,
+        "position_m": [
+          8.75,
+          1.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 2.9696709097979195,
+        "absolute_transparent_delta_db": 4.651592841900062
+      },
+      {
+        "y_index": 0,
+        "x_index": 14,
+        "position_m": [
+          9.25,
+          1.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 3.15340218058211,
+        "absolute_transparent_delta_db": 12.282652282643184
+      },
+      {
+        "y_index": 0,
+        "x_index": 15,
+        "position_m": [
+          9.75,
+          1.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 3.3375526681237564,
+        "absolute_transparent_delta_db": 8.26635112350833
+      },
+      {
+        "y_index": 0,
+        "x_index": 16,
+        "position_m": [
+          10.25,
+          1.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 3.5220566168788374,
+        "absolute_transparent_delta_db": 6.021484050548324
+      },
+      {
+        "y_index": 0,
+        "x_index": 17,
+        "position_m": [
+          10.75,
+          1.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 3.7068612480776784,
+        "absolute_transparent_delta_db": 0.11476602017646087
+      },
+      {
+        "y_index": 1,
+        "x_index": 0,
+        "position_m": [
+          2.25,
+          1.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 0.8613270560714211,
+        "absolute_transparent_delta_db": 0.2751301771331214
+      },
+      {
+        "y_index": 1,
+        "x_index": 1,
+        "position_m": [
+          2.75,
+          1.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 1.1392690131384777,
+        "absolute_transparent_delta_db": 0.114593473074585
+      },
+      {
+        "y_index": 1,
+        "x_index": 2,
+        "position_m": [
+          3.25,
+          1.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 1.3758543551595752,
+        "absolute_transparent_delta_db": 1.8021836697788913
+      },
+      {
+        "y_index": 1,
+        "x_index": 3,
+        "position_m": [
+          3.75,
+          1.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 1.6238155250840944,
+        "absolute_transparent_delta_db": 2.2116795536304323
+      },
+      {
+        "y_index": 1,
+        "x_index": 4,
+        "position_m": [
+          4.25,
+          1.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 1.8786534653775846,
+        "absolute_transparent_delta_db": 1.6622491173977352
+      },
+      {
+        "y_index": 1,
+        "x_index": 5,
+        "position_m": [
+          4.75,
+          1.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 2.1379104651562924,
+        "absolute_transparent_delta_db": 2.4197858042391616
+      },
+      {
+        "y_index": 1,
+        "x_index": 6,
+        "position_m": [
+          5.25,
+          1.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 2.4001549536754694,
+        "absolute_transparent_delta_db": 2.9188549632745193
+      },
+      {
+        "y_index": 1,
+        "x_index": 7,
+        "position_m": [
+          5.75,
+          1.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 2.664504977825995,
+        "absolute_transparent_delta_db": 2.94329108723597
+      },
+      {
+        "y_index": 1,
+        "x_index": 8,
+        "position_m": [
+          6.25,
+          1.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 2.9303907730274865,
+        "absolute_transparent_delta_db": 0.2988652510975456
+      },
+      {
+        "y_index": 1,
+        "x_index": 9,
+        "position_m": [
+          6.75,
+          1.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 3.1974292359657106,
+        "absolute_transparent_delta_db": 0.6130661822078736
+      },
+      {
+        "y_index": 1,
+        "x_index": 10,
+        "position_m": [
+          7.25,
+          1.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 3.4653539048631696,
+        "absolute_transparent_delta_db": 0.08849183181481379
+      },
+      {
+        "y_index": 1,
+        "x_index": 11,
+        "position_m": [
+          7.75,
+          1.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 3.733974020192304,
+        "absolute_transparent_delta_db": 0.5219268314014514
+      },
+      {
+        "y_index": 1,
+        "x_index": 12,
+        "position_m": [
+          8.25,
+          1.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 4.003149586459424,
+        "absolute_transparent_delta_db": 0.04506827209778663
+      },
+      {
+        "y_index": 1,
+        "x_index": 13,
+        "position_m": [
+          8.75,
+          1.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 4.272775628353066,
+        "absolute_transparent_delta_db": 8.080427033721804
+      },
+      {
+        "y_index": 1,
+        "x_index": 14,
+        "position_m": [
+          9.25,
+          1.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 4.542771935669249,
+        "absolute_transparent_delta_db": 12.890416302295534
+      },
+      {
+        "y_index": 1,
+        "x_index": 15,
+        "position_m": [
+          9.75,
+          1.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 4.813076197125789,
+        "absolute_transparent_delta_db": 0.12002012670006224
+      },
+      {
+        "y_index": 1,
+        "x_index": 16,
+        "position_m": [
+          10.25,
+          1.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 5.083639289893813,
+        "absolute_transparent_delta_db": 4.623519199129312
+      },
+      {
+        "y_index": 1,
+        "x_index": 17,
+        "position_m": [
+          10.75,
+          1.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 5.354421977276708,
+        "absolute_transparent_delta_db": 0.2915843922408996
+      },
+      {
+        "y_index": 2,
+        "x_index": 0,
+        "position_m": [
+          2.25,
+          2.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 0.47287536530370394,
+        "absolute_transparent_delta_db": 0.5376059061658296
+      },
+      {
+        "y_index": 2,
+        "x_index": 1,
+        "position_m": [
+          2.75,
+          2.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 0.6247221604663775,
+        "absolute_transparent_delta_db": 0.5453569278910706
+      },
+      {
+        "y_index": 2,
+        "x_index": 2,
+        "position_m": [
+          3.25,
+          2.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 0.782623792124927,
+        "absolute_transparent_delta_db": 1.2769167181671364
+      },
+      {
+        "y_index": 2,
+        "x_index": 3,
+        "position_m": [
+          3.75,
+          2.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 0.9435453236478782,
+        "absolute_transparent_delta_db": 0.23673328206489685
+      },
+      {
+        "y_index": 2,
+        "x_index": 4,
+        "position_m": [
+          4.25,
+          2.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 1.1061695670696754,
+        "absolute_transparent_delta_db": 1.00825035293731
+      },
+      {
+        "y_index": 2,
+        "x_index": 5,
+        "position_m": [
+          4.75,
+          2.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 1.2698425099200303,
+        "absolute_transparent_delta_db": 3.1043326123525716
+      },
+      {
+        "y_index": 2,
+        "x_index": 6,
+        "position_m": [
+          5.25,
+          2.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 1.4342051612110618,
+        "absolute_transparent_delta_db": 3.133603530455339
+      },
+      {
+        "y_index": 2,
+        "x_index": 7,
+        "position_m": [
+          5.75,
+          2.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 1.5990448537938042,
+        "absolute_transparent_delta_db": 0.3856134037516554
+      },
+      {
+        "y_index": 2,
+        "x_index": 8,
+        "position_m": [
+          6.25,
+          2.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 1.7642278764377366,
+        "absolute_transparent_delta_db": 0.3308626019820693
+      },
+      {
+        "y_index": 2,
+        "x_index": 9,
+        "position_m": [
+          6.75,
+          2.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 1.9296660620716521,
+        "absolute_transparent_delta_db": 2.996905200872071
+      },
+      {
+        "y_index": 2,
+        "x_index": 10,
+        "position_m": [
+          7.25,
+          2.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 2.0952989709771215,
+        "absolute_transparent_delta_db": 5.21148178238537
+      },
+      {
+        "y_index": 2,
+        "x_index": 11,
+        "position_m": [
+          7.75,
+          2.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 2.2610838109190046,
+        "absolute_transparent_delta_db": 3.046476833039428
+      },
+      {
+        "y_index": 2,
+        "x_index": 12,
+        "position_m": [
+          8.25,
+          2.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 2.426989447397287,
+        "absolute_transparent_delta_db": 0.07263045673293078
+      },
+      {
+        "y_index": 2,
+        "x_index": 13,
+        "position_m": [
+          8.75,
+          2.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 2.5929926939949373,
+        "absolute_transparent_delta_db": 4.5258148545196235
+      },
+      {
+        "y_index": 2,
+        "x_index": 14,
+        "position_m": [
+          9.25,
+          2.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 2.7590759322642815,
+        "absolute_transparent_delta_db": 0.19745593161781727
+      },
+      {
+        "y_index": 2,
+        "x_index": 15,
+        "position_m": [
+          9.75,
+          2.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 2.92522553736365,
+        "absolute_transparent_delta_db": 4.734801621897233
+      },
+      {
+        "y_index": 2,
+        "x_index": 16,
+        "position_m": [
+          10.25,
+          2.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 3.091430808613458,
+        "absolute_transparent_delta_db": 6.08009213065651
+      },
+      {
+        "y_index": 2,
+        "x_index": 17,
+        "position_m": [
+          10.75,
+          2.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_01"
+        ],
+        "total_inside_distance_m": 3.0070922084791265,
+        "absolute_transparent_delta_db": 17.37392452245676
+      },
+      {
+        "y_index": 3,
+        "x_index": 0,
+        "position_m": [
+          2.25,
+          2.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.3314366055582951
+      },
+      {
+        "y_index": 3,
+        "x_index": 1,
+        "position_m": [
+          2.75,
+          2.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.5467946481238499
+      },
+      {
+        "y_index": 3,
+        "x_index": 2,
+        "position_m": [
+          3.25,
+          2.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.6889198186672374
+      },
+      {
+        "y_index": 3,
+        "x_index": 3,
+        "position_m": [
+          3.75,
+          2.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 1.691389326293816
+      },
+      {
+        "y_index": 3,
+        "x_index": 4,
+        "position_m": [
+          4.25,
+          2.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.03815915986918128
+      },
+      {
+        "y_index": 3,
+        "x_index": 5,
+        "position_m": [
+          4.75,
+          2.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.044607815186843425
+      },
+      {
+        "y_index": 3,
+        "x_index": 6,
+        "position_m": [
+          5.25,
+          2.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 2.614582175485978
+      },
+      {
+        "y_index": 3,
+        "x_index": 7,
+        "position_m": [
+          5.75,
+          2.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 3.7542905384533682
+      },
+      {
+        "y_index": 3,
+        "x_index": 8,
+        "position_m": [
+          6.25,
+          2.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 6.647347479073254
+      },
+      {
+        "y_index": 3,
+        "x_index": 9,
+        "position_m": [
+          6.75,
+          2.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.03979012717962149
+      },
+      {
+        "y_index": 3,
+        "x_index": 10,
+        "position_m": [
+          7.25,
+          2.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 7.170360086270513
+      },
+      {
+        "y_index": 3,
+        "x_index": 11,
+        "position_m": [
+          7.75,
+          2.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.04793379466760683
+      },
+      {
+        "y_index": 3,
+        "x_index": 12,
+        "position_m": [
+          8.25,
+          2.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 7.695301870027329
+      },
+      {
+        "y_index": 3,
+        "x_index": 13,
+        "position_m": [
+          8.75,
+          2.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 17.997773055798184
+      },
+      {
+        "y_index": 3,
+        "x_index": 14,
+        "position_m": [
+          9.25,
+          2.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 16.421670693901646
+      },
+      {
+        "y_index": 3,
+        "x_index": 15,
+        "position_m": [
+          9.75,
+          2.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.18304428384901428
+      },
+      {
+        "y_index": 3,
+        "x_index": 16,
+        "position_m": [
+          10.25,
+          2.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 20.120179282403875
+      },
+      {
+        "y_index": 3,
+        "x_index": 17,
+        "position_m": [
+          10.75,
+          2.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 3.714802353934914
+      },
+      {
+        "y_index": 4,
+        "x_index": 0,
+        "position_m": [
+          2.25,
+          3.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.002122532965522339
+      },
+      {
+        "y_index": 4,
+        "x_index": 1,
+        "position_m": [
+          2.75,
+          3.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.25751649685049216
+      },
+      {
+        "y_index": 4,
+        "x_index": 2,
+        "position_m": [
+          3.25,
+          3.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.6946727192135
+      },
+      {
+        "y_index": 4,
+        "x_index": 3,
+        "position_m": [
+          3.75,
+          3.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.012129171563366015
+      },
+      {
+        "y_index": 4,
+        "x_index": 4,
+        "position_m": [
+          4.25,
+          3.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.010895194831626043
+      },
+      {
+        "y_index": 4,
+        "x_index": 5,
+        "position_m": [
+          4.75,
+          3.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 1.2399233575507935
+      },
+      {
+        "y_index": 4,
+        "x_index": 6,
+        "position_m": [
+          5.25,
+          3.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.01696176885439371
+      },
+      {
+        "y_index": 4,
+        "x_index": 7,
+        "position_m": [
+          5.75,
+          3.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.05206262223225622
+      },
+      {
+        "y_index": 4,
+        "x_index": 8,
+        "position_m": [
+          6.25,
+          3.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 2.729976584278063
+      },
+      {
+        "y_index": 4,
+        "x_index": 9,
+        "position_m": [
+          6.75,
+          3.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 6.898909377347813
+      },
+      {
+        "y_index": 4,
+        "x_index": 10,
+        "position_m": [
+          7.25,
+          3.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.09408550232515012
+      },
+      {
+        "y_index": 4,
+        "x_index": 11,
+        "position_m": [
+          7.75,
+          3.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.11192389292904892
+      },
+      {
+        "y_index": 4,
+        "x_index": 12,
+        "position_m": [
+          8.25,
+          3.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.11806285106418812
+      },
+      {
+        "y_index": 4,
+        "x_index": 13,
+        "position_m": [
+          8.75,
+          3.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 3.0391425138983905
+      },
+      {
+        "y_index": 4,
+        "x_index": 14,
+        "position_m": [
+          9.25,
+          3.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 17.039500866239116
+      },
+      {
+        "y_index": 4,
+        "x_index": 15,
+        "position_m": [
+          9.75,
+          3.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.11311217842843746
+      },
+      {
+        "y_index": 4,
+        "x_index": 16,
+        "position_m": [
+          10.25,
+          3.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.023525972111343663
+      },
+      {
+        "y_index": 4,
+        "x_index": 17,
+        "position_m": [
+          10.75,
+          3.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.13569982982680528
+      },
+      {
+        "y_index": 5,
+        "x_index": 0,
+        "position_m": [
+          2.25,
+          3.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.1843561529008113
+      },
+      {
+        "y_index": 5,
+        "x_index": 1,
+        "position_m": [
+          2.75,
+          3.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.3418876682041798
+      },
+      {
+        "y_index": 5,
+        "x_index": 2,
+        "position_m": [
+          3.25,
+          3.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.45139596926337333
+      },
+      {
+        "y_index": 5,
+        "x_index": 3,
+        "position_m": [
+          3.75,
+          3.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.02251524480078615
+      },
+      {
+        "y_index": 5,
+        "x_index": 4,
+        "position_m": [
+          4.25,
+          3.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 1.1245494699502459
+      },
+      {
+        "y_index": 5,
+        "x_index": 5,
+        "position_m": [
+          4.75,
+          3.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.009697574412591337
+      },
+      {
+        "y_index": 5,
+        "x_index": 6,
+        "position_m": [
+          5.25,
+          3.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 3.6296080312774635
+      },
+      {
+        "y_index": 5,
+        "x_index": 7,
+        "position_m": [
+          5.75,
+          3.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 2.7811341476384257
+      },
+      {
+        "y_index": 5,
+        "x_index": 8,
+        "position_m": [
+          6.25,
+          3.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.256636782639454
+      },
+      {
+        "y_index": 5,
+        "x_index": 9,
+        "position_m": [
+          6.75,
+          3.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 7.7514723186994345
+      },
+      {
+        "y_index": 5,
+        "x_index": 10,
+        "position_m": [
+          7.25,
+          3.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.01405322030522882
+      },
+      {
+        "y_index": 5,
+        "x_index": 11,
+        "position_m": [
+          7.75,
+          3.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 3.4223356237816915e-07
+      },
+      {
+        "y_index": 5,
+        "x_index": 12,
+        "position_m": [
+          8.25,
+          3.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 1.4674127851760375
+      },
+      {
+        "y_index": 5,
+        "x_index": 13,
+        "position_m": [
+          8.75,
+          3.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.13195408839359857
+      },
+      {
+        "y_index": 5,
+        "x_index": 14,
+        "position_m": [
+          9.25,
+          3.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 15.25870111105585
+      },
+      {
+        "y_index": 5,
+        "x_index": 15,
+        "position_m": [
+          9.75,
+          3.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.0
+      },
+      {
+        "y_index": 5,
+        "x_index": 16,
+        "position_m": [
+          10.25,
+          3.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 2.7371206101634016e-07
+      },
+      {
+        "y_index": 5,
+        "x_index": 17,
+        "position_m": [
+          10.75,
+          3.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [],
+        "total_inside_distance_m": 0,
+        "absolute_transparent_delta_db": 0.12926728007436594
+      },
+      {
+        "y_index": 6,
+        "x_index": 0,
+        "position_m": [
+          2.25,
+          4.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 0.4072838101874615,
+        "absolute_transparent_delta_db": 0.8071930577239428
+      },
+      {
+        "y_index": 6,
+        "x_index": 1,
+        "position_m": [
+          2.75,
+          4.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 0.48451795948264326,
+        "absolute_transparent_delta_db": 1.4519012539297051
+      },
+      {
+        "y_index": 6,
+        "x_index": 2,
+        "position_m": [
+          3.25,
+          4.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 0.571484372275482,
+        "absolute_transparent_delta_db": 0.6561125153919534
+      },
+      {
+        "y_index": 6,
+        "x_index": 3,
+        "position_m": [
+          3.75,
+          4.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 0.6643721141968923,
+        "absolute_transparent_delta_db": 0.10890298047372937
+      },
+      {
+        "y_index": 6,
+        "x_index": 4,
+        "position_m": [
+          4.25,
+          4.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 0.7610160367319895,
+        "absolute_transparent_delta_db": 1.0090228710196811
+      },
+      {
+        "y_index": 6,
+        "x_index": 5,
+        "position_m": [
+          4.75,
+          4.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 0.8601509715611269,
+        "absolute_transparent_delta_db": 0.19238025714734164
+      },
+      {
+        "y_index": 6,
+        "x_index": 6,
+        "position_m": [
+          5.25,
+          4.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 0.961006328421049,
+        "absolute_transparent_delta_db": 2.680300710806364
+      },
+      {
+        "y_index": 6,
+        "x_index": 7,
+        "position_m": [
+          5.75,
+          4.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.0630925718518258,
+        "absolute_transparent_delta_db": 0.24959331094476767
+      },
+      {
+        "y_index": 6,
+        "x_index": 8,
+        "position_m": [
+          6.25,
+          4.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.1660864689469745,
+        "absolute_transparent_delta_db": 0.17369330838157282
+      },
+      {
+        "y_index": 6,
+        "x_index": 9,
+        "position_m": [
+          6.75,
+          4.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.26976717293738,
+        "absolute_transparent_delta_db": 2.6499123921437757
+      },
+      {
+        "y_index": 6,
+        "x_index": 10,
+        "position_m": [
+          7.25,
+          4.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.37397921292537,
+        "absolute_transparent_delta_db": 2.791936571047785
+      },
+      {
+        "y_index": 6,
+        "x_index": 11,
+        "position_m": [
+          7.75,
+          4.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.4786102479376102,
+        "absolute_transparent_delta_db": 0.048462906067776146
+      },
+      {
+        "y_index": 6,
+        "x_index": 12,
+        "position_m": [
+          8.25,
+          4.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.58357722790355,
+        "absolute_transparent_delta_db": 0.12348569602546888
+      },
+      {
+        "y_index": 6,
+        "x_index": 13,
+        "position_m": [
+          8.75,
+          4.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.6888175128878584,
+        "absolute_transparent_delta_db": 5.763453637749123
+      },
+      {
+        "y_index": 6,
+        "x_index": 14,
+        "position_m": [
+          9.25,
+          4.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.7942830129642988,
+        "absolute_transparent_delta_db": 0.3700246656400452
+      },
+      {
+        "y_index": 6,
+        "x_index": 15,
+        "position_m": [
+          9.75,
+          4.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.8999362234194126,
+        "absolute_transparent_delta_db": 0.035963227100062056
+      },
+      {
+        "y_index": 6,
+        "x_index": 16,
+        "position_m": [
+          10.25,
+          4.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 2.005747481410277,
+        "absolute_transparent_delta_db": 27.251652404824625
+      },
+      {
+        "y_index": 6,
+        "x_index": 17,
+        "position_m": [
+          10.75,
+          4.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.8590118119073107,
+        "absolute_transparent_delta_db": 99.88736330742697
+      },
+      {
+        "y_index": 7,
+        "x_index": 0,
+        "position_m": [
+          2.25,
+          4.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 0.7244254577023868,
+        "absolute_transparent_delta_db": 0.937853906624305
+      },
+      {
+        "y_index": 7,
+        "x_index": 1,
+        "position_m": [
+          2.75,
+          4.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 0.8212044394071054,
+        "absolute_transparent_delta_db": 2.88025980457126
+      },
+      {
+        "y_index": 7,
+        "x_index": 2,
+        "position_m": [
+          3.25,
+          4.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 0.9347848494073059,
+        "absolute_transparent_delta_db": 1.5768833365342232
+      },
+      {
+        "y_index": 7,
+        "x_index": 3,
+        "position_m": [
+          3.75,
+          4.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.0597783701820944,
+        "absolute_transparent_delta_db": 2.330720522529205
+      },
+      {
+        "y_index": 7,
+        "x_index": 4,
+        "position_m": [
+          4.25,
+          4.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.1926018484704222,
+        "absolute_transparent_delta_db": 3.4958572648313435
+      },
+      {
+        "y_index": 7,
+        "x_index": 5,
+        "position_m": [
+          4.75,
+          4.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.330913085024411,
+        "absolute_transparent_delta_db": 5.446874405622317
+      },
+      {
+        "y_index": 7,
+        "x_index": 6,
+        "position_m": [
+          5.25,
+          4.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.473167202542942,
+        "absolute_transparent_delta_db": 0.22939828559871955
+      },
+      {
+        "y_index": 7,
+        "x_index": 7,
+        "position_m": [
+          5.75,
+          4.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.6183247724891552,
+        "absolute_transparent_delta_db": 3.1755267869030774
+      },
+      {
+        "y_index": 7,
+        "x_index": 8,
+        "position_m": [
+          6.25,
+          4.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.7656698524075298,
+        "absolute_transparent_delta_db": 0.664076675429591
+      },
+      {
+        "y_index": 7,
+        "x_index": 9,
+        "position_m": [
+          6.75,
+          4.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.9146974909876642,
+        "absolute_transparent_delta_db": 4.642849652184559
+      },
+      {
+        "y_index": 7,
+        "x_index": 10,
+        "position_m": [
+          7.25,
+          4.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 2.06504344558001,
+        "absolute_transparent_delta_db": 3.5228661860838315
+      },
+      {
+        "y_index": 7,
+        "x_index": 11,
+        "position_m": [
+          7.75,
+          4.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 2.216439459610016,
+        "absolute_transparent_delta_db": 4.526771565612968
+      },
+      {
+        "y_index": 7,
+        "x_index": 12,
+        "position_m": [
+          8.25,
+          4.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 2.368684195908056,
+        "absolute_transparent_delta_db": 3.0251606974687775
+      },
+      {
+        "y_index": 7,
+        "x_index": 13,
+        "position_m": [
+          8.75,
+          4.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 2.521623932631058,
+        "absolute_transparent_delta_db": 4.728184449671183
+      },
+      {
+        "y_index": 7,
+        "x_index": 14,
+        "position_m": [
+          9.25,
+          4.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 2.675139471342705,
+        "absolute_transparent_delta_db": 16.805615556082316
+      },
+      {
+        "y_index": 7,
+        "x_index": 15,
+        "position_m": [
+          9.75,
+          4.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 2.8291370805421585,
+        "absolute_transparent_delta_db": 0.15577600493760713
+      },
+      {
+        "y_index": 7,
+        "x_index": 16,
+        "position_m": [
+          10.25,
+          4.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 2.983542113948849,
+        "absolute_transparent_delta_db": 27.28659604831951
+      },
+      {
+        "y_index": 7,
+        "x_index": 17,
+        "position_m": [
+          10.75,
+          4.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 3.1382944359570524,
+        "absolute_transparent_delta_db": 0.15672671837094043
+      },
+      {
+        "y_index": 8,
+        "x_index": 0,
+        "position_m": [
+          2.25,
+          5.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 0.6806476695030987,
+        "absolute_transparent_delta_db": 0.5106397674211962
+      },
+      {
+        "y_index": 8,
+        "x_index": 1,
+        "position_m": [
+          2.75,
+          5.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 0.7463452619264086,
+        "absolute_transparent_delta_db": 2.6950348594004083
+      },
+      {
+        "y_index": 8,
+        "x_index": 2,
+        "position_m": [
+          3.25,
+          5.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 0.8258518329579462,
+        "absolute_transparent_delta_db": 3.0753643168150617
+      },
+      {
+        "y_index": 8,
+        "x_index": 3,
+        "position_m": [
+          3.75,
+          5.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 0.9155770038614989,
+        "absolute_transparent_delta_db": 3.390499415445248
+      },
+      {
+        "y_index": 8,
+        "x_index": 4,
+        "position_m": [
+          4.25,
+          5.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.012808594947732,
+        "absolute_transparent_delta_db": 3.740835396990896
+      },
+      {
+        "y_index": 8,
+        "x_index": 5,
+        "position_m": [
+          4.75,
+          5.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.1155856085482632,
+        "absolute_transparent_delta_db": 2.2141726008776956
+      },
+      {
+        "y_index": 8,
+        "x_index": 6,
+        "position_m": [
+          5.25,
+          5.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.2225102249061146,
+        "absolute_transparent_delta_db": 1.6402654053924266
+      },
+      {
+        "y_index": 8,
+        "x_index": 7,
+        "position_m": [
+          5.75,
+          5.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.3325844250928336,
+        "absolute_transparent_delta_db": 0.399946483553677
+      },
+      {
+        "y_index": 8,
+        "x_index": 8,
+        "position_m": [
+          6.25,
+          5.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.4450886650998265,
+        "absolute_transparent_delta_db": 0.1916198933870561
+      },
+      {
+        "y_index": 8,
+        "x_index": 9,
+        "position_m": [
+          6.75,
+          5.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.5594971144570926,
+        "absolute_transparent_delta_db": 0.05535024340561279
+      },
+      {
+        "y_index": 8,
+        "x_index": 10,
+        "position_m": [
+          7.25,
+          5.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.6754197235319865,
+        "absolute_transparent_delta_db": 8.078191638852537
+      },
+      {
+        "y_index": 8,
+        "x_index": 11,
+        "position_m": [
+          7.75,
+          5.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.7925627604075671,
+        "absolute_transparent_delta_db": 2.31495820741587
+      },
+      {
+        "y_index": 8,
+        "x_index": 12,
+        "position_m": [
+          8.25,
+          5.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.9107017689843688,
+        "absolute_transparent_delta_db": 9.338849666460277
+      },
+      {
+        "y_index": 8,
+        "x_index": 13,
+        "position_m": [
+          8.75,
+          5.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 2.0296628414591416,
+        "absolute_transparent_delta_db": 2.529288507350671
+      },
+      {
+        "y_index": 8,
+        "x_index": 14,
+        "position_m": [
+          9.25,
+          5.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 2.149309482136064,
+        "absolute_transparent_delta_db": 0.25344539472320093
+      },
+      {
+        "y_index": 8,
+        "x_index": 15,
+        "position_m": [
+          9.75,
+          5.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 2.2695332669956607,
+        "absolute_transparent_delta_db": 6.417079059663479
+      },
+      {
+        "y_index": 8,
+        "x_index": 16,
+        "position_m": [
+          10.25,
+          5.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 2.390247110656134,
+        "absolute_transparent_delta_db": 6.097154440673265
+      },
+      {
+        "y_index": 8,
+        "x_index": 17,
+        "position_m": [
+          10.75,
+          5.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 2.511380347537982,
+        "absolute_transparent_delta_db": 21.732958218413387
+      },
+      {
+        "y_index": 9,
+        "x_index": 0,
+        "position_m": [
+          2.25,
+          5.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 0.5906751613657533,
+        "absolute_transparent_delta_db": 0.13642151245356615
+      },
+      {
+        "y_index": 9,
+        "x_index": 1,
+        "position_m": [
+          2.75,
+          5.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 0.7035243366587296,
+        "absolute_transparent_delta_db": 1.3622765913450294
+      },
+      {
+        "y_index": 9,
+        "x_index": 2,
+        "position_m": [
+          3.25,
+          5.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 0.7619441308270463,
+        "absolute_transparent_delta_db": 1.1528172643909826
+      },
+      {
+        "y_index": 9,
+        "x_index": 3,
+        "position_m": [
+          3.75,
+          5.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 0.8292010107869685,
+        "absolute_transparent_delta_db": 1.1729442515827628
+      },
+      {
+        "y_index": 9,
+        "x_index": 4,
+        "position_m": [
+          4.25,
+          5.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 0.9033232343054985,
+        "absolute_transparent_delta_db": 1.86997270728083
+      },
+      {
+        "y_index": 9,
+        "x_index": 5,
+        "position_m": [
+          4.75,
+          5.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 0.9827586206896548,
+        "absolute_transparent_delta_db": 2.4848607877744158
+      },
+      {
+        "y_index": 9,
+        "x_index": 6,
+        "position_m": [
+          5.25,
+          5.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.06632042041836,
+        "absolute_transparent_delta_db": 0.2563477262687499
+      },
+      {
+        "y_index": 9,
+        "x_index": 7,
+        "position_m": [
+          5.75,
+          5.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.1531119039452387,
+        "absolute_transparent_delta_db": 1.934523476167584
+      },
+      {
+        "y_index": 9,
+        "x_index": 8,
+        "position_m": [
+          6.25,
+          5.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.2424564292549285,
+        "absolute_transparent_delta_db": 0.07713262306914004
+      },
+      {
+        "y_index": 9,
+        "x_index": 9,
+        "position_m": [
+          6.75,
+          5.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.3338410646442367,
+        "absolute_transparent_delta_db": 0.8530738152651836
+      },
+      {
+        "y_index": 9,
+        "x_index": 10,
+        "position_m": [
+          7.25,
+          5.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.426873885255212,
+        "absolute_transparent_delta_db": 3.0155755100397315
+      },
+      {
+        "y_index": 9,
+        "x_index": 11,
+        "position_m": [
+          7.75,
+          5.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.521252534812352,
+        "absolute_transparent_delta_db": 0.21620145451763761
+      },
+      {
+        "y_index": 9,
+        "x_index": 12,
+        "position_m": [
+          8.25,
+          5.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.6167413387677012,
+        "absolute_transparent_delta_db": 0.23266175828613456
+      },
+      {
+        "y_index": 9,
+        "x_index": 13,
+        "position_m": [
+          8.75,
+          5.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.7131546718978472,
+        "absolute_transparent_delta_db": 5.448896647207029
+      },
+      {
+        "y_index": 9,
+        "x_index": 14,
+        "position_m": [
+          9.25,
+          5.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.8103448275862062,
+        "absolute_transparent_delta_db": 3.291803200681642
+      },
+      {
+        "y_index": 9,
+        "x_index": 15,
+        "position_m": [
+          9.75,
+          5.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 1.9081931116237973,
+        "absolute_transparent_delta_db": 81.00619801935164
+      },
+      {
+        "y_index": 9,
+        "x_index": 16,
+        "position_m": [
+          10.25,
+          5.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 2.006603249096981,
+        "absolute_transparent_delta_db": 15.580281553905905
+      },
+      {
+        "y_index": 9,
+        "x_index": 17,
+        "position_m": [
+          10.75,
+          5.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02"
+        ],
+        "total_inside_distance_m": 2.105496459004925,
+        "absolute_transparent_delta_db": 0.3332413680812749
+      },
+      {
+        "y_index": 10,
+        "x_index": 0,
+        "position_m": [
+          2.25,
+          6.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 0.5773076905344079,
+        "absolute_transparent_delta_db": 8.020002059720255
+      },
+      {
+        "y_index": 10,
+        "x_index": 1,
+        "position_m": [
+          2.75,
+          6.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 0.9025147488946186,
+        "absolute_transparent_delta_db": 7.009448681202869
+      },
+      {
+        "y_index": 10,
+        "x_index": 2,
+        "position_m": [
+          3.25,
+          6.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 0.9619041093429905,
+        "absolute_transparent_delta_db": 4.743662645848467
+      },
+      {
+        "y_index": 10,
+        "x_index": 3,
+        "position_m": [
+          3.75,
+          6.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 1.0313427267737927,
+        "absolute_transparent_delta_db": 2.861833040760544
+      },
+      {
+        "y_index": 10,
+        "x_index": 4,
+        "position_m": [
+          4.25,
+          6.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 1.1089444465198088,
+        "absolute_transparent_delta_db": 18.03568475321927
+      },
+      {
+        "y_index": 10,
+        "x_index": 5,
+        "position_m": [
+          4.75,
+          6.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 1.1931175180026075,
+        "absolute_transparent_delta_db": 7.073322288639346
+      },
+      {
+        "y_index": 10,
+        "x_index": 6,
+        "position_m": [
+          5.25,
+          6.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 1.282568789173483,
+        "absolute_transparent_delta_db": 13.811817408305345
+      },
+      {
+        "y_index": 10,
+        "x_index": 7,
+        "position_m": [
+          5.75,
+          6.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 1.3762694674586147,
+        "absolute_transparent_delta_db": 16.581331711048136
+      },
+      {
+        "y_index": 10,
+        "x_index": 8,
+        "position_m": [
+          6.25,
+          6.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 1.473409059309518,
+        "absolute_transparent_delta_db": 13.969267383981403
+      },
+      {
+        "y_index": 10,
+        "x_index": 9,
+        "position_m": [
+          6.75,
+          6.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 1.57335073202117,
+        "absolute_transparent_delta_db": 0.685962041761897
+      },
+      {
+        "y_index": 10,
+        "x_index": 10,
+        "position_m": [
+          7.25,
+          6.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 1.675593165642364,
+        "absolute_transparent_delta_db": 21.841777085697913
+      },
+      {
+        "y_index": 10,
+        "x_index": 11,
+        "position_m": [
+          7.75,
+          6.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 1.779739882242037,
+        "absolute_transparent_delta_db": 19.095512727581358
+      },
+      {
+        "y_index": 10,
+        "x_index": 12,
+        "position_m": [
+          8.25,
+          6.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 1.8854753514798472,
+        "absolute_transparent_delta_db": 21.27645501460598
+      },
+      {
+        "y_index": 10,
+        "x_index": 13,
+        "position_m": [
+          8.75,
+          6.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 1.9925466655847395,
+        "absolute_transparent_delta_db": 18.11227113882333
+      },
+      {
+        "y_index": 10,
+        "x_index": 14,
+        "position_m": [
+          9.25,
+          6.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 2.1007495778715093,
+        "absolute_transparent_delta_db": 2.075210782205261
+      },
+      {
+        "y_index": 10,
+        "x_index": 15,
+        "position_m": [
+          9.75,
+          6.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 2.2099178772573067,
+        "absolute_transparent_delta_db": 26.920752515099863
+      },
+      {
+        "y_index": 10,
+        "x_index": 16,
+        "position_m": [
+          10.25,
+          6.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 2.319915283025484,
+        "absolute_transparent_delta_db": 14.563777635789705
+      },
+      {
+        "y_index": 10,
+        "x_index": 17,
+        "position_m": [
+          10.75,
+          6.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 2.1657529721147517,
+        "absolute_transparent_delta_db": 9.975271712091029
+      },
+      {
+        "y_index": 11,
+        "x_index": 0,
+        "position_m": [
+          2.25,
+          6.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 0.7791625926756969,
+        "absolute_transparent_delta_db": 5.410958203950884
+      },
+      {
+        "y_index": 11,
+        "x_index": 1,
+        "position_m": [
+          2.75,
+          6.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 1.302810798877995,
+        "absolute_transparent_delta_db": 16.838900370101335
+      },
+      {
+        "y_index": 11,
+        "x_index": 2,
+        "position_m": [
+          3.25,
+          6.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 1.388456211368429,
+        "absolute_transparent_delta_db": 5.622420838952536
+      },
+      {
+        "y_index": 11,
+        "x_index": 3,
+        "position_m": [
+          3.75,
+          6.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 1.4712229747458798,
+        "absolute_transparent_delta_db": 13.322088112726547
+      },
+      {
+        "y_index": 11,
+        "x_index": 4,
+        "position_m": [
+          4.25,
+          6.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 1.5647749710610686,
+        "absolute_transparent_delta_db": 16.191757308565585
+      },
+      {
+        "y_index": 11,
+        "x_index": 5,
+        "position_m": [
+          4.75,
+          6.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 1.6672977109097014,
+        "absolute_transparent_delta_db": 15.633074016473614
+      },
+      {
+        "y_index": 11,
+        "x_index": 6,
+        "position_m": [
+          5.25,
+          6.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 1.7772393990840967,
+        "absolute_transparent_delta_db": 19.383052162546193
+      },
+      {
+        "y_index": 11,
+        "x_index": 7,
+        "position_m": [
+          5.75,
+          6.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 1.8933080532801259,
+        "absolute_transparent_delta_db": 11.794030345154503
+      },
+      {
+        "y_index": 11,
+        "x_index": 8,
+        "position_m": [
+          6.25,
+          6.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 2.0144448777964783,
+        "absolute_transparent_delta_db": 101.23982423375779
+      },
+      {
+        "y_index": 11,
+        "x_index": 9,
+        "position_m": [
+          6.75,
+          6.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 2.139789294498892,
+        "absolute_transparent_delta_db": 18.457112147651287
+      },
+      {
+        "y_index": 11,
+        "x_index": 10,
+        "position_m": [
+          7.25,
+          6.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 2.2686439919322225,
+        "absolute_transparent_delta_db": 18.536534357114654
+      },
+      {
+        "y_index": 11,
+        "x_index": 11,
+        "position_m": [
+          7.75,
+          6.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 2.400443745959231,
+        "absolute_transparent_delta_db": 4.063077133819661
+      },
+      {
+        "y_index": 11,
+        "x_index": 12,
+        "position_m": [
+          8.25,
+          6.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 2.5347291908616016,
+        "absolute_transparent_delta_db": 99.18808059455628
+      },
+      {
+        "y_index": 11,
+        "x_index": 13,
+        "position_m": [
+          8.75,
+          6.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 2.6711254636582575,
+        "absolute_transparent_delta_db": 97.77980169103148
+      },
+      {
+        "y_index": 11,
+        "x_index": 14,
+        "position_m": [
+          9.25,
+          6.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 2.8093251311138197,
+        "absolute_transparent_delta_db": 6.534305985254306
+      },
+      {
+        "y_index": 11,
+        "x_index": 15,
+        "position_m": [
+          9.75,
+          6.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 2.949074671845108,
+        "absolute_transparent_delta_db": 25.283892627469584
+      },
+      {
+        "y_index": 11,
+        "x_index": 16,
+        "position_m": [
+          10.25,
+          6.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 3.090163818640606,
+        "absolute_transparent_delta_db": 0.0
+      },
+      {
+        "y_index": 11,
+        "x_index": 17,
+        "position_m": [
+          10.75,
+          6.5,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 3.232417162134113,
+        "absolute_transparent_delta_db": 33.664920891413246
+      },
+      {
+        "y_index": 12,
+        "x_index": 0,
+        "position_m": [
+          2.25,
+          7.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 0.6250826391647134,
+        "absolute_transparent_delta_db": 5.55235489610714
+      },
+      {
+        "y_index": 12,
+        "x_index": 1,
+        "position_m": [
+          2.75,
+          7.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 1.1245635596704044,
+        "absolute_transparent_delta_db": 9.080818318788246
+      },
+      {
+        "y_index": 12,
+        "x_index": 2,
+        "position_m": [
+          3.25,
+          7.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 1.3502754539918478,
+        "absolute_transparent_delta_db": 6.89563262022741
+      },
+      {
+        "y_index": 12,
+        "x_index": 3,
+        "position_m": [
+          3.75,
+          7.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 1.4174604808868678,
+        "absolute_transparent_delta_db": 10.74612032799142
+      },
+      {
+        "y_index": 12,
+        "x_index": 4,
+        "position_m": [
+          4.25,
+          7.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 1.4940999667839496,
+        "absolute_transparent_delta_db": 8.705328554505932
+      },
+      {
+        "y_index": 12,
+        "x_index": 5,
+        "position_m": [
+          4.75,
+          7.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 1.5788176871495314,
+        "absolute_transparent_delta_db": 12.719794229914818
+      },
+      {
+        "y_index": 12,
+        "x_index": 6,
+        "position_m": [
+          5.25,
+          7.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 1.6703849707217855,
+        "absolute_transparent_delta_db": 8.997298974740112
+      },
+      {
+        "y_index": 12,
+        "x_index": 7,
+        "position_m": [
+          5.75,
+          7.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 1.7677377334364035,
+        "absolute_transparent_delta_db": 14.751707460962571
+      },
+      {
+        "y_index": 12,
+        "x_index": 8,
+        "position_m": [
+          6.25,
+          7.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 1.869972598906506,
+        "absolute_transparent_delta_db": 13.534367346225544
+      },
+      {
+        "y_index": 12,
+        "x_index": 9,
+        "position_m": [
+          6.75,
+          7.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 1.9763320646470475,
+        "absolute_transparent_delta_db": 9.647174722686124
+      },
+      {
+        "y_index": 12,
+        "x_index": 10,
+        "position_m": [
+          7.25,
+          7.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 2.086185375628829,
+        "absolute_transparent_delta_db": 1.098550036445431
+      },
+      {
+        "y_index": 12,
+        "x_index": 11,
+        "position_m": [
+          7.75,
+          7.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 2.1990089803972523,
+        "absolute_transparent_delta_db": 17.992148821288296
+      },
+      {
+        "y_index": 12,
+        "x_index": 12,
+        "position_m": [
+          8.25,
+          7.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 2.3143685214097935,
+        "absolute_transparent_delta_db": 3.998146111732879
+      },
+      {
+        "y_index": 12,
+        "x_index": 13,
+        "position_m": [
+          8.75,
+          7.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 2.431903142101259,
+        "absolute_transparent_delta_db": 4.384469568551708
+      },
+      {
+        "y_index": 12,
+        "x_index": 14,
+        "position_m": [
+          9.25,
+          7.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 2.5513122535032875,
+        "absolute_transparent_delta_db": 19.316979929512506
+      },
+      {
+        "y_index": 12,
+        "x_index": 15,
+        "position_m": [
+          9.75,
+          7.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 2.672344592269998,
+        "absolute_transparent_delta_db": 12.939008753338271
+      },
+      {
+        "y_index": 12,
+        "x_index": 16,
+        "position_m": [
+          10.25,
+          7.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 2.794789277823644,
+        "absolute_transparent_delta_db": 22.571553145495088
+      },
+      {
+        "y_index": 12,
+        "x_index": 17,
+        "position_m": [
+          10.75,
+          7.0,
+          1.5
+        ],
+        "intersected_canopy_rows": [
+          "canopy_row_02",
+          "canopy_row_03"
+        ],
+        "total_inside_distance_m": 2.918468550059421,
+        "absolute_transparent_delta_db": 23.394939203850036
+      }
+    ]
+  },
+  "current_mean_abs_difference_db": 24.200467027338757,
+  "weak_loss_vs_transparent_mean_abs_difference_db": 8.62650084877567,
+  "current_vs_weak_loss_mean_abs_difference_db": 9.75275541051428,
+  "single_factor_diagnostics_vs_current": {
+    "current_refraction_off": {
+      "change": "Set PathSolver and RadioMapSolver refraction to false; leave current material and geometry unchanged.",
+      "mean_abs_map_change_db_vs_current": 6.2026265030607926,
+      "median_signed_map_change_db_vs_current": 0.0,
+      "min_map_change_db_vs_current": -5.272213058266459,
+      "max_map_change_db_vs_current": 87.16995579656788,
+      "paths_with_refraction": {
+        "RX_A": 0,
+        "RX_B": 0,
+        "RX_C": 0
+      },
+      "solver": {
+        "path_solver": {
+          "max_depth": 2,
+          "samples_per_source": 16000,
+          "seed": 42,
+          "los": true,
+          "specular_reflection": true,
+          "refraction": false,
+          "diffraction": false,
+          "diffuse_reflection": false
+        },
+        "radio_map_solver": {
+          "max_depth": 2,
+          "samples_per_transmitter": 45000,
+          "seed": 42,
+          "los": true,
+          "specular_reflection": true,
+          "refraction": false,
+          "diffraction": false,
+          "diffuse_reflection": false
+        }
+      },
+      "material": {
+        "status": "CURRENT PLACEHOLDER",
+        "source": "Existing config/cea_demo.yaml canopy_placeholder values; unchanged in the current case.",
+        "canopy_present": true,
+        "properties": {
+          "relative_permittivity": 8.0,
+          "conductivity_s_per_m": 0.25,
+          "thickness_m": 0.8,
+          "scattering_coefficient": 0.0,
+          "xpd_coefficient": 0.0,
+          "scattering_pattern": "lambertian"
+        }
+      }
+    },
+    "current_lower_permittivity": {
+      "change": "Lower epsilon_r only relative to current.",
+      "mean_abs_map_change_db_vs_current": 0.2544237508302049,
+      "median_signed_map_change_db_vs_current": 0.0,
+      "min_map_change_db_vs_current": -3.046245782739227,
+      "max_map_change_db_vs_current": 7.712741449950045e-07,
+      "paths_with_refraction": {
+        "RX_A": 0,
+        "RX_B": 0,
+        "RX_C": 0
+      },
+      "solver": {
+        "path_solver": {
+          "max_depth": 2,
+          "samples_per_source": 16000,
+          "seed": 42,
+          "los": true,
+          "specular_reflection": true,
+          "refraction": true,
+          "diffraction": false,
+          "diffuse_reflection": false
+        },
+        "radio_map_solver": {
+          "max_depth": 2,
+          "samples_per_transmitter": 45000,
+          "seed": 42,
+          "los": true,
+          "specular_reflection": true,
+          "refraction": true,
+          "diffraction": false,
+          "diffuse_reflection": false
+        }
+      },
+      "material": {
+        "status": "CONTROLLED SENSITIVITY TEST",
+        "source": "Lower epsilon_r only relative to current.",
+        "canopy_present": true,
+        "properties": {
+          "relative_permittivity": 2.0,
+          "conductivity_s_per_m": 0.25,
+          "thickness_m": 0.8,
+          "scattering_coefficient": 0.0,
+          "xpd_coefficient": 0.0,
+          "scattering_pattern": "lambertian"
+        }
+      }
+    },
+    "current_lower_conductivity": {
+      "change": "Lower conductivity only relative to current.",
+      "mean_abs_map_change_db_vs_current": 10.477795313215527,
+      "median_signed_map_change_db_vs_current": 0.0,
+      "min_map_change_db_vs_current": -13.21994111748937,
+      "max_map_change_db_vs_current": 98.85415974882673,
+      "paths_with_refraction": {
+        "RX_A": 0,
+        "RX_B": 0,
+        "RX_C": 1
+      },
+      "solver": {
+        "path_solver": {
+          "max_depth": 2,
+          "samples_per_source": 16000,
+          "seed": 42,
+          "los": true,
+          "specular_reflection": true,
+          "refraction": true,
+          "diffraction": false,
+          "diffuse_reflection": false
+        },
+        "radio_map_solver": {
+          "max_depth": 2,
+          "samples_per_transmitter": 45000,
+          "seed": 42,
+          "los": true,
+          "specular_reflection": true,
+          "refraction": true,
+          "diffraction": false,
+          "diffuse_reflection": false
+        }
+      },
+      "material": {
+        "status": "CONTROLLED SENSITIVITY TEST",
+        "source": "Lower conductivity only relative to current.",
+        "canopy_present": true,
+        "properties": {
+          "relative_permittivity": 8.0,
+          "conductivity_s_per_m": 0.01,
+          "thickness_m": 0.8,
+          "scattering_coefficient": 0.0,
+          "xpd_coefficient": 0.0,
+          "scattering_pattern": "lambertian"
+        }
+      }
+    },
+    "current_thinner_slab": {
+      "change": "Lower RadioMaterial slab thickness only relative to current; mesh geometry is unchanged.",
+      "mean_abs_map_change_db_vs_current": 4.85627855337005,
+      "median_signed_map_change_db_vs_current": 0.0,
+      "min_map_change_db_vs_current": -1.7602451359050377,
+      "max_map_change_db_vs_current": 89.01635451582302,
+      "paths_with_refraction": {
+        "RX_A": 0,
+        "RX_B": 0,
+        "RX_C": 1
+      },
+      "solver": {
+        "path_solver": {
+          "max_depth": 2,
+          "samples_per_source": 16000,
+          "seed": 42,
+          "los": true,
+          "specular_reflection": true,
+          "refraction": true,
+          "diffraction": false,
+          "diffuse_reflection": false
+        },
+        "radio_map_solver": {
+          "max_depth": 2,
+          "samples_per_transmitter": 45000,
+          "seed": 42,
+          "los": true,
+          "specular_reflection": true,
+          "refraction": true,
+          "diffraction": false,
+          "diffuse_reflection": false
+        }
+      },
+      "material": {
+        "status": "CONTROLLED SENSITIVITY TEST",
+        "source": "Lower RadioMaterial slab thickness only relative to current; mesh geometry is unchanged.",
+        "canopy_present": true,
+        "properties": {
+          "relative_permittivity": 8.0,
+          "conductivity_s_per_m": 0.25,
+          "thickness_m": 0.1,
+          "scattering_coefficient": 0.0,
+          "xpd_coefficient": 0.0,
+          "scattering_pattern": "lambertian"
+        }
+      }
+    }
+  },
+  "solver_flags_by_core_case": {
+    "empty": {
+      "path_solver": {
+        "max_depth": 2,
+        "samples_per_source": 16000,
+        "seed": 42,
+        "los": true,
+        "specular_reflection": true,
+        "refraction": true,
+        "diffraction": false,
+        "diffuse_reflection": false
+      },
+      "radio_map_solver": {
+        "max_depth": 2,
+        "samples_per_transmitter": 45000,
+        "seed": 42,
+        "los": true,
+        "specular_reflection": true,
+        "refraction": true,
+        "diffraction": false,
+        "diffuse_reflection": false
+      }
+    },
+    "transparent": {
+      "path_solver": {
+        "max_depth": 2,
+        "samples_per_source": 16000,
+        "seed": 42,
+        "los": true,
+        "specular_reflection": true,
+        "refraction": true,
+        "diffraction": false,
+        "diffuse_reflection": false
+      },
+      "radio_map_solver": {
+        "max_depth": 2,
+        "samples_per_transmitter": 45000,
+        "seed": 42,
+        "los": true,
+        "specular_reflection": true,
+        "refraction": true,
+        "diffraction": false,
+        "diffuse_reflection": false
+      }
+    },
+    "weak_loss": {
+      "path_solver": {
+        "max_depth": 2,
+        "samples_per_source": 16000,
+        "seed": 42,
+        "los": true,
+        "specular_reflection": true,
+        "refraction": true,
+        "diffraction": false,
+        "diffuse_reflection": false
+      },
+      "radio_map_solver": {
+        "max_depth": 2,
+        "samples_per_transmitter": 45000,
+        "seed": 42,
+        "los": true,
+        "specular_reflection": true,
+        "refraction": true,
+        "diffraction": false,
+        "diffuse_reflection": false
+      }
+    },
+    "current": {
+      "path_solver": {
+        "max_depth": 2,
+        "samples_per_source": 16000,
+        "seed": 42,
+        "los": true,
+        "specular_reflection": true,
+        "refraction": true,
+        "diffraction": false,
+        "diffuse_reflection": false
+      },
+      "radio_map_solver": {
+        "max_depth": 2,
+        "samples_per_transmitter": 45000,
+        "seed": 42,
+        "los": true,
+        "specular_reflection": true,
+        "refraction": true,
+        "diffraction": false,
+        "diffuse_reflection": false
+      }
+    }
+  },
+  "material_by_core_case": {
+    "empty": {
+      "status": "CONTROL",
+      "source": "No canopy object in this reference case.",
+      "canopy_present": false,
+      "properties": null
+    },
+    "transparent": {
+      "status": "CONTROL",
+      "source": "Analytic free-space-matched Sionna material input; test control only, not vegetation.",
+      "canopy_present": true,
+      "properties": {
+        "relative_permittivity": 1.0,
+        "conductivity_s_per_m": 0.0,
+        "thickness_m": 0.8,
+        "scattering_coefficient": 0.0,
+        "xpd_coefficient": 0.0,
+        "scattering_pattern": "lambertian"
+      }
+    },
+    "weak_loss": {
+      "status": "WEAK-LOSS DEMO PLACEHOLDER",
+      "source": "Arbitrary mild-loss test values chosen for sensitivity study; not crop data or validated.",
+      "canopy_present": true,
+      "properties": {
+        "relative_permittivity": 2.0,
+        "conductivity_s_per_m": 0.01,
+        "thickness_m": 0.8,
+        "scattering_coefficient": 0.0,
+        "xpd_coefficient": 0.0,
+        "scattering_pattern": "lambertian"
+      }
+    },
+    "current": {
+      "status": "CURRENT PLACEHOLDER",
+      "source": "Existing config/cea_demo.yaml canopy_placeholder values; unchanged in the current case.",
+      "canopy_present": true,
+      "properties": {
+        "relative_permittivity": 8.0,
+        "conductivity_s_per_m": 0.25,
+        "thickness_m": 0.8,
+        "scattering_coefficient": 0.0,
+        "xpd_coefficient": 0.0,
+        "scattering_pattern": "lambertian"
+      }
+    }
+  },
+  "representative_receiver_summary": [
+    {
+      "scenario": "empty",
+      "receiver": "RX_A",
+      "path_count": 26,
+      "los_present": true,
+      "strongest_path_coefficient_magnitude_db_re_1": -40.42627477015752,
+      "strongest_path_coefficient_power_db": -40.42627477015752,
+      "strongest_path_delay_ns": 3.482511281967163,
+      "strongest_path_length_m_from_delay": 1.0440306663513184,
+      "aggregate_path_coefficient_power_linear": 0.00010536299786975114,
+      "aggregate_path_coefficient_power_db": -39.77311880986971,
+      "paths_with_specular_reflection": 25,
+      "paths_with_refraction": 0,
+      "paths_with_diffuse_scattering": 0,
+      "paths_with_diffraction": 0,
+      "paths_with_two_canopy_refractions": 0,
+      "interaction_classification_source": "paths.interactions and paths.objects from Sionna Paths API"
+    },
+    {
+      "scenario": "empty",
+      "receiver": "RX_B",
+      "path_count": 25,
+      "los_present": true,
+      "strongest_path_coefficient_magnitude_db_re_1": -55.62588111708501,
+      "strongest_path_coefficient_power_db": -55.62588111708501,
+      "strongest_path_delay_ns": 20.038846969604492,
+      "strongest_path_length_m_from_delay": 6.007494926452637,
+      "aggregate_path_coefficient_power_linear": 7.0004978951310206e-06,
+      "aggregate_path_coefficient_power_db": -51.548710706402815,
+      "paths_with_specular_reflection": 24,
+      "paths_with_refraction": 0,
+      "paths_with_diffuse_scattering": 0,
+      "paths_with_diffraction": 0,
+      "paths_with_two_canopy_refractions": 0,
+      "interaction_classification_source": "paths.interactions and paths.objects from Sionna Paths API"
+    },
+    {
+      "scenario": "empty",
+      "receiver": "RX_C",
+      "path_count": 25,
+      "los_present": true,
+      "strongest_path_coefficient_magnitude_db_re_1": -59.439706164927564,
+      "strongest_path_coefficient_power_db": -59.439706164927564,
+      "strongest_path_delay_ns": 31.085952758789062,
+      "strongest_path_length_m_from_delay": 9.319334030151367,
+      "aggregate_path_coefficient_power_linear": 4.116233881024454e-06,
+      "aggregate_path_coefficient_power_db": -53.85499956953183,
+      "paths_with_specular_reflection": 24,
+      "paths_with_refraction": 0,
+      "paths_with_diffuse_scattering": 0,
+      "paths_with_diffraction": 0,
+      "paths_with_two_canopy_refractions": 0,
+      "interaction_classification_source": "paths.interactions and paths.objects from Sionna Paths API"
+    },
+    {
+      "scenario": "transparent",
+      "receiver": "RX_A",
+      "path_count": 15,
+      "los_present": true,
+      "strongest_path_coefficient_magnitude_db_re_1": -40.42627477015752,
+      "strongest_path_coefficient_power_db": -40.42627477015752,
+      "strongest_path_delay_ns": 3.482511281967163,
+      "strongest_path_length_m_from_delay": 1.0440306663513184,
+      "aggregate_path_coefficient_power_linear": 9.932149475994092e-05,
+      "aggregate_path_coefficient_power_db": -40.029567530611985,
+      "paths_with_specular_reflection": 14,
+      "paths_with_refraction": 0,
+      "paths_with_diffuse_scattering": 0,
+      "paths_with_diffraction": 0,
+      "paths_with_two_canopy_refractions": 0,
+      "interaction_classification_source": "paths.interactions and paths.objects from Sionna Paths API"
+    },
+    {
+      "scenario": "transparent",
+      "receiver": "RX_B",
+      "path_count": 15,
+      "los_present": true,
+      "strongest_path_coefficient_magnitude_db_re_1": -55.62588111708501,
+      "strongest_path_coefficient_power_db": -55.62588111708501,
+      "strongest_path_delay_ns": 20.038846969604492,
+      "strongest_path_length_m_from_delay": 6.007494926452637,
+      "aggregate_path_coefficient_power_linear": 4.264567799998959e-06,
+      "aggregate_path_coefficient_power_db": -53.70124976591817,
+      "paths_with_specular_reflection": 14,
+      "paths_with_refraction": 0,
+      "paths_with_diffuse_scattering": 0,
+      "paths_with_diffraction": 0,
+      "paths_with_two_canopy_refractions": 0,
+      "interaction_classification_source": "paths.interactions and paths.objects from Sionna Paths API"
+    },
+    {
+      "scenario": "transparent",
+      "receiver": "RX_C",
+      "path_count": 7,
+      "los_present": false,
+      "strongest_path_coefficient_magnitude_db_re_1": -59.43970534662459,
+      "strongest_path_coefficient_power_db": -59.43970534662459,
+      "strongest_path_delay_ns": 31.085952758789062,
+      "strongest_path_length_m_from_delay": 9.319334030151367,
+      "aggregate_path_coefficient_power_linear": 1.171317421648268e-06,
+      "aggregate_path_coefficient_power_db": -59.31325397165359,
+      "paths_with_specular_reflection": 6,
+      "paths_with_refraction": 1,
+      "paths_with_diffuse_scattering": 0,
+      "paths_with_diffraction": 0,
+      "paths_with_two_canopy_refractions": 1,
+      "interaction_classification_source": "paths.interactions and paths.objects from Sionna Paths API"
+    },
+    {
+      "scenario": "weak_loss",
+      "receiver": "RX_A",
+      "path_count": 15,
+      "los_present": true,
+      "strongest_path_coefficient_magnitude_db_re_1": -40.42627477015752,
+      "strongest_path_coefficient_power_db": -40.42627477015752,
+      "strongest_path_delay_ns": 3.482511281967163,
+      "strongest_path_length_m_from_delay": 1.0440306663513184,
+      "aggregate_path_coefficient_power_linear": 9.932149475994092e-05,
+      "aggregate_path_coefficient_power_db": -40.029567530611985,
+      "paths_with_specular_reflection": 14,
+      "paths_with_refraction": 0,
+      "paths_with_diffuse_scattering": 0,
+      "paths_with_diffraction": 0,
+      "paths_with_two_canopy_refractions": 0,
+      "interaction_classification_source": "paths.interactions and paths.objects from Sionna Paths API"
+    },
+    {
+      "scenario": "weak_loss",
+      "receiver": "RX_B",
+      "path_count": 23,
+      "los_present": true,
+      "strongest_path_coefficient_magnitude_db_re_1": -55.62588111708501,
+      "strongest_path_coefficient_power_db": -55.62588111708501,
+      "strongest_path_delay_ns": 20.038846969604492,
+      "strongest_path_length_m_from_delay": 6.007494926452637,
+      "aggregate_path_coefficient_power_linear": 7.587549016485489e-06,
+      "aggregate_path_coefficient_power_db": -51.198984903126785,
+      "paths_with_specular_reflection": 22,
+      "paths_with_refraction": 0,
+      "paths_with_diffuse_scattering": 0,
+      "paths_with_diffraction": 0,
+      "paths_with_two_canopy_refractions": 0,
+      "interaction_classification_source": "paths.interactions and paths.objects from Sionna Paths API"
+    },
+    {
+      "scenario": "weak_loss",
+      "receiver": "RX_C",
+      "path_count": 7,
+      "los_present": false,
+      "strongest_path_coefficient_magnitude_db_re_1": -76.90915368374053,
+      "strongest_path_coefficient_power_db": -76.90915368374053,
+      "strongest_path_delay_ns": 34.6817512512207,
+      "strongest_path_length_m_from_delay": 10.397327423095703,
+      "aggregate_path_coefficient_power_linear": 3.416943497554783e-08,
+      "aggregate_path_coefficient_power_db": -74.66362202618579,
+      "paths_with_specular_reflection": 6,
+      "paths_with_refraction": 1,
+      "paths_with_diffuse_scattering": 0,
+      "paths_with_diffraction": 0,
+      "paths_with_two_canopy_refractions": 1,
+      "interaction_classification_source": "paths.interactions and paths.objects from Sionna Paths API"
+    },
+    {
+      "scenario": "current",
+      "receiver": "RX_A",
+      "path_count": 15,
+      "los_present": true,
+      "strongest_path_coefficient_magnitude_db_re_1": -40.42627477015752,
+      "strongest_path_coefficient_power_db": -40.42627477015752,
+      "strongest_path_delay_ns": 3.482511281967163,
+      "strongest_path_length_m_from_delay": 1.0440306663513184,
+      "aggregate_path_coefficient_power_linear": 9.932149475994092e-05,
+      "aggregate_path_coefficient_power_db": -40.029567530611985,
+      "paths_with_specular_reflection": 14,
+      "paths_with_refraction": 0,
+      "paths_with_diffuse_scattering": 0,
+      "paths_with_diffraction": 0,
+      "paths_with_two_canopy_refractions": 0,
+      "interaction_classification_source": "paths.interactions and paths.objects from Sionna Paths API"
+    },
+    {
+      "scenario": "current",
+      "receiver": "RX_B",
+      "path_count": 23,
+      "los_present": true,
+      "strongest_path_coefficient_magnitude_db_re_1": -55.62588111708501,
+      "strongest_path_coefficient_power_db": -55.62588111708501,
+      "strongest_path_delay_ns": 20.038846969604492,
+      "strongest_path_length_m_from_delay": 6.007494926452637,
+      "aggregate_path_coefficient_power_linear": 1.0578870593584407e-05,
+      "aggregate_path_coefficient_power_db": -49.755606953590515,
+      "paths_with_specular_reflection": 22,
+      "paths_with_refraction": 0,
+      "paths_with_diffuse_scattering": 0,
+      "paths_with_diffraction": 0,
+      "paths_with_two_canopy_refractions": 0,
+      "interaction_classification_source": "paths.interactions and paths.objects from Sionna Paths API"
+    },
+    {
+      "scenario": "current",
+      "receiver": "RX_C",
+      "path_count": 6,
+      "los_present": false,
+      "strongest_path_coefficient_magnitude_db_re_1": -76.90915368374053,
+      "strongest_path_coefficient_power_db": -76.90915368374053,
+      "strongest_path_delay_ns": 34.6817512512207,
+      "strongest_path_length_m_from_delay": 10.397327423095703,
+      "aggregate_path_coefficient_power_linear": 3.3612949237117243e-08,
+      "aggregate_path_coefficient_power_db": -74.73493380383448,
+      "paths_with_specular_reflection": 6,
+      "paths_with_refraction": 0,
+      "paths_with_diffuse_scattering": 0,
+      "paths_with_diffraction": 0,
+      "paths_with_two_canopy_refractions": 0,
+      "interaction_classification_source": "paths.interactions and paths.objects from Sionna Paths API"
+    }
+  ],
+  "rx_c_canopy_traversal_paths": {
+    "empty": [],
+    "transparent": [
+      {
+        "path_index": 5,
+        "coefficient_magnitude_db_re_1": -59.43970534662459,
+        "delay_ns": 31.085952758789062,
+        "path_length_m_from_delay": 9.319334030151367,
+        "interaction_types": [
+          "refraction",
+          "refraction"
+        ],
+        "interacted_objects": [
+          "canopy_row_02",
+          "canopy_row_02"
+        ]
+      }
+    ],
+    "weak_loss": [
+      {
+        "path_index": 6,
+        "coefficient_magnitude_db_re_1": -92.54545961248888,
+        "delay_ns": 31.085952758789062,
+        "path_length_m_from_delay": 9.319334030151367,
+        "interaction_types": [
+          "refraction",
+          "refraction"
+        ],
+        "interacted_objects": [
+          "canopy_row_02",
+          "canopy_row_02"
+        ]
+      }
+    ],
+    "current": []
+  },
+  "geometry_interpretation": "The canopy is three separate OBJ meshes, one closed cuboid per row; each OBJ has 8 vertices and 6 quadrilateral faces. Sionna RadioMaterial uses a plane-slab Fresnel model at an intersected surface, not a calibrated volumetric plant model. The 0.8 m material slab thickness is distinct from the cuboid's 0.6 m plan width and may be an important model mismatch.",
+  "interaction_interpretation": "PathSolver refraction is enabled in all four core cases. A path classified with refraction at two canopy-row interactions is evidence that the ray solution traverses the closed proxy. The interaction type and object names are read from Paths.interactions and Paths.objects; no path class is inferred from amplitude.",
+  "limitations": [
+    "Material values are controls/placeholders, not plant dielectric measurements.",
+    "Sionna's slab material model is not a validated thick vegetation volume model.",
+    "Radio-map path gain is clipped at 1e-15 for dB plots and differences.",
+    "Aggregate path-coefficient power is the sum of individual |a|^2 values and is not RSS; coherent CIR combination is delay-dependent.",
+    "Path length is estimated as c0 times the Sionna absolute path delay."
+  ],
+  "slab_test": {
+    "description": "Isolated, single-surface Sionna RadioMaterial slab test.",
+    "sionna_api_supports_refraction": true,
+    "solver_refraction_enabled": true,
+    "single_surface_used": true,
+    "cases": {
+      "no_slab": {
+        "case": "no_slab",
+        "purpose": "Test Sionna RT slab transmission in an isolated TX -> slab -> RX geometry.",
+        "frequency_hz": 2400000000.0,
+        "transmitter": {
+          "name": "TX",
+          "position_m": [
+            -2.0,
+            0.0,
+            1.0
+          ],
+          "orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "power_dbm": 23.0
+        },
+        "receiver": {
+          "name": "RX",
+          "role": "opposite side of slab",
+          "position_m": [
+            2.0,
+            0.0,
+            1.0
+          ]
+        },
+        "surface_geometry": "single open planar quad at x=0 spanning y=[-1.5,1.5] m and z=[0,2] m; absent for no_slab",
+        "rf_material": null,
+        "solver": {
+          "sionna_rt_path_solver": "PathSolver",
+          "max_depth": 2,
+          "samples_per_source": 24000,
+          "seed": 42,
+          "deterministic": true,
+          "los": true,
+          "specular_reflection": true,
+          "refraction": true,
+          "diffuse_reflection": false,
+          "diffraction": false
+        },
+        "path_api": "paths.valid, paths.cir(), paths.interactions, paths.objects, paths.vertices",
+        "status": "NOT VALIDATED",
+        "summary": {
+          "valid_paths": 1,
+          "direct_los_paths": 1,
+          "refraction_paths": 0,
+          "reflection_paths": 0,
+          "strongest_refraction_db": null
+        },
+        "paths": [
+          {
+            "receiver": "RX",
+            "path_index": 0,
+            "delay_s": 1.3342563498497384e-08,
+            "delay_ns": 13.34256362915039,
+            "path_length_m_from_delay": 3.999999761581421,
+            "a_real": 0.0024610424879938364,
+            "a_imag": -0.00034477721783332527,
+            "magnitude": 0.002485075732693076,
+            "magnitude_db": -52.0932074320574,
+            "interaction_type_ids": [],
+            "interaction_types": [],
+            "interacted_objects": [],
+            "interaction_vertices_m": [],
+            "is_los": true
+          }
+        ]
+      },
+      "transparent": {
+        "case": "transparent",
+        "purpose": "Test Sionna RT slab transmission in an isolated TX -> slab -> RX geometry.",
+        "frequency_hz": 2400000000.0,
+        "transmitter": {
+          "name": "TX",
+          "position_m": [
+            -2.0,
+            0.0,
+            1.0
+          ],
+          "orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "power_dbm": 23.0
+        },
+        "receiver": {
+          "name": "RX",
+          "role": "opposite side of slab",
+          "position_m": [
+            2.0,
+            0.0,
+            1.0
+          ]
+        },
+        "surface_geometry": "single open planar quad at x=0 spanning y=[-1.5,1.5] m and z=[0,2] m; absent for no_slab",
+        "rf_material": {
+          "status": "CONTROL",
+          "source": "Free-space matched eps_r=1, sigma=0 test surface; not vegetation.",
+          "relative_permittivity": 1.0,
+          "conductivity_s_per_m": 0.0,
+          "thickness_m": 0.8,
+          "scattering_coefficient": 0.0,
+          "xpd_coefficient": 0.0
+        },
+        "solver": {
+          "sionna_rt_path_solver": "PathSolver",
+          "max_depth": 2,
+          "samples_per_source": 24000,
+          "seed": 42,
+          "deterministic": true,
+          "los": true,
+          "specular_reflection": true,
+          "refraction": true,
+          "diffuse_reflection": false,
+          "diffraction": false
+        },
+        "path_api": "paths.valid, paths.cir(), paths.interactions, paths.objects, paths.vertices",
+        "status": "NOT VALIDATED",
+        "summary": {
+          "valid_paths": 1,
+          "direct_los_paths": 0,
+          "refraction_paths": 1,
+          "reflection_paths": 0,
+          "strongest_refraction_db": -52.093208245852054
+        },
+        "paths": [
+          {
+            "receiver": "RX",
+            "path_index": 0,
+            "delay_s": 1.3342563498497384e-08,
+            "delay_ns": 13.34256362915039,
+            "path_length_m_from_delay": 3.999999761581421,
+            "a_real": -0.0022253377828747034,
+            "a_imag": -0.0011061069089919329,
+            "magnitude": 0.0024850754998624325,
+            "magnitude_db": -52.093208245852054,
+            "interaction_type_ids": [
+              4
+            ],
+            "interaction_types": [
+              "refraction"
+            ],
+            "interacted_objects": [
+              "slab_surface"
+            ],
+            "interaction_vertices_m": [
+              [
+                0.0,
+                -5.960464477539063e-08,
+                0.9999999403953552
+              ]
+            ],
+            "is_los": false
+          }
+        ]
+      },
+      "weak_loss": {
+        "case": "weak_loss",
+        "purpose": "Test Sionna RT slab transmission in an isolated TX -> slab -> RX geometry.",
+        "frequency_hz": 2400000000.0,
+        "transmitter": {
+          "name": "TX",
+          "position_m": [
+            -2.0,
+            0.0,
+            1.0
+          ],
+          "orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "power_dbm": 23.0
+        },
+        "receiver": {
+          "name": "RX",
+          "role": "opposite side of slab",
+          "position_m": [
+            2.0,
+            0.0,
+            1.0
+          ]
+        },
+        "surface_geometry": "single open planar quad at x=0 spanning y=[-1.5,1.5] m and z=[0,2] m; absent for no_slab",
+        "rf_material": {
+          "status": "WEAK-LOSS DEMO PLACEHOLDER",
+          "source": "Arbitrary mild-loss test input; not crop measurement or paper data.",
+          "relative_permittivity": 2.0,
+          "conductivity_s_per_m": 0.01,
+          "thickness_m": 0.8,
+          "scattering_coefficient": 0.0,
+          "xpd_coefficient": 0.0
+        },
+        "solver": {
+          "sionna_rt_path_solver": "PathSolver",
+          "max_depth": 2,
+          "samples_per_source": 24000,
+          "seed": 42,
+          "deterministic": true,
+          "los": true,
+          "specular_reflection": true,
+          "refraction": true,
+          "diffuse_reflection": false,
+          "diffraction": false
+        },
+        "path_api": "paths.valid, paths.cir(), paths.interactions, paths.objects, paths.vertices",
+        "status": "NOT VALIDATED",
+        "summary": {
+          "valid_paths": 1,
+          "direct_los_paths": 0,
+          "refraction_paths": 1,
+          "reflection_paths": 0,
+          "strongest_refraction_db": -61.5860342599169
+        },
+        "paths": [
+          {
+            "receiver": "RX",
+            "path_index": 0,
+            "delay_s": 1.3342563498497384e-08,
+            "delay_ns": 13.34256362915039,
+            "path_length_m_from_delay": 3.999999761581421,
+            "a_real": 0.000727820151951164,
+            "a_imag": -0.00040538510074838996,
+            "magnitude": 0.0008331022108905017,
+            "magnitude_db": -61.5860342599169,
+            "interaction_type_ids": [
+              4
+            ],
+            "interaction_types": [
+              "refraction"
+            ],
+            "interacted_objects": [
+              "slab_surface"
+            ],
+            "interaction_vertices_m": [
+              [
+                0.0,
+                -5.960464477539063e-08,
+                0.9999999403953552
+              ]
+            ],
+            "is_los": false
+          }
+        ]
+      },
+      "current": {
+        "case": "current",
+        "purpose": "Test Sionna RT slab transmission in an isolated TX -> slab -> RX geometry.",
+        "frequency_hz": 2400000000.0,
+        "transmitter": {
+          "name": "TX",
+          "position_m": [
+            -2.0,
+            0.0,
+            1.0
+          ],
+          "orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "power_dbm": 23.0
+        },
+        "receiver": {
+          "name": "RX",
+          "role": "opposite side of slab",
+          "position_m": [
+            2.0,
+            0.0,
+            1.0
+          ]
+        },
+        "surface_geometry": "single open planar quad at x=0 spanning y=[-1.5,1.5] m and z=[0,2] m; absent for no_slab",
+        "rf_material": {
+          "status": "CURRENT PLACEHOLDER",
+          "source": "Existing config/cea_demo.yaml canopy_placeholder values.",
+          "relative_permittivity": 8.0,
+          "conductivity_s_per_m": 0.25,
+          "thickness_m": 0.8,
+          "scattering_coefficient": 0.0,
+          "xpd_coefficient": 0.0
+        },
+        "solver": {
+          "sionna_rt_path_solver": "PathSolver",
+          "max_depth": 2,
+          "samples_per_source": 24000,
+          "seed": 42,
+          "deterministic": true,
+          "los": true,
+          "specular_reflection": true,
+          "refraction": true,
+          "diffuse_reflection": false,
+          "diffraction": false
+        },
+        "path_api": "paths.valid, paths.cir(), paths.interactions, paths.objects, paths.vertices",
+        "status": "NOT VALIDATED",
+        "summary": {
+          "valid_paths": 0,
+          "direct_los_paths": 0,
+          "refraction_paths": 0,
+          "reflection_paths": 0,
+          "strongest_refraction_db": null
+        },
+        "paths": []
+      }
+    }
+  }
+}

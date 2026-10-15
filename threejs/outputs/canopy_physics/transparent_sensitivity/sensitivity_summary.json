@@ -1,0 +1,292 @@
+{
+  "reference": {
+    "solver": {
+      "path_solver": {
+        "max_depth": 2,
+        "samples_per_source": 16000,
+        "seed": 42,
+        "los": true,
+        "specular_reflection": true,
+        "refraction": true,
+        "diffraction": false,
+        "diffuse_reflection": false
+      },
+      "radio_map_solver": {
+        "max_depth": 2,
+        "samples_per_transmitter": 45000,
+        "seed": 42,
+        "los": true,
+        "specular_reflection": true,
+        "refraction": true,
+        "diffraction": false,
+        "diffuse_reflection": false
+      }
+    },
+    "mean_absolute_difference_db": 7.16739247169337,
+    "median_signed_difference_db": -2.687667785103386,
+    "p95_absolute_difference_db": 22.09719870662692,
+    "max_absolute_difference_db": 101.23982423375779,
+    "cells_over_1_db": 150,
+    "cells_over_3_db": 108,
+    "total_cells": 234
+  },
+  "profiles": {
+    "alternate_seed_43": {
+      "solver_change": {
+        "path_seed": 43,
+        "map_seed": 43
+      },
+      "solver_empty": {
+        "path_solver": {
+          "max_depth": 2,
+          "samples_per_source": 16000,
+          "seed": 43,
+          "los": true,
+          "specular_reflection": true,
+          "refraction": true,
+          "diffraction": false,
+          "diffuse_reflection": false
+        },
+        "radio_map_solver": {
+          "max_depth": 2,
+          "samples_per_transmitter": 45000,
+          "seed": 43,
+          "los": true,
+          "specular_reflection": true,
+          "refraction": true,
+          "diffraction": false,
+          "diffuse_reflection": false
+        }
+      },
+      "solver_transparent": {
+        "path_solver": {
+          "max_depth": 2,
+          "samples_per_source": 16000,
+          "seed": 43,
+          "los": true,
+          "specular_reflection": true,
+          "refraction": true,
+          "diffraction": false,
+          "diffuse_reflection": false
+        },
+        "radio_map_solver": {
+          "max_depth": 2,
+          "samples_per_transmitter": 45000,
+          "seed": 43,
+          "los": true,
+          "specular_reflection": true,
+          "refraction": true,
+          "diffraction": false,
+          "diffuse_reflection": false
+        }
+      },
+      "mean_absolute_difference_db": 7.9968252951208925,
+      "median_signed_difference_db": -2.6509629332037505,
+      "p95_absolute_difference_db": 24.451087300445792,
+      "max_absolute_difference_db": 101.76332440097664,
+      "cells_over_1_db": 151,
+      "cells_over_3_db": 111,
+      "total_cells": 234,
+      "path_counts_empty": [
+        {
+          "receiver": "RX_A",
+          "valid_path_count": 26
+        },
+        {
+          "receiver": "RX_B",
+          "valid_path_count": 25
+        },
+        {
+          "receiver": "RX_C",
+          "valid_path_count": 25
+        }
+      ],
+      "path_counts_transparent": [
+        {
+          "receiver": "RX_A",
+          "valid_path_count": 15
+        },
+        {
+          "receiver": "RX_B",
+          "valid_path_count": 15
+        },
+        {
+          "receiver": "RX_C",
+          "valid_path_count": 7
+        }
+      ],
+      "interpretation": "Difference remains conditional on this finite solver configuration; this pair changes only the listed solver parameter(s) and canopy presence/material."
+    },
+    "map_samples_90000": {
+      "solver_change": {
+        "map_samples": 90000
+      },
+      "solver_empty": {
+        "path_solver": {
+          "max_depth": 2,
+          "samples_per_source": 16000,
+          "seed": 42,
+          "los": true,
+          "specular_reflection": true,
+          "refraction": true,
+          "diffraction": false,
+          "diffuse_reflection": false
+        },
+        "radio_map_solver": {
+          "max_depth": 2,
+          "samples_per_transmitter": 90000,
+          "seed": 42,
+          "los": true,
+          "specular_reflection": true,
+          "refraction": true,
+          "diffraction": false,
+          "diffuse_reflection": false
+        }
+      },
+      "solver_transparent": {
+        "path_solver": {
+          "max_depth": 2,
+          "samples_per_source": 16000,
+          "seed": 42,
+          "los": true,
+          "specular_reflection": true,
+          "refraction": true,
+          "diffraction": false,
+          "diffuse_reflection": false
+        },
+        "radio_map_solver": {
+          "max_depth": 2,
+          "samples_per_transmitter": 90000,
+          "seed": 42,
+          "los": true,
+          "specular_reflection": true,
+          "refraction": true,
+          "diffraction": false,
+          "diffuse_reflection": false
+        }
+      },
+      "mean_absolute_difference_db": 5.784895126273795,
+      "median_signed_difference_db": -2.54095672726244,
+      "p95_absolute_difference_db": 18.954845350871796,
+      "max_absolute_difference_db": 97.09133002242844,
+      "cells_over_1_db": 174,
+      "cells_over_3_db": 104,
+      "total_cells": 234,
+      "path_counts_empty": [
+        {
+          "receiver": "RX_A",
+          "valid_path_count": 26
+        },
+        {
+          "receiver": "RX_B",
+          "valid_path_count": 25
+        },
+        {
+          "receiver": "RX_C",
+          "valid_path_count": 25
+        }
+      ],
+      "path_counts_transparent": [
+        {
+          "receiver": "RX_A",
+          "valid_path_count": 15
+        },
+        {
+          "receiver": "RX_B",
+          "valid_path_count": 15
+        },
+        {
+          "receiver": "RX_C",
+          "valid_path_count": 7
+        }
+      ],
+      "interpretation": "Difference remains conditional on this finite solver configuration; this pair changes only the listed solver parameter(s) and canopy presence/material."
+    },
+    "interaction_depth_4": {
+      "solver_change": {
+        "path_depth": 4,
+        "map_depth": 4
+      },
+      "solver_empty": {
+        "path_solver": {
+          "max_depth": 4,
+          "samples_per_source": 16000,
+          "seed": 42,
+          "los": true,
+          "specular_reflection": true,
+          "refraction": true,
+          "diffraction": false,
+          "diffuse_reflection": false
+        },
+        "radio_map_solver": {
+          "max_depth": 4,
+          "samples_per_transmitter": 45000,
+          "seed": 42,
+          "los": true,
+          "specular_reflection": true,
+          "refraction": true,
+          "diffraction": false,
+          "diffuse_reflection": false
+        }
+      },
+      "solver_transparent": {
+        "path_solver": {
+          "max_depth": 4,
+          "samples_per_source": 16000,
+          "seed": 42,
+          "los": true,
+          "specular_reflection": true,
+          "refraction": true,
+          "diffraction": false,
+          "diffuse_reflection": false
+        },
+        "radio_map_solver": {
+          "max_depth": 4,
+          "samples_per_transmitter": 45000,
+          "seed": 42,
+          "los": true,
+          "specular_reflection": true,
+          "refraction": true,
+          "diffraction": false,
+          "diffuse_reflection": false
+        }
+      },
+      "mean_absolute_difference_db": 3.0256633639639734,
+      "median_signed_difference_db": -1.2766521537359168,
+      "p95_absolute_difference_db": 13.263338278068474,
+      "max_absolute_difference_db": 21.800722145276957,
+      "cells_over_1_db": 130,
+      "cells_over_3_db": 75,
+      "total_cells": 234,
+      "path_counts_empty": [
+        {
+          "receiver": "RX_A",
+          "valid_path_count": 155
+        },
+        {
+          "receiver": "RX_B",
+          "valid_path_count": 167
+        },
+        {
+          "receiver": "RX_C",
+          "valid_path_count": 162
+        }
+      ],
+      "path_counts_transparent": [
+        {
+          "receiver": "RX_A",
+          "valid_path_count": 75
+        },
+        {
+          "receiver": "RX_B",
+          "valid_path_count": 75
+        },
+        {
+          "receiver": "RX_C",
+          "valid_path_count": 40
+        }
+      ],
+      "interpretation": "Difference remains conditional on this finite solver configuration; this pair changes only the listed solver parameter(s) and canopy presence/material."
+    }
+  }
+}

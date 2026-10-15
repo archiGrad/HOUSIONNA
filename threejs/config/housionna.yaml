@@ -1,0 +1,10 @@
+# Resolved relative to the sionna-cea-poc project root. Change this to any
+# folder that contains timestamped HOUSIONNA export runs on this machine.
+housionna:
+  runs_directory: ../houdini_files/sionna/data
+  path_endpoint_tolerance_m: 0.001
+  worker_timeout_seconds:
+    paths: 180
+    low: 120
+    medium: 300
+    high: 600

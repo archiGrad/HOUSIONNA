@@ -1,0 +1,10 @@
+{
+  "mean_absolute_difference_db": 7.16739247169337,
+  "median_signed_difference_db": -2.687667785103386,
+  "p95_absolute_difference_db": 22.09719870662692,
+  "max_absolute_difference_db": 101.23982423375779,
+  "cells_over_1_db": 150,
+  "cells_over_3_db": 108,
+  "total_cells": 234,
+  "display_floor_linear_path_gain": 1e-15
+}

@@ -1,0 +1,9 @@
+.simulation-diagnostics { margin: 10px 0; color: #48616a; font-size: 10px; }
+.simulation-diagnostics summary { cursor: pointer; padding: 6px 0; }
+.simulation-diagnostics pre { max-height: 260px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; padding: 8px; border: 1px solid #dbe4df; border-radius: 6px; background: #f4f7f5; font-size: 9px; }
+.simulation-message { min-height: 32px; }
+.map-inputs { margin-top: 8px; color: #48616a; font-size: 9px; line-height: 1.5; }
+.run-radio-map-button { width: 100%; min-height: 34px; margin-top: 8px; font-weight: 600; }
+.status-pill.running { animation: rf-status-pulse 1.5s ease-in-out infinite; }
+@keyframes rf-status-pulse { 50% { opacity: .55; } }
+@media (prefers-reduced-motion: reduce) { .status-pill.running { animation: none; } }

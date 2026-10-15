@@ -1,0 +1,293 @@
+{
+  "run_timestamp_utc": "2026-10-07T14:36:01.660842+00:00",
+  "scenario": "cea_wide",
+  "description": "Procedural CEA greenhouse with three wide canopy proxy rows.",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "python_version": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "mitsuba_variant": "llvm_ad_mono_polarized",
+  "package_versions": {
+    "sionna-rt": "2.2.0",
+    "mitsuba": "3.9.1",
+    "drjit": "1.5.0",
+    "numpy": "2.5.3",
+    "matplotlib": "3.11.2",
+    "PyYAML": "6.0.3"
+  },
+  "frequency_hz": 2400000000.0,
+  "frequency_note": "2.4 GHz is a provisional demo value, not a study decision.",
+  "coordinate_convention": "x/y horizontal, z up; distances in meters; delays in seconds.",
+  "transmitter": {
+    "name": "TX",
+    "position_m": [
+      1.0,
+      2.6,
+      1.8
+    ],
+    "orientation_rad": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "power_dbm": 23.0
+  },
+  "receivers": [
+    {
+      "name": "RX_A",
+      "role": "near TX in open aisle",
+      "position_m": [
+        2.0,
+        2.6,
+        1.5
+      ]
+    },
+    {
+      "name": "RX_B",
+      "role": "far aisle between canopy rows",
+      "position_m": [
+        7.0,
+        2.6,
+        1.5
+      ]
+    },
+    {
+      "name": "RX_C",
+      "role": "far end within canopy row",
+      "position_m": [
+        10.0,
+        3.7,
+        1.5
+      ]
+    }
+  ],
+  "antenna": {
+    "rows": 1,
+    "columns": 1,
+    "pattern": "iso",
+    "polarization": "V"
+  },
+  "materials": {
+    "floor_placeholder": {
+      "relative_permittivity": 5.31,
+      "conductivity_s_per_m": 0.0548,
+      "thickness_m": 0.08,
+      "color_rgb": [
+        0.63,
+        0.65,
+        0.66
+      ],
+      "note": "DEMO PLACEHOLDER; generic concrete-like floor"
+    },
+    "shell_glazing_placeholder": {
+      "relative_permittivity": 6.0,
+      "conductivity_s_per_m": 0.01,
+      "thickness_m": 0.04,
+      "color_rgb": [
+        0.57,
+        0.75,
+        0.83
+      ],
+      "note": "DEMO PLACEHOLDER; glazing-like envelope, not measured glass"
+    },
+    "metal_placeholder": {
+      "relative_permittivity": 1.0,
+      "conductivity_s_per_m": 10000.0,
+      "thickness_m": 0.06,
+      "color_rgb": [
+        0.43,
+        0.48,
+        0.53
+      ],
+      "note": "DEMO PLACEHOLDER; generic highly conductive structural proxy"
+    },
+    "canopy_placeholder": {
+      "relative_permittivity": 8.0,
+      "conductivity_s_per_m": 0.25,
+      "thickness_m": 0.8,
+      "scattering_coefficient": 0.0,
+      "xpd_coefficient": 0.0,
+      "scattering_pattern": "lambertian",
+      "color_rgb": [
+        0.29,
+        0.57,
+        0.31
+      ],
+      "note": "DEMO PLACEHOLDER; uncalibrated solid lossy canopy proxy"
+    }
+  },
+  "path_solver": {
+    "max_depth": 2,
+    "samples_per_source": 16000,
+    "seed": 42,
+    "los": true,
+    "specular_reflection": true,
+    "diffuse_reflection": false,
+    "refraction": true,
+    "diffraction": false
+  },
+  "radio_map_solver": {
+    "cell_size_m": [
+      0.5,
+      0.5
+    ],
+    "samples_per_transmitter": 45000,
+    "max_depth": 2,
+    "seed": 42,
+    "los": true,
+    "specular_reflection": true,
+    "diffuse_reflection": false,
+    "refraction": true,
+    "diffraction": false,
+    "center_m": [
+      6.5,
+      4.0,
+      1.5
+    ],
+    "orientation_rad": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "size_m": [
+      9.0,
+      6.4
+    ]
+  },
+  "valid_path_counts_by_receiver": [
+    {
+      "receiver": "RX_A",
+      "valid_path_count": 15
+    },
+    {
+      "receiver": "RX_B",
+      "valid_path_count": 23
+    },
+    {
+      "receiver": "RX_C",
+      "valid_path_count": 0
+    }
+  ],
+  "radio_map": {
+    "quantity": "path_gain",
+    "units": "linear power ratio (unitless); not RSS or received power",
+    "display_transform": "10*log10(max(path_gain, 1e-15)) dB, for plotting only",
+    "raw_array_file": "radio_map.npy",
+    "raw_array_shape": [
+      1,
+      13,
+      18
+    ],
+    "raw_array_axes": [
+      "transmitter",
+      "y_cell",
+      "x_cell"
+    ],
+    "plotted_array_shape": [
+      13,
+      18
+    ],
+    "cell_centers_file": "radio_map_cell_centers.npy",
+    "cell_centers_shape": [
+      13,
+      18,
+      3
+    ],
+    "frequency_hz": 2400000000.0,
+    "center_m": [
+      6.5,
+      4.0,
+      1.5
+    ],
+    "orientation_rad": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "requested_size_m": [
+      9.0,
+      6.4
+    ],
+    "cell_size_m": [
+      0.5,
+      0.5
+    ],
+    "grid_x_cells": 18,
+    "grid_y_cells": 13,
+    "positive_cell_count": 130,
+    "min_positive_path_gain_linear": 6.800963681108385e-10,
+    "max_path_gain_linear": 8.845045522321016e-05
+  },
+  "cea": {
+    "greenhouse": {
+      "length_m": 12.0,
+      "width_m": 8.0,
+      "height_m": 4.0,
+      "wall_thickness_m": 0.04,
+      "floor_thickness_m": 0.08,
+      "include_roof": true
+    },
+    "structure": {
+      "include_rails": true,
+      "rail_count": 3,
+      "rail_cross_section_m": 0.06,
+      "support_frame_x_m": [
+        0.5,
+        11.5
+      ],
+      "support_offset_y_m": 0.18,
+      "support_cross_section_m": 0.08
+    },
+    "canopy": {
+      "enabled": true,
+      "row_count": 3,
+      "row_length_m": 9.0,
+      "row_width_m": 1.2,
+      "row_height_m": 1.6,
+      "row_spacing_m": 1.5,
+      "bottom_height_m": 0.2
+    },
+    "receiver_grid": {
+      "height_m": 1.5,
+      "x_min_m": 2.0,
+      "x_max_m": 11.0,
+      "y_min_m": 0.8,
+      "y_max_m": 7.2,
+      "spacing_m": 0.5,
+      "representative_receivers": [
+        {
+          "name": "RX_A",
+          "role": "near TX in open aisle",
+          "position_m": [
+            2.0,
+            2.6,
+            1.5
+          ]
+        },
+        {
+          "name": "RX_B",
+          "role": "far aisle between canopy rows",
+          "position_m": [
+            7.0,
+            2.6,
+            1.5
+          ]
+        },
+        {
+          "name": "RX_C",
+          "role": "far end within canopy row",
+          "position_m": [
+            10.0,
+            3.7,
+            1.5
+          ]
+        }
+      ]
+    },
+    "scene_manifest": "scene_manifest.json",
+    "model_limitations": [
+      "Artificial geometry and arbitrary dimensions; not a KU Leuven greenhouse model.",
+      "Every custom RF property is a DEMO PLACEHOLDER.",
+      "Canopy is an uncalibrated solid lossy block proxy; no water-content calibration, leaf/stem geometry, or validated scattering/refraction model.",
+      "No measurement validation; do not draw real greenhouse coverage conclusions."
+    ]
+  }
+}

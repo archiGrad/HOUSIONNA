@@ -1,0 +1,4 @@
+receiver,empty_sum_coefficient_power,narrow_sum_coefficient_power,wide_sum_coefficient_power,narrow_minus_empty_db,wide_minus_empty_db
+RX_A,0.000105362999062,9.93214958632e-05,9.9321495841e-05,-0.25644872,-0.25644872
+RX_B,7.00049780998e-06,1.05788709249e-05,1.05067121948e-05,1.79310394,1.76337912
+RX_C,4.2208981968e-06,3.48363996047e-06,0,-0.83371614,-246.25404878

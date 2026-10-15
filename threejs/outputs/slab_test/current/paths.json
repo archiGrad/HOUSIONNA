@@ -1,0 +1,28 @@
+{
+  "description": "Valid Sionna paths and baseband-equivalent CIR coefficients; no RSS conversion applied.",
+  "cir_shape": [
+    1,
+    1,
+    1,
+    1,
+    0,
+    1
+  ],
+  "delay_shape": [
+    1,
+    1,
+    0
+  ],
+  "valid_shape": [
+    1,
+    1,
+    0
+  ],
+  "receivers": [
+    {
+      "receiver": "RX",
+      "valid_path_count": 0
+    }
+  ],
+  "paths": []
+}

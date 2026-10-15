@@ -1,0 +1,2 @@
+receiver,path_index,delay_s,delay_ns,path_length_m_from_delay,a_real,a_imag,magnitude,magnitude_db,interaction_type_ids,interaction_types,interacted_objects,interaction_vertices_m,is_los
+RX,0,1.3342563498497384e-08,13.34256362915039,3.999999761581421,-0.0022253377828747034,-0.0011061069089919329,0.0024850754998624325,-52.093208245852054,[4],['refraction'],['slab_surface'],"[[0.0, -5.960464477539063e-08, 0.9999999403953552]]",False

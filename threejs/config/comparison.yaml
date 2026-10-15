@@ -1,0 +1,3 @@
+description: Move only the room panel and compare the resulting path-gain maps
+baseline_panel_center_x_m: 4.65
+moved_panel_center_x_m: 6.45

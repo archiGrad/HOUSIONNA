@@ -1,0 +1,20 @@
+{
+  "change": "Only the panel center x-coordinate changed.",
+  "baseline_panel_center_x_m": 4.65,
+  "moved_panel_center_x_m": 6.45,
+  "panel_displacement_m": 1.7999999999999998,
+  "unchanged": [
+    "room bounds",
+    "materials",
+    "frequency",
+    "transmitter",
+    "receivers",
+    "solver settings",
+    "radio-map grid"
+  ],
+  "difference_quantity": "moved minus baseline 10*log10(path_gain); values below 1e-15 are floored only for this display comparison",
+  "mean_absolute_delta_db": 1.9480359613414682,
+  "max_absolute_delta_db": 74.15854803909974,
+  "cells_with_absolute_delta_over_1_db": 80,
+  "cell_count": 240
+}
