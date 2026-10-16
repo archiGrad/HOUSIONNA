@@ -22,8 +22,9 @@ def load_rt():
     configured=os.environ.get('DRJIT_LIBLLVM_PATH')
     llvm=Path(configured) if configured else ROOT/'.runtime/llvm-18.1.8/bin/LLVM-C.dll' if os.name=='nt' else None
     if llvm is not None and requested!='cuda':
-        if not llvm.is_file():raise FileNotFoundError(f'The configured Dr.Jit LLVM library does not exist: {llvm}. See README.md.')
-        os.environ['DRJIT_LIBLLVM_PATH']=str(llvm.resolve())
+        if llvm.is_file():os.environ['DRJIT_LIBLLVM_PATH']=str(llvm.resolve())
+        elif requested=='auto' and (windows_cuda_driver_version() or 0)>=12020:requested='cuda'  # no local LLVM: use the GPU
+        else:raise FileNotFoundError(f'The configured Dr.Jit LLVM library does not exist: {llvm}. See README.md.')
     import mitsuba as mi
     if mi.variant() is None:
         if requested=='cuda':mi.set_variant('cuda_ad_mono_polarized')

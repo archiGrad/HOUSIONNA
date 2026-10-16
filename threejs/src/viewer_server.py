@@ -162,6 +162,12 @@ class DashboardHandler(BaseHTTPRequestHandler):
                    else self.housionna_simulations.result(job_id))
             self._send_json(200 if job else 404, job or {"error": "HOUSIONNA simulation was not found"})
             return
+        if route == "/" and self.digital_twin_root and (self.digital_twin_root / "index.html").is_file():
+            # The 3D twin is the main view; the 2D dashboard stays at /viewer/index.html.
+            self.send_response(302)
+            self.send_header("Location", "/digital-twin/")
+            self.end_headers()
+            return
         target = self.routes.get(route)
         if target is None and route.startswith("/digital-twin/") and self.digital_twin_root:
             relative = unquote(route.removeprefix("/digital-twin/")).strip("/")

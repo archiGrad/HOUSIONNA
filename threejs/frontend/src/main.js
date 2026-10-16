@@ -5,13 +5,14 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { CSS2DObject, CSS2DRenderer } from 'three/addons/renderers/CSS2DRenderer.js';
 import './style.css';
 import './housionna.css';
+import './theme.css';
 
 const app = document.querySelector('#app');
 app.innerHTML = `
   <header class="topbar">
     <div class="brand"><div class="brand-mark">H</div><div><b>HyROPA</b><span>INDOOR VERTICAL FARM TWIN</span></div></div>
     <div class="top-context"><span class="live-dot"></span><span id="scenarioHeading">Loading scene data</span><span class="separator">/</span><span id="frequencyHeading">RF propagation study</span></div>
-    <div class="top-actions"><span id="visualWarning" class="visual-warning">VISUAL PLANTS ≠ RF MODEL</span><button id="layersBtn" class="quiet-button panel-button" aria-expanded="true">Layers</button><button id="inspectorBtn" class="quiet-button panel-button" aria-expanded="true">Inspector</button><button id="captureBtn" class="quiet-button">Capture view</button></div>
+    <div class="top-actions"><span id="visualWarning" class="visual-warning">VISUAL PLANTS ≠ RF MODEL</span><button id="layersBtn" class="quiet-button panel-button" aria-expanded="true">Layers</button><button id="inspectorBtn" class="quiet-button panel-button" aria-expanded="true">Inspector</button><button id="captureBtn" class="quiet-button">Capture view</button><button id="themeBtn" class="quiet-button theme-toggle" type="button" aria-label="Toggle dark mode"><span class="theme-icon" aria-hidden="true"></span><span id="themeLabel">Dark</span></button></div>
   </header>
   <main class="workspace">
     <aside class="left-panel">
@@ -186,6 +187,35 @@ const interactionColors = {
   diffuse_reflection: '#a88ce1', diffuse_scattering: '#a88ce1', diffraction: '#e77c78',
 };
 
+const THEME_SCENE={
+  light:{bg:'#dce7e6',fogNear:26,fogFar:64,exposure:1.15,hemi:['#eff8ee','#718578',1.8],ambient:0.42,gridOpacity:0.17},
+  dark:{bg:'#0b1519',fogNear:22,fogFar:58,exposure:0.95,hemi:['#a9c4cc','#1c2a2e',1.15],ambient:0.3,gridOpacity:0.3},
+};
+let hemiLight=null,ambientLight=null;
+function currentTheme(){return document.documentElement.dataset.theme==='dark'?'dark':'light';}
+function syncThemeUi(){
+  const dark=currentTheme()==='dark',label=document.querySelector('#themeLabel'),btn=document.querySelector('#themeBtn');
+  if(label)label.textContent=dark?'Light':'Dark';
+  if(btn)btn.setAttribute('aria-pressed',String(dark));
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content',dark?'#0a1216':'#102630');
+}
+function applySceneTheme(){
+  if(!scene)return;
+  const t=THEME_SCENE[currentTheme()];
+  scene.background=new THREE.Color(t.bg);
+  if(scene.fog){scene.fog.color.set(t.bg);scene.fog.near=t.fogNear;scene.fog.far=t.fogFar;}
+  renderer.toneMappingExposure=t.exposure;
+  if(hemiLight){hemiLight.color.set(t.hemi[0]);hemiLight.groundColor.set(t.hemi[1]);hemiLight.intensity=t.hemi[2];}
+  if(ambientLight)ambientLight.intensity=t.ambient;
+  scene.traverse(o=>{if(o.userData?.kind==='coordinate-grid')o.material.opacity=t.gridOpacity;});
+  frameDirty=true;
+}
+function setTheme(theme){
+  document.documentElement.dataset.theme=theme;
+  try{localStorage.setItem('hyropa-theme',theme);}catch{}
+  syncThemeUi();applySceneTheme();
+}
+
 function initRenderer() {
   scene = new THREE.Scene();
   scene.background = new THREE.Color('#dce7e6');
@@ -211,8 +241,10 @@ function initRenderer() {
   controls.minDistance = 0.35;
   controls.maxDistance = 120;
   controls.maxPolarAngle = Math.PI * 0.49;
-  scene.add(new THREE.HemisphereLight('#eff8ee', '#718578', 1.8));
-  scene.add(new THREE.AmbientLight('#ffffff', 0.42));
+  hemiLight = new THREE.HemisphereLight('#eff8ee', '#718578', 1.8);
+  ambientLight = new THREE.AmbientLight('#ffffff', 0.42);
+  scene.add(hemiLight, ambientLight);
+  applySceneTheme();
   const key = new THREE.DirectionalLight('#fff2d8', 3.0);
   key.position.set(-5, -7, 15);
   key.castShadow = true;
@@ -541,7 +573,7 @@ function addCoordinateDiagnostic(scenario) {
   const divisions=Math.max(2,Math.min(24,Math.round(size)));
   const grid=new THREE.GridHelper(size*1.25,divisions,'#819b97','#a4b7b2');
   grid.rotation.x=Math.PI/2;grid.position.set((bounds.x_min+bounds.x_max)/2,(bounds.y_min+bounds.y_max)/2,bounds.z_min);
-  grid.material.transparent=true;grid.material.opacity=0.17;grid.material.depthWrite=false;
+  grid.material.transparent=true;grid.material.opacity=THEME_SCENE[currentTheme()].gridOpacity;grid.material.depthWrite=false;
   grid.userData={kind:'coordinate-grid'};layerGroups.coordinates.add(grid);
 }
 function layerForCategory(category) {
@@ -2224,6 +2256,8 @@ function wireUI() {
   $('#deviceLabelMode').addEventListener('change',setLayerVisibility);
   ['measurementMeshToggle','coordinateDiagnosticToggle','sceneBoundsToggle'].forEach((id)=>$(`#${id}`).addEventListener('change',setLayerVisibility));
   $('#captureBtn').addEventListener('click',captureView);
+  $('#themeBtn').addEventListener('click',()=>setTheme(currentTheme()==='dark'?'light':'dark'));
+  syncThemeUi();
   const workspace=$('.workspace');
   const layersButton=$('#layersBtn');
   const inspectorButton=$('#inspectorBtn');
