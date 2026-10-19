@@ -14,6 +14,7 @@ import math
 import os
 from pathlib import Path
 import re
+import struct
 import sys
 import xml.etree.ElementTree as ET
 from typing import Any, Callable
@@ -129,8 +130,23 @@ def _source_fingerprint(folder: Path) -> tuple[str, dict[str, str]]:
     return digest.hexdigest(), per_file
 
 
-def _load_ascii_ply(path: Path) -> tuple[list[list[float]], list[list[int]]]:
-    """Read the triangular ASCII PLY format written by the Houdini exporter."""
+PLY_TYPES = {
+    "char": "b", "int8": "b", "uchar": "B", "uint8": "B",
+    "short": "h", "int16": "h", "ushort": "H", "uint16": "H",
+    "int": "i", "int32": "i", "uint": "I", "uint32": "I",
+    "float": "f", "float32": "f", "double": "d", "float64": "d",
+}
+PLY_FORMATS = {"ascii 1.0": None, "binary_little_endian 1.0": "<", "binary_big_endian 1.0": ">"}
+
+
+def _ply_type(path: Path, name: str) -> str:
+    if name not in PLY_TYPES:
+        raise ValueError(f"{path.name} uses an unsupported PLY property type {name!r}")
+    return PLY_TYPES[name]
+
+
+def _load_ply(path: Path) -> tuple[list[list[float]], list[list[int]]]:
+    """Read the triangular PLY meshes written by the Houdini exporter (ASCII or binary)."""
     with path.open("rb") as handle:
         header: list[str] = []
         while True:
@@ -147,12 +163,15 @@ def _load_ascii_ply(path: Path) -> tuple[list[list[float]], list[list[int]]]:
 
         if not header or header[0] != "ply":
             raise ValueError(f"{path.name} is not a PLY file")
-        formats = [line for line in header if line.startswith("format ")]
-        if formats != ["format ascii 1.0"]:
-            raise ValueError(f"{path.name} uses an unsupported PLY format; expected ASCII 1.0")
+        formats = [line.removeprefix("format ") for line in header if line.startswith("format ")]
+        if len(formats) != 1 or formats[0] not in PLY_FORMATS:
+            raise ValueError(f"{path.name} uses an unsupported PLY format; expected ASCII or binary 1.0")
+        endian = PLY_FORMATS[formats[0]]
 
         vertex_count = face_count = None
-        vertex_properties: list[str] = []
+        vertex_properties: list[tuple[str, str]] = []  # (type, name)
+        face_list: tuple[str, str] | None = None        # (count type, index type)
+        face_extra = False
         current_element = None
         for line in header:
             parts = line.split()
@@ -162,50 +181,82 @@ def _load_ascii_ply(path: Path) -> tuple[list[list[float]], list[list[int]]]:
                     vertex_count = int(parts[2])
                 elif current_element == "face":
                     face_count = int(parts[2])
-            elif len(parts) == 3 and parts[0] == "property" and current_element == "vertex":
-                if parts[1] != "list":
-                    vertex_properties.append(parts[2])
+            elif parts and parts[0] == "property" and current_element == "vertex" and len(parts) == 3:
+                vertex_properties.append((parts[1], parts[2]))
+            elif parts and parts[0] == "property" and current_element == "face":
+                if len(parts) == 5 and parts[1] == "list" and face_list is None:
+                    face_list = (parts[2], parts[3])
+                else:
+                    face_extra = True
 
         if vertex_count is None or face_count is None:
             raise ValueError(f"{path.name} must declare vertex and face elements")
-        if not all(axis in vertex_properties for axis in ("x", "y", "z")):
+        names = [name for _, name in vertex_properties]
+        if not all(axis in names for axis in ("x", "y", "z")):
             raise ValueError(f"{path.name} must have x, y, and z vertex properties")
-        axis_indices = [vertex_properties.index(axis) for axis in ("x", "y", "z")]
-
-        def next_tokens() -> list[str]:
-            while True:
-                raw_line = handle.readline()
-                if not raw_line:
-                    raise ValueError(f"{path.name} ended before all declared geometry was read")
-                text = raw_line.decode("ascii").strip()
-                if text:
-                    return text.split()
+        axis_indices = [names.index(axis) for axis in ("x", "y", "z")]
 
         vertices: list[list[float]] = []
-        for _ in range(vertex_count):
-            tokens = next_tokens()
-            try:
-                vertex = [_required_number(tokens[index], f"{path.name} vertex") for index in axis_indices]
-            except IndexError as error:
-                raise ValueError(f"{path.name} has a malformed vertex row") from error
-            vertices.append(vertex)
-
         faces: list[list[int]] = []
-        for _ in range(face_count):
-            tokens = next_tokens()
-            try:
-                count = int(tokens[0])
-                face = [int(index) for index in tokens[1:1 + count]]
-            except (IndexError, ValueError) as error:
-                raise ValueError(f"{path.name} has a malformed face row") from error
+        if endian is None:
+            def next_tokens() -> list[str]:
+                while True:
+                    raw_line = handle.readline()
+                    if not raw_line:
+                        raise ValueError(f"{path.name} ended before all declared geometry was read")
+                    text = raw_line.decode("ascii").strip()
+                    if text:
+                        return text.split()
+
+            for _ in range(vertex_count):
+                tokens = next_tokens()
+                try:
+                    vertices.append([_required_number(tokens[index], f"{path.name} vertex") for index in axis_indices])
+                except IndexError as error:
+                    raise ValueError(f"{path.name} has a malformed vertex row") from error
+            for _ in range(face_count):
+                tokens = next_tokens()
+                try:
+                    count = int(tokens[0])
+                    face = [int(index) for index in tokens[1:1 + count]]
+                except (IndexError, ValueError) as error:
+                    raise ValueError(f"{path.name} has a malformed face row") from error
+                faces.append([count, *face])
+        else:
+            # Binary rows have a fixed layout, so any face property besides the index list cannot be skipped safely.
+            if face_list is None or face_extra:
+                raise ValueError(f"{path.name} must have exactly one face index list in binary PLY")
+            vertex_format = endian + "".join(_ply_type(path, kind) for kind, _ in vertex_properties)
+            vertex_size = struct.calcsize(vertex_format)
+            data = handle.read(vertex_size * vertex_count)
+            if len(data) != vertex_size * vertex_count:
+                raise ValueError(f"{path.name} ended before all declared geometry was read")
+            for row in struct.iter_unpack(vertex_format, data):
+                vertices.append([_required_number(row[index], f"{path.name} vertex") for index in axis_indices])
+            count_format = endian + _ply_type(path, face_list[0])
+            index_type = _ply_type(path, face_list[1])
+            count_size = struct.calcsize(count_format)
+            for _ in range(face_count):
+                raw_count = handle.read(count_size)
+                if len(raw_count) != count_size:
+                    raise ValueError(f"{path.name} ended before all declared geometry was read")
+                count = struct.unpack(count_format, raw_count)[0]
+                index_format = endian + index_type * count
+                raw_face = handle.read(struct.calcsize(index_format))
+                if len(raw_face) != struct.calcsize(index_format):
+                    raise ValueError(f"{path.name} ended before all declared geometry was read")
+                faces.append([count, *struct.unpack(index_format, raw_face)])
+
+        checked: list[list[int]] = []
+        for count, *face in faces:
             if count != 3 or len(face) != 3:
                 raise ValueError(f"{path.name} contains a non-triangle face; HOUSIONNA exports triangles")
             if any(index < 0 or index >= vertex_count for index in face):
                 raise ValueError(f"{path.name} contains an out-of-range face index")
-            faces.append(face)
-    if not vertices or not faces:
+            checked.append(face)
+    if not vertices or not checked:
         raise ValueError(f"{path.name} contains no renderable triangles")
-    return vertices, faces
+    return vertices, checked
 
 
 def _bounds(vertices: list[list[float]]) -> dict[str, float]:
@@ -288,7 +339,7 @@ def _scene_from_xml(folder: Path, scene_file: Path, dump_data: dict[str, Any] | 
         material_id = material_ref.get("id") if material_ref is not None else None
         if material_id not in materials:
             raise ValueError(f"Scene object {object_name!r} refers to missing material {material_id!r}")
-        vertices, faces = _load_ascii_ply(mesh_path)
+        vertices, faces = _load_ply(mesh_path)
         bounds = _bounds(vertices)
         material = materials[material_id]
         dump_row = dump_materials.get(material_id)
@@ -318,12 +369,11 @@ def _scene_from_xml(folder: Path, scene_file: Path, dump_data: dict[str, Any] | 
                 "scattering_coefficient": material["scattering_coefficient"],
             },
         })
-    if not objects:
-        raise ValueError(f"{scene_file.name} contains no PLY scene objects")
     geometry = {
         "units": "m",
         "up_axis": "z",
-        "bounds_m": _union_bounds([item["bounds_m"] for item in objects]),
+        # Free-space runs have no scene objects; import_run then frames the measurement surfaces and devices.
+        "bounds_m": _union_bounds([item["bounds_m"] for item in objects]) if objects else None,
         "objects": objects,
     }
     return geometry, materials
@@ -572,7 +622,7 @@ def _radio_maps(folder: Path, radio_file: Path | None, measure_file: Path | None
     for map_data in data["maps"]:
         name = map_data["name"]
         measurement_ply = _safe_run_file(folder, f"meshes/{name}.ply", "Measurement mesh")
-        ply_vertices, ply_faces = _load_ascii_ply(measurement_ply)
+        ply_vertices, ply_faces = _load_ply(measurement_ply)
         vertices = [_vector(point, f"radiomap {name} vertex") for point in map_data.get("vertices", [])]
         faces = map_data.get("faces")
         values_matrix = map_data.get("path_gain_db")
@@ -703,8 +753,12 @@ def import_run(run_folder: str | Path, project_root: str | Path, *,
     map_bounds = [_bounds(assets["meshes"][surface["mesh_ref"]]["vertices_m"])
                   for surface in radio_surfaces]
     scene_bounds = geometry["bounds_m"]
-    all_bounds = [scene_bounds, *map_bounds]
+    all_bounds = [scene_bounds, *map_bounds] if scene_bounds else list(map_bounds)
+    if not geometry["objects"]:
+        all_bounds.append(_bounds([row["position_m"] for row in (*tx_devices, *rx_devices)]))
     overall_bounds = _union_bounds(all_bounds)
+    if scene_bounds is None:
+        geometry["bounds_m"] = overall_bounds
     dimensions = _scenario_dimensions(overall_bounds)
     radio_bounds = _union_bounds(map_bounds) if map_bounds else overall_bounds
     radio_center = [(radio_bounds[f"{axis}_min"] + radio_bounds[f"{axis}_max"]) / 2
