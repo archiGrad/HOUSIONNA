@@ -4,8 +4,6 @@ Run [Sionna RT](https://nvlabs.github.io/sionna/rt/) radio propagation simulatio
 
 Houdini is the procedural generator: geometry, materials and devices are built with nodes, so one network can produce an unlimited number of scene variations, and each variation can be simulated and inspected within seconds.
 
-
-
 ![Paths and radio map in Houdini](docs/preview.png)
 
 ## What it is
@@ -20,8 +18,13 @@ A set of Python functions called from buttons on one Houdini node, plus a solver
 | previz_sionna_scene | `on_previz` | Copies the run folder to the target, has Sionna load it, and shows in Houdini what Sionna actually holds |
 | copy_to_spark_and_solve | `on_solve` | Copies the run folder to the target, computes paths between every TX and RX and a radio map on every measurement surface, copies the results back |
 | import_sionna_results | `on_import` | Loads paths, per-link results and radio maps into File SOPs |
+| run | `on_run` | Validate, export, solve and import in one press; stops at the first step that fails |
+| batch_export | `on_batch_export` | Exports every TOP work item from `batch_start` to `batch_end` into one batch folder |
+| batch_solve | `on_batch_solve` | Sends the batch to the target and starts it there in the background; returns immediately |
+| batch_status | `on_batch_status` | Progress of the running batch: solved, failed, current work item, time left |
+| batch_fetch | `on_batch_fetch` | Copies the finished results of the batch back and converts them for the `sionna_batch_*` File SOPs, which show the result of the work item selected in the TOP network |
 
-Export never contacts the server; previz and solve do.
+Export never contacts the server; previz, solve and the batch buttons except export do. The first six buttons are for testing one scene step by step; run does the same in one press.
 
 ## Folder structure
 
@@ -52,21 +55,32 @@ Export never contacts the server; previz and solve do.
                 ├── <hip>_measure.json
                 ├── <hip>_settings.json
                 ├── <hip>_dump.json
-                ├── <hip>_result.json
-                ├── <hip>_radiomap.json
+                ├── <hip>_result.npz      paths and links
+                ├── <hip>_radiomap.npz
                 ├── <hip>_log.txt         validate and export messages of this run
                 ├── solver.log            full solver output of the last solve or previz
-                └── <hip>_*.bgeo.sc
+                ├── <hip>_previz.bgeo.sc
+                └── paths.bgeo.sc, links.bgeo.sc, radiomap.bgeo.sc
+        └── batches/
+            └── <YYYYMMDD_HHMMSSZ>/
+                ├── batch.json            TOP node, range, git commit, export status per work item
+                ├── queue.json            work items sent with the last batch solve
+                ├── status.json           progress, written by the solver
+                ├── batch.log             solver output of all batch solves
+                └── wi<index>/            one run folder per work item, as above, plus
+                    ├── done.json         settings it was solved with
+                    └── failed.json       error, if the solve failed
 ```
 
 Every export creates a new run folder. Previz, solve and import always work on the latest one.
 
-On a remote target the run folder is mirrored to `<remote_root>/runs/<hip>/<stamp>/`:
+On a remote target the folders are mirrored to:
 
 ```
 <remote_root>/
 ├── venv/
-└── runs/<hip>/<stamp>/
+├── runs/<hip>/<stamp>/
+└── batches/<hip>/<stamp>/
 ```
 
 ## Setup
@@ -79,6 +93,17 @@ source .venv/bin/activate          # Linux; on Windows (Git Bash): .venv/Scripts
 pip install -r requirements.txt    # sionna-rt==2.2.0
 ```
 
+In Houdini:
+
+1. Add a Null SOP at the end of the scene network.
+2. Add one Button parm per function, with this Python callback (change only the function name):
+
+```python
+exec(open(hou.expandString('$HIP/sionna/sionna_sop.py')).read()); on_validate()
+```
+
+The code is read from `sionna/sionna_sop.py` on every press, so the file in git is the only copy.
+
 Start Houdini from a terminal. All feedback is printed there and appended to `sionna/log.txt`; there are no pop-ups.
 
 ## Compute target
@@ -88,7 +113,7 @@ A string parm `target` on the Null selects where the solver runs:
 - `local` (or empty): the venv on this machine, at `$HIP/../.venv/bin/python3` (Windows: `$HIP/../.venv/Scripts/python.exe`). Override with a string parm `python_exe`.
 - an SSH host alias, e.g. `spark`: a remote server. Override the remote folder with a string parm `remote_root` (default `~/Documents/HyROPA`).
 
-To pick the target per machine, set the parm to `$SIONNA_TARGET` and define it in each machine's `houdini.env`, e.g. `SIONNA_TARGET = spark`. WIP
+To pick the target per machine, set the parm to `$SIONNA_TARGET` and define it in each machine's `houdini.env`, e.g. `SIONNA_TARGET = spark`.
 
 **The Spark is only reachable through the VPN.** Start it before check, previz or solve, and keep that terminal open:
 
@@ -112,6 +137,33 @@ Remote setup, once per server:
 4. `rsync` on both machines.
 
 Each remote run checks that the server and venv exist and reads the GPU status, mirrors the run folder (without `.bgeo.sc` files) to the server, runs the solver there, and copies the results back. The solver refuses to run on a machine without a CUDA variant (`T003`).
+
+## Batches
+
+For many scene variations from a TOP network (e.g. a Wedge TOP), next to the Null:
+
+1. Set the int parms `batch_start` and `batch_end` to a range of work item indices (both included; without the parms, all work items).
+2. **batch_export**: for each work item in the range, selects it in the TOP network, so the SOP network cooks that variation, then validates and exports it to `batches/<stamp>/wi<index>/`. The wedge attributes of the work item are stored in its `<hip>_meta.json`. A work item that fails validation or does not cook is recorded in `batch.json` and skipped; the others continue. The selection is restored afterwards.
+3. **batch_solve**: writes the current settings into every exported work item, sends the batch folder and starts one solver process on the target, which solves all work items one after the other in one Sionna session. The button returns at once; Houdini stays usable and the job keeps running if Houdini or the laptop is closed.
+4. **batch_status**: prints progress while it runs.
+5. **batch_fetch**: copies the results back, converts every new or changed result to `.bgeo.sc` in its `wi<index>` folder, and creates three File SOPs next to the Null: `sionna_batch_paths`, `sionna_batch_links`, `sionna_batch_radiomap`. Can be pressed while the batch is still running; press it again later for the rest.
+6. Click a work item in the TOP network: the scene shows that variation and the `sionna_batch_*` File SOPs load its results. Their file path is
+
+   ```
+   $HIP/sionna/batches/`chs("../<null>/batch")`/wi`padzero(3, @pdg_index)`/radiomap.bgeo.sc
+   ```
+
+   With no work item selected, or for a work item without result (failed, not solved or not fetched yet), they load nothing instead of giving an error.
+
+The TOP node is the one with the display flag inside `../topnet1`; another can be set with a string parm `top_node`: a TOP network (its display node is used) or a TOP node, absolute or relative to the Null.
+
+Add a string parm `batch` to the Null. Batch export writes the new batch name into it, and all batch buttons and the `sionna_batch_*` File SOPs use that batch. To go back to an older batch, type its folder name. Without the parm the buttons use the latest batch, and the File SOPs find nothing (`W009`).
+
+Fetch makes the local batch folder a copy of the remote one: a result that no longer exists on the target (work item solved again and failed, or being solved) is removed locally too, with its `.bgeo.sc` files.
+
+Pressing batch_solve again resumes: work items already solved with the same settings are skipped, failed ones are tried again. After a settings change all work items are solved again. A batch cannot be started twice at the same time (`B004`). A failed work item does not stop the batch; its error is in `failed.json`, `batch_status` and `batch.log`.
+
+To stop a running batch: `ssh spark`, then `kill <pid>` with the pid printed by batch_solve (also in `batch.pid` in the remote batch folder).
 
 ## Scene: supported attributes
 
@@ -225,12 +277,15 @@ Defaults, each overridable by a parm of the same name on the Null:
 | `diffuse_reflection` | off | Diffuse scattering. Needs `scattering_coefficient` > 0 on materials. |
 | `diffraction` | off | First-order edge diffraction (Sionna supports first order only) |
 | `bandwidth` | 100e6 | Width in Hz of the per-link frequency response `cfr_db`, centred on `frequency` |
-| `cfr_points` | 256 | Number of frequencies in `cfr_db` |
-| `radiomap_samples` | 10000000 | Rays per TX for the radio map. More rays give less noise per cell. |
+| `cfr_points` | 256 | Number of frequencies in `cfr_db`. 0 skips the frequency response; it is the largest part of the paths result. |
+| `radiomap_samples` | 10000000 | Rays per TX for the radio map. More rays give less noise per cell. `radiomap_samples` × number of TX must stay below 4.29e9 (Sionna limit), otherwise solve stops with `S010`. |
 | `target` | local | Where the solver runs: `local` or an SSH alias |
 | `remote_root` | ~/Documents/HyROPA | Folder on the remote target that holds `venv/` and `runs/` |
 | `timeout` | 1800 | Seconds before a previz or solve is aborted |
 | `python_exe` | `$HIP/../.venv/bin/python3` | Python for the local target |
+| `batch_start`, `batch_end` | all | Range of work item indices for batch export |
+| `top_node` | display node in `../topnet1` | TOP node whose work items are exported |
+| `batch` | set by batch export | Batch folder name used by the batch buttons and the `sionna_batch_*` File SOPs |
 
 ## Terminal output
 
@@ -243,7 +298,12 @@ Every message, including all error and warning codes, is printed to the terminal
 | export | run folder, every file written with its size, permittivity and conductivity per material at the run frequency, git commit |
 | previz | files sent and received, Sionna's own progress, what Sionna loaded |
 | solve | files sent and received, Sionna's progress per step with timings, number of paths and radio map cells |
-| import | gain range of the paths, number of line-of-sight paths, radio map signal range, cells without signal |
+| import | gain range of the paths, number of line-of-sight paths, radio map signal range, cells without signal, time taken |
+| run | the output of validate, export, solve and import, then the total time |
+| batch export | one line per work item: status, primitive count, warning and error codes, time |
+| batch solve | work items queued, files sent, pid of the started job |
+| batch status | running, finished or stopped; solved, skipped and failed counts; current work item; seconds per work item and time left; errors of failed work items; last lines of `batch.log` |
+| batch fetch | files received and removed, work items converted to bgeo with time, number of results |
 
 ## Results
 
@@ -260,6 +320,21 @@ The radio map adds powers without phase and averages over each cell, so it shows
 
 Missing values are stored as -999.
 
+Solve writes the results as compressed NumPy files (float32), about 10 times smaller than JSON and read without parsing. Import turns them into the geometry above. They can also be read directly, e.g. for analysis over a batch:
+
+```python
+import numpy as np
+d = np.load("wi015/<hip>_result.npz")
+d["link_gain_db_incoherent"]   # [rx, tx], order of d["rx"] and d["tx"]
+```
+
+| File | Arrays |
+|---|---|
+| `_result.npz` | `tx`, `rx` (names), `tx_position`, `rx_position`, `object_names`, `cfr_frequencies`, `info` (JSON: Sionna version, settings). Per path, in rx, tx order: `path_tx`, `path_rx` (indices), `path_interactions`, `path_objects` (index into `object_names`, -1 none), `path_primitives`, `path_vertices` ([path, depth] and [path, depth, 3], unused depths 0), `path_gain_db`, `path_tau`, `path_a_re`, `path_a_im`, `path_theta_t`, `path_phi_t`, `path_theta_r`, `path_phi_r`, `path_doppler`. Per link [rx, tx]: `link_num_paths`, `link_gain_db_coherent`, `link_gain_db_incoherent`, `link_delay_spread`, `link_cfr_db` ([rx, tx, frequency]) |
+| `_radiomap.npz` | `tx`, `map_names`, `vertices`, `faces` (all surfaces together), `cell_map` (surface index per cell), `path_gain_db` ([cell, tx]), `info` |
+
+Positions are in Sionna axes (z up).
+
 ## Messages
 
 Codes starting with N are information, W warnings (do not block), all others are errors (stop the button).
@@ -273,12 +348,17 @@ Codes starting with N are information, W warnings (do not block), all others are
 | N005 | imported paths, links | Import succeeded |
 | N006 | radio map cells | Radio map computed or imported |
 | N008 | target status | Result of check |
+| N009 | batch exported | Number of work items exported and failed |
+| N010 | batch started | The job runs on the target; follow it with batch status |
+| N011 | batch results | Work items with a result, failed, and not solved (yet) |
 | W001 | scene diagonal outside 1 m to 50 km | Probably wrong units |
 | W002 | object smaller than one wavelength | Ray tracing is not valid for it; results for that object are unreliable |
 | W003 | device far from the geometry | Device probably misplaced or in other units |
 | W004 | no rx point | Only the radio map is computed |
 | W005 | material not confirmed | Library value not verified; results depend on it |
 | W006 | GPU in use by other processes | Runs slower; large jobs may run out of memory |
+| W008 | node exists but is not a File SOP | A node next to the Null already has the name `sionna_previz`, `sionna_paths`, `sionna_links`, `sionna_radiomap` or `sionna_batch_*`. The result file is written but not loaded; rename that node. |
+| W009 | no `batch` parm on the Null | Add a string parm `batch`; the `sionna_batch_*` File SOPs read the batch name from it |
 | V001 | no primitives | Nothing to export; add geometry or a measurement surface |
 | V002 | missing prim attribute | Add `name` and `material` |
 | V003 | not a triangle | Triangulate (Divide SOP) |
@@ -308,12 +388,19 @@ Codes starting with N are information, W warnings (do not block), all others are
 | S006 | no exported run found | Export first |
 | S008 | frequency changed since export | Export again |
 | S009 | program not found | `ssh`, `rsync` or `nvidia-smi` missing on this machine |
+| S010 | radio map exceeds the ray limit | `radiomap_samples` × number of TX is above Sionna's 4.29e9 rays per radio map. Lower `radiomap_samples` to the value shown. Checked before anything is sent. |
 | T001 | target unreachable | VPN off, wrong SSH alias, or key not installed. The SSH reason is shown. |
 | T002 | no python on target | No venv at `<remote_root>/venv` |
 | T003 | no GPU on target | Sionna would run on the CPU; refused |
 | T004 | file transfer failed | rsync error; reason shown |
 | I001 | result file not found | Solve first |
-| I002 | result file unreadable | Result from an older version or damaged; solve again |
+| I002 | result file unreadable | Damaged file; solve again. Runs solved before the switch to `.npz` give `I001`; solve them again. |
+| B001 | TOP node not found | No `../topnet1`, no node with the display flag in it, or a wrong `top_node` |
+| B002 | no work items in range | Check `batch_start` and `batch_end` against the work item indices |
+| B003 | no batch found | Batch export first, or check the `batch` parm |
+| B004 | batch already running | Wait for it, or stop it on the target |
+| B007 | nothing to solve | Every work item failed at export or at the checks before sending (`S008`, `S010`) |
+| B008 | input did not cook | The SOP network gave an error for this work item; it is skipped |
 
 ## Tests
 
@@ -353,8 +440,8 @@ if (tx >= 0) {
 - **ITU materials have frequency limits.** Below 1 GHz most of them are undefined and Sionna stops with an error (see the table). Sub-GHz scenes need library materials.
 - **Library values are mostly unverified** (see Materials).
 - **No volumetric media.** Materials live on surfaces, so canopies must be built from surfaces; see test F.
-- **Houdini is blocked while previz or solve runs.** The solver could run in the background with results imported when it finishes; not implemented.
-- **Results are exchanged as JSON.** This concerns speed and memory on the laptop, not GPU memory. A radio map with 4,802 cells and 102 TX is 6 MB; at 100,000 cells and 100 TX it would be about 120 MB, which is slow to transfer, parse and turn into geometry. A binary format will be needed for large studies.
+- **Houdini is blocked while previz, solve or run is busy.** Batch solve runs in the background.
+- **Radio maps grow with cells × TX**: 4 bytes per value, so 100,000 cells and 100 TX is 40 MB before compression.
 - **Validation does not check** whether a device sits inside an object or below a floor, or whether ITU materials are defined at the run frequency.
 - **Remote targets need `ssh` and `rsync`** on your machine (standard on Linux and macOS, not on Windows).
 - Developed against Sionna RT 2.2.0.

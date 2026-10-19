@@ -1,0 +1,10 @@
+{
+  "frequency": 3500000000.0,
+  "objects": {
+    "ground": {
+      "material": "medium_dry_ground",
+      "thickness": 1.0,
+      "scattering_coefficient": 0.0
+    }
+  }
+}

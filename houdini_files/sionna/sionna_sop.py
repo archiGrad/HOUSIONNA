@@ -8,6 +8,7 @@ import shutil
 import subprocess
 import threading
 import time
+import zipfile
 import hou
 
 ITU = {
@@ -26,6 +27,7 @@ REMOTE_ROOT = "~/Documents/HyROPA"
 TIMEOUT = 1800
 MAX_RAYS = 4294967295
 SSH_OPTS = ["-o", "BatchMode=yes", "-o", "ConnectTimeout=10"]
+TOPNET = "../topnet1"
 SETTINGS = {
     "frequency": FREQUENCY,
     "max_depth": 3,
@@ -50,10 +52,14 @@ CODES = {
     "N006": "radio map: {cells} cells on {maps} surfaces, {tx} transmitters",
     "N007": "{mode} on target '{target}'",
     "N008": "target '{target}': sionna {version}, {variant}, gpu {gpu}",
+    "N009": "batch '{name}': {ok} exported, {failed} failed, written to {path}",
+    "N010": "batch '{name}' started on '{target}' (pid {pid}): {count} work items queued, finished ones are skipped",
+    "N011": "batch '{name}': {done} solved, {failed} failed, {missing} without result",
     "W004": "no rx point: only the radio map will be computed",
     "W005": "material '{material}' is not confirmed: {status}",
     "W006": "gpu on '{target}' in use by other processes: {apps}",
     "W008": "node '{name}' exists but is not a File SOP: result saved to {path} but not loaded; rename that node",
+    "W009": "no string parm 'batch' on this node: add it, the sionna_batch File SOPs read the batch name from it",
     "W001": "scene diagonal is {diag:.3g} m (expected 1 m to 50 km): check units",
     "W002": "{name}: smaller than one wavelength ({lam:.3f} m)",
     "W003": "device '{name}': {dist:.3g} m away from the geometry",
@@ -95,6 +101,12 @@ CODES = {
     "I001": "result file not found '{path}'",
     "I002": "result file unreadable or wrong format",
     "I003": "result does not match current scene (device names differ)",
+    "B001": "TOP node not found: '{path}'",
+    "B002": "no work items with index {start} to {end} on '{path}'",
+    "B003": "no batch found{name}, run batch export first",
+    "B004": "batch '{name}' is already running on '{target}' (pid {pid})",
+    "B007": "nothing to solve in batch '{name}'",
+    "B008": "input did not cook: {err}",
 }
 
 
@@ -368,6 +380,7 @@ def on_validate():
     recs = validate(geo, f)
     inventory("validate", geo, f, node)
     report("validate", recs)
+    return recs
 
 
 # --- export ---
@@ -512,40 +525,48 @@ def write_ply(path, pts, faces):
         fh.write(tri.tobytes())
 
 
-def on_export():
+def export_run(geo, f, folder, recs, extra):
+    hip = hou.expandString("$HIPNAME")
+    try:
+        os.makedirs(folder + "/meshes")
+    except OSError:
+        recs.append(("E001", {"path": folder}))
+        return None
+    try:
+        write_meshes(geo, folder + "/meshes")
+        objs = resolved(geo, f)
+        write(f"{folder}/{hip}_scene.xml", build_xml(objs))
+        write(f"{folder}/{hip}_materials.json", json.dumps({"frequency": f, "objects": objs}, indent=2))
+        write(f"{folder}/{hip}_txrx.json", json.dumps(build_devices(geo), indent=2))
+        measure = [n for n, m in materials(geo).items() if m[0] == MEASURE]
+        write(f"{folder}/{hip}_measure.json", json.dumps(measure))
+        meta = {"exported_utc": time.strftime("%Y%m%d_%H%M%SZ", time.gmtime()),
+                "hip": hou.hipFile.path(), "houdini": hou.applicationVersionString()}
+        meta.update(extra)
+        write(f"{folder}/{hip}_meta.json", json.dumps(meta, indent=2))
+        recs.append(("N002", {"path": folder}))
+        write(f"{folder}/{hip}_log.txt", "\n".join(fmt(r) for r in recs) + "\n")
+        return objs, measure, meta
+    except OSError as e:
+        recs.append(("E002", {"path": e.filename}))
+        return None
+
+
+def on_export(checked=None):
     node = hou.pwd()
     if hou.hipFile.isNewFile():
         report("export", [("E003", {})])
-        return
-    geo = node.inputs()[0].geometry()
-    recs = validate(geo, frequency(node))
+        return False
+    geo, f = node.inputs()[0].geometry(), frequency(node)
+    recs = validate(geo, f) if checked is None else list(checked)
+    shown = 0 if checked is None else len(recs)
     if not has_errors(recs):
-        stamp = time.strftime("%Y%m%d_%H%M%SZ", time.gmtime())
-        folder = hou.expandString(f"{OUT}/data/{stamp}")
-        hip = hou.expandString("$HIPNAME")
-        try:
-            os.makedirs(folder + "/meshes")
-        except OSError:
-            recs.append(("E001", {"path": folder}))
-        else:
-            try:
-                write_meshes(geo, folder + "/meshes")
-                f = frequency(node)
-                objs = resolved(geo, f)
-                write(f"{folder}/{hip}_scene.xml", build_xml(objs))
-                write(f"{folder}/{hip}_materials.json", json.dumps({"frequency": f, "objects": objs}, indent=2))
-                write(f"{folder}/{hip}_txrx.json", json.dumps(build_devices(geo), indent=2))
-                measure = [n for n, m in materials(geo).items() if m[0] == MEASURE]
-                write(f"{folder}/{hip}_measure.json", json.dumps(measure))
-                meta = {"exported_utc": stamp, "hip": hou.hipFile.path(), "houdini": hou.applicationVersionString()}
-                meta.update(git_info())
-                write(f"{folder}/{hip}_meta.json", json.dumps(meta, indent=2))
-                recs.append(("N002", {"path": folder}))
-                write(f"{folder}/{hip}_log.txt", "\n".join(fmt(r) for r in recs) + "\n")
-                export_summary("export", folder, f, objs, measure, meta)
-            except OSError as e:
-                recs.append(("E002", {"path": e.filename}))
-    report("export", recs)
+        folder = hou.expandString(f"{OUT}/data/{time.strftime('%Y%m%d_%H%M%SZ', time.gmtime())}")
+        out = export_run(geo, f, folder, recs, git_info())
+        if out:
+            export_summary("export", folder, f, *out)
+    report("export", recs[shown:])
+    return not has_errors(recs)
 
 
 def export_summary(phase, folder, f, objs, measure, meta):
@@ -827,11 +848,13 @@ def from_sionna(v):
     return (v[0], v[2], -v[1])
 
 
-def file_sop(node, name, path, offset):
+def file_sop(node, name, path, offset, **parms):
     target = node.parent().node(name)
     if target is None:
         target = node.parent().createNode("file", name)
         target.parm("file").set(path)
+        for k, v in parms.items():
+            target.parm(k).set(v)
         target.setPosition(node.position() + hou.Vector2(*offset))
     elif target.type().name() != "file":
         return None
@@ -839,8 +862,8 @@ def file_sop(node, name, path, offset):
     return target
 
 
-def load_result(node, name, path, offset, recs):
-    target = file_sop(node, name, path, offset)
+def load_result(node, name, path, offset, recs, **parms):
+    target = file_sop(node, name, path, offset, **parms)
     if target is None:
         recs.append(("W008", {"name": name, "path": hou.expandString(path)}))
     return target
@@ -922,9 +945,9 @@ def on_solve():
     folder = latest_run()
     if not folder:
         report("solve", [("S006", {})])
-        return
+        return False
     scene = glob.glob(folder + "/*_scene.xml")[0]
-    for suffix in ("_result.json", "_radiomap.json"):
+    for suffix in ("_result.npz", "_radiomap.npz"):
         old = scene.replace("_scene.xml", suffix)
         if os.path.isfile(old):
             os.remove(old)
@@ -933,20 +956,18 @@ def on_solve():
     say("solve", f"run folder {folder}")
     recs = stale(scene, s) or ray_limit(scene, s) or run_sionna(node, "solve", folder, "solve")
     if not has_errors(recs):
-        result = scene.replace("_scene.xml", "_result.json")
-        rmap = scene.replace("_scene.xml", "_radiomap.json")
+        result = scene.replace("_scene.xml", "_result.npz")
+        rmap = scene.replace("_scene.xml", "_radiomap.npz")
         if os.path.isfile(result):
-            with open(result) as fh:
-                count = len(json.load(fh)["paths"])
-            recs.append(("N004", {"count": count, "path": result}))
+            d = npz(result, "path_tx")
+            recs.append(("N004", {"count": len(d["path_tx"]), "path": result}))
         if os.path.isfile(rmap):
-            with open(rmap) as fh:
-                data = json.load(fh)
-            cells = sum(len(m["faces"]) for m in data["maps"])
-            recs.append(("N006", {"cells": cells, "maps": len(data["maps"]), "tx": len(data["tx"])}))
+            d = npz(rmap, "cell_map", "map_names", "tx")
+            recs.append(("N006", {"cells": len(d["cell_map"]), "maps": len(d["map_names"]), "tx": len(d["tx"])}))
         if not os.path.isfile(result) and not os.path.isfile(rmap):
             recs.append(("S005", {}))
     report("solve", recs)
+    return not has_errors(recs)
 
 
 # --- import ---
@@ -955,22 +976,25 @@ PATH_FLOATS = ("gain_db", "tau", "a_re", "a_im", "theta_t", "phi_t", "theta_r", 
 LINK_FLOATS = ("gain_db_coherent", "gain_db_incoherent", "delay_spread")
 
 
-def polyline(geo, item):
-    pts = geo.createPoints([from_sionna(v) for v in item["vertices"]])
-    poly = geo.createPolygon(is_closed=False)
-    for pt in pts:
-        poly.addVertex(pt)
-    poly.setAttribValue("tx", item["tx"])
-    poly.setAttribValue("rx", item["rx"])
-    return pts, poly
+def npz(path, *keys):
+    import numpy as np
+    with np.load(path) as d:
+        return {k: d[k] for k in (keys or d.files)}
 
 
-def value(item, key):
-    v = item.get(key)
-    return -999.0 if v is None else v
+def houdini_axes(v):
+    return v[:, [0, 2, 1]] * (1.0, 1.0, -1.0)
 
 
-def build_paths(data):
+def polylines(geo, positions, counts):
+    import numpy as np
+    geo.createPoints(houdini_axes(positions).tolist())
+    start = np.cumsum(counts) - counts
+    return geo.createPolygons([list(range(s, s + c)) for s, c in zip(start.tolist(), counts.tolist())], False)
+
+
+def build_paths(d):
+    import numpy as np
     geo = hou.Geometry()
     for a in ("tx", "rx"):
         geo.addAttrib(hou.attribType.Prim, a, "")
@@ -980,19 +1004,40 @@ def build_paths(data):
     geo.addAttrib(hou.attribType.Point, "interaction", 0)
     geo.addAttrib(hou.attribType.Point, "primitive", -1)
     geo.addAttrib(hou.attribType.Point, "object", "")
-    for p in data["paths"]:
-        pts, poly = polyline(geo, p)
-        for pt, i, o, n in zip(pts[1:-1], p["interactions"], p["objects"], p["primitives"]):
-            pt.setAttribValue("interaction", i)
-            pt.setAttribValue("object", o)
-            pt.setAttribValue("primitive", n)
-        for a in PATH_FLOATS:
-            poly.setAttribValue(a, value(p, a))
-        poly.setAttribValue("bounces", len(p["interactions"]))
+    tx, rx = d["path_tx"], d["path_rx"]
+    if not len(tx):
+        return geo
+    hop = d["path_interactions"] != 0
+    bounces = hop.sum(axis=1)
+    counts = bounces + 2
+    start = np.cumsum(counts) - counts
+    row, k = np.nonzero(hop)
+    slot = start[row] + np.cumsum(hop, axis=1)[row, k]
+    pos = np.zeros((counts.sum(), 3))
+    pos[start] = d["tx_position"][tx]
+    pos[start + counts - 1] = d["rx_position"][rx]
+    pos[slot] = d["path_vertices"][row, k]
+    inter = np.zeros(len(pos), dtype=int)
+    inter[slot] = d["path_interactions"][row, k]
+    prim = np.full(len(pos), -1)
+    prim[slot] = d["path_primitives"][row, k]
+    obj = np.full(len(pos), -1)
+    obj[slot] = d["path_objects"][row, k]
+    names = d["object_names"].tolist() + [""]
+    polylines(geo, pos, counts)
+    geo.setPointIntAttribValues("interaction", inter.tolist())
+    geo.setPointIntAttribValues("primitive", prim.tolist())
+    geo.setPointStringAttribValues("object", [names[i] for i in obj.tolist()])
+    geo.setPrimStringAttribValues("tx", d["tx"][tx].tolist())
+    geo.setPrimStringAttribValues("rx", d["rx"][rx].tolist())
+    for a in PATH_FLOATS:
+        geo.setPrimFloatAttribValues(a, d["path_" + a].astype(float).tolist())
+    geo.setPrimIntAttribValues("bounces", bounces.tolist())
     return geo
 
 
-def build_links(data):
+def build_links(d):
+    import numpy as np
     geo = hou.Geometry()
     for a in ("tx", "rx"):
         geo.addAttrib(hou.attribType.Prim, a, "")
@@ -1001,14 +1046,43 @@ def build_links(data):
     geo.addAttrib(hou.attribType.Prim, "num_paths", 0)
     geo.addArrayAttrib(hou.attribType.Prim, "cfr_db", hou.attribData.Float)
     geo.addArrayAttrib(hou.attribType.Global, "cfr_frequencies", hou.attribData.Float)
-    geo.setGlobalAttribValue("cfr_frequencies", data["cfr_frequencies"])
-    for link in data["links"]:
-        _, poly = polyline(geo, link)
-        for a in LINK_FLOATS:
-            poly.setAttribValue(a, value(link, a))
-        poly.setAttribValue("num_paths", link["num_paths"])
-        poly.setAttribValue("cfr_db", link.get("cfr_db", []))
+    geo.setGlobalAttribValue("cfr_frequencies", d["cfr_frequencies"].tolist())
+    num = d["link_num_paths"]
+    if not num.size:
+        return geo
+    r, t = np.divmod(np.arange(num.size), num.shape[1])
+    pos = np.empty((2 * num.size, 3))
+    pos[0::2] = d["tx_position"][t]
+    pos[1::2] = d["rx_position"][r]
+    polys = polylines(geo, pos, np.full(num.size, 2))
+    geo.setPrimStringAttribValues("tx", d["tx"][t].tolist())
+    geo.setPrimStringAttribValues("rx", d["rx"][r].tolist())
+    for a in LINK_FLOATS:
+        geo.setPrimFloatAttribValues(a, d["link_" + a].ravel().astype(float).tolist())
+    geo.setPrimIntAttribValues("num_paths", num.ravel().tolist())
+    cfr = d["link_cfr_db"].reshape(num.size, -1)
+    if cfr.shape[1]:
+        for poly, n, row in zip(polys, num.ravel().tolist(), cfr.tolist()):
+            if n:
+                poly.setAttribValue("cfr_db", row)
     return geo
+
+
+KINDS = ("paths", "links", "radiomap")
+
+
+def to_bgeo(folder):
+    out = {}
+    for path in glob.glob(folder + "/*_result.npz"):
+        out["result"] = d = npz(path)
+        out["paths"], out["links"] = build_paths(d), build_links(d)
+    for path in glob.glob(folder + "/*_radiomap.npz"):
+        out["rmap"] = d = npz(path)
+        out["radiomap"] = build_radiomap(d)
+    for kind in KINDS:
+        if kind in out:
+            out[kind].saveToFile(f"{folder}/{kind}.bgeo.sc")
+    return out
 
 
 def on_import():
@@ -1016,50 +1090,54 @@ def on_import():
     folder = latest_run()
     if not folder:
         report("import", [("S006", {})])
-        return
-    result = glob.glob(folder + "/*_result.json")
-    rmap = glob.glob(folder + "/*_radiomap.json")
-    if not result and not rmap:
+        return False
+    say("import", f"run folder {folder}")
+    if not glob.glob(folder + "/*_result.npz") and not glob.glob(folder + "/*_radiomap.npz"):
         report("import", [("I001", {"path": folder})])
-        return
-    recs = []
+        return False
+    recs, t0 = [], time.time()
     try:
-        if result:
-            with open(result[0]) as fh:
-                data = json.load(fh)
-            geos = {"paths": build_paths(data), "links": build_links(data)}
-            for i, (kind, geo) in enumerate(geos.items()):
-                geo.saveToFile(result[0].replace("_result.json", f"_{kind}.bgeo.sc"))
-                geo.saveToFile(hou.expandString(f"{OUT}/{kind}.bgeo.sc"))
-                load_result(node, f"sionna_{kind}", f"{OUT}/{kind}.bgeo.sc", (3, -1 - i), recs)
-            recs.append(("N005", {k: len(g.prims()) for k, g in geos.items()}))
-            gains = [p["gain_db"] for p in data["paths"] if p["gain_db"] is not None]
-            if gains:
-                say("import", f"paths: gain {min(gains):.1f} to {max(gains):.1f} dB, "
-                              f"{sum(1 for p in data['paths'] if not p['interactions'])} line of sight")
-            say("import", "results written for sionna_paths, sionna_links")
-        if rmap:
-            with open(rmap[0]) as fh:
-                data = json.load(fh)
-            geo = build_radiomap(data)
-            geo.saveToFile(rmap[0].replace("_radiomap.json", "_radiomap.bgeo.sc"))
-            geo.saveToFile(hou.expandString(OUT + "/radiomap.bgeo.sc"))
-            load_result(node, "sionna_radiomap", OUT + "/radiomap.bgeo.sc", (3, -3), recs)
-            recs.append(("N006", {"cells": len(geo.prims()), "maps": len(data["maps"]), "tx": len(data["tx"])}))
-            peak = [v for v in geo.primFloatAttribValues("path_gain_db_max") if v > -999]
-            missed = len(geo.prims()) - len(peak)
-            if peak:
-                say("import", f"radio map: strongest tx per cell {min(peak):.1f} to {max(peak):.1f} dB, "
-                              f"{plural(missed, 'cell')} without signal")
-            say("import", "results written for sionna_radiomap")
-    except (ValueError, KeyError):
-        recs.append(("I002", {}))
+        out = to_bgeo(folder)
+    except (ValueError, KeyError, OSError, zipfile.BadZipFile):
+        report("import", [("I002", {})])
+        return False
+    for i, kind in enumerate(KINDS):
+        if kind in out:
+            out[kind].saveToFile(hou.expandString(f"{OUT}/{kind}.bgeo.sc"))
+            load_result(node, f"sionna_{kind}", f"{OUT}/{kind}.bgeo.sc", (3, -1 - i), recs)
+    if "result" in out:
+        d = out["result"]
+        recs.append(("N005", {"paths": len(out["paths"].prims()), "links": len(out["links"].prims())}))
+        gains = d["path_gain_db"][d["path_gain_db"] > -999]
+        if len(gains):
+            los = int(((d["path_interactions"] != 0).sum(axis=1) == 0).sum())
+            say("import", f"paths: gain {gains.min():.1f} to {gains.max():.1f} dB, {los} line of sight")
+    if "rmap" in out:
+        d = out["rmap"]
+        recs.append(("N006", {"cells": len(d["cell_map"]), "maps": len(d["map_names"]), "tx": len(d["tx"])}))
+        peak = d["path_gain_db"].max(axis=1)
+        if (peak > -999).any():
+            say("import", f"radio map: strongest tx per cell {peak[peak > -999].min():.1f} to "
+                          f"{peak.max():.1f} dB, {plural(int((peak <= -999).sum()), 'cell')} without signal")
+    say("import", f"results written for {', '.join('sionna_' + k for k in KINDS if k in out)} "
+                  f"({time.time() - t0:.1f} s)")
     report("import", recs)
+    return not has_errors(recs)
+
+
+# --- run ---
+
+def on_run():
+    t0 = time.time()
+    recs = on_validate()
+    ok = not has_errors(recs) and on_export(recs) and on_solve() and on_import()
+    say("run", f"run {'done' if ok else 'stopped'} after {time.time() - t0:.1f} s")
 
 
 # --- radiomap ---
 
-def build_radiomap(data):
+def build_radiomap(d):
+    import numpy as np
     geo = hou.Geometry()
     geo.addAttrib(hou.attribType.Prim, "name", "")
     geo.addAttrib(hou.attribType.Prim, "best_tx_name", "")
@@ -1067,23 +1145,362 @@ def build_radiomap(data):
     geo.addAttrib(hou.attribType.Prim, "path_gain_db_max", 0.0)
     geo.addArrayAttrib(hou.attribType.Prim, "path_gain_db", hou.attribData.Float)
     geo.addArrayAttrib(hou.attribType.Global, "tx", hou.attribData.String)
-    geo.setGlobalAttribValue("tx", data["tx"])
-    names, best, best_names, peak = [], [], [], []
-    for m in data["maps"]:
-        pts = geo.createPoints([from_sionna(v) for v in m["vertices"]])
-        for f, gains in zip(m["faces"], m["path_gain_db"]):
-            poly = geo.createPolygon()
-            for i in reversed(f):
-                poly.addVertex(pts[i])
-            poly.setAttribValue("path_gain_db", gains)
-            top = max(gains)
-            i = gains.index(top) if top > -999.0 else -1
-            names.append(m["name"])
-            best.append(i)
-            best_names.append(data["tx"][i] if i >= 0 else "")
-            peak.append(top)
-    geo.setPrimStringAttribValues("name", names)
-    geo.setPrimStringAttribValues("best_tx_name", best_names)
-    geo.setPrimIntAttribValues("best_tx", best)
-    geo.setPrimFloatAttribValues("path_gain_db_max", peak)
+    tx = d["tx"].tolist()
+    geo.setGlobalAttribValue("tx", tx)
+    g = d["path_gain_db"]
+    if not len(g):
+        return geo
+    geo.createPoints(houdini_axes(d["vertices"]).tolist())
+    polys = geo.createPolygons(d["faces"][:, ::-1].tolist())
+    peak = g.max(axis=1)
+    best = np.where(peak > -999, g.argmax(axis=1), -1)
+    for poly, row in zip(polys, g.tolist()):
+        poly.setAttribValue("path_gain_db", row)
+    geo.setPrimStringAttribValues("name", d["map_names"][d["cell_map"]].tolist())
+    geo.setPrimStringAttribValues("best_tx_name", [tx[i] if i >= 0 else "" for i in best.tolist()])
+    geo.setPrimIntAttribValues("best_tx", best.tolist())
+    geo.setPrimFloatAttribValues("path_gain_db_max", peak.astype(float).tolist())
     return geo
+
+
+# --- batch ---
+
+def parm_int(node, name, default):
+    parm = node.parm(name)
+    return int(parm.eval()) if parm else default
+
+
+def top_node(node):
+    path = parm_str(node, "top_node", "") or TOPNET
+    top = node.node(path)
+    if top is not None and top.children():
+        top = next((c for c in top.children() if c.isDisplayFlagSet()), None)
+    return (top if hasattr(top, "getPDGNode") else None), path
+
+
+def work_items(top):
+    top.generateStaticWorkItems(block=True)
+    pdg_node = top.getPDGNode()
+    return sorted(pdg_node.workItems, key=lambda w: w.index) if pdg_node else []
+
+
+def wedge(wi):
+    out = {}
+    for k, vals in wi.attribValues().items():
+        vals = vals if isinstance(vals, (list, tuple)) else [vals]
+        vals = [v if isinstance(v, (int, float, str)) else str(getattr(v, "path", v)) for v in vals]
+        out[k] = vals[0] if len(vals) == 1 else vals
+    return out
+
+
+def item_name(index):
+    return f"wi{index:03d}"
+
+
+def batch_folder(node):
+    name = parm_str(node, "batch", "")
+    root = hou.expandString(OUT + "/batches")
+    if not name and os.path.isdir(root):
+        found = sorted(d for d in os.listdir(root) if os.path.isfile(f"{root}/{d}/batch.json"))
+        name = found[-1] if found else ""
+    if name and os.path.isfile(f"{root}/{name}/batch.json"):
+        return f"{root}/{name}", []
+    return None, [("B003", {"name": f" named '{name}'" if parm_str(node, "batch", "") else ""})]
+
+
+def remote_batch(node, folder):
+    return f"{remote_root(node)}/batches/{hou.expandString('$HIPNAME')}/{os.path.basename(folder)}"
+
+
+def on_batch_export():
+    node = hou.pwd()
+    if hou.hipFile.isNewFile():
+        report("batch", [("E003", {})])
+        return
+    top, path = top_node(node)
+    if top is None:
+        report("batch", [("B001", {"path": path})])
+        return
+    lo, hi = parm_int(node, "batch_start", 0), parm_int(node, "batch_end", 1 << 30)
+    items = [w for w in work_items(top) if lo <= w.index <= hi]
+    if not items:
+        report("batch", [("B002", {"start": lo, "end": hi, "path": top.path()})])
+        return
+    stamp = time.strftime("%Y%m%d_%H%M%SZ", time.gmtime())
+    folder = hou.expandString(f"{OUT}/batches/{stamp}")
+    f, git = frequency(node), git_info()
+    batch = {"created_utc": stamp, "hip": hou.hipFile.path(), "top_node": top.path(), "range": [lo, hi],
+             "frequency": f, "items": {}}
+    batch.update(git)
+    say("batch", f"batch {stamp}: {plural(len(items), 'work item')} ({items[0].index} to {items[-1].index}) "
+                 f"from {top.path()}")
+    before, t0 = top.getSelectedWorkItem(), time.time()
+    try:
+        for n, wi in enumerate(items, 1):
+            t1, name = time.time(), item_name(wi.index)
+            top.setSelectedWorkItem(wi.id)
+            try:
+                geo = node.inputs()[0].geometry()
+                recs = validate(geo, f) if geo else [("B008", {"err": "no geometry"})]
+            except hou.Error as e:
+                geo, recs = None, [("B008", {"err": e.instanceMessage()})]
+            entry = {"index": wi.index, "id": wi.id, "name": wi.name}
+            if not has_errors(recs):
+                export_run(geo, f, f"{folder}/{name}", recs, dict(git, work_item=entry, wedge=wedge(wi)))
+            entry["status"] = "failed" if has_errors(recs) else "exported"
+            entry["codes"] = [r[0] for r in recs if r[0][0] != "N"]
+            batch["items"][name] = entry
+            codes = f", {' '.join(entry['codes'])}" if entry["codes"] else ""
+            say("batch", f"  [{n}/{len(items)}] {name}: {entry['status']}, "
+                         f"{plural(len(geo.prims()) if geo else 0, 'prim')}{codes} ({time.time() - t1:.1f} s)")
+            for r in recs:
+                if r[0][0] not in "WN":
+                    say("batch", f"    {fmt(r)}")
+    finally:
+        top.setSelectedWorkItem(before)
+        os.makedirs(folder, exist_ok=True)
+        write(folder + "/batch.json", json.dumps(batch, indent=2))
+    failed = sum(1 for e in batch["items"].values() if e["status"] == "failed")
+    say("batch", f"export done after {time.time() - t0:.1f} s")
+    recs = [("N009", {"name": stamp, "ok": len(items) - failed, "failed": failed, "path": folder})]
+    if node.parm("batch"):
+        node.parm("batch").set(stamp)
+        say("batch", f"parm 'batch' set to {stamp}")
+    else:
+        recs.append(("W009", {}))
+    report("batch", recs)
+
+
+def on_batch_solve():
+    node = hou.pwd()
+    folder, recs = batch_folder(node)
+    if not folder:
+        report("batch", recs)
+        return
+    name, s = os.path.basename(folder), settings(node)
+    with open(folder + "/batch.json") as fh:
+        items = json.load(fh)["items"]
+    queue = []
+    for item, entry in sorted(items.items(), key=lambda kv: kv[1]["index"]):
+        if entry["status"] != "exported":
+            continue
+        scene = glob.glob(f"{folder}/{item}/*_scene.xml")[0]
+        bad = stale(scene, s) or ray_limit(scene, s)
+        for r in bad:
+            say("batch", f"  {item}: {fmt(r)}")
+        if not bad:
+            write(scene.replace("_scene.xml", "_settings.json"), json.dumps(s, indent=2))
+            queue.append(item)
+    if not queue:
+        report("batch", [("B007", {"name": name})])
+        return
+    write(folder + "/queue.json", json.dumps(queue))
+    script = hou.expandString(OUT + "/sionna_run.py")
+    if not os.path.isfile(script):
+        report("batch", [("S002", {"path": script})])
+        return
+    shutil.copy2(script, folder + "/sionna_run.py")
+    exported = sum(1 for e in items.values() if e["status"] == "exported")
+    say("batch", f"batch {name}: {plural(len(queue), 'work item')} queued, {exported} of {len(items)} exported")
+    host, seconds = target(node), timeout(node)
+    try:
+        if host == "local":
+            recs = start_local(node, folder, name, len(queue))
+        else:
+            recs = start_remote(node, folder, name, len(queue), seconds)
+    except subprocess.TimeoutExpired:
+        recs = [("S004", {"seconds": seconds})]
+    except FileNotFoundError as e:
+        recs = [("S009", {"path": e.filename})]
+    report("batch", recs)
+
+
+def alive(pid):
+    if os.name == "nt":
+        return False
+    try:
+        if os.waitpid(pid, os.WNOHANG)[0] == pid:
+            return False
+    except ChildProcessError:
+        pass
+    try:
+        os.kill(pid, 0)
+        return True
+    except OSError:
+        return False
+
+
+def read_pid(path):
+    try:
+        with open(path) as fh:
+            return int(fh.read().strip())
+    except (OSError, ValueError):
+        return 0
+
+
+def read_status(folder):
+    if not os.path.isfile(folder + "/status.json"):
+        return None
+    with open(folder + "/status.json") as fh:
+        return json.load(fh)
+
+
+def start_local(node, folder, name, count):
+    pid = read_pid(folder + "/batch.pid")
+    if pid and alive(pid) and not (read_status(folder) or {}).get("finished"):
+        return [("B004", {"name": name, "target": "local", "pid": pid})]
+    exe = local_python(node)
+    if not os.path.isfile(exe):
+        return [("S001", {"path": exe})]
+    if os.path.isfile(folder + "/status.json"):
+        os.remove(folder + "/status.json")
+    with open(folder + "/batch.log", "a") as log:
+        p = subprocess.Popen(
+            [exe, "-u", folder + "/sionna_run.py", "batch", folder], env=clean_env(), cwd=folder,
+            stdout=log, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, start_new_session=True,
+        )
+    write(folder + "/batch.pid", str(p.pid))
+    return [("N010", {"name": name, "target": "local", "pid": p.pid, "count": count})]
+
+
+def start_remote(node, folder, name, count, seconds):
+    host = target(node)
+    say("batch", f"target {host}: checking")
+    recs, info = preflight(node)
+    if has_errors(recs):
+        return recs
+    say("batch", f"target {host}: gpu {gpu_text(info)}")
+    rdir, py = remote_batch(node, folder), shlex.quote(remote_root(node) + "/venv/bin/python3")
+    q = shlex.quote(rdir)
+    r = ssh(host, f"mkdir -p {q} && cd {q} && "
+                  "if [ -f batch.pid ] && kill -0 \"$(cat batch.pid)\" 2>/dev/null "
+                  "&& ! grep -q '\"finished\": true' status.json 2>/dev/null; then cat batch.pid; exit 5; fi")
+    if r.returncode == 5:
+        return recs + [("B004", {"name": name, "target": host, "pid": r.stdout.strip()})]
+    if r.returncode:
+        return recs + [("T004", {"target": host, "err": tail(r.stderr, 300)})]
+    say("batch", f"send to {host}:{rdir}")
+    c, out = transfer("batch", folder + "/", f"{host}:{rdir}/", seconds,
+                      "--exclude", "batch.pid", "--exclude", "batch.log", "--exclude", "status.json")
+    if c:
+        return recs + [("T004", {"target": host, "err": tail("\n".join(out), 300)})]
+    r = ssh(host, f"rm -f {q}/status.json; nohup {py} -u {q}/sionna_run.py batch {q} >> {q}/batch.log 2>&1 < /dev/null & "
+                  f"echo $! > {q}/batch.pid; cat {q}/batch.pid")
+    if r.returncode:
+        return recs + [("T001", {"target": host, "err": tail(r.stderr, 300)})]
+    return recs + [("N010", {"name": name, "target": host, "pid": r.stdout.strip(), "count": count})]
+
+
+def batch_counts(folder):
+    with open(folder + "/batch.json") as fh:
+        items = sorted(k for k, e in json.load(fh)["items"].items() if e["status"] == "exported")
+    solved = [i for i in items if os.path.isfile(f"{folder}/{i}/done.json")]
+    failed = [i for i in items if os.path.isfile(f"{folder}/{i}/failed.json")]
+    return items, solved, failed
+
+
+def show_status(name, host, status, running, log):
+    running = running and not (status or {}).get("finished")
+    if not status:
+        say("batch", f"batch {name} on {host}: " + ("starting" if running else "not started"))
+    else:
+        total, done, failed = status["total"], len(status["done"]) + len(status["skipped"]), status["failed"]
+        state = "running" if running else "finished" if status["finished"] else "stopped, process not running"
+        current = f", now {status['current']}" if running and status.get("current") else ""
+        say("batch", f"batch {name} on {host}: {state}, {done} of {total} done "
+                     f"({len(status['skipped'])} skipped as already solved), {len(failed)} failed{current}")
+        solved = len(status["done"])
+        if solved:
+            avg = status["solve_seconds"] / solved
+            left = (total - done - len(failed)) * avg
+            eta = f", about {left / 60:.0f} min left" if running else ""
+            say("batch", f"  {avg:.2f} s per work item{eta}")
+        for item, err in sorted(failed.items()):
+            say("batch", f"  failed {item}: {err}")
+    for line in log:
+        say("batch", f"  log | {line}")
+
+
+def on_batch_status():
+    node = hou.pwd()
+    folder, recs = batch_folder(node)
+    if not folder:
+        report("batch", recs)
+        return
+    name, host = os.path.basename(folder), target(node)
+    try:
+        if host == "local":
+            status = read_status(folder)
+            pid = read_pid(folder + "/batch.pid")
+            log = []
+            if os.path.isfile(folder + "/batch.log"):
+                with open(folder + "/batch.log") as fh:
+                    log = fh.read().splitlines()[-5:]
+            show_status(name, host, status, bool(pid) and alive(pid), log)
+        else:
+            q = shlex.quote(remote_batch(node, folder))
+            r = ssh(host, f"cd {q} 2>/dev/null || exit 0; cat status.json 2>/dev/null; echo; echo ---; "
+                          "[ -f batch.pid ] && kill -0 \"$(cat batch.pid)\" 2>/dev/null && echo running; echo ---; "
+                          "tail -n 5 batch.log 2>/dev/null")
+            if r.returncode:
+                recs.append(("T001", {"target": host, "err": tail(r.stderr, 300)}))
+            else:
+                status, running, log = (r.stdout.split("---\n") + ["", ""])[:3]
+                status = json.loads(status) if status.strip() else None
+                show_status(name, host, status, running.strip() == "running", log.splitlines())
+    except subprocess.TimeoutExpired:
+        recs.append(("T001", {"target": host, "err": "timeout"}))
+    report("batch", recs)
+
+
+def stale_bgeo(item):
+    src = glob.glob(item + "/*.npz")
+    dst = [f"{item}/{k}.bgeo.sc" for k in KINDS if os.path.isfile(f"{item}/{k}.bgeo.sc")]
+    if not src:
+        for path in dst:
+            os.remove(path)
+        return False
+    return not dst or max(map(os.path.getmtime, src)) > min(map(os.path.getmtime, dst))
+
+
+def on_batch_fetch():
+    node = hou.pwd()
+    folder, recs = batch_folder(node)
+    if not folder:
+        report("batch", recs)
+        return
+    name, host = os.path.basename(folder), target(node)
+    try:
+        if host != "local":
+            rdir = remote_batch(node, folder)
+            say("batch", f"receive from {host}:{rdir}")
+            c, out = transfer("batch", f"{host}:{rdir}/", folder + "/", timeout(node),
+                              "--delete", "--exclude", "batch.pid")
+            if c:
+                recs.append(("T004", {"target": host, "err": tail("\n".join(out), 300)}))
+    except subprocess.TimeoutExpired:
+        recs.append(("S004", {"seconds": timeout(node)}))
+    items, solved, failed = batch_counts(folder)
+    todo = [i for i in items if stale_bgeo(f"{folder}/{i}")]
+    say("batch", f"convert {plural(len(todo), 'work item')} to bgeo, the others are up to date or have no result")
+    t0, bad = time.time(), 0
+    for n, item in enumerate(todo, 1):
+        t1 = time.time()
+        try:
+            to_bgeo(f"{folder}/{item}")
+            say("batch", f"  [{n}/{len(todo)}] {item} ({time.time() - t1:.1f} s)")
+        except (ValueError, KeyError, OSError, zipfile.BadZipFile):
+            bad += 1
+            say("batch", f"  [{n}/{len(todo)}] {item}: {fmt(('I002', {}))}")
+    if todo:
+        say("batch", f"converted in {time.time() - t0:.1f} s")
+    if bad:
+        recs.append(("I002", {}))
+    for i, kind in enumerate(KINDS):
+        path = f'{OUT}/batches/`chs("../{node.name()}/batch")`/wi`padzero(3, @pdg_index)`/{kind}.bgeo.sc'
+        load_result(node, f"sionna_batch_{kind}", path, (6, -1 - i), recs, missingframe="empty")
+    if not node.parm("batch"):
+        recs.append(("W009", {}))
+    recs.append(("N011", {"name": name, "done": len(solved), "failed": len(failed),
+                          "missing": len(items) - len(solved) - len(failed)}))
+    report("batch", recs)
