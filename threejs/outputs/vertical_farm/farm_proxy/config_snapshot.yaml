@@ -188,7 +188,7 @@ receiver_grid:
     - 1.78
 path_solver:
   max_depth: 3
-  samples_per_source: 9000
+  samples_per_source: 900000
   seed: 71
   los: true
   specular_reflection: true
@@ -199,7 +199,7 @@ radio_map:
   cell_size_m:
   - 0.15
   - 0.15
-  samples_per_transmitter: 18000
+  samples_per_transmitter: 180000000
   max_depth: 3
   seed: 71
   los: true
@@ -207,6 +207,15 @@ radio_map:
   diffuse_reflection: false
   refraction: true
   diffraction: false
+  seeds:
+  - 71
+  - 72
+  - 73
+  - 74
+  - 75
+  - 76
+  - 77
+  - 78
   center_m:
   - 0.625
   - 0.25

@@ -1,9 +1,9 @@
 {
-  "run_timestamp_utc": "2026-10-19T12:32:44.334097+00:00",
+  "run_timestamp_utc": "2026-10-19T13:02:12.510665+00:00",
   "scenario": "farm_empty",
   "description": "Vertical farm \u00b7 Empty rack. Compact, semi-open indoor rack with 3 configurable growing levels. Dimensions and RF materials are artificial software-demo placeholders.",
-  "platform": "Windows-11-10.0.26300-SP0",
-  "python_version": "3.12.15 (main, Oct 14 2026, 01:08:45) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Linux-6.17.0-1021-nvidia-aarch64-with-glibc2.39",
+  "python_version": "3.12.3 (main, Mar 23 2026, 19:04:32) [GCC 13.3.0]",
   "mitsuba_variant": "cuda_ad_mono_polarized",
   "package_versions": {
     "sionna-rt": "2.2.0",
@@ -138,7 +138,7 @@
   },
   "path_solver": {
     "max_depth": 3,
-    "samples_per_source": 9000,
+    "samples_per_source": 900000,
     "seed": 71,
     "los": true,
     "specular_reflection": true,
@@ -151,7 +151,7 @@
       0.15,
       0.15
     ],
-    "samples_per_transmitter": 18000,
+    "samples_per_transmitter": 180000000,
     "max_depth": 3,
     "seed": 71,
     "los": true,
@@ -159,6 +159,16 @@
     "diffuse_reflection": false,
     "refraction": true,
     "diffraction": false,
+    "seeds": [
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78
+    ],
     "center_m": [
       0.625,
       0.25,
@@ -195,11 +205,11 @@
     },
     {
       "receiver": "RX_B",
-      "valid_path_count": 6
+      "valid_path_count": 9
     },
     {
       "receiver": "RX_C",
-      "valid_path_count": 4
+      "valid_path_count": 6
     }
   ],
   "radio_map": {
@@ -249,8 +259,18 @@
     "grid_x_cells": 10,
     "grid_y_cells": 8,
     "positive_cell_count": 80,
-    "min_positive_path_gain_linear": 1.130262990045594e-05,
-    "max_path_gain_linear": 0.0014716992154717445
+    "min_positive_path_gain_linear": 2.6028048523585312e-05,
+    "max_path_gain_linear": 0.0014672100078314543,
+    "seeds_averaged": [
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78
+    ]
   },
   "scene_model": {
     "dimensions_m": {
