@@ -1,4 +1,4 @@
-"""Serve only the local dashboard and its generated JSON data."""
+"""Serve the local 3D digital twin viewer and its generated data."""
 
 from __future__ import annotations
 
@@ -163,7 +163,7 @@ class DashboardHandler(BaseHTTPRequestHandler):
             self._send_json(200 if job else 404, job or {"error": "HOUSIONNA simulation was not found"})
             return
         if route == "/" and self.digital_twin_root and (self.digital_twin_root / "index.html").is_file():
-            # The 3D twin is the main view; the 2D dashboard stays at /viewer/index.html.
+            # The 3D twin is the only view.
             self.send_response(302)
             self.send_header("Location", "/digital-twin/")
             self.end_headers()
@@ -321,39 +321,17 @@ class DashboardHandler(BaseHTTPRequestHandler):
 
 def serve(project_root: Path, *, open_browser: bool = True, port: int | None = None) -> None:
     project_root = Path(project_root).resolve()
-    viewer_file = project_root / "viewer" / "index.html"
     digital_twin_root = project_root / "viewer" / "digital-twin-dist"
     try:
         build_viewer_scene(project_root)
     except FileNotFoundError as error:
-        # Keep the original 2D dashboard usable if the optional 3D study
-        # outputs have not been generated yet. Its iframe reports the remedy.
+        # The 3D view still opens if the optional study outputs are missing; it shows the remedy in the page.
         print(f"Digital Twin data is not ready yet: {error}")
     routes = {
-        "/": viewer_file,
-        "/viewer/index.html": viewer_file,
         "/digital-twin": digital_twin_root / "index.html",
         "/digital-twin/": digital_twin_root / "index.html",
-        "/outputs/basic/viewer_data.json": project_root / "outputs" / "basic" / "viewer_data.json",
-        "/outputs/room/viewer_data.json": project_root / "outputs" / "room" / "viewer_data.json",
-        "/outputs/comparison/viewer_data.json": project_root / "outputs" / "comparison" / "viewer_data.json",
-        "/outputs/cea/empty/viewer_data.json": project_root / "outputs" / "cea" / "empty" / "viewer_data.json",
-        "/outputs/cea/narrow/viewer_data.json": project_root / "outputs" / "cea" / "narrow" / "viewer_data.json",
-        "/outputs/cea/wide/viewer_data.json": project_root / "outputs" / "cea" / "wide" / "viewer_data.json",
-        "/outputs/cea/comparison/viewer_data.json": project_root / "outputs" / "cea" / "comparison" / "viewer_data.json",
-        "/outputs/canopy_physics/comparison/viewer_data.json": project_root / "outputs" / "canopy_physics" / "comparison" / "viewer_data.json",
         "/outputs/digital_twin/viewer_scene.json": project_root / "outputs" / "digital_twin" / "viewer_scene.json",
     }
-    # The CEA outputs are optional for opening the original dashboard; its
-    # section shows a run hint until those files have been generated.
-    required_routes = {"/outputs/basic/viewer_data.json", "/outputs/room/viewer_data.json",
-                       "/outputs/comparison/viewer_data.json"}
-    missing = [route for route in required_routes if not routes[route].is_file()]
-    if missing:
-        raise FileNotFoundError(
-            "Viewer data is missing. Run the simulations first with "
-            "'.\\.venv\\Scripts\\python.exe run.py all'. Missing: " + ", ".join(missing)
-        )
 
     if not (digital_twin_root / "index.html").is_file():
         raise FileNotFoundError(
@@ -381,7 +359,7 @@ def serve(project_root: Path, *, open_browser: bool = True, port: int | None = N
         raise OSError("Could not find an available local port between 8765 and 8784")
 
     url = f"http://127.0.0.1:{server.server_port}/"
-    print(f"Opening the local propagation viewer at {url}")
+    print(f"Opening the local digital twin viewer at {url}")
     print("Leave this terminal running while you use the page. Press Ctrl+C to stop it.")
     if open_browser:
         Timer(0.8, webbrowser.open_new_tab, args=(url,)).start()

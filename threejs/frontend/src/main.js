@@ -6,13 +6,14 @@ import { CSS2DObject, CSS2DRenderer } from 'three/addons/renderers/CSS2DRenderer
 import './style.css';
 import './housionna.css';
 import './theme.css';
+import './dramco.css';
 
 const app = document.querySelector('#app');
 app.innerHTML = `
   <header class="topbar">
-    <div class="brand"><div class="brand-mark">H</div><div><b>HyROPA</b><span>INDOOR VERTICAL FARM TWIN</span></div></div>
+    <div class="brand"><img class="brand-logo" src="dramco-mark-white.png" alt="DRAMCO" width="32" height="32"><div><b>HyROPA</b><span>INDOOR VERTICAL FARM TWIN</span></div></div>
     <div class="top-context"><span class="live-dot"></span><span id="scenarioHeading">Loading scene data</span><span class="separator">/</span><span id="frequencyHeading">RF propagation study</span></div>
-    <div class="top-actions"><span id="visualWarning" class="visual-warning">VISUAL PLANTS ≠ RF MODEL</span><button id="layersBtn" class="quiet-button panel-button" aria-expanded="true">Layers</button><button id="inspectorBtn" class="quiet-button panel-button" aria-expanded="true">Inspector</button><button id="captureBtn" class="quiet-button">Capture view</button><button id="themeBtn" class="quiet-button theme-toggle" type="button" aria-label="Toggle dark mode"><span class="theme-icon" aria-hidden="true"></span><span id="themeLabel">Dark</span></button></div>
+    <div class="top-actions"><span id="visualWarning" class="visual-warning">VISUAL PLANTS ≠ RF MODEL</span><button id="layersBtn" class="quiet-button panel-button" aria-expanded="true">Layers</button><button id="inspectorBtn" class="quiet-button panel-button" aria-expanded="true">Inspector</button><button id="captureBtn" class="quiet-button">Capture view</button></div>
   </header>
   <main class="workspace">
     <aside class="left-panel">
@@ -187,18 +188,12 @@ const interactionColors = {
   diffuse_reflection: '#a88ce1', diffuse_scattering: '#a88ce1', diffraction: '#e77c78',
 };
 
+// DRAMCO web style: the viewer is dark only (see frontend/src/dramco.css)
 const THEME_SCENE={
-  light:{bg:'#dce7e6',fogNear:26,fogFar:64,exposure:1.15,hemi:['#eff8ee','#718578',1.8],ambient:0.42,gridOpacity:0.17},
-  dark:{bg:'#0b1519',fogNear:22,fogFar:58,exposure:0.95,hemi:['#a9c4cc','#1c2a2e',1.15],ambient:0.3,gridOpacity:0.3},
+  dark:{bg:'#0a0a0b',fogNear:22,fogFar:58,exposure:0.95,hemi:['#c9c9c4','#1c1c1f',1.15],ambient:0.3,gridOpacity:0.3},
 };
 let hemiLight=null,ambientLight=null;
-function currentTheme(){return document.documentElement.dataset.theme==='dark'?'dark':'light';}
-function syncThemeUi(){
-  const dark=currentTheme()==='dark',label=document.querySelector('#themeLabel'),btn=document.querySelector('#themeBtn');
-  if(label)label.textContent=dark?'Light':'Dark';
-  if(btn)btn.setAttribute('aria-pressed',String(dark));
-  document.querySelector('meta[name="theme-color"]')?.setAttribute('content',dark?'#0a1216':'#102630');
-}
+function currentTheme(){return 'dark';}
 function applySceneTheme(){
   if(!scene)return;
   const t=THEME_SCENE[currentTheme()];
@@ -209,11 +204,6 @@ function applySceneTheme(){
   if(ambientLight)ambientLight.intensity=t.ambient;
   scene.traverse(o=>{if(o.userData?.kind==='coordinate-grid')o.material.opacity=t.gridOpacity;});
   frameDirty=true;
-}
-function setTheme(theme){
-  document.documentElement.dataset.theme=theme;
-  try{localStorage.setItem('hyropa-theme',theme);}catch{}
-  syncThemeUi();applySceneTheme();
 }
 
 function initRenderer() {
@@ -2256,8 +2246,6 @@ function wireUI() {
   $('#deviceLabelMode').addEventListener('change',setLayerVisibility);
   ['measurementMeshToggle','coordinateDiagnosticToggle','sceneBoundsToggle'].forEach((id)=>$(`#${id}`).addEventListener('change',setLayerVisibility));
   $('#captureBtn').addEventListener('click',captureView);
-  $('#themeBtn').addEventListener('click',()=>setTheme(currentTheme()==='dark'?'light':'dark'));
-  syncThemeUi();
   const workspace=$('.workspace');
   const layersButton=$('#layersBtn');
   const inspectorButton=$('#inspectorBtn');
@@ -2280,6 +2268,74 @@ function wireUI() {
     const hidden=workspace.classList.toggle('inspector-hidden');
     inspectorButton.setAttribute('aria-expanded',String(!hidden));
   });
+  // Side panels can be swiped or dragged open/closed by their inner edge; the 3D scene takes whatever width is left.
+  const desktopLayout=()=>matchMedia('(min-width: 901px)').matches;
+  const panelWidths={left:286,right:298};
+  let liveWidth=null;
+  const applyLayout=()=>{
+    if(!desktopLayout()){workspace.style.gridTemplateColumns='';return;}
+    const width=(side)=>liveWidth&&liveWidth.side===side?liveWidth.width:panelWidths[side];
+    const leftHidden=workspace.classList.contains('layers-hidden'),rightHidden=workspace.classList.contains('inspector-hidden');
+    const cols=[];
+    if(!leftHidden)cols.push(`${width('left')}px`);
+    cols.push('minmax(300px,1fr)');
+    if(!rightHidden)cols.push(`${width('right')}px`);
+    workspace.style.gridTemplateColumns=cols.join(' ');
+    // Grips sit on the scene side of each panel edge, so they never overlap the panel's scrollbar.
+    const leftGrip=workspace.querySelector('.panel-handle[data-side="left"]');
+    const rightGrip=workspace.querySelector('.panel-handle[data-side="right"]');
+    if(leftGrip)leftGrip.style.left=`${leftHidden?0:width('left')}px`;
+    if(rightGrip)rightGrip.style.right=`${rightHidden?0:width('right')}px`;
+  };
+  [['left','layers-hidden',layersButton],['right','inspector-hidden',inspectorButton]].forEach(([side,hiddenClass,button])=>{
+    const handle=document.createElement('div');
+    handle.className='panel-handle';
+    handle.dataset.side=side;
+    handle.tabIndex=0;
+    handle.setAttribute('role','separator');
+    handle.setAttribute('aria-orientation','vertical');
+    handle.setAttribute('aria-label',side==='left'?'Resize layers panel':'Resize inspector panel');
+    workspace.appendChild(handle);
+    const setHidden=(on)=>{workspace.classList.toggle(hiddenClass,on);button.setAttribute('aria-expanded',String(!on));};
+    const sign=side==='left'?1:-1;
+    handle.addEventListener('pointerdown',(e)=>{
+      if(!desktopLayout())return;
+      handle.setPointerCapture(e.pointerId);
+      const startX=e.clientX,startW=workspace.classList.contains(hiddenClass)?0:panelWidths[side];
+      let lastX=e.clientX,lastT=performance.now(),speed=0;
+      handle.onpointermove=(ev)=>{
+        const now=performance.now();
+        if(now>lastT)speed=(ev.clientX-lastX)/(now-lastT);
+        lastX=ev.clientX;lastT=now;
+        liveWidth={side,width:Math.max(0,Math.min(520,startW+sign*(ev.clientX-startX)))};
+        applyLayout();
+      };
+      const finish=()=>{
+        handle.onpointermove=null;
+        const w=liveWidth?liveWidth.width:startW;
+        liveWidth=null;
+        const flickOpen=sign*speed>0.6,flickClose=sign*speed<-0.6;
+        const open=flickOpen||(!flickClose&&w>=140);
+        if(open)panelWidths[side]=Math.max(200,w);
+        setHidden(!open);
+        applyLayout();
+      };
+      handle.onpointerup=finish;
+      handle.onpointercancel=finish;
+    });
+    handle.addEventListener('keydown',(e)=>{
+      if(!desktopLayout())return;
+      const grow=side==='left'?'ArrowRight':'ArrowLeft';
+      if(e.key!==grow&&e.key!==(side==='left'?'ArrowLeft':'ArrowRight'))return;
+      e.preventDefault();
+      if(workspace.classList.contains(hiddenClass)){if(e.key===grow)setHidden(false);}
+      else panelWidths[side]=Math.max(200,Math.min(520,panelWidths[side]+(e.key===grow?16:-16)));
+      applyLayout();
+    });
+  });
+  new MutationObserver(applyLayout).observe(workspace,{attributes:true,attributeFilter:['class']});
+  addEventListener('resize',applyLayout);
+  applyLayout();
   $('#diagnosticsBtn').addEventListener('click',()=>$('#diagnostics').classList.toggle('hidden'));
   $('#playPathBtn').addEventListener('click',()=>{ if(reducedMotion||!pulseCurve) return; pulseRunning=!pulseRunning; pulseStarted=performance.now(); pulseMesh.visible=pulseRunning; $('#playPathBtn').textContent=pulseRunning?'Pause pulse':'Play pulse'; });
 }

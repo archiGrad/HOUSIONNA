@@ -1,0 +1,128 @@
+/* DRAMCO web style (see threejs/dramco.md): near-black, monochrome interface, Archivo, thin 1 px lines.
+   Colour is kept only for data (charts, path and radio-map legends). Loaded last, so it overrides the older sheets.
+   Selectors use :root[data-theme] so they outrank theme.css at equal depth. */
+
+:root[data-theme] {
+  --bg: #0a0a0b; --surface: #111113; --card: #18181b; --card-glass: rgba(24, 24, 27, 0.78);
+  --line: #2a2a2e; --line-strong: #3a3a40; --text: #f2f1ec; --muted: #a3a29c; --faint: #6e6d68;
+  --ink: #0b0b0c; --plate: #f2f1ec;
+  --data-1: #56b4e9; --data-2: #e69f00; --data-3: #2fbf9a; --data-4: #cc79a7; --data-5: #f0e442; --data-6: #e3693b;
+  --ok: #5fbf8a; --warn: #e6b450; --error: #f07167;
+  --accent: #f2f1ec;
+  background: var(--bg);
+  color-scheme: dark;
+}
+
+/* ---- page and ASCII background ---- */
+:root[data-theme] { background: var(--bg); }
+:root[data-theme] body { background: transparent; color: var(--muted); font-family: "Archivo", ui-sans-serif, system-ui, sans-serif; }
+:root[data-theme] #app { background: transparent; }
+:root[data-theme] #dramco-bg { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; display: block; }
+:root[data-theme] * { font-family: "Archivo", ui-sans-serif, system-ui, sans-serif !important; font-variant-numeric: tabular-nums; }
+
+/* ---- top bar ---- */
+:root[data-theme] .topbar { background: rgba(10, 10, 11, 0.88); color: var(--text); box-shadow: none; border-bottom: 1px solid var(--line); }
+:root[data-theme] .brand { color: var(--text); }
+:root[data-theme] .brand-logo { display: block; height: 32px; width: 32px; }
+:root[data-theme] .brand b { text-transform: uppercase; font-weight: 900; font-stretch: 125%; letter-spacing: 0.02em; color: var(--text); }
+:root[data-theme] .brand span { color: var(--faint); letter-spacing: 0.16em; }
+:root[data-theme] .top-context, :root[data-theme] .top-context #scenarioHeading { color: var(--muted); }
+:root[data-theme] .top-context #scenarioHeading { color: var(--text); font-weight: 700; }
+:root[data-theme] .separator { color: var(--faint); }
+:root[data-theme] .live-dot, :root[data-theme] .view-dot { background: var(--text); box-shadow: 0 0 0 4px rgba(242, 241, 236, 0.12); }
+:root[data-theme] .visual-warning { color: var(--muted); border: 1px solid var(--line-strong); background: transparent; }
+:root[data-theme] .quiet-button { background: transparent; color: var(--text); border: 1px solid var(--line-strong); border-radius: 0; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; }
+:root[data-theme] .quiet-button:hover { border-color: var(--text); background: rgba(242, 241, 236, 0.06); }
+
+/* ---- panels: glass cards over the background ---- */
+:root[data-theme] .workspace { background: transparent; }
+:root[data-theme] .left-panel, :root[data-theme] .right-panel { background: var(--card-glass); color: var(--muted); }
+:root[data-theme] .left-panel { border-right: 1px solid var(--line); }
+:root[data-theme] .right-panel { border-left: 1px solid var(--line); }
+:root[data-theme] .panel-heading h1, :root[data-theme] .detail-head h2 { color: var(--text); text-transform: uppercase; font-weight: 900; font-stretch: 112%; letter-spacing: -0.02em; line-height: 1.05; }
+:root[data-theme] .panel-heading h1 { font-size: clamp(1.4rem, 1.2rem + 0.6vw, 1.8rem); }
+:root[data-theme] .eyebrow, :root[data-theme] .section-title, :root[data-theme] .field-label { color: var(--muted); text-transform: uppercase; letter-spacing: 0.16em; font-weight: 700; }
+:root[data-theme] .eyebrow::before { content: ""; display: inline-block; width: 1.2rem; height: 2px; background: currentColor; margin-right: 0.5rem; vertical-align: middle; }
+:root[data-theme] .section-count, :root[data-theme] .subtle, :root[data-theme] .camera-hint, :root[data-theme] .muted-copy { color: var(--faint); }
+:root[data-theme] .section-rule, :root[data-theme] hr { background: var(--line); }
+:root[data-theme] .tag { color: var(--muted); background: transparent; border: 1px solid var(--line-strong); border-radius: 0; }
+:root[data-theme] .tag-muted { color: var(--faint); border-color: var(--line); }
+
+/* ---- form controls: dark fields, white selection ---- */
+:root[data-theme] .select-control, :root[data-theme] .number-control { background: var(--card); color: var(--text); border: 1px solid var(--line-strong); border-radius: 0; }
+:root[data-theme] .select-control:focus, :root[data-theme] .number-control:focus { border-color: var(--text); box-shadow: none; outline: none; }
+:root[data-theme] .toggle-list label, :root[data-theme] .path-toggle, :root[data-theme] .check-row { color: var(--muted); }
+:root[data-theme] .toggle-ui { background: var(--line-strong); }
+:root[data-theme] .toggle-ui:after { background: var(--muted); box-shadow: none; }
+:root[data-theme] .toggle-list input:checked + .toggle-ui { background: var(--text); }
+:root[data-theme] .toggle-list input:checked + .toggle-ui:after { background: var(--ink); }
+:root[data-theme] .toggle-list input:focus-visible + .toggle-ui { outline: 2px solid var(--text); outline-offset: 3px; }
+:root[data-theme] input[type=range], :root[data-theme] .toggle-subrow input, :root[data-theme] .path-toggle input, :root[data-theme] .check-row input, :root[data-theme] .map-controls input[type=range] { accent-color: #f2f1ec; }
+
+/* ---- buttons: white is the only accent ---- */
+:root[data-theme] .small-button, :root[data-theme] .icon-button { background: transparent; color: var(--text); border: 1px solid var(--line-strong); border-radius: 0; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; }
+:root[data-theme] .small-button:hover:not(:disabled), :root[data-theme] .icon-button:hover { border-color: var(--text); }
+:root[data-theme] .run-simulation-button { background: var(--text); color: var(--ink); border: 1px solid var(--text); border-radius: 0; text-transform: uppercase; letter-spacing: 0.14em; font-weight: 800; box-shadow: none; }
+:root[data-theme] .run-simulation-button:hover:not(:disabled) { background: #ffffff; }
+:root[data-theme] .run-radio-map-button { background: transparent; color: var(--text); }
+:root[data-theme] :focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
+
+/* ---- cards, status and data blocks ---- */
+:root[data-theme] .simulation-panel, :root[data-theme] .detail-body, :root[data-theme] .receiver-metrics, :root[data-theme] .map-legend,
+:root[data-theme] .history-item, :root[data-theme] .simulation-error { background: var(--card); border: 1px solid var(--line); border-radius: 0; box-shadow: none; color: var(--muted); }
+:root[data-theme] .simulation-panel #housionnaSimulationContext { background: transparent; border-left: 1px solid var(--text); }
+:root[data-theme] .history-item:hover:not(:disabled) { border-color: var(--text); background: var(--card); }
+:root[data-theme] .status-pill, :root[data-theme] .status-pill.ready, :root[data-theme] .status-pill.current, :root[data-theme] .status-pill.stale,
+:root[data-theme] .status-pill.running, :root[data-theme] .status-pill.complete, :root[data-theme] .status-pill.failed {
+  background: transparent; color: var(--muted); border: 1px solid var(--line-strong); border-radius: 0; }
+:root[data-theme] .status-pill.failed { color: var(--error); border-color: var(--error); }
+:root[data-theme] .simulation-error { color: var(--error); border-color: var(--error); }
+:root[data-theme] .bottom-note, :root[data-theme] .tx-warning { background: transparent; border: 1px solid var(--line-strong); border-radius: 0; color: var(--muted); }
+:root[data-theme] .property-row { border-bottom-color: var(--line); }
+:root[data-theme] .property-row span, :root[data-theme] .semantic-list > div, :root[data-theme] .metric-line, :root[data-theme] .metric-strip span { color: var(--faint); }
+:root[data-theme] .property-row b, :root[data-theme] .metric-line b, :root[data-theme] .semantic-list b, :root[data-theme] .metric-strip b { color: var(--text); }
+:root[data-theme] .metric-strip b.good { color: var(--ok); }
+:root[data-theme] .metric-strip b.bad { color: var(--error); }
+:root[data-theme] .metric-strip, :root[data-theme] .metric-line { border-color: var(--line); }
+:root[data-theme] .legend-title, :root[data-theme] .legend-range { color: var(--faint); }
+:root[data-theme] .right-footer { color: var(--faint); border-top-color: var(--line); }
+:root[data-theme] .right-footer b { color: var(--muted); }
+
+/* ---- viewport: the 3D scene sits on the same black; the ASCII field shows around the panels ---- */
+:root[data-theme] .viewport-wrap { background: var(--bg); }
+:root[data-theme] .viewport-toolbar { color: var(--muted); }
+:root[data-theme] .view-pill, :root[data-theme] .scene-meta, :root[data-theme] .scale-chip, :root[data-theme] .diagnostics {
+  background: var(--card-glass); color: var(--muted); border: 1px solid var(--line); border-radius: 0; box-shadow: none; }
+:root[data-theme] .viewport-footer { background: var(--card-glass); border-top: 1px solid var(--line); color: var(--faint); }
+:root[data-theme] .viewport-footer b { color: var(--text); font-weight: 700; }
+:root[data-theme] .diagnostics > b { color: var(--text); }
+:root[data-theme] .diagnostics strong { color: var(--text); }
+:root[data-theme] .scene-label { background: rgba(10, 10, 11, 0.86); color: var(--text); border: 1px solid var(--line-strong); border-radius: 0; box-shadow: none; }
+:root[data-theme] .tx-label, :root[data-theme] .rx-label, :root[data-theme] .proxy-label { color: var(--text); background: rgba(10, 10, 11, 0.86); border-color: var(--line-strong); }
+:root[data-theme] .scene-loading { background: var(--bg); color: var(--muted); }
+:root[data-theme] .scene-loading b { color: var(--text); text-transform: uppercase; letter-spacing: 0.12em; }
+:root[data-theme] .loading-mark { background: transparent; color: var(--text); border: 1px solid var(--line-strong); border-radius: 0; }
+
+:root[data-theme] .property-row:last-child { border-bottom: 0; }
+
+/* ---- side-panel grips: drag the inner edge to resize or close a panel ---- */
+:root[data-theme] .workspace { position: relative; }
+:root[data-theme] .panel-handle { position: absolute; top: 0; bottom: 0; width: 12px; z-index: 6; cursor: ew-resize; touch-action: none; }
+:root[data-theme] .panel-handle::after { content: ""; position: absolute; top: 50%; left: 5px; width: 2px; height: 56px; transform: translateY(-50%); background: var(--line-strong); transition: background 0.15s; }
+:root[data-theme] .panel-handle:hover::after, :root[data-theme] .panel-handle:focus-visible::after, :root[data-theme] .panel-handle:active::after { background: var(--text); }
+:root[data-theme] .panel-handle:focus-visible { outline: none; }
+@media (max-width: 900px) { :root[data-theme] .panel-handle { display: none; } }
+
+/* ---- HOUSIONNA saved-runs panel (housionna.css uses its own green classes) ---- */
+:root[data-theme] .housionna-panel { background: var(--card); border: 1px solid var(--line); border-radius: 0; box-shadow: none; }
+:root[data-theme] .housionna-panel summary, :root[data-theme] .housionna-display summary, :root[data-theme] .comparison-panel summary { color: var(--muted); }
+:root[data-theme] .housionna-actions .small-button, :root[data-theme] .comparison-panel > .small-button, :root[data-theme] .housionna-import-selected {
+  background: transparent; color: var(--text); border: 1px solid var(--line-strong); border-radius: 0; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; }
+:root[data-theme] .housionna-actions .small-button:hover:not(:disabled), :root[data-theme] .comparison-panel > .small-button:hover:not(:disabled), :root[data-theme] .housionna-import-selected:hover:not(:disabled) {
+  background: rgba(242, 241, 236, 0.06); border-color: var(--text); }
+:root[data-theme] .housionna-comparison, :root[data-theme] .housionna-metadata, :root[data-theme] .object-color-legend {
+  background: transparent; border: 1px solid var(--line); border-radius: 0; color: var(--muted); }
+:root[data-theme] .housionna-comparison b, :root[data-theme] .housionna-metadata b, :root[data-theme] .object-color-legend b { color: var(--text); font-weight: 700; }
+:root[data-theme] .housionna-message, :root[data-theme] .compact-check, :root[data-theme] .object-color-legend > div { color: var(--muted); }
+:root[data-theme] .compact-check input { accent-color: #f2f1ec; }
+:root[data-theme] .visual-warning.housionna-warning { color: var(--text); border-color: var(--line-strong); }

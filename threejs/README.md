@@ -11,7 +11,7 @@ The model uses **x/y as horizontal axes and z as up**, with meters for positions
 - `compare`: repeats the room run after moving only the panel by 1.8 m and saves a radio-map difference.
 - `cea`: generates empty, narrow-canopy, and wide-canopy greenhouse scenarios with separate material categories and an interactive comparison view.
 - `canopy-physics`: runs the transparent/weak-loss/current material study, solver-sensitivity repeats, and an isolated Sionna slab transmission check.
-- `digital twin`: a local Three.js 3D viewer that reads generated scene geometry and saved Sionna paths/maps alongside the existing 2D dashboard.
+- `digital twin`: a local Three.js 3D viewer that reads generated scene geometry and saved Sionna paths/maps and is the only viewer (the 2D dashboard was removed).
 - CSV/JSON path and CIR output, raw linear path-gain arrays, cell-center coordinates, metadata, and PNG geometry/channel/map visualizations.
 
 The radio-map array is **path gain** (linear power ratio), not received power or RSS. The PNG converts it to `10 log10(path_gain)` for display. The CIR stores the complex baseband path coefficients and delays; it does not apply the transmitter power to create RSS.
@@ -96,6 +96,12 @@ Run the three deterministic Sionna RT cases:
 ```
 
 The controlled cases are **Empty rack**, **RF plant proxy** (one canopy zone per shelf), and **Dense RF proxy** (two zones per shelf). The shell, rack, shelf levels, materials, TX/RX points, radio-map grid, solver settings, seed, and decorative plant layout are held fixed. Only the number of coarse RF canopy zones changes. In the empty control, detailed plants start hidden; enable **Detailed visual plants** to show the same decorative crop while the RF-zone layer remains empty. Paths, radio maps, scene manifests, config snapshots, metadata, and difference maps are written under `outputs/vertical_farm/`.
+
+**Map planes.** With `receiver_grid.map_planes: air_gaps` (the default), each shelf level gets one radio-map plane midway through the free air above its canopy, below the shelf, supports and grow light overhead. This is where a sensor could sit; the planes never cut through a canopy block, and the runner checks this against the generated geometry. The `primary_level` plane (level 2) is the one shown in the 3D viewer; every plane is saved as `radio_map_level<N>.npy` and used in the zone report.
+
+**Zone report.** `outputs/vertical_farm/comparison/comparison.json` has a `zone_report` with, per plane and per zone (in front of the rack, over the canopy, beside the canopy inside the rack, outside), the median change against the empty rack over cells that receive signal in both maps, and the coverage share at `analysis.receiver_sensitivity_dbm` (a placeholder). The older floored `stats` are kept, but they are dominated by cells without signal and should not be read as the canopy effect.
+
+**Sampling.** The default sample counts are kept low so runs stay quick on a laptop GPU, but they are too noisy for quantitative comparison: a sampling study on the DGX Spark (Oct 2026, `scripts/vertical_farm_convergence.py`) found single cells varying by tens of dB between seeds at 1x. For results to report, run `run.py vertical-farm --profile spark`, which raises the map samples 10000x and averages 8 seeds (defined under `run_profiles` in `config/vertical_farm.yaml`).
 
 Detailed leafy plants are generated in the Three.js frontend from the separately exported `visual_plants` layout and use instanced stems, crowns, and curved leaves. They are **visual-only** and never enter the Sionna scene. The named `rf_plant_zone` boxes are separate coarse RF objects, exported as OBJ and passed to Sionna by the vertical-farm runner. In the viewer, use **Detailed visual plants** and **RF plant zones** as independent layer toggles; clicking a plant shelf, tray, or RF zone shows its level and RF/visual status in the inspector.
 

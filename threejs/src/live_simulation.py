@@ -216,6 +216,7 @@ class LiveSimulationManager:
         cfg["path_solver"].update(normalized["solver"])
         cfg["radio_map"].update(normalized["solver"])
         cfg["radio_map"].update(MAP_QUALITY[quality])
+        cfg["radio_map"]["planes"] = []  # live runs only need the plane shown in the viewer
         geometry_file = self.project_root / "config" / "vertical_farm.yaml"
         geometry_hash = hashlib.sha256(geometry_file.read_bytes()).hexdigest()
         digest_input = {"api_schema": 1, "scene_config_sha256": geometry_hash, **normalized}

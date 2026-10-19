@@ -622,7 +622,10 @@ def main():
                                             "cea", "cea-empty", "cea-narrow", "cea-wide",
                                             "canopy-physics", "vertical-farm", "slab-test"],
                         help="PoC run to execute")
+    parser.add_argument("--profile", help="vertical-farm run profile from config/vertical_farm.yaml, e.g. spark")
     args = parser.parse_args()
+    if args.profile and args.command != "vertical-farm":
+        parser.error("--profile only applies to the vertical-farm command")
     if args.command == "view":
         from viewer_server import serve  # noqa: PLC0415
         serve(ROOT)
@@ -640,7 +643,7 @@ def main():
         run_canopy_physics()
     elif args.command == "vertical-farm":
         from vertical_farm import run_vertical_farm  # noqa: PLC0415
-        run_vertical_farm()
+        run_vertical_farm(args.profile)
     elif args.command == "slab-test":
         from slab_test import run_slab_test  # noqa: PLC0415
         run_slab_test()

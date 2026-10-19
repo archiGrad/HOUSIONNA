@@ -20,6 +20,32 @@ def load_vertical_farm_config() -> dict[str, Any]:
         return yaml.safe_load(handle)
 
 
+def air_gap_plane_heights(cfg: dict[str, Any]) -> list[float]:
+    """Mid-height of the free air above each level's canopy, below the shelf, supports and grow light overhead.
+
+    These are where a sensor could sit, so radio-map planes go here instead of through a canopy block.
+    The same heights are used for every scenario (empty included), so maps stay comparable.
+    """
+    env, rf = cfg["environment"], cfg["rf_geometry"]
+    levels = list(map(float, env["shelf_levels_m"]))
+    height, panel_t = float(env["height_m"]), float(env["panel_thickness_m"])
+    tray_t, frame = float(env["shelf_thickness_m"]), float(env["frame_cross_section_m"])
+    lights = bool(env.get("grow_lights_enabled", True))
+    light_t = float(env["grow_light_thickness_m"])
+    heights = []
+    for index, level in enumerate(levels):
+        canopy_top = level+tray_t+float(rf["plant_zone_height_m"])
+        if index+1 < len(levels):
+            overhead = levels[index+1]-tray_t-max(frame, light_t if lights else 0.0)
+        else:
+            overhead = height-panel_t-(0.045 if lights else 0.0)
+        if overhead-canopy_top < 0.02:
+            raise ValueError(f"No air gap above the canopy on shelf level {index+1} for a radio-map plane "
+                             f"(canopy top {canopy_top:.3f} m, overhead {overhead:.3f} m)")
+        heights.append(round((canopy_top+overhead)/2, 4))
+    return heights
+
+
 def vertical_farm_scenario_config(base: dict[str, Any], name: str) -> dict[str, Any]:
     """Expand one YAML case into the common config contract used by the RT runner."""
     if name not in FARM_SCENARIOS:
@@ -74,6 +100,14 @@ def vertical_farm_scenario_config(base: dict[str, Any], name: str) -> dict[str, 
     ]
 
     grid = cfg["receiver_grid"]
+    planes = []
+    if grid.get("map_planes") == "air_gaps":
+        heights = air_gap_plane_heights(cfg)
+        primary = int(grid.get("primary_level", (len(heights)+1)//2))
+        if not 1 <= primary <= len(heights):
+            raise ValueError("receiver_grid.primary_level must name an existing shelf level")
+        grid["height_m"] = heights[primary-1]  # the plane shown in the 3D viewer
+        planes = [{"level": index+1, "height_m": z} for index, z in enumerate(heights)]
     x0, x1 = float(grid["x_min_m"]), float(grid["x_max_m"])
     y0, y1 = float(grid["y_min_m"]), float(grid["y_max_m"])
     cfg["radio_map"] = {
@@ -82,6 +116,7 @@ def vertical_farm_scenario_config(base: dict[str, Any], name: str) -> dict[str, 
         "orientation_rad": [0.0, 0.0, 0.0],
         "size_m": [x1-x0, y1-y0],
         "cell_size_m": list(map(float, cfg["radio_map"]["cell_size_m"])),
+        "planes": planes,
     }
 
     panel_t = float(env["panel_thickness_m"])

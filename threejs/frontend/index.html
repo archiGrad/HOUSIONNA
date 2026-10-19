@@ -3,19 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#102630" />
-    <title>HyROPA | Greenhouse Digital Twin</title>
+    <meta name="theme-color" content="#0a0a0b" />
+    <title>HyROPA | Greenhouse Digital Twin · DRAMCO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..900&display=swap" rel="stylesheet">
     <script>
-      (function () {
-        var t = null;
-        try { t = localStorage.getItem('hyropa-theme'); } catch (e) {}
-        if (t !== 'dark' && t !== 'light') t = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        document.documentElement.dataset.theme = t;
-      })();
+      document.documentElement.dataset.theme = 'dark';
     </script>
   </head>
   <body>
+    <canvas id="dramco-bg" data-seed="hyropa-greenhouse" aria-hidden="true"></canvas>
     <div id="app"></div>
+    <script src="dramco-bg.js" defer></script>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

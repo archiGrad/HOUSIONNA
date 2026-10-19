@@ -91,7 +91,11 @@ tx:
   power_dbm: 23.0
 
 receiver_grid:
-  height_m: 1.08
+  # air_gaps: one radio-map plane per level, midway through the free air above the canopy (where a sensor
+  # could sit). The primary level's plane is the one shown in the 3D viewer; the others go into the zone report.
+  map_planes: air_gaps
+  primary_level: 2
+  height_m: 1.08 # only used when map_planes is not air_gaps
   x_min_m: -0.12
   x_max_m: 1.37
   y_min_m: -0.35
@@ -122,6 +126,19 @@ radio_map:
   diffuse_reflection: false
   refraction: true
   diffraction: false
+
+analysis:
+  # Coverage = share of cells where TX power + path gain reaches this level. DEMO PLACEHOLDER, not a chosen radio.
+  receiver_sensitivity_dbm: -90.0
+
+run_profiles:
+  # Chosen with: run.py vertical-farm --profile <name>. Without --profile the settings above are used as-is.
+  # spark: from the sampling study on the DGX Spark (Oct 2026). Map values settle by ~1000x samples; averaging
+  # 8 seeds at 10000x removes most remaining noise. Path samples stay lower: paths.json grows with them.
+  spark:
+    path_samples_multiplier: 100
+    map_samples_multiplier: 10000
+    map_seeds: [71, 72, 73, 74, 75, 76, 77, 78]
 
 scenarios:
   farm_empty:

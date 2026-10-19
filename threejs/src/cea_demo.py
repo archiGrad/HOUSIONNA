@@ -6,6 +6,7 @@ import copy
 import csv
 import json
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any
 
 import matplotlib.pyplot as plt
@@ -14,7 +15,8 @@ import yaml
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
 from cea_geometry import generate_cea_geometry, receiver_grid_positions, write_manifest, write_obj_assets
-from poc import OUTPUT_DIR, ROOT, _load_rt, _map_array, _save_paths, _save_radio_map, _write_metadata
+from poc import (OUTPUT_DIR, ROOT, _load_rt, _map_array, _save_paths, _save_radio_map, _tensor_numpy,
+                 _write_metadata)
 
 
 SCENARIOS = ("empty", "narrow", "wide")
@@ -218,17 +220,41 @@ def _run_scenario(rt, mi, cfg: dict[str, Any], name: str,
     path_summary = _save_paths(paths, cfg, output_dir, object_id_to_name)
 
     map_cfg = cfg["radio_map"]
-    radio_map = rt.RadioMapSolver()(
-        scene, center=mi.Point3f(map_cfg["center_m"]),
-        orientation=mi.Point3f(map_cfg["orientation_rad"]),
-        size=mi.Point2f(map_cfg["size_m"]), cell_size=mi.Point2f(map_cfg["cell_size_m"]),
-        samples_per_tx=int(map_cfg["samples_per_transmitter"]),
-        max_depth=int(map_cfg["max_depth"]), los=bool(map_cfg["los"]),
-        specular_reflection=bool(map_cfg["specular_reflection"]),
-        diffuse_reflection=bool(map_cfg["diffuse_reflection"]),
-        refraction=bool(map_cfg["refraction"]), diffraction=bool(map_cfg["diffraction"]),
-        seed=int(map_cfg["seed"]))
-    map_values, map_metadata = _save_radio_map(radio_map, cfg, output_dir)
+    seeds = [int(seed) for seed in map_cfg.get("seeds") or [map_cfg["seed"]]]
+
+    def solve_map(center_m):
+        solved = []
+        for seed in seeds:
+            radio_map = rt.RadioMapSolver()(
+                scene, center=mi.Point3f(center_m),
+                orientation=mi.Point3f(map_cfg["orientation_rad"]),
+                size=mi.Point2f(map_cfg["size_m"]), cell_size=mi.Point2f(map_cfg["cell_size_m"]),
+                samples_per_tx=int(map_cfg["samples_per_transmitter"]),
+                max_depth=int(map_cfg["max_depth"]), los=bool(map_cfg["los"]),
+                specular_reflection=bool(map_cfg["specular_reflection"]),
+                diffuse_reflection=bool(map_cfg["diffuse_reflection"]),
+                refraction=bool(map_cfg["refraction"]), diffraction=bool(map_cfg["diffraction"]),
+                seed=seed)
+            if len(seeds) == 1:
+                return radio_map
+            solved.append((_tensor_numpy(radio_map.path_gain), _tensor_numpy(radio_map.cell_centers)))
+        # Independent seeds on the same grid: average the linear path gain, keep the shared cell centres.
+        return SimpleNamespace(path_gain=np.mean([gain for gain, _ in solved], axis=0), cell_centers=solved[0][1])
+
+    map_values, map_metadata = _save_radio_map(solve_map(map_cfg["center_m"]), cfg, output_dir)
+    if len(seeds) > 1:
+        map_metadata["seeds_averaged"] = seeds
+        (output_dir / "radio_map_metadata.json").write_text(json.dumps(map_metadata, indent=2), encoding="utf-8")
+    # Extra planes (vertical farm: one per level's air gap) use the same scene, solver settings and seeds.
+    plane_maps = {}
+    for plane in map_cfg.get("planes") or []:
+        z = float(plane["height_m"])
+        if abs(z-float(map_cfg["center_m"][2])) < 1e-9:
+            values = map_values
+        else:
+            _, values = _map_array(solve_map([*map_cfg["center_m"][:2], z]))
+        np.save(output_dir / f"radio_map_level{int(plane['level'])}.npy", values)
+        plane_maps[int(plane["level"])] = values
     _write_metadata(mi, cfg, output_dir, material_description, path_summary, map_metadata)
     metadata_file = output_dir / "metadata.json"
     metadata = json.loads(metadata_file.read_text(encoding="utf-8"))
@@ -248,7 +274,7 @@ def _run_scenario(rt, mi, cfg: dict[str, Any], name: str,
         }
     metadata_file.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
     _write_cea_viewer_data(cfg, output_dir, geometry, path_summary, map_values, map_metadata)
-    result = {"cfg": cfg, "geometry": geometry, "map_values": map_values,
+    result = {"cfg": cfg, "geometry": geometry, "map_values": map_values, "plane_maps": plane_maps,
               "path_summary": path_summary, "map_metadata": map_metadata,
               "viewer_data": json.loads((output_dir / "viewer_data.json").read_text(encoding="utf-8"))}
     if include_paths:
