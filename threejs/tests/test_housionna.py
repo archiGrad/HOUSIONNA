@@ -4,6 +4,7 @@ import json
 import os
 from pathlib import Path
 import shutil
+import struct
 import sys
 import tempfile
 import unittest
@@ -16,7 +17,7 @@ from digital_twin_data import build_viewer_scene
 from integrations.housionna import (
     _RUN_VALIDATION_CACHE,
     compare_imports,
-    _load_ascii_ply,
+    _load_ply,
     configured_path_endpoint_tolerance,
     configured_runs_directory,
     discover_runs,
@@ -94,6 +95,45 @@ class HousionnaRealExportTests(unittest.TestCase):
             with patch.dict(os.environ, {"HOUSIONNA_RUNS_DIRECTORY": str(root)}):
                 row = discover_runs(PROJECT_ROOT)[0]
             self.assertEqual(row["status"], "invalid")
+
+    def test_binary_ply_matches_ascii(self):
+        vertices, faces = _load_ply(SAMPLE_RUN / "meshes" / "ground.ply")
+        header = ("ply\nformat binary_little_endian 1.0\n"
+                  f"element vertex {len(vertices)}\nproperty double x\nproperty double y\nproperty double z\n"
+                  f"element face {len(faces)}\nproperty list uchar int vertex_indices\nend_header\n")
+        body = b"".join(struct.pack("<ddd", *vertex) for vertex in vertices)
+        body += b"".join(struct.pack("<Biii", 3, *face) for face in faces)
+        with tempfile.TemporaryDirectory() as directory:
+            binary = Path(directory) / "ground.ply"
+            binary.write_bytes(header.encode("ascii") + body)
+            self.assertEqual(_load_ply(binary), (vertices, faces))
+            binary.write_bytes(header.encode("ascii") + body[:-4])
+            with self.assertRaisesRegex(ValueError, "ended before"):
+                _load_ply(binary)
+
+    def test_free_space_run_without_scene_objects_imports(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            run_folder = self.copy_sample(root / "exports")
+            scene = next(run_folder.glob("*_scene.xml"))
+            scene.write_text('<scene version="2.1.0">\n</scene>\n', encoding="utf-8")
+            for name in ("ground.ply", "box.ply"):
+                (run_folder / "meshes" / name).unlink()
+            result_file = next(run_folder.glob("*_result.json"))
+            result = json.loads(result_file.read_text(encoding="utf-8"))
+            result["paths"], result["links"] = [], []  # sample paths reference the removed objects
+            result_file.write_text(json.dumps(result), encoding="utf-8")
+            _, document = self.import_into_temp_project(run_folder, root / "project")
+            scenario = document["scenarios"][document["featured_scenario"]]
+            bounds = scenario["scene_bounds_m"]
+            devices = json.loads(next(run_folder.glob("*_txrx.json")).read_text(encoding="utf-8"))
+            for row in devices["tx"] + devices["rx"]:
+                x, y, z = row["position"]
+                self.assertTrue(bounds["x_min"] <= x <= bounds["x_max"] and bounds["y_min"] <= y <= bounds["y_max"]
+                                and bounds["z_min"] <= z <= bounds["z_max"], row["name"])
+            geometries = list(document["assets"]["geometries"].values())
+            self.assertEqual(geometries[0]["objects"], [])
+            self.assertEqual(geometries[0]["bounds_m"], bounds)
 
     def test_missing_scene_mesh_is_reported_invalid(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -268,7 +308,7 @@ class HousionnaLargeExportValidationTests(unittest.TestCase):
             "box": "concrete_t0p2_s0",
         })
         for name in ("ground", "box"):
-            source_vertices, source_faces = _load_ascii_ply(LARGE_RUN / "meshes" / f"{name}.ply")
+            source_vertices, source_faces = _load_ply(LARGE_RUN / "meshes" / f"{name}.ply")
             imported = objects[name]
             self.assertEqual(imported["vertices"], source_vertices)
             self.assertEqual(imported["faces"], source_faces)
@@ -351,7 +391,7 @@ class HousionnaLargeExportValidationTests(unittest.TestCase):
         source_surface = radio["maps"][0]
         normalized_surface = scenario_by_tx[radio["tx"][0]]["radio_map"]["surfaces"][0]
         map_mesh = document["assets"]["meshes"][normalized_surface["mesh_ref"]]
-        measurement_vertices, measurement_faces = _load_ascii_ply(LARGE_RUN / "meshes" / "measure_ground.ply")
+        measurement_vertices, measurement_faces = _load_ply(LARGE_RUN / "meshes" / "measure_ground.ply")
         self.assertEqual(map_mesh["faces"], measurement_faces)
         self.assertEqual(map_mesh["vertices_m"], source_surface["vertices"])
         # The PLY mesh is serialized to six decimal places, while the JSON
