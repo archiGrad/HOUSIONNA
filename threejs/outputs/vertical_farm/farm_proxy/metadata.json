@@ -1,5 +1,5 @@
 {
-  "run_timestamp_utc": "2026-10-19T09:39:29.024485+00:00",
+  "run_timestamp_utc": "2026-10-19T12:32:45.739829+00:00",
   "scenario": "farm_proxy",
   "description": "Vertical farm \u00b7 RF plant proxy. Compact, semi-open indoor rack with 3 configurable growing levels. Dimensions and RF materials are artificial software-demo placeholders.",
   "platform": "Windows-11-10.0.26300-SP0",
@@ -250,7 +250,7 @@
     "grid_y_cells": 8,
     "positive_cell_count": 70,
     "min_positive_path_gain_linear": 7.596067108650573e-10,
-    "max_path_gain_linear": 0.0015056260162964463
+    "max_path_gain_linear": 0.0015056258998811245
   },
   "scene_model": {
     "dimensions_m": {

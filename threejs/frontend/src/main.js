@@ -77,11 +77,13 @@ app.innerHTML = `
       <div id="mapControls" class="map-controls hidden">
         <label id="housionnaMapModeLabel" class="field-label hidden" for="housionnaMapMode">Imported radio map</label>
         <select id="housionnaMapMode" class="select-control hidden"><option value="selected">Selected result map</option><option value="difference" disabled>Rerun − original difference</option></select>
+        <div id="mapLevelRow" class="hidden"><label class="field-label" for="mapLevel">Map level <span class="subtle">air gap above canopy</span></label><select id="mapLevel" class="select-control"></select></div>
         <label class="field-label" for="mapOpacity">Map opacity <span id="opacityValue">62%</span></label>
         <input id="mapOpacity" type="range" min="15" max="90" value="62">
         <label id="mapHeightLabel" class="field-label" for="mapHeight">Map height <span id="heightValue">1.50 m</span></label>
         <input id="mapHeight" type="range" min="0.5" max="3.5" step="0.05" value="1.5">
         <div id="mapLegend" class="map-legend"></div>
+        <div id="zoneReport" class="zone-report hidden" aria-live="polite"></div>
       </div>
       <div class="section-rule"></div>
       <div class="section-title"><span>PROPAGATION</span><span class="section-count">PATHS API</span></div>
@@ -726,6 +728,7 @@ function buildScenario({preserveView = false} = {}) {
   $('#differenceToggle').checked=false;
   $('#differenceToggle').disabled=scenario.source_type==='housionna';
   $('#differenceToggle').closest('.toggle-subrow').classList.toggle('hidden',scenario.source_type==='housionna');
+  syncMapLevels(scenario);
   updateSceneSemantics(scenario);
   setLayerVisibility();setScenarioSummary(scenario);buildReceiverSelector(scenario);refreshReceiverMetrics(scenario);
   selectedObject=selectedKey&&objectMeshes.has(selectedKey)?objectMeshes.get(selectedKey).userData:null;
@@ -908,11 +911,46 @@ function syncHousionnaMapMode() {
   }
 }
 
+// Vertical-farm runs solve one map per shelf level, in the air gap above the canopy. The level selector picks one;
+// the map then sits at that plane's real height (the height slider is only free for single-plane maps).
+const ZONE_NAMES={front_opening:'In front',over_canopy:'Over canopy',rack_other:'Beside canopy',outside:'Outside rack'};
+function syncMapLevels(scenario) {
+  const planes=scenario.map_planes||[],select=$('#mapLevel');
+  $('#mapLevelRow').classList.toggle('hidden',!planes.length);
+  if(!planes.length){select.innerHTML='';return;}
+  const kept=Number(select.value),levels=planes.map((plane)=>plane.level);
+  const primaryZ=Number(scenario.radio_map?.center_m?.[2]);
+  select.innerHTML=planes.map((plane)=>`<option value="${plane.level}">Level ${plane.level} · ${Number(plane.height_m).toFixed(2)} m</option>`).join('');
+  const primary=planes.find((plane)=>Math.abs(Number(plane.height_m)-primaryZ)<1e-6)?.level??levels[0];
+  select.value=String(levels.includes(kept)?kept:primary);
+}
+function selectedMapPlane(scenario) {
+  const planes=scenario.map_planes||[];
+  if(!planes.length)return null;
+  return planes.find((plane)=>plane.level===Number($('#mapLevel').value))||planes[0];
+}
+function renderZoneReport(scenario,level) {
+  const panel=$('#zoneReport');
+  if(!level){panel.classList.add('hidden');return;}
+  panel.classList.remove('hidden');
+  const row=(scenario.zone_report||[]).find((item)=>item.level===level.level);
+  if(!row){panel.innerHTML=`<div class="legend-title">CANOPY EFFECT · LEVEL ${level.level}</div><p class="muted-copy">The empty rack is the reference. Choose a canopy scenario to see its effect per zone.</p>`;return;}
+  const labels=scenario.zone_labels||{},sensitivity=scenario.coverage_threshold?.receiver_sensitivity_dbm;
+  const pct=(value)=>`${Math.round(Number(value)*100)}%`;
+  const db=(value)=>value==null?'—':`${value>0?'+':''}${Number(value).toFixed(1)} dB`;
+  panel.innerHTML=`<div class="legend-title">CANOPY EFFECT VS EMPTY · LEVEL ${level.level}</div>
+    <div class="zone-coverage">Coverage <b class="num">${pct(row.coverage_empty)} → ${pct(row.coverage_scenario)}</b>${sensitivity==null?'':` <span class="subtle">at ${sensitivity} dBm (placeholder)</span>`}</div>
+    <table class="zone-table"><thead><tr><th scope="col">Zone</th><th scope="col">Median Δ</th><th scope="col">Coverage</th></tr></thead><tbody>${Object.entries(row.zones).map(([zone,stats])=>`<tr><th scope="row" title="${esc(labels[zone]||zone)}">${esc(ZONE_NAMES[zone]||zone)}</th><td class="num">${db(stats.median_delta_db)}</td><td class="num">${pct(stats.coverage_empty)} → ${pct(stats.coverage_scenario)}</td></tr>`).join('')}</tbody></table>
+    <p class="muted-copy">Median over cells with signal in both maps. Placeholder materials: not a real-farm prediction.</p>`;
+}
+
 function updateMap() {
   frameDirty=true;
   if (!activeScenario || !layerGroups.map) return;
   const scenario = data.scenarios[activeScenario];
   const isDiff = $('#differenceToggle').checked;
+  const level = selectedMapPlane(scenario);
+  renderZoneReport(scenario, level);
   syncHousionnaMapMode();
   let map = scenario.radio_map;
   if(scenario.source_type==='housionna'&&$('#housionnaMapMode').value==='difference') {
@@ -925,7 +963,8 @@ function updateMap() {
     return;
   }
   disposeGroup(layerGroups.map);heatMesh=null;
-  const values = isDiff ? scenario.difference_map_db : scenario.radio_map.values_db;
+  const values = level ? (isDiff ? level.difference_db : level.values_db)
+    : (isDiff ? scenario.difference_map_db : scenario.radio_map.values_db);
   if (!Array.isArray(values) || !values.length || !Array.isArray(values[0]) || !values[0].length) {
     $('#mapLegend').textContent = 'No saved difference map for this scenario.';
     return;
@@ -944,17 +983,19 @@ function updateMap() {
   }
   ctx.putImageData(image,0,0);
   const texture=new THREE.CanvasTexture(canvas); texture.colorSpace=THREE.SRGBColorSpace; texture.magFilter=THREE.LinearFilter; texture.minFilter=THREE.LinearFilter; texture.needsUpdate=true;
-  const mapHeight=Number(map.center_m[2]);
+  const mapHeight=Number(level ? level.height_m : map.center_m[2]);
   const heightControl=$('#mapHeight');
-  heightControl.disabled=false;$('#mapHeightLabel').childNodes[0].textContent='Map height ';
+  heightControl.disabled=Boolean(level);$('#mapHeightLabel').childNodes[0].textContent=level?'Plane height ':'Map height ';
   heightControl.min=String(Math.min(0,mapHeight));heightControl.max=String(Math.max(sceneSize(scenario).height,mapHeight));
   heightControl.step=String(Math.max(sceneSize(scenario).height/80,0.01));heightControl.value=String(mapHeight);
   $('#heightValue').textContent=`${mapHeight.toFixed(2)} m`;
   const plane=new THREE.PlaneGeometry(map.size_m[0],map.size_m[1]);
   const mat=new THREE.MeshBasicMaterial({map:texture,transparent:true,opacity:Number($('#mapOpacity').value)/100,side:THREE.DoubleSide,depthWrite:false});
   heatMesh=new THREE.Mesh(plane,mat);
-  heatMesh.position.set(map.center_m[0],map.center_m[1],Number($('#mapHeight').value));
-  heatMesh.rotation.z=0; heatMesh.userData={kind:'radio-map',name:isDiff?`${scenario.label} − Empty map difference`:`${scenario.label} radio map`,detail:{values_db:values,units:isDiff?'dB difference':'path gain (dB)',grid:[rows,cols]},rfIncluded:true};
+  // Use the exact plane height: the slider snaps to its step, which would shift the map by up to a step.
+  heatMesh.position.set(map.center_m[0],map.center_m[1],mapHeight);
+  const levelName=level?` · level ${level.level}`:'';
+  heatMesh.rotation.z=0; heatMesh.userData={kind:'radio-map',name:isDiff?`${scenario.label} − Empty map difference${levelName}`:`${scenario.label} radio map${levelName}`,detail:{values_db:values,units:isDiff?'dB difference':'path gain (dB)',grid:[rows,cols]},rfIncluded:true};
   layerGroups.map.add(heatMesh);
   const edge = new THREE.LineSegments(new THREE.EdgesGeometry(plane),new THREE.LineBasicMaterial({color:isDiff?'#61485f':'#477f87',transparent:true,opacity:0.48}));
   edge.position.copy(heatMesh.position); layerGroups.map.add(edge);
@@ -2234,6 +2275,7 @@ function wireUI() {
   document.querySelectorAll('[data-layer]').forEach((element)=>element.addEventListener('change',()=>{ setLayerVisibility(); if(element.dataset.layer==='map') updateMap(); }));
   $('#labelsToggle').addEventListener('change',setLayerVisibility);
   $('#differenceToggle').addEventListener('change',updateMap);
+  $('#mapLevel').addEventListener('change',updateMap);
   $('#housionnaMapMode').addEventListener('change',updateMap);
   $('#mapOpacity').addEventListener('input',(event)=>{ $('#opacityValue').textContent=`${event.target.value}%`; setRadioMapOpacity(Number(event.target.value)/100); });
   $('#mapHeight').addEventListener('input',(event)=>{ $('#heightValue').textContent=`${Number(event.target.value).toFixed(2)} m`; if(heatMesh) { const map=data.scenarios[activeScenario].radio_map; if(map.surfaces?.length)return; heatMesh.position.z=Number(event.target.value); } });

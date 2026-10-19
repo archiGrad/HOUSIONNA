@@ -126,3 +126,17 @@
 :root[data-theme] .housionna-message, :root[data-theme] .compact-check, :root[data-theme] .object-color-legend > div { color: var(--muted); }
 :root[data-theme] .compact-check input { accent-color: #f2f1ec; }
 :root[data-theme] .visual-warning.housionna-warning { color: var(--text); border-color: var(--line-strong); }
+
+/* ---- zone report under the radio-map legend ---- */
+:root[data-theme] .zone-report { margin-top: 10px; padding: 10px; background: var(--card); border: 1px solid var(--line); color: var(--muted); }
+:root[data-theme] .zone-coverage { font-size: 11px; margin: 4px 0 8px; }
+:root[data-theme] .zone-coverage b { color: var(--text); }
+:root[data-theme] .zone-table { width: 100%; border-collapse: collapse; font-size: 10.5px; }
+:root[data-theme] .zone-table th, :root[data-theme] .zone-table td { padding: 5px 0; border-bottom: 1px solid var(--line); text-align: right; font-weight: 400; }
+:root[data-theme] .zone-table thead th { color: var(--faint); text-transform: uppercase; letter-spacing: 0.1em; font-size: 9px; }
+:root[data-theme] .zone-table tbody th { text-align: left; color: var(--muted); }
+:root[data-theme] .zone-table th:first-child { text-align: left; }
+:root[data-theme] .zone-table td { color: var(--text); }
+:root[data-theme] .zone-table tbody tr:last-child > * { border-bottom: 0; }
+:root[data-theme] .zone-report .muted-copy { margin: 8px 0 0; font-size: 10px; }
+:root[data-theme] #mapHeight:disabled { opacity: 0.45; }

@@ -157,6 +157,26 @@ def _save_comparison(results: dict[str, dict[str, Any]], profile: str | None = N
         "zone_labels": ZONE_LABELS,
     }
     comparison["zone_report"], comparison["coverage_threshold"] = _zone_report(results)
+
+    # The viewer gets every level's map (and its difference to the empty rack) plus this scenario's zone rows.
+    to_db = lambda values: 10.0*np.log10(np.maximum(values, 1e-15))  # noqa: E731
+    empty_planes = results[FARM_SCENARIOS[0]]["plane_maps"]
+    for name, result in results.items():
+        planes = []
+        for plane in result["cfg"]["radio_map"].get("planes") or []:
+            values_db = to_db(result["plane_maps"][plane["level"]])
+            entry = {"level": plane["level"], "height_m": plane["height_m"], "values_db": values_db.tolist()}
+            if name != FARM_SCENARIOS[0]:
+                entry["difference_db"] = (values_db-to_db(empty_planes[plane["level"]])).tolist()
+            planes.append(entry)
+        viewer_data = result["viewer_data"]
+        viewer_data.update({
+            "map_planes": planes,
+            "zone_report": [row for row in comparison["zone_report"] if row["scenario"] == name],
+            "coverage_threshold": comparison["coverage_threshold"],
+            "zone_labels": ZONE_LABELS,
+        })
+        (OUTPUT_DIR / "vertical_farm" / name / "viewer_data.json").write_text(json.dumps(viewer_data), encoding="utf-8")
     (root / "comparison.json").write_text(json.dumps(comparison, indent=2), encoding="utf-8")
     (root / "viewer_data.json").write_text(json.dumps(comparison), encoding="utf-8")
     return comparison
