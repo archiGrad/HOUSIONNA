@@ -178,6 +178,9 @@ def build_viewer_scene(project_root: Path) -> Path:
                 saved.get("difference_map_db"), saved["material_status"],
                 solver=_read_json(output_root / "vertical_farm" / name / "metadata.json").get("solver"),
             )
+            # Per-level air-gap maps and the zone report, when the run produced them.
+            scenarios[name].update({key: saved[key] for key in (
+                "map_planes", "zone_report", "coverage_threshold", "zone_labels") if key in saved})
 
     for name in ("empty", "transparent", "weak_loss", "current"):
         cfg = _case_config(base, study, name)

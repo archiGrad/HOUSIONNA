@@ -27,7 +27,7 @@
   "center_m": [
     0.625,
     0.25,
-    1.08
+    1.3225
   ],
   "orientation_rad": [
     0.0,
@@ -44,7 +44,17 @@
   ],
   "grid_x_cells": 10,
   "grid_y_cells": 8,
-  "positive_cell_count": 75,
-  "min_positive_path_gain_linear": 7.323227180222602e-08,
-  "max_path_gain_linear": 0.16050705313682556
+  "positive_cell_count": 80,
+  "min_positive_path_gain_linear": 2.6028048523585312e-05,
+  "max_path_gain_linear": 0.0014672100078314543,
+  "seeds_averaged": [
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78
+  ]
 }

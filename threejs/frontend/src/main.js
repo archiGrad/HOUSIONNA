@@ -5,11 +5,13 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { CSS2DObject, CSS2DRenderer } from 'three/addons/renderers/CSS2DRenderer.js';
 import './style.css';
 import './housionna.css';
+import './theme.css';
+import './dramco.css';
 
 const app = document.querySelector('#app');
 app.innerHTML = `
   <header class="topbar">
-    <div class="brand"><div class="brand-mark">H</div><div><b>HyROPA</b><span>INDOOR VERTICAL FARM TWIN</span></div></div>
+    <div class="brand"><img class="brand-logo" src="dramco-mark-white.png" alt="DRAMCO" width="32" height="32"><div><b>HyROPA</b><span>INDOOR VERTICAL FARM TWIN</span></div></div>
     <div class="top-context"><span class="live-dot"></span><span id="scenarioHeading">Loading scene data</span><span class="separator">/</span><span id="frequencyHeading">RF propagation study</span></div>
     <div class="top-actions"><span id="visualWarning" class="visual-warning">VISUAL PLANTS ≠ RF MODEL</span><button id="layersBtn" class="quiet-button panel-button" aria-expanded="true">Layers</button><button id="inspectorBtn" class="quiet-button panel-button" aria-expanded="true">Inspector</button><button id="captureBtn" class="quiet-button">Capture view</button></div>
   </header>
@@ -75,11 +77,13 @@ app.innerHTML = `
       <div id="mapControls" class="map-controls hidden">
         <label id="housionnaMapModeLabel" class="field-label hidden" for="housionnaMapMode">Imported radio map</label>
         <select id="housionnaMapMode" class="select-control hidden"><option value="selected">Selected result map</option><option value="difference" disabled>Rerun − original difference</option></select>
+        <div id="mapLevelRow" class="hidden"><label class="field-label" for="mapLevel">Map level <span class="subtle">air gap above canopy</span></label><select id="mapLevel" class="select-control"></select></div>
         <label class="field-label" for="mapOpacity">Map opacity <span id="opacityValue">62%</span></label>
         <input id="mapOpacity" type="range" min="15" max="90" value="62">
         <label id="mapHeightLabel" class="field-label" for="mapHeight">Map height <span id="heightValue">1.50 m</span></label>
         <input id="mapHeight" type="range" min="0.5" max="3.5" step="0.05" value="1.5">
         <div id="mapLegend" class="map-legend"></div>
+        <div id="zoneReport" class="zone-report hidden" aria-live="polite"></div>
       </div>
       <div class="section-rule"></div>
       <div class="section-title"><span>PROPAGATION</span><span class="section-count">PATHS API</span></div>
@@ -186,6 +190,24 @@ const interactionColors = {
   diffuse_reflection: '#a88ce1', diffuse_scattering: '#a88ce1', diffraction: '#e77c78',
 };
 
+// DRAMCO web style: the viewer is dark only (see frontend/src/dramco.css)
+const THEME_SCENE={
+  dark:{bg:'#0a0a0b',fogNear:22,fogFar:58,exposure:0.95,hemi:['#c9c9c4','#1c1c1f',1.15],ambient:0.3,gridOpacity:0.3},
+};
+let hemiLight=null,ambientLight=null;
+function currentTheme(){return 'dark';}
+function applySceneTheme(){
+  if(!scene)return;
+  const t=THEME_SCENE[currentTheme()];
+  scene.background=new THREE.Color(t.bg);
+  if(scene.fog){scene.fog.color.set(t.bg);scene.fog.near=t.fogNear;scene.fog.far=t.fogFar;}
+  renderer.toneMappingExposure=t.exposure;
+  if(hemiLight){hemiLight.color.set(t.hemi[0]);hemiLight.groundColor.set(t.hemi[1]);hemiLight.intensity=t.hemi[2];}
+  if(ambientLight)ambientLight.intensity=t.ambient;
+  scene.traverse(o=>{if(o.userData?.kind==='coordinate-grid')o.material.opacity=t.gridOpacity;});
+  frameDirty=true;
+}
+
 function initRenderer() {
   scene = new THREE.Scene();
   scene.background = new THREE.Color('#dce7e6');
@@ -211,8 +233,10 @@ function initRenderer() {
   controls.minDistance = 0.35;
   controls.maxDistance = 120;
   controls.maxPolarAngle = Math.PI * 0.49;
-  scene.add(new THREE.HemisphereLight('#eff8ee', '#718578', 1.8));
-  scene.add(new THREE.AmbientLight('#ffffff', 0.42));
+  hemiLight = new THREE.HemisphereLight('#eff8ee', '#718578', 1.8);
+  ambientLight = new THREE.AmbientLight('#ffffff', 0.42);
+  scene.add(hemiLight, ambientLight);
+  applySceneTheme();
   const key = new THREE.DirectionalLight('#fff2d8', 3.0);
   key.position.set(-5, -7, 15);
   key.castShadow = true;
@@ -541,7 +565,7 @@ function addCoordinateDiagnostic(scenario) {
   const divisions=Math.max(2,Math.min(24,Math.round(size)));
   const grid=new THREE.GridHelper(size*1.25,divisions,'#819b97','#a4b7b2');
   grid.rotation.x=Math.PI/2;grid.position.set((bounds.x_min+bounds.x_max)/2,(bounds.y_min+bounds.y_max)/2,bounds.z_min);
-  grid.material.transparent=true;grid.material.opacity=0.17;grid.material.depthWrite=false;
+  grid.material.transparent=true;grid.material.opacity=THEME_SCENE[currentTheme()].gridOpacity;grid.material.depthWrite=false;
   grid.userData={kind:'coordinate-grid'};layerGroups.coordinates.add(grid);
 }
 function layerForCategory(category) {
@@ -704,6 +728,7 @@ function buildScenario({preserveView = false} = {}) {
   $('#differenceToggle').checked=false;
   $('#differenceToggle').disabled=scenario.source_type==='housionna';
   $('#differenceToggle').closest('.toggle-subrow').classList.toggle('hidden',scenario.source_type==='housionna');
+  syncMapLevels(scenario);
   updateSceneSemantics(scenario);
   setLayerVisibility();setScenarioSummary(scenario);buildReceiverSelector(scenario);refreshReceiverMetrics(scenario);
   selectedObject=selectedKey&&objectMeshes.has(selectedKey)?objectMeshes.get(selectedKey).userData:null;
@@ -886,11 +911,46 @@ function syncHousionnaMapMode() {
   }
 }
 
+// Vertical-farm runs solve one map per shelf level, in the air gap above the canopy. The level selector picks one;
+// the map then sits at that plane's real height (the height slider is only free for single-plane maps).
+const ZONE_NAMES={front_opening:'In front',over_canopy:'Over canopy',rack_other:'Beside canopy',outside:'Outside rack'};
+function syncMapLevels(scenario) {
+  const planes=scenario.map_planes||[],select=$('#mapLevel');
+  $('#mapLevelRow').classList.toggle('hidden',!planes.length);
+  if(!planes.length){select.innerHTML='';return;}
+  const kept=Number(select.value),levels=planes.map((plane)=>plane.level);
+  const primaryZ=Number(scenario.radio_map?.center_m?.[2]);
+  select.innerHTML=planes.map((plane)=>`<option value="${plane.level}">Level ${plane.level} · ${Number(plane.height_m).toFixed(2)} m</option>`).join('');
+  const primary=planes.find((plane)=>Math.abs(Number(plane.height_m)-primaryZ)<1e-6)?.level??levels[0];
+  select.value=String(levels.includes(kept)?kept:primary);
+}
+function selectedMapPlane(scenario) {
+  const planes=scenario.map_planes||[];
+  if(!planes.length)return null;
+  return planes.find((plane)=>plane.level===Number($('#mapLevel').value))||planes[0];
+}
+function renderZoneReport(scenario,level) {
+  const panel=$('#zoneReport');
+  if(!level){panel.classList.add('hidden');return;}
+  panel.classList.remove('hidden');
+  const row=(scenario.zone_report||[]).find((item)=>item.level===level.level);
+  if(!row){panel.innerHTML=`<div class="legend-title">CANOPY EFFECT · LEVEL ${level.level}</div><p class="muted-copy">The empty rack is the reference. Choose a canopy scenario to see its effect per zone.</p>`;return;}
+  const labels=scenario.zone_labels||{},sensitivity=scenario.coverage_threshold?.receiver_sensitivity_dbm;
+  const pct=(value)=>`${Math.round(Number(value)*100)}%`;
+  const db=(value)=>value==null?'—':`${value>0?'+':''}${Number(value).toFixed(1)} dB`;
+  panel.innerHTML=`<div class="legend-title">CANOPY EFFECT VS EMPTY · LEVEL ${level.level}</div>
+    <div class="zone-coverage">Coverage <b class="num">${pct(row.coverage_empty)} → ${pct(row.coverage_scenario)}</b>${sensitivity==null?'':` <span class="subtle">at ${sensitivity} dBm (placeholder)</span>`}</div>
+    <table class="zone-table"><thead><tr><th scope="col">Zone</th><th scope="col">Median Δ</th><th scope="col">Coverage</th></tr></thead><tbody>${Object.entries(row.zones).map(([zone,stats])=>`<tr><th scope="row" title="${esc(labels[zone]||zone)}">${esc(ZONE_NAMES[zone]||zone)}</th><td class="num">${db(stats.median_delta_db)}</td><td class="num">${pct(stats.coverage_empty)} → ${pct(stats.coverage_scenario)}</td></tr>`).join('')}</tbody></table>
+    <p class="muted-copy">Median over cells with signal in both maps. Placeholder materials: not a real-farm prediction.</p>`;
+}
+
 function updateMap() {
   frameDirty=true;
   if (!activeScenario || !layerGroups.map) return;
   const scenario = data.scenarios[activeScenario];
   const isDiff = $('#differenceToggle').checked;
+  const level = selectedMapPlane(scenario);
+  renderZoneReport(scenario, level);
   syncHousionnaMapMode();
   let map = scenario.radio_map;
   if(scenario.source_type==='housionna'&&$('#housionnaMapMode').value==='difference') {
@@ -903,7 +963,8 @@ function updateMap() {
     return;
   }
   disposeGroup(layerGroups.map);heatMesh=null;
-  const values = isDiff ? scenario.difference_map_db : scenario.radio_map.values_db;
+  const values = level ? (isDiff ? level.difference_db : level.values_db)
+    : (isDiff ? scenario.difference_map_db : scenario.radio_map.values_db);
   if (!Array.isArray(values) || !values.length || !Array.isArray(values[0]) || !values[0].length) {
     $('#mapLegend').textContent = 'No saved difference map for this scenario.';
     return;
@@ -922,17 +983,19 @@ function updateMap() {
   }
   ctx.putImageData(image,0,0);
   const texture=new THREE.CanvasTexture(canvas); texture.colorSpace=THREE.SRGBColorSpace; texture.magFilter=THREE.LinearFilter; texture.minFilter=THREE.LinearFilter; texture.needsUpdate=true;
-  const mapHeight=Number(map.center_m[2]);
+  const mapHeight=Number(level ? level.height_m : map.center_m[2]);
   const heightControl=$('#mapHeight');
-  heightControl.disabled=false;$('#mapHeightLabel').childNodes[0].textContent='Map height ';
+  heightControl.disabled=Boolean(level);$('#mapHeightLabel').childNodes[0].textContent=level?'Plane height ':'Map height ';
   heightControl.min=String(Math.min(0,mapHeight));heightControl.max=String(Math.max(sceneSize(scenario).height,mapHeight));
   heightControl.step=String(Math.max(sceneSize(scenario).height/80,0.01));heightControl.value=String(mapHeight);
   $('#heightValue').textContent=`${mapHeight.toFixed(2)} m`;
   const plane=new THREE.PlaneGeometry(map.size_m[0],map.size_m[1]);
   const mat=new THREE.MeshBasicMaterial({map:texture,transparent:true,opacity:Number($('#mapOpacity').value)/100,side:THREE.DoubleSide,depthWrite:false});
   heatMesh=new THREE.Mesh(plane,mat);
-  heatMesh.position.set(map.center_m[0],map.center_m[1],Number($('#mapHeight').value));
-  heatMesh.rotation.z=0; heatMesh.userData={kind:'radio-map',name:isDiff?`${scenario.label} − Empty map difference`:`${scenario.label} radio map`,detail:{values_db:values,units:isDiff?'dB difference':'path gain (dB)',grid:[rows,cols]},rfIncluded:true};
+  // Use the exact plane height: the slider snaps to its step, which would shift the map by up to a step.
+  heatMesh.position.set(map.center_m[0],map.center_m[1],mapHeight);
+  const levelName=level?` · level ${level.level}`:'';
+  heatMesh.rotation.z=0; heatMesh.userData={kind:'radio-map',name:isDiff?`${scenario.label} − Empty map difference${levelName}`:`${scenario.label} radio map${levelName}`,detail:{values_db:values,units:isDiff?'dB difference':'path gain (dB)',grid:[rows,cols]},rfIncluded:true};
   layerGroups.map.add(heatMesh);
   const edge = new THREE.LineSegments(new THREE.EdgesGeometry(plane),new THREE.LineBasicMaterial({color:isDiff?'#61485f':'#477f87',transparent:true,opacity:0.48}));
   edge.position.copy(heatMesh.position); layerGroups.map.add(edge);
@@ -2212,6 +2275,7 @@ function wireUI() {
   document.querySelectorAll('[data-layer]').forEach((element)=>element.addEventListener('change',()=>{ setLayerVisibility(); if(element.dataset.layer==='map') updateMap(); }));
   $('#labelsToggle').addEventListener('change',setLayerVisibility);
   $('#differenceToggle').addEventListener('change',updateMap);
+  $('#mapLevel').addEventListener('change',updateMap);
   $('#housionnaMapMode').addEventListener('change',updateMap);
   $('#mapOpacity').addEventListener('input',(event)=>{ $('#opacityValue').textContent=`${event.target.value}%`; setRadioMapOpacity(Number(event.target.value)/100); });
   $('#mapHeight').addEventListener('input',(event)=>{ $('#heightValue').textContent=`${Number(event.target.value).toFixed(2)} m`; if(heatMesh) { const map=data.scenarios[activeScenario].radio_map; if(map.surfaces?.length)return; heatMesh.position.z=Number(event.target.value); } });
@@ -2246,6 +2310,74 @@ function wireUI() {
     const hidden=workspace.classList.toggle('inspector-hidden');
     inspectorButton.setAttribute('aria-expanded',String(!hidden));
   });
+  // Side panels can be swiped or dragged open/closed by their inner edge; the 3D scene takes whatever width is left.
+  const desktopLayout=()=>matchMedia('(min-width: 901px)').matches;
+  const panelWidths={left:286,right:298};
+  let liveWidth=null;
+  const applyLayout=()=>{
+    if(!desktopLayout()){workspace.style.gridTemplateColumns='';return;}
+    const width=(side)=>liveWidth&&liveWidth.side===side?liveWidth.width:panelWidths[side];
+    const leftHidden=workspace.classList.contains('layers-hidden'),rightHidden=workspace.classList.contains('inspector-hidden');
+    const cols=[];
+    if(!leftHidden)cols.push(`${width('left')}px`);
+    cols.push('minmax(300px,1fr)');
+    if(!rightHidden)cols.push(`${width('right')}px`);
+    workspace.style.gridTemplateColumns=cols.join(' ');
+    // Grips sit on the scene side of each panel edge, so they never overlap the panel's scrollbar.
+    const leftGrip=workspace.querySelector('.panel-handle[data-side="left"]');
+    const rightGrip=workspace.querySelector('.panel-handle[data-side="right"]');
+    if(leftGrip)leftGrip.style.left=`${leftHidden?0:width('left')}px`;
+    if(rightGrip)rightGrip.style.right=`${rightHidden?0:width('right')}px`;
+  };
+  [['left','layers-hidden',layersButton],['right','inspector-hidden',inspectorButton]].forEach(([side,hiddenClass,button])=>{
+    const handle=document.createElement('div');
+    handle.className='panel-handle';
+    handle.dataset.side=side;
+    handle.tabIndex=0;
+    handle.setAttribute('role','separator');
+    handle.setAttribute('aria-orientation','vertical');
+    handle.setAttribute('aria-label',side==='left'?'Resize layers panel':'Resize inspector panel');
+    workspace.appendChild(handle);
+    const setHidden=(on)=>{workspace.classList.toggle(hiddenClass,on);button.setAttribute('aria-expanded',String(!on));};
+    const sign=side==='left'?1:-1;
+    handle.addEventListener('pointerdown',(e)=>{
+      if(!desktopLayout())return;
+      handle.setPointerCapture(e.pointerId);
+      const startX=e.clientX,startW=workspace.classList.contains(hiddenClass)?0:panelWidths[side];
+      let lastX=e.clientX,lastT=performance.now(),speed=0;
+      handle.onpointermove=(ev)=>{
+        const now=performance.now();
+        if(now>lastT)speed=(ev.clientX-lastX)/(now-lastT);
+        lastX=ev.clientX;lastT=now;
+        liveWidth={side,width:Math.max(0,Math.min(520,startW+sign*(ev.clientX-startX)))};
+        applyLayout();
+      };
+      const finish=()=>{
+        handle.onpointermove=null;
+        const w=liveWidth?liveWidth.width:startW;
+        liveWidth=null;
+        const flickOpen=sign*speed>0.6,flickClose=sign*speed<-0.6;
+        const open=flickOpen||(!flickClose&&w>=140);
+        if(open)panelWidths[side]=Math.max(200,w);
+        setHidden(!open);
+        applyLayout();
+      };
+      handle.onpointerup=finish;
+      handle.onpointercancel=finish;
+    });
+    handle.addEventListener('keydown',(e)=>{
+      if(!desktopLayout())return;
+      const grow=side==='left'?'ArrowRight':'ArrowLeft';
+      if(e.key!==grow&&e.key!==(side==='left'?'ArrowLeft':'ArrowRight'))return;
+      e.preventDefault();
+      if(workspace.classList.contains(hiddenClass)){if(e.key===grow)setHidden(false);}
+      else panelWidths[side]=Math.max(200,Math.min(520,panelWidths[side]+(e.key===grow?16:-16)));
+      applyLayout();
+    });
+  });
+  new MutationObserver(applyLayout).observe(workspace,{attributes:true,attributeFilter:['class']});
+  addEventListener('resize',applyLayout);
+  applyLayout();
   $('#diagnosticsBtn').addEventListener('click',()=>$('#diagnostics').classList.toggle('hidden'));
   $('#playPathBtn').addEventListener('click',()=>{ if(reducedMotion||!pulseCurve) return; pulseRunning=!pulseRunning; pulseStarted=performance.now(); pulseMesh.visible=pulseRunning; $('#playPathBtn').textContent=pulseRunning?'Pause pulse':'Play pulse'; });
 }

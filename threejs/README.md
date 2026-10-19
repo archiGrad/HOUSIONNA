@@ -9,9 +9,9 @@ The model uses **x/y as horizontal axes and z as up**, with meters for positions
 - `basic`: the official Sionna `floor_wall` scene with one transmitter and three receivers.
 - `room`: a 10 m × 6 m × 3 m room, generic concrete-like surfaces, one movable panel, one transmitter and three receivers.
 - `compare`: repeats the room run after moving only the panel by 1.8 m and saves a radio-map difference.
-- `cea`: generates empty, narrow-canopy, and wide-canopy greenhouse scenarios with separate material categories and an interactive comparison view.
+- `cea`: generates empty, narrow-canopy, and wide-canopy greenhouse scenarios with separate material categories and a comparison figure.
 - `canopy-physics`: runs the transparent/weak-loss/current material study, solver-sensitivity repeats, and an isolated Sionna slab transmission check.
-- `digital twin`: a local Three.js 3D viewer that reads generated scene geometry and saved Sionna paths/maps alongside the existing 2D dashboard.
+- `digital twin`: a local Three.js 3D viewer that reads generated scene geometry and saved Sionna paths/maps and is the only viewer (the 2D dashboard was removed).
 - CSV/JSON path and CIR output, raw linear path-gain arrays, cell-center coordinates, metadata, and PNG geometry/channel/map visualizations.
 
 The radio-map array is **path gain** (linear power ratio), not received power or RSS. The PNG converts it to `10 log10(path_gain)` for display. The CIR stores the complex baseband path coefficients and delays; it does not apply the transmitter power to create RSS.
@@ -38,7 +38,7 @@ In the VS Code terminal, run:
 .\.venv\Scripts\python.exe run.py view
 ```
 
-It opens a local browser page with scenario tabs, a top-down room layout, hoverable radio-map cells, receiver-selectable path plots, and the panel-move comparison. Keep the terminal open while viewing; press **Ctrl+C** there when finished. The page is served only from `127.0.0.1` and needs no extra package or internet connection.
+It opens the 3D digital twin at `http://127.0.0.1:8765/` (see [Three-dimensional digital twin](#three-dimensional-digital-twin)). Keep the terminal open while viewing; press **Ctrl+C** there when finished. The page is served only from `127.0.0.1`. It loads the Archivo font from Google Fonts; everything else is local. The older 2D dashboard was removed; the `basic`, `room` and `compare` runs still write their PNG figures under `outputs/`.
 
 To create the environment on another Windows x64 machine, install Python 3.12, extract the LLVM 18.1.8 Windows x64 release so that `.runtime\llvm-18.1.8\bin\LLVM-C.dll` exists, then run:
 
@@ -69,13 +69,7 @@ To regenerate one scenario at a time:
 
 The one-scenario commands refresh only that scenario's folder. Run `run.py cea` after changing shared settings or scenario overrides to regenerate all three cases and the comparison together.
 
-Then open or refresh the existing local dashboard:
-
-```powershell
-.\.venv\Scripts\python.exe run.py view
-```
-
-Choose **4 · CEA greenhouse**, then **Empty**, **Narrow canopy**, **Wide canopy**, or **Compare**. Each individual scenario shows the greenhouse layout, path-gain map, and paths/CIR for three representative receivers. Compare shows all three maps and the narrow-minus-empty and wide-minus-empty difference maps. The receiver grid is used for the radio-map coverage; CIR is computed only for the three selected receiver points.
+Then open the viewer with `run.py view`, choose **Scene source → Built-in demo**, and pick the narrow or wide greenhouse case in the scenario selector. Each case shows the greenhouse geometry, its path-gain map, and paths for the three representative receivers; **Difference map** shows the case minus the empty greenhouse. The side-by-side comparison of all maps is `outputs/cea/comparison/radio_map_comparison.png`. The receiver grid is used for the radio-map coverage; paths are computed only for the three selected receiver points.
 
 CEA output is under `outputs/cea/empty/`, `outputs/cea/narrow/`, `outputs/cea/wide/`, and `outputs/cea/comparison/`. Scenario folders contain the scene image, generated named OBJ assets, `scene_manifest.json`, config snapshot, metadata, path/CIR exports, and radio-map arrays/images. The comparison folder contains `summary.csv`, `representative_receivers.csv`, difference arrays, `comparison.json`, and `radio_map_comparison.png`.
 
@@ -97,16 +91,22 @@ Run the three deterministic Sionna RT cases:
 
 The controlled cases are **Empty rack**, **RF plant proxy** (one canopy zone per shelf), and **Dense RF proxy** (two zones per shelf). The shell, rack, shelf levels, materials, TX/RX points, radio-map grid, solver settings, seed, and decorative plant layout are held fixed. Only the number of coarse RF canopy zones changes. In the empty control, detailed plants start hidden; enable **Detailed visual plants** to show the same decorative crop while the RF-zone layer remains empty. Paths, radio maps, scene manifests, config snapshots, metadata, and difference maps are written under `outputs/vertical_farm/`.
 
+**Map planes.** With `receiver_grid.map_planes: air_gaps` (the default), each shelf level gets one radio-map plane midway through the free air above its canopy, below the shelf, supports and grow light overhead. This is where a sensor could sit; the planes never cut through a canopy block, and the runner checks this against the generated geometry. The `primary_level` plane (level 2) is the one shown in the 3D viewer; every plane is saved as `radio_map_level<N>.npy` and used in the zone report.
+
+**Zone report.** `outputs/vertical_farm/comparison/comparison.json` has a `zone_report` with, per plane and per zone (in front of the rack, over the canopy, beside the canopy inside the rack, outside), the median change against the empty rack over cells that receive signal in both maps, and the coverage share at `analysis.receiver_sensitivity_dbm` (a placeholder). The older floored `stats` are kept, but they are dominated by cells without signal and should not be read as the canopy effect.
+
+**Sampling.** The default sample counts are kept low so runs stay quick on a laptop GPU, but they are too noisy for quantitative comparison: a sampling study on the DGX Spark (Oct 2026, `scripts/vertical_farm_convergence.py`) found single cells varying by tens of dB between seeds at 1x. For results to report, run `run.py vertical-farm --profile spark`, which raises the map samples 10000x and averages 8 seeds (defined under `run_profiles` in `config/vertical_farm.yaml`).
+
 Detailed leafy plants are generated in the Three.js frontend from the separately exported `visual_plants` layout and use instanced stems, crowns, and curved leaves. They are **visual-only** and never enter the Sionna scene. The named `rf_plant_zone` boxes are separate coarse RF objects, exported as OBJ and passed to Sionna by the vertical-farm runner. In the viewer, use **Detailed visual plants** and **RF plant zones** as independent layer toggles; clicking a plant shelf, tray, or RF zone shows its level and RF/visual status in the inspector.
 
-Open the dashboard after generating the farm outputs:
+Open the viewer after generating the farm outputs:
 
 ```powershell
 npm.cmd --prefix frontend run build
 .\.venv\Scripts\python.exe run.py view
 ```
 
-The dashboard opens directly on **Vertical farm - RF plant proxy** (use tab **6 - Vertical Farm Twin** to return after viewing another demo). Start with **Isometric**, then try **Front elevation**, **Shelf close-up**, and **TX / RX views**. Use the scenario selector to compare the empty, one-zone, and two-zone-per-level models; use **Difference map** for changes relative to the empty rack. The greenhouse and canopy-physics cases remain in the selector and in their existing dashboard tabs.
+With **Scene source → Built-in demo** the viewer opens on **Vertical farm · RF plant proxy**. Start with **Isometric**, then try **Front elevation**, **Shelf close-up**, and **TX view**. Use the scenario selector to compare the empty, one-zone, and two-zone-per-level models. Switch on **Radio map**, then use **Map level** to move between the three air-gap planes; the map sits at the solved plane height, so the height slider is locked for these cases. **Difference map** shows the selected level minus the empty rack, and the panel under the legend shows that level's zone report (median change and coverage per zone).
 
 These dimensions and RF material properties are placeholders. Each proxy is a solid box, not a detailed leaf/stem or volumetric crop model; plant water content, dielectric properties, scattering, and equipment materials are not calibrated. No measurement validation is included, so the RF output is an implementation experiment and should not be read as a real farm coverage prediction.
 
@@ -125,7 +125,7 @@ npm.cmd --prefix frontend run build
 
 For a built-in scene, use the **On-demand Sionna RT** panel as before. For an imported HOUSIONNA run, select its TX, edit frequency and pose, choose one to eight receivers, set path samples and solver options, then press **RUN SIONNA RT**. Dragging the active TX changes X/Y; use the numeric fields for Z/yaw. **Reset TX position** restores the original exported pose. The viewer warns about floor and possible mesh-bound overlap but keeps source placements unchanged until you move them.
 
-Each new run is saved in its own `outputs/live/<run-id>/` folder with `config.json`, `metadata.json`, `paths.json`, `radio_map.npy`, `radio_map.json`, `viewer_data.json`, and `receiver_metrics.json`. The map files contain path gain; the viewer's dB colors are only the documented `10 log10(max(path_gain, 1e-15))` display transform, not RSS. Exact successful request hashes reuse saved results; different TX/settings get a new folder and leave previous runs intact. The frontend exchanges run IDs and JSON payloads only, not local filesystem paths, so the same API contract can later sit on a DGX Spark. The Sionna loader keeps the bundled LLVM DLL setup on Windows and allows native Dr.Jit/Mitsuba backend selection on Linux. To move execution there, install this project and compatible Sionna/Dr.Jit dependencies on the Spark, select a working Mitsuba CUDA variant in that Python environment, and forward the viewer/API port through VS Code Tunnel so both remain same-origin; remote transport/deployment is not configured here.
+Each new run is saved in its own `outputs/live/<run-id>/` folder with `config.json`, `metadata.json`, `paths.json`, `radio_map.npy`, `radio_map.json`, `viewer_data.json`, and `receiver_metrics.json`. The map files contain path gain; the viewer's dB colors are only the documented `10 log10(max(path_gain, 1e-15))` display transform, not RSS. Exact successful request hashes reuse saved results; different TX/settings get a new folder and leave previous runs intact. The frontend exchanges run IDs and JSON payloads only, not local filesystem paths, so the same API contract can later sit on a DGX Spark. The Sionna loader keeps the bundled LLVM DLL setup on Windows and allows native Dr.Jit/Mitsuba backend selection on Linux. The Spark environment itself is set up and verified (see [Running on the DGX Spark](#running-on-the-dgx-spark)); sending these on-demand jobs to it from the viewer is not configured yet.
 
 ## Canopy physics sanity study
 
@@ -137,7 +137,7 @@ Run the narrow-canopy control experiment and its one-factor diagnostics:
 
 The four core cases are empty, a free-space-matched transparent control, an arbitrary weak-loss placeholder, and the existing current canopy material. They use the same 0.6 m canopy geometry, greenhouse shell/structure, frequency, TX, RX, radio-map grid, and solver settings. The command also runs diagnostics that change only one current-case factor at a time: refraction off, lower permittivity, lower conductivity, or thinner Sionna material slab.
 
-Open the dashboard with `run.py view` and select **5 · Canopy physics**. The case controls show each radio map and its difference from empty; **Compare** shows all four maps and all three difference maps. Choose RX_A, RX_B, or RX_C to update the per-case path summary and the overlaid CIR plot. This study moves RX_C to `[10.0, 5.0, 1.5]` m for all cases: the prior RX_C position was inside the closed canopy box, so it was not a valid far-side receiver.
+In the viewer (`run.py view`, **Scene source → Built-in demo**), pick the empty, transparent, weak-loss or current case in the scenario selector; **Difference map** shows each case minus empty, and choosing RX_A, RX_B or RX_C updates the path summary. The overlaid CIR plot and the four-map comparison are saved as `outputs/canopy_physics/comparison/cir_comparison.png` and `radio_map_comparison.png`. This study moves RX_C to `[10.0, 5.0, 1.5]` m for all cases: the prior RX_C position was inside the closed canopy box, so it was not a valid far-side receiver.
 
 Results are written under `outputs/canopy_physics/`: per-case maps, path/CIR exports, direct Sionna interaction/object sequences, material/solver metadata, and config snapshots; plus `comparison/summary.csv`, `representative_receivers.csv`, difference arrays, figures, `analysis.json`, and a generated `report.md`. Diagnostics are under `diagnostics/`.
 
@@ -149,7 +149,7 @@ The expanded diagnosis, including direct TX/RX-to-canopy intersections, exact tr
 
 ## Three-dimensional digital twin
 
-Generate all data used by the viewer, build its local JavaScript bundle, and open the integrated dashboard:
+Generate all data used by the viewer, build its local JavaScript bundle, and open it:
 
 ```powershell
 .\.venv\Scripts\python.exe run.py all
@@ -162,6 +162,25 @@ npm.cmd --prefix frontend run build
 ```
 
 The simulation commands run Sionna and create the saved geometry, paths, and radio maps. Run `vertical-farm` to generate the featured vertical-farm scenes; it does not rerun the older demos. The last two frontend commands are needed after a fresh checkout or when changing the Three.js UI; Three.js and Vite are installed locally and the browser does not load a CDN. Keep the `run.py view` terminal open while using the page and press **Ctrl+C** there to stop it. The server binds to `127.0.0.1` only.
+
+With vertical-farm outputs present the viewer opens on the RF plant-proxy rack; otherwise it falls back to the current-canopy scene. The scenario selector holds the empty/proxy/dense vertical-farm cases and the legacy empty, transparent, weak-loss, current, narrow, and wide cases. **Layers** and **Inspector** open or close the side panels; drag a panel's inner edge (the thin grip next to the 3D scene) to resize it, drag it past the edge to close it, or flick it open again. The inspector reports the selected TX/RX, geometry, map, or returned path. The camera selector has isometric, front, side, top, shelf close-up, fit, and TX views. Enable **Show returned paths** to draw exported Sionna path vertices; use the receiver and display selectors to inspect one, five, or all saved paths. Map opacity, map level or height, labels, diagnostics, and capture controls are in the same view. The interface follows the DRAMCO web style (`DRAMCO.md`): dark only, monochrome controls, colour reserved for data.
+
+Detailed vertical-farm plants are instanced Three.js geometry only and remain excluded from Sionna. Sionna uses the configured enclosure, rack/tray/equipment objects, and separate `rf_plant_zone` boxes shown by **RF plant zones**; the drawn plants stay within those boxes. Legacy greenhouse scenarios continue to use their configured shell, frame, and rectangular canopy proxies. The report and inspector label these different meanings. The viewer visualizes saved runs and does not run new RF calculations when a scenario is selected. None of the current inputs or outputs are literature data or greenhouse measurements.
+
+## Running on the DGX Spark
+
+The vertical-farm study runs on the lab's NVIDIA DGX Spark (GB10, ARM64, CUDA). The pinned `requirements.txt` installs there unchanged (sionna-rt 2.2.0, Mitsuba 3.9.1 and Dr.Jit 1.5.0 have ARM64 Linux wheels), and Mitsuba's `cuda_ad_*` variants are available. No LLVM setup is needed on Linux. Over SSH (VPN required), from a checkout of this repository:
+
+```bash
+cd HOUSIONNA/threejs
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+python -c "import mitsuba as mi; print(mi.variants())"   # should list cuda_ad_mono_polarized
+SIONNA_RT_BACKEND=cuda python run.py basic                # fails loudly if the GPU backend does not work
+python run.py vertical-farm --profile spark
+```
+
+Run long jobs inside `tmux` so they survive a dropped connection, and copy results back to the workstation with `scp -r <user>@<spark-host>:~/HOUSIONNA/threejs/outputs/vertical_farm threejs/outputs/` before opening the viewer locally. The viewer itself stays on the workstation. `scripts/vertical_farm_convergence.py` repeats the farm study across sample counts and seeds (`--diffraction`, `--diffuse` and `--canopy-scattering` test other physics settings); with diffuse scattering on, its per-run `paths.json` files reach about 1 GB each at 10000x samples, so delete them once `summary.json` is written. Sending jobs to the Spark directly from Houdini or the viewer is not set up yet.
 
 ## HOUSIONNA runs and live Sionna
 
@@ -199,10 +218,6 @@ The idle Three.js scene renders on change. Radio-map updates reuse buffers; came
 On the controlled 162-triangle CPU test, a fresh Low request took 2.73 s; exact reuse took 0.03 s in the backend. The 19,602-triangle/102-TX dataset completed Low/Medium/High tests for one selected TX. Native Windows RT startup can still vary or fail, so these timings do not guarantee uncached browser latency. After the MX450 driver update, a matched Low run selected `cuda_ad_mono_polarized` automatically and completed in 7.33 s wall time (0.66 s solver); its map agreed with the CPU run over all 50 valid cells (maximum absolute difference 1.44e-5 dB). A separate fresh browser-triggered worker hit the 120 s startup limit, so that Windows issue remains intermittent. The first GPU run does **not** establish a speedup. The MX450 has 2 GB VRAM, shared with other applications. `SIONNA_RT_BACKEND` accepts `auto`, `llvm`, or `cuda`.
 
 See [docs/PERFORMANCE_RELIABILITY.md](docs/PERFORMANCE_RELIABILITY.md) for measured before/after results, browser evidence, sampling statistics, cache rules, diagnostics, timeouts and remaining limitations. Tests: `.\.venv\Scripts\python.exe -m unittest discover -s tests -v` and `node scripts/test_rf_inputs.mjs`.
-
-In the dashboard, choose **6 - Vertical Farm Twin**. It opens on the RF plant-proxy rack when vertical-farm outputs are present; otherwise it falls back to the existing current-canopy scene. The selector keeps the empty/proxy/dense vertical-farm cases and the legacy empty, transparent, weak-loss, current, narrow, and wide cases. **Layers** and **Inspector** open or close their panels; the inspector reports selected TX/RX, geometry, map, or returned path. The camera selector has isometric, front, side, top, shelf close-up, fit, TX, and receiver views. Enable **Show returned paths** to draw exported Sionna path vertices; use the receiver and display selectors to inspect one, five, or all saved paths. The radio-map layer shows the saved Sionna values, and **Difference map** displays the selected case minus empty. Map height and opacity, labels, diagnostics, and capture controls are in the same view.
-
-Detailed vertical-farm plants are instanced Three.js geometry only and remain excluded from Sionna. Sionna uses the configured enclosure, rack/tray/equipment objects, and separate `rf_plant_zone` boxes shown by **RF plant zones**. Legacy greenhouse scenarios continue to use their configured shell, frame, and rectangular canopy proxies. The report and inspector label these different meanings. The viewer visualizes saved runs and does not run new RF calculations when a scenario is selected. None of the current inputs or outputs are literature data or greenhouse measurements.
 
 ## Output layout
 
