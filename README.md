@@ -4,7 +4,8 @@ Run [Sionna RT](https://nvlabs.github.io/sionna/rt/) radio propagation simulatio
 
 Houdini is the procedural generator: geometry, materials and devices are built with nodes, so one network can produce an unlimited number of scene variations, and each variation can be simulated and inspected within seconds.
 
-![Paths and radio map in Houdini](docs/preview.png)
+![Paths and radio map in Houdini](docs/prev.png)
+![Paths and radio map in Houdini](docs/2preview.png)
 
 ## What it is
 
@@ -46,6 +47,7 @@ Export never contacts the server; previz, solve and the batch buttons except exp
         ├── radiomap.bgeo.sc
         └── data/
             └── <YYYYMMDD_HHMMSSZ>/
+                ├── scene.bgeo.sc         the input geometry as exported, with all attributes; stays on this machine
                 ├── meshes/<name>.ply     binary PLY, one per object name
                 ├── sionna_run.py         copy of the solver used for this run
                 ├── <hip>_meta.json       git commit, uncommitted changes flag, Houdini version
@@ -146,8 +148,8 @@ For many scene variations from a TOP network (e.g. a Wedge TOP), next to the Nul
 2. **batch_export**: for each work item in the range, selects it in the TOP network, so the SOP network cooks that variation, then validates and exports it to `batches/<stamp>/wi<index>/`. The wedge attributes of the work item are stored in its `<hip>_meta.json`. A work item that fails validation or does not cook is recorded in `batch.json` and skipped; the others continue. The selection is restored afterwards.
 3. **batch_solve**: writes the current settings into every exported work item, sends the batch folder and starts one solver process on the target, which solves all work items one after the other in one Sionna session. The button returns at once; Houdini stays usable and the job keeps running if Houdini or the laptop is closed.
 4. **batch_status**: prints progress while it runs.
-5. **batch_fetch**: copies the results back, converts every new or changed result to `.bgeo.sc` in its `wi<index>` folder, and creates three File SOPs next to the Null: `sionna_batch_paths`, `sionna_batch_links`, `sionna_batch_radiomap`. Can be pressed while the batch is still running; press it again later for the rest.
-6. Click a work item in the TOP network: the scene shows that variation and the `sionna_batch_*` File SOPs load its results. Their file path is
+5. **batch_fetch**: copies the results back, converts every new or changed result to `.bgeo.sc` in its `wi<index>` folder, and creates four File SOPs next to the Null: `sionna_batch_scene` (the geometry as exported for that work item), `sionna_batch_paths`, `sionna_batch_links`, `sionna_batch_radiomap`. Can be pressed while the batch is still running; press it again later for the rest.
+6. Click a work item in the TOP network: the SOP network cooks that variation and the `sionna_batch_*` File SOPs load its exported geometry and results. `sionna_batch_scene` is what was simulated, also after the network has been changed since the export. Their file path is
 
    ```
    $HIP/sionna/batches/`chs("../<null>/batch")`/wi`padzero(3, @pdg_index)`/radiomap.bgeo.sc
@@ -357,7 +359,7 @@ Codes starting with N are information, W warnings (do not block), all others are
 | W004 | no rx point | Only the radio map is computed |
 | W005 | material not confirmed | Library value not verified; results depend on it |
 | W006 | GPU in use by other processes | Runs slower; large jobs may run out of memory |
-| W008 | node exists but is not a File SOP | A node next to the Null already has the name `sionna_previz`, `sionna_paths`, `sionna_links`, `sionna_radiomap` or `sionna_batch_*`. The result file is written but not loaded; rename that node. |
+| W008 | node exists but is not a File SOP | A node next to the Null already has the name `sionna_previz`, `sionna_paths`, `sionna_links`, `sionna_radiomap` or `sionna_batch_scene`, `_paths`, `_links`, `_radiomap`. The result file is written but not loaded; rename that node. |
 | W009 | no `batch` parm on the Null | Add a string parm `batch`; the `sionna_batch_*` File SOPs read the batch name from it |
 | V001 | no primitives | Nothing to export; add geometry or a measurement surface |
 | V002 | missing prim attribute | Add `name` and `material` |

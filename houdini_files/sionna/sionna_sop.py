@@ -533,6 +533,7 @@ def export_run(geo, f, folder, recs, extra):
         recs.append(("E001", {"path": folder}))
         return None
     try:
+        geo.saveToFile(folder + "/scene.bgeo.sc")
         write_meshes(geo, folder + "/meshes")
         objs = resolved(geo, f)
         write(f"{folder}/{hip}_scene.xml", build_xml(objs))
@@ -547,8 +548,8 @@ def export_run(geo, f, folder, recs, extra):
         recs.append(("N002", {"path": folder}))
         write(f"{folder}/{hip}_log.txt", "\n".join(fmt(r) for r in recs) + "\n")
         return objs, measure, meta
-    except OSError as e:
-        recs.append(("E002", {"path": e.filename}))
+    except (OSError, hou.Error) as e:
+        recs.append(("E002", {"path": getattr(e, "filename", None) or folder}))
         return None
 
 
@@ -1496,9 +1497,9 @@ def on_batch_fetch():
         say("batch", f"converted in {time.time() - t0:.1f} s")
     if bad:
         recs.append(("I002", {}))
-    for i, kind in enumerate(KINDS):
+    for i, kind in enumerate(("scene",) + KINDS):
         path = f'{OUT}/batches/`chs("../{node.name()}/batch")`/wi`padzero(3, @pdg_index)`/{kind}.bgeo.sc'
-        load_result(node, f"sionna_batch_{kind}", path, (6, -1 - i), recs, missingframe="empty")
+        load_result(node, f"sionna_batch_{kind}", path, (6, -i), recs, missingframe="empty")
     if not node.parm("batch"):
         recs.append(("W009", {}))
     recs.append(("N011", {"name": name, "done": len(solved), "failed": len(failed),
