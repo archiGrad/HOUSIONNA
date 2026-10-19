@@ -3,11 +3,24 @@ import json
 import math
 import os
 import sys
+import time
 
 import numpy as np
 import sionna.rt
 import mitsuba as mi
 from sionna.rt import load_scene, Transmitter, Receiver, PlanarArray, PathSolver, RadioMapSolver
+
+if not mi.variant().startswith("cuda"):
+    print(f"no CUDA variant on this machine: {mi.variant()}", file=sys.stderr)
+    sys.exit(3)
+
+
+def log(text):
+    print(text, flush=True)
+
+
+def wrote(path):
+    log(f"wrote {os.path.basename(path)} ({os.path.getsize(path) / 1024:.1f} kB)")
 
 
 def find(folder, suffix):
@@ -31,6 +44,8 @@ def db(amplitude):
 
 
 def load(folder):
+    t0 = time.time()
+    log(f"sionna {sionna.rt.__version__}, {mi.variant()}")
     scene = load_scene(find(folder, "_scene.xml"), merge_shapes=False)
     with open(find(folder, "_txrx.json")) as fh:
         devs = json.load(fh)
@@ -39,6 +54,8 @@ def load(folder):
         scene.add(Transmitter(name=d["name"], position=d["position"], orientation=d["orientation"], **kw))
     for d in devs["rx"]:
         scene.add(Receiver(name=d["name"], position=d["position"], orientation=d["orientation"]))
+    log(f"scene: {len(scene.objects)} objects, {len(scene.radio_materials)} materials, "
+        f"{len(scene.transmitters)} tx, {len(scene.receivers)} rx ({time.time() - t0:.1f} s)")
     return scene, devs
 
 
@@ -69,8 +86,10 @@ def dump(folder):
         "rx": [{"name": n, "position": vec(d.position), "orientation": vec(d.orientation)}
                for n, d in scene.receivers.items()],
     }
-    with open(out_path(folder, "_dump.json"), "w") as fh:
+    path = out_path(folder, "_dump.json")
+    with open(path, "w") as fh:
         json.dump(out, fh)
+    wrote(path)
 
 
 def configure(folder):
@@ -81,20 +100,21 @@ def configure(folder):
     scene.tx_array = PlanarArray(num_rows=1, num_cols=1, pattern="iso", polarization="V")
     scene.rx_array = PlanarArray(num_rows=1, num_cols=1, pattern="iso", polarization="V")
     common = {k: s[k] for k in ("max_depth", "los", "specular_reflection", "diffuse_reflection", "refraction", "diffraction")}
+    on = [k for k in ("los", "specular_reflection", "diffuse_reflection", "refraction", "diffraction") if s[k]]
+    log(f"settings: {s['frequency'] / 1e9:g} GHz, max_depth {s['max_depth']}, {', '.join(on)}")
     return scene, devs, s, common
 
 
-def radiomap(folder):
-    scene, devs, s, common = configure(folder)
-    with open(find(folder, "_measure.json")) as fh:
-        names = json.load(fh)
+def radiomap(folder, scene, s, common, names):
     maps = []
     for name in names:
+        t0 = time.time()
         mesh = mi.load_dict({
             "type": "ply",
             "filename": os.path.join(folder, "meshes", name + ".ply"),
             "face_normals": True,
         })
+        log(f"radio map '{name}': {mesh.face_count()} cells, {s['radiomap_samples']:.0e} samples per tx")
         rm = RadioMapSolver()(scene, measurement_surface=mesh, samples_per_tx=s["radiomap_samples"], **common)
         gain = rm.path_gain.numpy()
         with np.errstate(divide="ignore"):
@@ -107,19 +127,47 @@ def radiomap(folder):
             "faces": np.array(params["faces"]).reshape(-1, 3).tolist(),
             "path_gain_db": np.round(gain_db, 2).T.tolist(),
         })
+        reached = int((gain_db > -999).any(axis=0).sum())
+        log(f"radio map '{name}': {reached} of {gain_db.shape[1]} cells reached ({time.time() - t0:.1f} s)")
     result = {
         "sionna_rt": sionna.rt.__version__,
         "settings": s,
         "tx": list(scene.transmitters),
         "maps": maps,
     }
-    with open(out_path(folder, "_radiomap.json"), "w") as fh:
+    path = out_path(folder, "_radiomap.json")
+    with open(path, "w") as fh:
         json.dump(result, fh)
+    wrote(path)
 
 
 def solve(folder):
     scene, devs, s, common = configure(folder)
-    paths = PathSolver()(scene, samples_per_src=s["samples"], synthetic_array=False, **common)
+    if devs["rx"]:
+        trace(folder, scene, devs, s, common)
+    else:
+        log("paths: skipped, no rx")
+    measure = out_path(folder, "_measure.json")
+    names = []
+    if os.path.isfile(measure):
+        with open(measure) as fh:
+            names = json.load(fh)
+    if names:
+        radiomap(folder, scene, s, common, names)
+    else:
+        log("radio map: skipped, no measurement surface")
+
+
+def trace(folder, scene, devs, s, common):
+    t0 = time.time()
+    log(f"paths: {len(devs['tx'])} tx x {len(devs['rx'])} rx, {s['samples']:.0e} samples per tx")
+    paths = PathSolver()(
+        scene,
+        samples_per_src=s["samples"],
+        max_num_paths_per_src=s["max_paths_per_tx"],
+        synthetic_array=False,
+        **common,
+    )
 
     a = paths.a[0].numpy()[:, 0, :, 0, :] + 1j * paths.a[1].numpy()[:, 0, :, 0, :]
     tau = paths.tau.numpy()[:, 0, :, 0, :]
@@ -180,6 +228,7 @@ def solve(folder):
                 })
             links.append(link)
 
+    log(f"paths: {len(out)} valid paths over {len(links)} links ({time.time() - t0:.1f} s)")
     result = {
         "sionna_rt": sionna.rt.__version__,
         "variant": mi.variant(),
@@ -188,9 +237,11 @@ def solve(folder):
         "paths": out,
         "links": links,
     }
-    with open(out_path(folder, "_result.json"), "w") as fh:
+    path = out_path(folder, "_result.json")
+    with open(path, "w") as fh:
         json.dump(result, fh)
+    wrote(path)
 
 
 if __name__ == "__main__":
-    {"dump": dump, "solve": solve, "radiomap": radiomap}[sys.argv[1]](sys.argv[2])
+    {"dump": dump, "solve": solve}[sys.argv[1]](sys.argv[2])

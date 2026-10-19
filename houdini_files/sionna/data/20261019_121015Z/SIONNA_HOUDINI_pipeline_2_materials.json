@@ -1,0 +1,15 @@
+{
+  "frequency": 3500000000.0,
+  "objects": {
+    "ground": {
+      "material": "medium_dry_ground",
+      "thickness": 1.0,
+      "scattering_coefficient": 0.0
+    },
+    "box": {
+      "material": "concrete",
+      "thickness": 0.20000000298023224,
+      "scattering_coefficient": 0.0
+    }
+  }
+}

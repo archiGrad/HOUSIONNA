@@ -1,0 +1,80 @@
+{
+  "polycarbonate": {
+    "kind": "fixed",
+    "relative_permittivity": 2.9,
+    "loss_tangent": 0.01,
+    "thickness": 0.008,
+    "source": "Lexan and Makrolon datasheets, values at 1 MHz",
+    "status": "confirmed at 1 MHz only, microwave value not sourced"
+  },
+  "polyethylene_film": {
+    "kind": "fixed",
+    "relative_permittivity": 2.3,
+    "loss_tangent": 0.0,
+    "thickness": 0.0002,
+    "source": "RF Cafe dielectric table (2.26 at 1 MHz); Ellingson, Electromagnetics II (2.3, kHz to 1 GHz)",
+    "status": "permittivity confirmed, loss assumed zero"
+  },
+  "polypropylene": {
+    "kind": "fixed",
+    "relative_permittivity": 2.25,
+    "loss_tangent": 0.0,
+    "thickness": 0.003,
+    "source": "RF Cafe dielectric table (2.2); Ellingson, Electromagnetics II (2.3)",
+    "status": "permittivity confirmed, loss assumed zero"
+  },
+  "pvc": {
+    "kind": "fixed",
+    "relative_permittivity": 3.0,
+    "loss_tangent": 0.0,
+    "thickness": 0.003,
+    "source": "RF Cafe dielectric table",
+    "status": "permittivity confirmed, loss assumed zero"
+  },
+  "water": {
+    "kind": "water",
+    "temperature_c": 25.0,
+    "ionic_conductivity": 0.0,
+    "thickness": 0.05,
+    "source": "Liebe, Hufford, Manabe 1991, single Debye model below 100 GHz",
+    "status": "model coefficients entered from memory, verify against the paper"
+  },
+  "nutrient_solution": {
+    "kind": "water",
+    "temperature_c": 25.0,
+    "ionic_conductivity": 0.25,
+    "thickness": 0.05,
+    "source": "Liebe, Hufford, Manabe 1991 plus ionic conductivity for EC 2.5 mS/cm",
+    "status": "model coefficients entered from memory, verify against the paper"
+  },
+  "leaf": {
+    "kind": "vegetation",
+    "moisture": 0.8,
+    "thickness": 0.0003,
+    "source": "Ulaby and El-Rayes 1987, dual-dispersion model, 0.2 to 20 GHz",
+    "status": "model coefficients entered from memory, verify against the paper"
+  },
+  "stem": {
+    "kind": "vegetation",
+    "moisture": 0.8,
+    "thickness": 0.01,
+    "source": "Ulaby and El-Rayes 1987, dual-dispersion model, 0.2 to 20 GHz",
+    "status": "model coefficients entered from memory, verify against the paper"
+  },
+  "fruit": {
+    "kind": "fixed",
+    "relative_permittivity": 72.0,
+    "loss_factor": 14.0,
+    "thickness": 0.06,
+    "source": "strawberry at 915 and 2450 MHz, J. Berry Research; tomato: Peng et al. 2013 not yet read",
+    "status": "strawberry used as analogue for tomato"
+  },
+  "rockwool_wet": {
+    "kind": "fixed",
+    "relative_permittivity": 40.0,
+    "conductivity": 0.4,
+    "thickness": 0.075,
+    "source": "none for permittivity; conductivity from pore-water EC 4 dS/m (sensor documentation)",
+    "status": "placeholder, must be measured"
+  }
+}
