@@ -38,7 +38,7 @@ SETTINGS = {
     "diffraction": False,
     "bandwidth": 100e6,
     "cfr_points": 256,
-    "radiomap_samples": 1000000,
+    "radiomap_samples": 10000000,
 }
 
 CODES = {
@@ -53,6 +53,7 @@ CODES = {
     "W004": "no rx point: only the radio map will be computed",
     "W005": "material '{material}' is not confirmed: {status}",
     "W006": "gpu on '{target}' in use by other processes: {apps}",
+    "W008": "node '{name}' exists but is not a File SOP: result saved to {path} but not loaded; rename that node",
     "W001": "scene diagonal is {diag:.3g} m (expected 1 m to 50 km): check units",
     "W002": "{name}: smaller than one wavelength ({lam:.3f} m)",
     "W003": "device '{name}': {dist:.3g} m away from the geometry",
@@ -832,7 +833,16 @@ def file_sop(node, name, path, offset):
         target = node.parent().createNode("file", name)
         target.parm("file").set(path)
         target.setPosition(node.position() + hou.Vector2(*offset))
+    elif target.type().name() != "file":
+        return None
     target.parm("reload").pressButton()
+    return target
+
+
+def load_result(node, name, path, offset, recs):
+    target = file_sop(node, name, path, offset)
+    if target is None:
+        recs.append(("W008", {"name": name, "path": hou.expandString(path)}))
     return target
 
 
@@ -855,10 +865,11 @@ def on_previz():
             recs.append(("N003", {"path": found[0]}))
         else:
             recs.append(("S005", {}))
+    if not has_errors(recs):
+        target = load_result(node, "sionna_previz", OUT + "/previz.bgeo.sc", (3, 0), recs)
+        if target:
+            target.setDisplayFlag(True)
     report("previz", recs)
-    if has_errors(recs):
-        return
-    file_sop(node, "sionna_previz", OUT + "/previz.bgeo.sc", (3, 0)).setDisplayFlag(True)
 
 
 def build_previz(path):
@@ -1020,27 +1031,27 @@ def on_import():
             for i, (kind, geo) in enumerate(geos.items()):
                 geo.saveToFile(result[0].replace("_result.json", f"_{kind}.bgeo.sc"))
                 geo.saveToFile(hou.expandString(f"{OUT}/{kind}.bgeo.sc"))
-                file_sop(node, f"sionna_{kind}", f"{OUT}/{kind}.bgeo.sc", (3, -1 - i))
+                load_result(node, f"sionna_{kind}", f"{OUT}/{kind}.bgeo.sc", (3, -1 - i), recs)
             recs.append(("N005", {k: len(g.prims()) for k, g in geos.items()}))
             gains = [p["gain_db"] for p in data["paths"] if p["gain_db"] is not None]
             if gains:
                 say("import", f"paths: gain {min(gains):.1f} to {max(gains):.1f} dB, "
                               f"{sum(1 for p in data['paths'] if not p['interactions'])} line of sight")
-            say("import", "updated sionna_paths, sionna_links")
+            say("import", "results written for sionna_paths, sionna_links")
         if rmap:
             with open(rmap[0]) as fh:
                 data = json.load(fh)
             geo = build_radiomap(data)
             geo.saveToFile(rmap[0].replace("_radiomap.json", "_radiomap.bgeo.sc"))
             geo.saveToFile(hou.expandString(OUT + "/radiomap.bgeo.sc"))
-            file_sop(node, "sionna_radiomap", OUT + "/radiomap.bgeo.sc", (3, -3))
+            load_result(node, "sionna_radiomap", OUT + "/radiomap.bgeo.sc", (3, -3), recs)
             recs.append(("N006", {"cells": len(geo.prims()), "maps": len(data["maps"]), "tx": len(data["tx"])}))
             peak = [v for v in geo.primFloatAttribValues("path_gain_db_max") if v > -999]
             missed = len(geo.prims()) - len(peak)
             if peak:
                 say("import", f"radio map: strongest tx per cell {min(peak):.1f} to {max(peak):.1f} dB, "
                               f"{plural(missed, 'cell')} without signal")
-            say("import", "updated sionna_radiomap")
+            say("import", "results written for sionna_radiomap")
     except (ValueError, KeyError):
         recs.append(("I002", {}))
     report("import", recs)

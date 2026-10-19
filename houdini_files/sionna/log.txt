@@ -30604,3 +30604,945 @@
 2026-10-19 17:57:18 solve N004 42722 paths, result written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_155517Z/SIONNA_HOUDINI_pipeline_3_result.json
 2026-10-19 17:57:18 solve N006 radio map: 19602 cells on 1 surfaces, 200 transmitters
 2026-10-19 17:57:18 solve solve passed (0 errors, 0 warnings)
+2026-10-19 19:12:16 validate scene: 2 objects, 3570 triangles, 2 materials
+2026-10-19 19:12:16 validate   concrete               ITU          1 object    528 triangles
+2026-10-19 19:12:16 validate   medium_dry_ground      ITU          1 object   3042 triangles
+2026-10-19 19:12:16 validate radio map surfaces: measure_ground (19602 cells)
+2026-10-19 19:12:16 validate devices: 200 tx (tx_0, tx_1, tx_2, ... tx_199), 150 rx (rx_0, rx_1, rx_2, ... rx_149)
+2026-10-19 19:12:16 validate frequency 3.5 GHz (wavelength 8.6 cm), target spark
+2026-10-19 19:12:16 validate N001 scene size: x 10.00 m, y 10.00 m, z 8.19 m (sionna axes, z up)
+2026-10-19 19:12:16 validate validate passed (0 errors, 0 warnings)
+2026-10-19 19:12:21 export run folder /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_171220Z
+2026-10-19 19:12:21 export   meshes/  3 files, 433.7 kB (2 scene objects, 1 radio map surface)
+2026-10-19 19:12:21 export   SIONNA_HOUDINI_pipeline_4_log.txt  170 B
+2026-10-19 19:12:21 export   SIONNA_HOUDINI_pipeline_4_materials.json  298 B
+2026-10-19 19:12:21 export   SIONNA_HOUDINI_pipeline_4_measure.json  18 B
+2026-10-19 19:12:21 export   SIONNA_HOUDINI_pipeline_4_meta.json  238 B
+2026-10-19 19:12:21 export   SIONNA_HOUDINI_pipeline_4_scene.xml  917 B
+2026-10-19 19:12:21 export   SIONNA_HOUDINI_pipeline_4_txrx.json  92.6 kB
+2026-10-19 19:12:21 export materials at 3.5 GHz:
+2026-10-19 19:12:21 export   medium_dry_ground      ITU model, evaluated by sionna  thickness 1 m
+2026-10-19 19:12:21 export   concrete               ITU model, evaluated by sionna  thickness 0.2 m
+2026-10-19 19:12:21 export code version: git 4452b37e, with uncommitted changes
+2026-10-19 19:12:21 export N001 scene size: x 10.00 m, y 10.00 m, z 8.19 m (sionna axes, z up)
+2026-10-19 19:12:21 export N002 exported to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_171220Z
+2026-10-19 19:12:21 export export passed (0 errors, 0 warnings)
+2026-10-19 19:12:22 previz target spark: checking
+2026-10-19 19:12:23 previz target spark: gpu NVIDIA GB10, load 0%, other compute processes: none
+2026-10-19 19:12:23 previz send to spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_171220Z
+2026-10-19 19:12:23 previz     SIONNA_HOUDINI_pipeline_4_log.txt  170 B
+2026-10-19 19:12:23 previz     SIONNA_HOUDINI_pipeline_4_materials.json  298 B
+2026-10-19 19:12:23 previz     SIONNA_HOUDINI_pipeline_4_measure.json  18 B
+2026-10-19 19:12:23 previz     SIONNA_HOUDINI_pipeline_4_meta.json  238 B
+2026-10-19 19:12:23 previz     SIONNA_HOUDINI_pipeline_4_scene.xml  917 B
+2026-10-19 19:12:23 previz     SIONNA_HOUDINI_pipeline_4_txrx.json  92.6 kB
+2026-10-19 19:12:23 previz     sionna_run.py  9.0 kB
+2026-10-19 19:12:23 previz     meshes/box.ply  10.0 kB
+2026-10-19 19:12:23 previz     meshes/ground.ply  57.5 kB
+2026-10-19 19:12:23 previz     meshes/measure_ground.ply  366.2 kB
+2026-10-19 19:12:23 previz   10 files, 536.9 kB in 0.4 s
+2026-10-19 19:12:23 previz run dump on spark
+2026-10-19 19:12:24 previz   spark | sionna 2.2.0, cuda_ad_mono_polarized
+2026-10-19 19:12:24 previz   spark | scene: 2 objects, 2 materials, 200 tx, 150 rx (0.1 s)
+2026-10-19 19:12:25 previz   spark | wrote SIONNA_HOUDINI_pipeline_4_dump.json (194.2 kB)
+2026-10-19 19:12:25 previz receive from spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_171220Z
+2026-10-19 19:12:25 previz     SIONNA_HOUDINI_pipeline_4_dump.json  194.2 kB
+2026-10-19 19:12:25 previz   1 files, 194.2 kB in 0.3 s
+2026-10-19 19:12:25 previz dump done after 3.1 s
+2026-10-19 19:12:25 previz loaded by sionna: 2 objects, 3570 triangles, 200 tx, 150 rx
+2026-10-19 19:12:25 previz N003 sionna dump written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_171220Z/SIONNA_HOUDINI_pipeline_4_dump.json
+2026-10-19 19:12:25 previz previz passed (0 errors, 0 warnings)
+2026-10-19 19:12:27 previz target spark: checking
+2026-10-19 19:12:28 previz target spark: gpu NVIDIA GB10, load 0%, other compute processes: none
+2026-10-19 19:12:28 previz send to spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_171220Z
+2026-10-19 19:12:28 previz   0 files, 0 B in 0.3 s
+2026-10-19 19:12:28 previz run dump on spark
+2026-10-19 19:12:29 previz   spark | sionna 2.2.0, cuda_ad_mono_polarized
+2026-10-19 19:12:29 previz   spark | scene: 2 objects, 2 materials, 200 tx, 150 rx (0.1 s)
+2026-10-19 19:12:30 previz   spark | wrote SIONNA_HOUDINI_pipeline_4_dump.json (194.2 kB)
+2026-10-19 19:12:30 previz receive from spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_171220Z
+2026-10-19 19:12:30 previz     SIONNA_HOUDINI_pipeline_4_dump.json  194.2 kB
+2026-10-19 19:12:30 previz   1 files, 194.2 kB in 0.4 s
+2026-10-19 19:12:30 previz dump done after 3.0 s
+2026-10-19 19:12:30 previz loaded by sionna: 2 objects, 3570 triangles, 200 tx, 150 rx
+2026-10-19 19:12:30 previz N003 sionna dump written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_171220Z/SIONNA_HOUDINI_pipeline_4_dump.json
+2026-10-19 19:12:30 previz previz passed (0 errors, 0 warnings)
+2026-10-19 19:12:31 solve run folder /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_171220Z
+2026-10-19 19:12:31 solve target spark: checking
+2026-10-19 19:12:31 solve target spark: gpu NVIDIA GB10, load 0%, other compute processes: none
+2026-10-19 19:12:32 solve send to spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_171220Z
+2026-10-19 19:12:32 solve     SIONNA_HOUDINI_pipeline_4_settings.json  304 B
+2026-10-19 19:12:32 solve   1 files, 304 B in 0.3 s
+2026-10-19 19:12:32 solve run solve on spark
+2026-10-19 19:12:33 solve   spark | sionna 2.2.0, cuda_ad_mono_polarized
+2026-10-19 19:12:33 solve   spark | scene: 2 objects, 2 materials, 200 tx, 150 rx (0.1 s)
+2026-10-19 19:12:33 solve   spark | settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+2026-10-19 19:12:33 solve   spark | paths: 200 tx x 150 rx, 1e+06 samples per tx
+2026-10-19 19:12:39 solve   spark | paths: 42720 valid paths over 30000 links (5.8 s)
+2026-10-19 19:12:42 solve   spark | wrote SIONNA_HOUDINI_pipeline_4_result.json (115284.0 kB)
+2026-10-19 19:12:42 solve   spark | radio map 'measure_ground': 19602 cells, 1e+06 samples per tx
+2026-10-19 19:12:42 solve   spark | radio map 'measure_ground': 19602 of 19602 cells reached (0.2 s)
+2026-10-19 19:12:43 solve   spark | wrote SIONNA_HOUDINI_pipeline_4_radiomap.json (44563.6 kB)
+2026-10-19 19:12:44 solve receive from spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_171220Z
+2026-10-19 19:12:44 solve     SIONNA_HOUDINI_pipeline_4_radiomap.json  43.5 MB
+2026-10-19 19:12:46 solve     SIONNA_HOUDINI_pipeline_4_result.json  112.6 MB
+2026-10-19 19:12:50 solve   2 files, 156.1 MB in 6.7 s
+2026-10-19 19:12:50 solve solve done after 19.3 s
+2026-10-19 19:12:54 solve N004 42720 paths, result written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_171220Z/SIONNA_HOUDINI_pipeline_4_result.json
+2026-10-19 19:12:54 solve N006 radio map: 19602 cells on 1 surfaces, 200 transmitters
+2026-10-19 19:12:54 solve solve passed (0 errors, 0 warnings)
+2026-10-19 19:13:04 import paths: gain -224.9 to -28.7 dB, 13249 line of sight
+2026-10-19 19:13:04 import updated sionna_paths, sionna_links
+2026-10-19 19:18:23 import paths: gain -224.9 to -28.7 dB, 13249 line of sight
+2026-10-19 19:18:23 import updated sionna_paths, sionna_links
+2026-10-19 19:18:56 validate scene: 1 object, 512 triangles, 1 material
+2026-10-19 19:18:56 validate   medium_dry_ground      ITU          1 object    512 triangles
+2026-10-19 19:18:56 validate radio map surfaces: measure_ground (81 cells)
+2026-10-19 19:18:56 validate devices: 1 tx (tx_0), 5 rx (rx_0, rx_1, rx_2, ... rx_4)
+2026-10-19 19:18:56 validate frequency 3.5 GHz (wavelength 8.6 cm), target spark
+2026-10-19 19:18:56 validate N001 scene size: x 10.00 m, y 10.00 m, z 10.00 m (sionna axes, z up)
+2026-10-19 19:18:56 validate V003 prim 0: not a triangle
+2026-10-19 19:18:56 validate V003 prim 1: not a triangle
+2026-10-19 19:18:56 validate V003 prim 2: not a triangle
+2026-10-19 19:18:56 validate V003 prim 3: not a triangle
+2026-10-19 19:18:56 validate V003 prim 4: not a triangle
+2026-10-19 19:18:56 validate V003 prim 5: not a triangle
+2026-10-19 19:18:56 validate V003 prim 6: not a triangle
+2026-10-19 19:18:56 validate V003 prim 7: not a triangle
+2026-10-19 19:18:56 validate V003 prim 8: not a triangle
+2026-10-19 19:18:56 validate V003 prim 9: not a triangle
+2026-10-19 19:18:56 validate V003 prim 10: not a triangle
+2026-10-19 19:18:56 validate V003 prim 11: not a triangle
+2026-10-19 19:18:56 validate V003 prim 12: not a triangle
+2026-10-19 19:18:56 validate V003 prim 13: not a triangle
+2026-10-19 19:18:56 validate V003 prim 14: not a triangle
+2026-10-19 19:18:56 validate V003 prim 15: not a triangle
+2026-10-19 19:18:56 validate V003 prim 16: not a triangle
+2026-10-19 19:18:56 validate V003 prim 17: not a triangle
+2026-10-19 19:18:56 validate V003 prim 18: not a triangle
+2026-10-19 19:18:56 validate V003 prim 19: not a triangle
+2026-10-19 19:18:56 validate V003 prim 20: not a triangle
+2026-10-19 19:18:56 validate V003 prim 21: not a triangle
+2026-10-19 19:18:56 validate V003 prim 22: not a triangle
+2026-10-19 19:18:56 validate V003 prim 23: not a triangle
+2026-10-19 19:18:56 validate V003 prim 24: not a triangle
+2026-10-19 19:18:56 validate V003 prim 25: not a triangle
+2026-10-19 19:18:56 validate V003 prim 26: not a triangle
+2026-10-19 19:18:56 validate V003 prim 27: not a triangle
+2026-10-19 19:18:56 validate V003 prim 28: not a triangle
+2026-10-19 19:18:56 validate V003 prim 29: not a triangle
+2026-10-19 19:18:56 validate V003 prim 30: not a triangle
+2026-10-19 19:18:56 validate V003 prim 31: not a triangle
+2026-10-19 19:18:56 validate V003 prim 32: not a triangle
+2026-10-19 19:18:56 validate V003 prim 33: not a triangle
+2026-10-19 19:18:56 validate V003 prim 34: not a triangle
+2026-10-19 19:18:56 validate V003 prim 35: not a triangle
+2026-10-19 19:18:56 validate V003 prim 36: not a triangle
+2026-10-19 19:18:56 validate V003 prim 37: not a triangle
+2026-10-19 19:18:56 validate V003 prim 38: not a triangle
+2026-10-19 19:18:56 validate V003 prim 39: not a triangle
+2026-10-19 19:18:56 validate V003 prim 40: not a triangle
+2026-10-19 19:18:56 validate V003 prim 41: not a triangle
+2026-10-19 19:18:56 validate V003 prim 42: not a triangle
+2026-10-19 19:18:56 validate V003 prim 43: not a triangle
+2026-10-19 19:18:56 validate V003 prim 44: not a triangle
+2026-10-19 19:18:56 validate V003 prim 45: not a triangle
+2026-10-19 19:18:56 validate V003 prim 46: not a triangle
+2026-10-19 19:18:56 validate V003 prim 47: not a triangle
+2026-10-19 19:18:56 validate V003 prim 48: not a triangle
+2026-10-19 19:18:56 validate V003 prim 49: not a triangle
+2026-10-19 19:18:56 validate V003 prim 50: not a triangle
+2026-10-19 19:18:56 validate V003 prim 51: not a triangle
+2026-10-19 19:18:56 validate V003 prim 52: not a triangle
+2026-10-19 19:18:56 validate V003 prim 53: not a triangle
+2026-10-19 19:18:56 validate V003 prim 54: not a triangle
+2026-10-19 19:18:56 validate V003 prim 55: not a triangle
+2026-10-19 19:18:56 validate V003 prim 56: not a triangle
+2026-10-19 19:18:56 validate V003 prim 57: not a triangle
+2026-10-19 19:18:56 validate V003 prim 58: not a triangle
+2026-10-19 19:18:56 validate V003 prim 59: not a triangle
+2026-10-19 19:18:56 validate V003 prim 60: not a triangle
+2026-10-19 19:18:56 validate V003 prim 61: not a triangle
+2026-10-19 19:18:56 validate V003 prim 62: not a triangle
+2026-10-19 19:18:56 validate V003 prim 63: not a triangle
+2026-10-19 19:18:56 validate V003 prim 64: not a triangle
+2026-10-19 19:18:56 validate V003 prim 65: not a triangle
+2026-10-19 19:18:56 validate V003 prim 66: not a triangle
+2026-10-19 19:18:56 validate V003 prim 67: not a triangle
+2026-10-19 19:18:56 validate V003 prim 68: not a triangle
+2026-10-19 19:18:56 validate V003 prim 69: not a triangle
+2026-10-19 19:18:56 validate V003 prim 70: not a triangle
+2026-10-19 19:18:56 validate V003 prim 71: not a triangle
+2026-10-19 19:18:56 validate V003 prim 72: not a triangle
+2026-10-19 19:18:56 validate V003 prim 73: not a triangle
+2026-10-19 19:18:56 validate V003 prim 74: not a triangle
+2026-10-19 19:18:56 validate V003 prim 75: not a triangle
+2026-10-19 19:18:56 validate V003 prim 76: not a triangle
+2026-10-19 19:18:56 validate V003 prim 77: not a triangle
+2026-10-19 19:18:56 validate V003 prim 78: not a triangle
+2026-10-19 19:18:56 validate V003 prim 79: not a triangle
+2026-10-19 19:18:56 validate V003 prim 80: not a triangle
+2026-10-19 19:18:56 validate validate FAILED (81 errors, 0 warnings)
+2026-10-19 19:19:07 validate scene: 1 object, 512 triangles, 1 material
+2026-10-19 19:19:07 validate   medium_dry_ground      ITU          1 object    512 triangles
+2026-10-19 19:19:07 validate radio map surfaces: measure_ground (162 cells)
+2026-10-19 19:19:07 validate devices: 1 tx (tx_0), 5 rx (rx_0, rx_1, rx_2, ... rx_4)
+2026-10-19 19:19:07 validate frequency 3.5 GHz (wavelength 8.6 cm), target spark
+2026-10-19 19:19:07 validate N001 scene size: x 10.00 m, y 10.00 m, z 10.00 m (sionna axes, z up)
+2026-10-19 19:19:07 validate validate passed (0 errors, 0 warnings)
+2026-10-19 19:19:11 export run folder /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_171911Z
+2026-10-19 19:19:11 export   meshes/  2 files, 13.5 kB (1 scene object, 1 radio map surface)
+2026-10-19 19:19:11 export   SIONNA_HOUDINI_pipeline_4_log.txt  171 B
+2026-10-19 19:19:11 export   SIONNA_HOUDINI_pipeline_4_materials.json  172 B
+2026-10-19 19:19:11 export   SIONNA_HOUDINI_pipeline_4_measure.json  18 B
+2026-10-19 19:19:11 export   SIONNA_HOUDINI_pipeline_4_meta.json  238 B
+2026-10-19 19:19:11 export   SIONNA_HOUDINI_pipeline_4_scene.xml  488 B
+2026-10-19 19:19:11 export   SIONNA_HOUDINI_pipeline_4_txrx.json  1.5 kB
+2026-10-19 19:19:11 export materials at 3.5 GHz:
+2026-10-19 19:19:11 export   medium_dry_ground      ITU model, evaluated by sionna  thickness 1 m
+2026-10-19 19:19:11 export code version: git 4452b37e, with uncommitted changes
+2026-10-19 19:19:11 export N001 scene size: x 10.00 m, y 10.00 m, z 10.00 m (sionna axes, z up)
+2026-10-19 19:19:11 export N002 exported to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_171911Z
+2026-10-19 19:19:11 export export passed (0 errors, 0 warnings)
+2026-10-19 19:19:13 previz target spark: checking
+2026-10-19 19:19:14 previz target spark: gpu NVIDIA GB10, load 0%, other compute processes: none
+2026-10-19 19:19:14 previz send to spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_171911Z
+2026-10-19 19:19:14 previz     SIONNA_HOUDINI_pipeline_4_log.txt  171 B
+2026-10-19 19:19:14 previz     SIONNA_HOUDINI_pipeline_4_materials.json  172 B
+2026-10-19 19:19:14 previz     SIONNA_HOUDINI_pipeline_4_measure.json  18 B
+2026-10-19 19:19:14 previz     SIONNA_HOUDINI_pipeline_4_meta.json  238 B
+2026-10-19 19:19:14 previz     SIONNA_HOUDINI_pipeline_4_scene.xml  488 B
+2026-10-19 19:19:14 previz     SIONNA_HOUDINI_pipeline_4_txrx.json  1.5 kB
+2026-10-19 19:19:14 previz     sionna_run.py  9.0 kB
+2026-10-19 19:19:14 previz     meshes/ground.ply  10.1 kB
+2026-10-19 19:19:14 previz     meshes/measure_ground.ply  3.4 kB
+2026-10-19 19:19:14 previz   9 files, 25.1 kB in 0.3 s
+2026-10-19 19:19:14 previz run dump on spark
+2026-10-19 19:19:16 previz   spark | sionna 2.2.0, cuda_ad_mono_polarized
+2026-10-19 19:19:16 previz   spark | scene: 1 objects, 1 materials, 1 tx, 5 rx (0.1 s)
+2026-10-19 19:19:16 previz   spark | wrote SIONNA_HOUDINI_pipeline_4_dump.json (14.7 kB)
+2026-10-19 19:19:16 previz receive from spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_171911Z
+2026-10-19 19:19:16 previz     SIONNA_HOUDINI_pipeline_4_dump.json  14.7 kB
+2026-10-19 19:19:16 previz   1 files, 14.7 kB in 0.3 s
+2026-10-19 19:19:16 previz dump done after 2.9 s
+2026-10-19 19:19:16 previz loaded by sionna: 1 object, 512 triangles, 1 tx, 5 rx
+2026-10-19 19:19:16 previz N003 sionna dump written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_171911Z/SIONNA_HOUDINI_pipeline_4_dump.json
+2026-10-19 19:19:16 previz previz passed (0 errors, 0 warnings)
+2026-10-19 19:19:25 solve run folder /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_171911Z
+2026-10-19 19:19:25 solve target spark: checking
+2026-10-19 19:19:25 solve target spark: gpu NVIDIA GB10, load 0%, other compute processes: none
+2026-10-19 19:19:25 solve send to spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_171911Z
+2026-10-19 19:19:26 solve     SIONNA_HOUDINI_pipeline_4_settings.json  304 B
+2026-10-19 19:19:26 solve   1 files, 304 B in 0.3 s
+2026-10-19 19:19:26 solve run solve on spark
+2026-10-19 19:19:27 solve   spark | sionna 2.2.0, cuda_ad_mono_polarized
+2026-10-19 19:19:27 solve   spark | scene: 1 objects, 1 materials, 1 tx, 5 rx (0.1 s)
+2026-10-19 19:19:27 solve   spark | settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+2026-10-19 19:19:27 solve   spark | paths: 1 tx x 5 rx, 1e+06 samples per tx
+2026-10-19 19:19:27 solve   spark | paths: 10 valid paths over 5 links (0.6 s)
+2026-10-19 19:19:27 solve   spark | wrote SIONNA_HOUDINI_pipeline_4_result.json (35.9 kB)
+2026-10-19 19:19:28 solve   spark | radio map 'measure_ground': 162 cells, 1e+06 samples per tx
+2026-10-19 19:19:28 solve   spark | radio map 'measure_ground': 162 of 162 cells reached (0.1 s)
+2026-10-19 19:19:28 solve   spark | wrote SIONNA_HOUDINI_pipeline_4_radiomap.json (10.1 kB)
+2026-10-19 19:19:28 solve receive from spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_171911Z
+2026-10-19 19:19:28 solve     SIONNA_HOUDINI_pipeline_4_radiomap.json  10.1 kB
+2026-10-19 19:19:28 solve     SIONNA_HOUDINI_pipeline_4_result.json  35.9 kB
+2026-10-19 19:19:28 solve   2 files, 46.0 kB in 0.3 s
+2026-10-19 19:19:28 solve solve done after 3.4 s
+2026-10-19 19:19:28 solve N004 10 paths, result written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_171911Z/SIONNA_HOUDINI_pipeline_4_result.json
+2026-10-19 19:19:28 solve N006 radio map: 162 cells on 1 surfaces, 1 transmitters
+2026-10-19 19:19:28 solve solve passed (0 errors, 0 warnings)
+2026-10-19 19:19:30 import paths: gain -71.4 to -61.0 dB, 5 line of sight
+2026-10-19 19:19:30 import updated sionna_paths, sionna_links
+2026-10-19 19:19:52 import paths: gain -71.4 to -61.0 dB, 5 line of sight
+2026-10-19 19:19:52 import updated sionna_paths, sionna_links
+2026-10-19 19:20:23 import paths: gain -71.4 to -61.0 dB, 5 line of sight
+2026-10-19 19:20:23 import updated sionna_paths, sionna_links
+2026-10-19 19:20:30 import paths: gain -71.4 to -61.0 dB, 5 line of sight
+2026-10-19 19:20:30 import updated sionna_paths, sionna_links
+2026-10-19 19:22:28 import paths: gain -71.4 to -61.0 dB, 5 line of sight
+2026-10-19 19:22:28 import results written for sionna_paths, sionna_links
+2026-10-19 19:22:28 import radio map: strongest tx per cell -64.7 to -60.5 dB, 0 cells without signal
+2026-10-19 19:22:28 import results written for sionna_radiomap
+2026-10-19 19:22:28 import N005 imported 10 paths, 5 links
+2026-10-19 19:22:28 import W008 node 'sionna_radiomap' exists but is not a File SOP: result saved to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/radiomap.bgeo.sc but not loaded; rename that node
+2026-10-19 19:22:28 import N006 radio map: 162 cells on 1 surfaces, 1 transmitters
+2026-10-19 19:22:28 import import passed (0 errors, 1 warning)
+2026-10-19 19:22:36 validate scene: 1 object, 512 triangles, 1 material
+2026-10-19 19:22:36 validate   medium_dry_ground      ITU          1 object    512 triangles
+2026-10-19 19:22:36 validate radio map surfaces: measure_ground (162 cells)
+2026-10-19 19:22:36 validate devices: 1 tx (tx_0), 5 rx (rx_0, rx_1, rx_2, ... rx_4)
+2026-10-19 19:22:36 validate frequency 3.5 GHz (wavelength 8.6 cm), target spark
+2026-10-19 19:22:36 validate N001 scene size: x 10.00 m, y 10.00 m, z 10.00 m (sionna axes, z up)
+2026-10-19 19:22:36 validate validate passed (0 errors, 0 warnings)
+2026-10-19 19:22:38 export run folder /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172238Z
+2026-10-19 19:22:38 export   meshes/  2 files, 13.5 kB (1 scene object, 1 radio map surface)
+2026-10-19 19:22:38 export   SIONNA_HOUDINI_pipeline_4_log.txt  171 B
+2026-10-19 19:22:38 export   SIONNA_HOUDINI_pipeline_4_materials.json  172 B
+2026-10-19 19:22:38 export   SIONNA_HOUDINI_pipeline_4_measure.json  18 B
+2026-10-19 19:22:38 export   SIONNA_HOUDINI_pipeline_4_meta.json  238 B
+2026-10-19 19:22:38 export   SIONNA_HOUDINI_pipeline_4_scene.xml  488 B
+2026-10-19 19:22:38 export   SIONNA_HOUDINI_pipeline_4_txrx.json  1.5 kB
+2026-10-19 19:22:38 export materials at 3.5 GHz:
+2026-10-19 19:22:38 export   medium_dry_ground      ITU model, evaluated by sionna  thickness 1 m
+2026-10-19 19:22:38 export code version: git 4452b37e, with uncommitted changes
+2026-10-19 19:22:38 export N001 scene size: x 10.00 m, y 10.00 m, z 10.00 m (sionna axes, z up)
+2026-10-19 19:22:38 export N002 exported to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172238Z
+2026-10-19 19:22:38 export export passed (0 errors, 0 warnings)
+2026-10-19 19:22:42 previz target spark: checking
+2026-10-19 19:22:43 previz target spark: gpu NVIDIA GB10, load 0%, other compute processes: none
+2026-10-19 19:22:43 previz send to spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_172238Z
+2026-10-19 19:22:43 previz     SIONNA_HOUDINI_pipeline_4_log.txt  171 B
+2026-10-19 19:22:43 previz     SIONNA_HOUDINI_pipeline_4_materials.json  172 B
+2026-10-19 19:22:43 previz     SIONNA_HOUDINI_pipeline_4_measure.json  18 B
+2026-10-19 19:22:43 previz     SIONNA_HOUDINI_pipeline_4_meta.json  238 B
+2026-10-19 19:22:43 previz     SIONNA_HOUDINI_pipeline_4_scene.xml  488 B
+2026-10-19 19:22:43 previz     SIONNA_HOUDINI_pipeline_4_txrx.json  1.5 kB
+2026-10-19 19:22:43 previz     sionna_run.py  9.0 kB
+2026-10-19 19:22:43 previz     meshes/ground.ply  10.1 kB
+2026-10-19 19:22:43 previz     meshes/measure_ground.ply  3.4 kB
+2026-10-19 19:22:43 previz   9 files, 25.1 kB in 0.3 s
+2026-10-19 19:22:43 previz run dump on spark
+2026-10-19 19:22:44 previz   spark | sionna 2.2.0, cuda_ad_mono_polarized
+2026-10-19 19:22:44 previz   spark | scene: 1 objects, 1 materials, 1 tx, 5 rx (0.1 s)
+2026-10-19 19:22:44 previz   spark | wrote SIONNA_HOUDINI_pipeline_4_dump.json (14.7 kB)
+2026-10-19 19:22:45 previz receive from spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_172238Z
+2026-10-19 19:22:45 previz     SIONNA_HOUDINI_pipeline_4_dump.json  14.7 kB
+2026-10-19 19:22:45 previz   1 files, 14.7 kB in 0.3 s
+2026-10-19 19:22:45 previz dump done after 2.8 s
+2026-10-19 19:22:45 previz loaded by sionna: 1 object, 512 triangles, 1 tx, 5 rx
+2026-10-19 19:22:45 previz N003 sionna dump written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172238Z/SIONNA_HOUDINI_pipeline_4_dump.json
+2026-10-19 19:22:45 previz previz passed (0 errors, 0 warnings)
+2026-10-19 19:22:47 solve run folder /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172238Z
+2026-10-19 19:22:47 solve target spark: checking
+2026-10-19 19:22:47 solve target spark: gpu NVIDIA GB10, load 0%, other compute processes: none
+2026-10-19 19:22:47 solve send to spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_172238Z
+2026-10-19 19:22:48 solve     SIONNA_HOUDINI_pipeline_4_settings.json  305 B
+2026-10-19 19:22:48 solve   1 files, 305 B in 0.3 s
+2026-10-19 19:22:48 solve run solve on spark
+2026-10-19 19:22:49 solve   spark | sionna 2.2.0, cuda_ad_mono_polarized
+2026-10-19 19:22:49 solve   spark | scene: 1 objects, 1 materials, 1 tx, 5 rx (0.1 s)
+2026-10-19 19:22:49 solve   spark | settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+2026-10-19 19:22:49 solve   spark | paths: 1 tx x 5 rx, 1e+06 samples per tx
+2026-10-19 19:22:49 solve   spark | paths: 10 valid paths over 5 links (0.0 s)
+2026-10-19 19:22:49 solve   spark | wrote SIONNA_HOUDINI_pipeline_4_result.json (35.9 kB)
+2026-10-19 19:22:49 solve   spark | radio map 'measure_ground': 162 cells, 1e+07 samples per tx
+2026-10-19 19:22:49 solve   spark | radio map 'measure_ground': 162 of 162 cells reached (0.1 s)
+2026-10-19 19:22:49 solve   spark | wrote SIONNA_HOUDINI_pipeline_4_radiomap.json (10.0 kB)
+2026-10-19 19:22:49 solve receive from spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_172238Z
+2026-10-19 19:22:50 solve     SIONNA_HOUDINI_pipeline_4_radiomap.json  10.0 kB
+2026-10-19 19:22:50 solve     SIONNA_HOUDINI_pipeline_4_result.json  35.9 kB
+2026-10-19 19:22:50 solve   2 files, 45.9 kB in 0.4 s
+2026-10-19 19:22:50 solve solve done after 2.8 s
+2026-10-19 19:22:50 solve N004 10 paths, result written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172238Z/SIONNA_HOUDINI_pipeline_4_result.json
+2026-10-19 19:22:50 solve N006 radio map: 162 cells on 1 surfaces, 1 transmitters
+2026-10-19 19:22:50 solve solve passed (0 errors, 0 warnings)
+2026-10-19 19:22:52 import paths: gain -71.4 to -61.0 dB, 5 line of sight
+2026-10-19 19:22:52 import results written for sionna_paths, sionna_links
+2026-10-19 19:22:52 import radio map: strongest tx per cell -64.7 to -60.5 dB, 0 cells without signal
+2026-10-19 19:22:52 import results written for sionna_radiomap
+2026-10-19 19:22:52 import N005 imported 10 paths, 5 links
+2026-10-19 19:22:52 import W008 node 'sionna_radiomap' exists but is not a File SOP: result saved to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/radiomap.bgeo.sc but not loaded; rename that node
+2026-10-19 19:22:52 import N006 radio map: 162 cells on 1 surfaces, 1 transmitters
+2026-10-19 19:22:52 import import passed (0 errors, 1 warning)
+2026-10-19 19:23:39 import paths: gain -71.4 to -61.0 dB, 5 line of sight
+2026-10-19 19:23:39 import results written for sionna_paths, sionna_links
+2026-10-19 19:23:39 import radio map: strongest tx per cell -64.7 to -60.5 dB, 0 cells without signal
+2026-10-19 19:23:39 import results written for sionna_radiomap
+2026-10-19 19:23:39 import N005 imported 10 paths, 5 links
+2026-10-19 19:23:39 import W008 node 'sionna_radiomap' exists but is not a File SOP: result saved to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/radiomap.bgeo.sc but not loaded; rename that node
+2026-10-19 19:23:39 import N006 radio map: 162 cells on 1 surfaces, 1 transmitters
+2026-10-19 19:23:39 import import passed (0 errors, 1 warning)
+2026-10-19 19:24:19 validate scene: 2 objects, 3570 triangles, 2 materials
+2026-10-19 19:24:19 validate   concrete               ITU          1 object    528 triangles
+2026-10-19 19:24:19 validate   medium_dry_ground      ITU          1 object   3042 triangles
+2026-10-19 19:24:19 validate radio map surfaces: measure_ground (19602 cells)
+2026-10-19 19:24:19 validate devices: 200 tx (tx_0, tx_1, tx_2, ... tx_199), 150 rx (rx_0, rx_1, rx_2, ... rx_149)
+2026-10-19 19:24:19 validate frequency 3.5 GHz (wavelength 8.6 cm), target spark
+2026-10-19 19:24:19 validate N001 scene size: x 10.00 m, y 10.00 m, z 8.19 m (sionna axes, z up)
+2026-10-19 19:24:19 validate validate passed (0 errors, 0 warnings)
+2026-10-19 19:24:24 export run folder /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172423Z
+2026-10-19 19:24:24 export   meshes/  3 files, 433.7 kB (2 scene objects, 1 radio map surface)
+2026-10-19 19:24:24 export   SIONNA_HOUDINI_pipeline_4_log.txt  170 B
+2026-10-19 19:24:24 export   SIONNA_HOUDINI_pipeline_4_materials.json  298 B
+2026-10-19 19:24:24 export   SIONNA_HOUDINI_pipeline_4_measure.json  18 B
+2026-10-19 19:24:24 export   SIONNA_HOUDINI_pipeline_4_meta.json  238 B
+2026-10-19 19:24:24 export   SIONNA_HOUDINI_pipeline_4_scene.xml  917 B
+2026-10-19 19:24:24 export   SIONNA_HOUDINI_pipeline_4_txrx.json  92.6 kB
+2026-10-19 19:24:24 export materials at 3.5 GHz:
+2026-10-19 19:24:24 export   medium_dry_ground      ITU model, evaluated by sionna  thickness 1 m
+2026-10-19 19:24:24 export   concrete               ITU model, evaluated by sionna  thickness 0.2 m
+2026-10-19 19:24:24 export code version: git 4452b37e, with uncommitted changes
+2026-10-19 19:24:24 export N001 scene size: x 10.00 m, y 10.00 m, z 8.19 m (sionna axes, z up)
+2026-10-19 19:24:24 export N002 exported to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172423Z
+2026-10-19 19:24:24 export export passed (0 errors, 0 warnings)
+2026-10-19 19:24:26 solve run folder /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172423Z
+2026-10-19 19:24:26 solve target spark: checking
+2026-10-19 19:24:26 solve target spark: gpu NVIDIA GB10, load 0%, other compute processes: none
+2026-10-19 19:24:27 solve send to spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_172423Z
+2026-10-19 19:24:27 solve     SIONNA_HOUDINI_pipeline_4_log.txt  170 B
+2026-10-19 19:24:27 solve     SIONNA_HOUDINI_pipeline_4_materials.json  298 B
+2026-10-19 19:24:27 solve     SIONNA_HOUDINI_pipeline_4_measure.json  18 B
+2026-10-19 19:24:27 solve     SIONNA_HOUDINI_pipeline_4_meta.json  238 B
+2026-10-19 19:24:27 solve     SIONNA_HOUDINI_pipeline_4_scene.xml  917 B
+2026-10-19 19:24:27 solve     SIONNA_HOUDINI_pipeline_4_settings.json  305 B
+2026-10-19 19:24:27 solve     SIONNA_HOUDINI_pipeline_4_txrx.json  92.6 kB
+2026-10-19 19:24:27 solve     sionna_run.py  9.0 kB
+2026-10-19 19:24:27 solve     meshes/box.ply  10.0 kB
+2026-10-19 19:24:27 solve     meshes/ground.ply  57.5 kB
+2026-10-19 19:24:27 solve     meshes/measure_ground.ply  366.2 kB
+2026-10-19 19:24:27 solve   11 files, 537.2 kB in 0.4 s
+2026-10-19 19:24:27 solve run solve on spark
+2026-10-19 19:24:28 solve   spark | sionna 2.2.0, cuda_ad_mono_polarized
+2026-10-19 19:24:28 solve   spark | scene: 2 objects, 2 materials, 200 tx, 150 rx (0.1 s)
+2026-10-19 19:24:28 solve   spark | settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+2026-10-19 19:24:28 solve   spark | paths: 200 tx x 150 rx, 1e+06 samples per tx
+2026-10-19 19:24:34 solve   spark | paths: 42721 valid paths over 30000 links (5.7 s)
+2026-10-19 19:24:36 solve   spark | wrote SIONNA_HOUDINI_pipeline_4_result.json (115284.4 kB)
+2026-10-19 19:24:36 solve   spark | radio map 'measure_ground': 19602 cells, 1e+07 samples per tx
+2026-10-19 19:24:38 solve   spark | radio map 'measure_ground': 19602 of 19602 cells reached (1.1 s)
+2026-10-19 19:24:39 solve   spark | wrote SIONNA_HOUDINI_pipeline_4_radiomap.json (46356.5 kB)
+2026-10-19 19:24:39 solve receive from spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_172423Z
+2026-10-19 19:24:39 solve     SIONNA_HOUDINI_pipeline_4_radiomap.json  45.3 MB
+2026-10-19 19:24:41 solve     SIONNA_HOUDINI_pipeline_4_result.json  112.6 MB
+2026-10-19 19:24:46 solve   2 files, 157.9 MB in 6.9 s
+2026-10-19 19:24:46 solve solve done after 20.4 s
+2026-10-19 19:24:50 solve N004 42721 paths, result written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172423Z/SIONNA_HOUDINI_pipeline_4_result.json
+2026-10-19 19:24:50 solve N006 radio map: 19602 cells on 1 surfaces, 200 transmitters
+2026-10-19 19:24:50 solve solve passed (0 errors, 0 warnings)
+2026-10-19 19:25:02 import paths: gain -224.9 to -28.7 dB, 13249 line of sight
+2026-10-19 19:25:02 import results written for sionna_paths, sionna_links
+2026-10-19 19:25:04 import radio map: strongest tx per cell -57.8 to -39.4 dB, 0 cells without signal
+2026-10-19 19:25:04 import results written for sionna_radiomap
+2026-10-19 19:25:04 import N005 imported 42721 paths, 30000 links
+2026-10-19 19:25:04 import W008 node 'sionna_radiomap' exists but is not a File SOP: result saved to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/radiomap.bgeo.sc but not loaded; rename that node
+2026-10-19 19:25:04 import N006 radio map: 19602 cells on 1 surfaces, 200 transmitters
+2026-10-19 19:25:04 import import passed (0 errors, 1 warning)
+2026-10-19 19:26:19 import paths: gain -224.9 to -28.7 dB, 13249 line of sight
+2026-10-19 19:26:19 import results written for sionna_paths, sionna_links
+2026-10-19 19:26:21 import radio map: strongest tx per cell -57.8 to -39.4 dB, 0 cells without signal
+2026-10-19 19:26:21 import results written for sionna_radiomap
+2026-10-19 19:26:21 import N005 imported 42721 paths, 30000 links
+2026-10-19 19:26:21 import N006 radio map: 19602 cells on 1 surfaces, 200 transmitters
+2026-10-19 19:26:21 import import passed (0 errors, 0 warnings)
+2026-10-19 19:26:42 import paths: gain -224.9 to -28.7 dB, 13249 line of sight
+2026-10-19 19:26:42 import results written for sionna_paths, sionna_links
+2026-10-19 19:26:44 import radio map: strongest tx per cell -57.8 to -39.4 dB, 0 cells without signal
+2026-10-19 19:26:44 import results written for sionna_radiomap
+2026-10-19 19:26:44 import N005 imported 42721 paths, 30000 links
+2026-10-19 19:26:44 import W008 node 'sionna_radiomap' exists but is not a File SOP: result saved to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/radiomap.bgeo.sc but not loaded; rename that node
+2026-10-19 19:26:44 import N006 radio map: 19602 cells on 1 surfaces, 200 transmitters
+2026-10-19 19:26:44 import import passed (0 errors, 1 warning)
+2026-10-19 19:27:06 validate scene: 1 object, 512 triangles, 1 material
+2026-10-19 19:27:06 validate   medium_dry_ground      ITU          1 object    512 triangles
+2026-10-19 19:27:06 validate radio map surfaces: measure_ground (162 cells)
+2026-10-19 19:27:06 validate devices: 1 tx (tx_0), 5 rx (rx_0, rx_1, rx_2, ... rx_4)
+2026-10-19 19:27:06 validate frequency 3.5 GHz (wavelength 8.6 cm), target spark
+2026-10-19 19:27:06 validate N001 scene size: x 10.00 m, y 10.00 m, z 10.00 m (sionna axes, z up)
+2026-10-19 19:27:06 validate validate passed (0 errors, 0 warnings)
+2026-10-19 19:27:07 export run folder /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172707Z
+2026-10-19 19:27:07 export   meshes/  2 files, 13.5 kB (1 scene object, 1 radio map surface)
+2026-10-19 19:27:07 export   SIONNA_HOUDINI_pipeline_4_log.txt  171 B
+2026-10-19 19:27:07 export   SIONNA_HOUDINI_pipeline_4_materials.json  172 B
+2026-10-19 19:27:07 export   SIONNA_HOUDINI_pipeline_4_measure.json  18 B
+2026-10-19 19:27:07 export   SIONNA_HOUDINI_pipeline_4_meta.json  238 B
+2026-10-19 19:27:07 export   SIONNA_HOUDINI_pipeline_4_scene.xml  488 B
+2026-10-19 19:27:07 export   SIONNA_HOUDINI_pipeline_4_txrx.json  1.5 kB
+2026-10-19 19:27:07 export materials at 3.5 GHz:
+2026-10-19 19:27:07 export   medium_dry_ground      ITU model, evaluated by sionna  thickness 1 m
+2026-10-19 19:27:07 export code version: git 4452b37e, with uncommitted changes
+2026-10-19 19:27:07 export N001 scene size: x 10.00 m, y 10.00 m, z 10.00 m (sionna axes, z up)
+2026-10-19 19:27:07 export N002 exported to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172707Z
+2026-10-19 19:27:07 export export passed (0 errors, 0 warnings)
+2026-10-19 19:27:07 previz target spark: checking
+2026-10-19 19:27:08 previz target spark: gpu NVIDIA GB10, load 0%, other compute processes: none
+2026-10-19 19:27:08 previz send to spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_172707Z
+2026-10-19 19:27:08 previz     SIONNA_HOUDINI_pipeline_4_log.txt  171 B
+2026-10-19 19:27:08 previz     SIONNA_HOUDINI_pipeline_4_materials.json  172 B
+2026-10-19 19:27:08 previz     SIONNA_HOUDINI_pipeline_4_measure.json  18 B
+2026-10-19 19:27:08 previz     SIONNA_HOUDINI_pipeline_4_meta.json  238 B
+2026-10-19 19:27:08 previz     SIONNA_HOUDINI_pipeline_4_scene.xml  488 B
+2026-10-19 19:27:08 previz     SIONNA_HOUDINI_pipeline_4_txrx.json  1.5 kB
+2026-10-19 19:27:08 previz     sionna_run.py  9.0 kB
+2026-10-19 19:27:08 previz     meshes/ground.ply  10.1 kB
+2026-10-19 19:27:08 previz     meshes/measure_ground.ply  3.4 kB
+2026-10-19 19:27:08 previz   9 files, 25.1 kB in 0.3 s
+2026-10-19 19:27:08 previz run dump on spark
+2026-10-19 19:27:09 previz   spark | sionna 2.2.0, cuda_ad_mono_polarized
+2026-10-19 19:27:09 previz   spark | scene: 1 objects, 1 materials, 1 tx, 5 rx (0.1 s)
+2026-10-19 19:27:09 previz   spark | wrote SIONNA_HOUDINI_pipeline_4_dump.json (14.7 kB)
+2026-10-19 19:27:10 previz receive from spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_172707Z
+2026-10-19 19:27:10 previz     SIONNA_HOUDINI_pipeline_4_dump.json  14.7 kB
+2026-10-19 19:27:10 previz   1 files, 14.7 kB in 0.3 s
+2026-10-19 19:27:10 previz dump done after 2.9 s
+2026-10-19 19:27:10 previz loaded by sionna: 1 object, 512 triangles, 1 tx, 5 rx
+2026-10-19 19:27:10 previz N003 sionna dump written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172707Z/SIONNA_HOUDINI_pipeline_4_dump.json
+2026-10-19 19:27:10 previz previz passed (0 errors, 0 warnings)
+2026-10-19 19:27:10 solve run folder /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172707Z
+2026-10-19 19:27:10 solve target spark: checking
+2026-10-19 19:27:10 solve target spark: gpu NVIDIA GB10, load 0%, other compute processes: none
+2026-10-19 19:27:11 solve send to spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_172707Z
+2026-10-19 19:27:11 solve     SIONNA_HOUDINI_pipeline_4_settings.json  305 B
+2026-10-19 19:27:11 solve   1 files, 305 B in 0.3 s
+2026-10-19 19:27:11 solve run solve on spark
+2026-10-19 19:27:12 solve   spark | sionna 2.2.0, cuda_ad_mono_polarized
+2026-10-19 19:27:12 solve   spark | scene: 1 objects, 1 materials, 1 tx, 5 rx (0.1 s)
+2026-10-19 19:27:12 solve   spark | settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+2026-10-19 19:27:12 solve   spark | paths: 1 tx x 5 rx, 1e+06 samples per tx
+2026-10-19 19:27:12 solve   spark | paths: 10 valid paths over 5 links (0.0 s)
+2026-10-19 19:27:12 solve   spark | wrote SIONNA_HOUDINI_pipeline_4_result.json (35.9 kB)
+2026-10-19 19:27:12 solve   spark | radio map 'measure_ground': 162 cells, 1e+07 samples per tx
+2026-10-19 19:27:12 solve   spark | radio map 'measure_ground': 162 of 162 cells reached (0.0 s)
+2026-10-19 19:27:12 solve   spark | wrote SIONNA_HOUDINI_pipeline_4_radiomap.json (10.0 kB)
+2026-10-19 19:27:12 solve receive from spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_172707Z
+2026-10-19 19:27:13 solve     SIONNA_HOUDINI_pipeline_4_radiomap.json  10.0 kB
+2026-10-19 19:27:13 solve     SIONNA_HOUDINI_pipeline_4_result.json  35.9 kB
+2026-10-19 19:27:13 solve   2 files, 45.9 kB in 0.4 s
+2026-10-19 19:27:13 solve solve done after 2.7 s
+2026-10-19 19:27:13 solve N004 10 paths, result written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172707Z/SIONNA_HOUDINI_pipeline_4_result.json
+2026-10-19 19:27:13 solve N006 radio map: 162 cells on 1 surfaces, 1 transmitters
+2026-10-19 19:27:13 solve solve passed (0 errors, 0 warnings)
+2026-10-19 19:27:15 solve run folder /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172707Z
+2026-10-19 19:27:15 solve target spark: checking
+2026-10-19 19:27:16 solve target spark: gpu NVIDIA GB10, load 0%, other compute processes: none
+2026-10-19 19:27:16 solve send to spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_172707Z
+2026-10-19 19:27:16 solve     deleting SIONNA_HOUDINI_pipeline_4_result.json
+2026-10-19 19:27:16 solve     deleting SIONNA_HOUDINI_pipeline_4_radiomap.json
+2026-10-19 19:27:16 solve     SIONNA_HOUDINI_pipeline_4_settings.json  305 B
+2026-10-19 19:27:16 solve   1 files, 305 B in 0.3 s
+2026-10-19 19:27:16 solve run solve on spark
+2026-10-19 19:27:17 solve   spark | sionna 2.2.0, cuda_ad_mono_polarized
+2026-10-19 19:27:18 solve   spark | scene: 1 objects, 1 materials, 1 tx, 5 rx (0.1 s)
+2026-10-19 19:27:18 solve   spark | settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+2026-10-19 19:27:18 solve   spark | paths: 1 tx x 5 rx, 1e+06 samples per tx
+2026-10-19 19:27:18 solve   spark | paths: 10 valid paths over 5 links (0.0 s)
+2026-10-19 19:27:18 solve   spark | wrote SIONNA_HOUDINI_pipeline_4_result.json (35.9 kB)
+2026-10-19 19:27:18 solve   spark | radio map 'measure_ground': 162 cells, 1e+07 samples per tx
+2026-10-19 19:27:18 solve   spark | radio map 'measure_ground': 162 of 162 cells reached (0.0 s)
+2026-10-19 19:27:18 solve   spark | wrote SIONNA_HOUDINI_pipeline_4_radiomap.json (10.0 kB)
+2026-10-19 19:27:18 solve receive from spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_172707Z
+2026-10-19 19:27:18 solve     SIONNA_HOUDINI_pipeline_4_radiomap.json  10.0 kB
+2026-10-19 19:27:18 solve     SIONNA_HOUDINI_pipeline_4_result.json  35.9 kB
+2026-10-19 19:27:18 solve   2 files, 45.9 kB in 0.3 s
+2026-10-19 19:27:18 solve solve done after 2.7 s
+2026-10-19 19:27:18 solve N004 10 paths, result written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172707Z/SIONNA_HOUDINI_pipeline_4_result.json
+2026-10-19 19:27:18 solve N006 radio map: 162 cells on 1 surfaces, 1 transmitters
+2026-10-19 19:27:18 solve solve passed (0 errors, 0 warnings)
+2026-10-19 19:27:21 import paths: gain -71.4 to -61.0 dB, 5 line of sight
+2026-10-19 19:27:21 import results written for sionna_paths, sionna_links
+2026-10-19 19:27:21 import radio map: strongest tx per cell -64.7 to -60.5 dB, 0 cells without signal
+2026-10-19 19:27:21 import results written for sionna_radiomap
+2026-10-19 19:27:21 import N005 imported 10 paths, 5 links
+2026-10-19 19:27:21 import N006 radio map: 162 cells on 1 surfaces, 1 transmitters
+2026-10-19 19:27:21 import import passed (0 errors, 0 warnings)
+2026-10-19 19:27:40 validate scene: 1 object, 32 triangles, 1 material
+2026-10-19 19:27:40 validate   medium_dry_ground      ITU          1 object     32 triangles
+2026-10-19 19:27:40 validate radio map surfaces: measure_ground (162 cells)
+2026-10-19 19:27:40 validate devices: 2 tx (tx_0, tx_1), 5 rx (rx_0, rx_1, rx_2, ... rx_4)
+2026-10-19 19:27:40 validate frequency 3.5 GHz (wavelength 8.6 cm), target spark
+2026-10-19 19:27:40 validate N001 scene size: x 10.00 m, y 10.00 m, z 10.00 m (sionna axes, z up)
+2026-10-19 19:27:40 validate validate passed (0 errors, 0 warnings)
+2026-10-19 19:27:43 export run folder /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172743Z
+2026-10-19 19:27:43 export   meshes/  2 files, 4.3 kB (1 scene object, 1 radio map surface)
+2026-10-19 19:27:43 export   SIONNA_HOUDINI_pipeline_4_log.txt  171 B
+2026-10-19 19:27:43 export   SIONNA_HOUDINI_pipeline_4_materials.json  172 B
+2026-10-19 19:27:43 export   SIONNA_HOUDINI_pipeline_4_measure.json  18 B
+2026-10-19 19:27:43 export   SIONNA_HOUDINI_pipeline_4_meta.json  238 B
+2026-10-19 19:27:43 export   SIONNA_HOUDINI_pipeline_4_scene.xml  488 B
+2026-10-19 19:27:43 export   SIONNA_HOUDINI_pipeline_4_txrx.json  1.8 kB
+2026-10-19 19:27:43 export materials at 3.5 GHz:
+2026-10-19 19:27:43 export   medium_dry_ground      ITU model, evaluated by sionna  thickness 1 m
+2026-10-19 19:27:43 export code version: git 4452b37e, with uncommitted changes
+2026-10-19 19:27:43 export N001 scene size: x 10.00 m, y 10.00 m, z 10.00 m (sionna axes, z up)
+2026-10-19 19:27:43 export N002 exported to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172743Z
+2026-10-19 19:27:43 export export passed (0 errors, 0 warnings)
+2026-10-19 19:27:44 previz target spark: checking
+2026-10-19 19:27:44 previz target spark: gpu NVIDIA GB10, load 0%, other compute processes: none
+2026-10-19 19:27:45 previz send to spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_172743Z
+2026-10-19 19:27:45 previz     SIONNA_HOUDINI_pipeline_4_log.txt  171 B
+2026-10-19 19:27:45 previz     SIONNA_HOUDINI_pipeline_4_materials.json  172 B
+2026-10-19 19:27:45 previz     SIONNA_HOUDINI_pipeline_4_measure.json  18 B
+2026-10-19 19:27:45 previz     SIONNA_HOUDINI_pipeline_4_meta.json  238 B
+2026-10-19 19:27:45 previz     SIONNA_HOUDINI_pipeline_4_scene.xml  488 B
+2026-10-19 19:27:45 previz     SIONNA_HOUDINI_pipeline_4_txrx.json  1.8 kB
+2026-10-19 19:27:45 previz     sionna_run.py  9.0 kB
+2026-10-19 19:27:45 previz     meshes/ground.ply  887 B
+2026-10-19 19:27:45 previz     meshes/measure_ground.ply  3.4 kB
+2026-10-19 19:27:45 previz   9 files, 16.1 kB in 0.3 s
+2026-10-19 19:27:45 previz run dump on spark
+2026-10-19 19:27:46 previz   spark | sionna 2.2.0, cuda_ad_mono_polarized
+2026-10-19 19:27:46 previz   spark | scene: 1 objects, 1 materials, 2 tx, 5 rx (0.1 s)
+2026-10-19 19:27:46 previz   spark | wrote SIONNA_HOUDINI_pipeline_4_dump.json (2.0 kB)
+2026-10-19 19:27:46 previz receive from spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_172743Z
+2026-10-19 19:27:47 previz     SIONNA_HOUDINI_pipeline_4_dump.json  2.0 kB
+2026-10-19 19:27:47 previz   1 files, 2.0 kB in 0.3 s
+2026-10-19 19:27:47 previz dump done after 2.7 s
+2026-10-19 19:27:47 previz loaded by sionna: 1 object, 32 triangles, 2 tx, 5 rx
+2026-10-19 19:27:47 previz N003 sionna dump written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172743Z/SIONNA_HOUDINI_pipeline_4_dump.json
+2026-10-19 19:27:47 previz previz passed (0 errors, 0 warnings)
+2026-10-19 19:27:48 solve run folder /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172743Z
+2026-10-19 19:27:48 solve target spark: checking
+2026-10-19 19:27:48 solve target spark: gpu NVIDIA GB10, load 0%, other compute processes: none
+2026-10-19 19:27:49 solve send to spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_172743Z
+2026-10-19 19:27:49 solve     SIONNA_HOUDINI_pipeline_4_settings.json  305 B
+2026-10-19 19:27:49 solve   1 files, 305 B in 0.3 s
+2026-10-19 19:27:49 solve run solve on spark
+2026-10-19 19:27:50 solve   spark | sionna 2.2.0, cuda_ad_mono_polarized
+2026-10-19 19:27:50 solve   spark | scene: 1 objects, 1 materials, 2 tx, 5 rx (0.1 s)
+2026-10-19 19:27:50 solve   spark | settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+2026-10-19 19:27:50 solve   spark | paths: 2 tx x 5 rx, 1e+06 samples per tx
+2026-10-19 19:27:51 solve   spark | paths: 20 valid paths over 10 links (0.5 s)
+2026-10-19 19:27:51 solve   spark | wrote SIONNA_HOUDINI_pipeline_4_result.json (66.2 kB)
+2026-10-19 19:27:51 solve   spark | radio map 'measure_ground': 162 cells, 1e+07 samples per tx
+2026-10-19 19:27:51 solve   spark | radio map 'measure_ground': 162 of 162 cells reached (0.1 s)
+2026-10-19 19:27:51 solve   spark | wrote SIONNA_HOUDINI_pipeline_4_radiomap.json (14.6 kB)
+2026-10-19 19:27:51 solve receive from spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_172743Z
+2026-10-19 19:27:51 solve     SIONNA_HOUDINI_pipeline_4_radiomap.json  14.6 kB
+2026-10-19 19:27:51 solve     SIONNA_HOUDINI_pipeline_4_result.json  66.2 kB
+2026-10-19 19:27:51 solve   2 files, 80.9 kB in 0.3 s
+2026-10-19 19:27:51 solve solve done after 3.3 s
+2026-10-19 19:27:51 solve N004 20 paths, result written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172743Z/SIONNA_HOUDINI_pipeline_4_result.json
+2026-10-19 19:27:51 solve N006 radio map: 162 cells on 1 surfaces, 2 transmitters
+2026-10-19 19:27:51 solve solve passed (0 errors, 0 warnings)
+2026-10-19 19:27:52 import paths: gain -72.7 to -60.8 dB, 10 line of sight
+2026-10-19 19:27:52 import results written for sionna_paths, sionna_links
+2026-10-19 19:27:52 import radio map: strongest tx per cell -61.6 to -47.8 dB, 0 cells without signal
+2026-10-19 19:27:52 import results written for sionna_radiomap
+2026-10-19 19:27:52 import N005 imported 20 paths, 10 links
+2026-10-19 19:27:52 import N006 radio map: 162 cells on 1 surfaces, 2 transmitters
+2026-10-19 19:27:52 import import passed (0 errors, 0 warnings)
+2026-10-19 19:28:06 validate scene: 1 object, 512 triangles, 1 material
+2026-10-19 19:28:06 validate   medium_dry_ground      ITU          1 object    512 triangles
+2026-10-19 19:28:06 validate radio map surfaces: measure_ground (162 cells)
+2026-10-19 19:28:06 validate devices: 1 tx (tx_0), 5 rx (rx_0, rx_1, rx_2, ... rx_4)
+2026-10-19 19:28:06 validate frequency 3.5 GHz (wavelength 8.6 cm), target spark
+2026-10-19 19:28:06 validate N001 scene size: x 10.00 m, y 10.00 m, z 10.00 m (sionna axes, z up)
+2026-10-19 19:28:06 validate validate passed (0 errors, 0 warnings)
+2026-10-19 19:28:08 export run folder /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172808Z
+2026-10-19 19:28:08 export   meshes/  2 files, 13.5 kB (1 scene object, 1 radio map surface)
+2026-10-19 19:28:08 export   SIONNA_HOUDINI_pipeline_4_log.txt  171 B
+2026-10-19 19:28:08 export   SIONNA_HOUDINI_pipeline_4_materials.json  172 B
+2026-10-19 19:28:08 export   SIONNA_HOUDINI_pipeline_4_measure.json  18 B
+2026-10-19 19:28:08 export   SIONNA_HOUDINI_pipeline_4_meta.json  238 B
+2026-10-19 19:28:08 export   SIONNA_HOUDINI_pipeline_4_scene.xml  488 B
+2026-10-19 19:28:08 export   SIONNA_HOUDINI_pipeline_4_txrx.json  1.5 kB
+2026-10-19 19:28:08 export materials at 3.5 GHz:
+2026-10-19 19:28:08 export   medium_dry_ground      ITU model, evaluated by sionna  thickness 1 m
+2026-10-19 19:28:08 export code version: git 4452b37e, with uncommitted changes
+2026-10-19 19:28:08 export N001 scene size: x 10.00 m, y 10.00 m, z 10.00 m (sionna axes, z up)
+2026-10-19 19:28:08 export N002 exported to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172808Z
+2026-10-19 19:28:08 export export passed (0 errors, 0 warnings)
+2026-10-19 19:28:11 solve run folder /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172808Z
+2026-10-19 19:28:11 solve target spark: checking
+2026-10-19 19:28:11 solve target spark: gpu NVIDIA GB10, load 0%, other compute processes: none
+2026-10-19 19:28:12 solve send to spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_172808Z
+2026-10-19 19:28:12 solve     SIONNA_HOUDINI_pipeline_4_log.txt  171 B
+2026-10-19 19:28:12 solve     SIONNA_HOUDINI_pipeline_4_materials.json  172 B
+2026-10-19 19:28:12 solve     SIONNA_HOUDINI_pipeline_4_measure.json  18 B
+2026-10-19 19:28:12 solve     SIONNA_HOUDINI_pipeline_4_meta.json  238 B
+2026-10-19 19:28:12 solve     SIONNA_HOUDINI_pipeline_4_scene.xml  488 B
+2026-10-19 19:28:12 solve     SIONNA_HOUDINI_pipeline_4_settings.json  305 B
+2026-10-19 19:28:12 solve     SIONNA_HOUDINI_pipeline_4_txrx.json  1.5 kB
+2026-10-19 19:28:12 solve     sionna_run.py  9.0 kB
+2026-10-19 19:28:12 solve     meshes/ground.ply  10.1 kB
+2026-10-19 19:28:12 solve     meshes/measure_ground.ply  3.4 kB
+2026-10-19 19:28:12 solve   10 files, 25.4 kB in 0.3 s
+2026-10-19 19:28:12 solve run solve on spark
+2026-10-19 19:28:13 solve   spark | sionna 2.2.0, cuda_ad_mono_polarized
+2026-10-19 19:28:13 solve   spark | scene: 1 objects, 1 materials, 1 tx, 5 rx (0.1 s)
+2026-10-19 19:28:13 solve   spark | settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+2026-10-19 19:28:13 solve   spark | paths: 1 tx x 5 rx, 1e+06 samples per tx
+2026-10-19 19:28:13 solve   spark | paths: 10 valid paths over 5 links (0.0 s)
+2026-10-19 19:28:13 solve   spark | wrote SIONNA_HOUDINI_pipeline_4_result.json (35.9 kB)
+2026-10-19 19:28:13 solve   spark | radio map 'measure_ground': 162 cells, 1e+07 samples per tx
+2026-10-19 19:28:13 solve   spark | radio map 'measure_ground': 162 of 162 cells reached (0.0 s)
+2026-10-19 19:28:13 solve   spark | wrote SIONNA_HOUDINI_pipeline_4_radiomap.json (11.5 kB)
+2026-10-19 19:28:13 solve receive from spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_172808Z
+2026-10-19 19:28:14 solve     SIONNA_HOUDINI_pipeline_4_radiomap.json  11.5 kB
+2026-10-19 19:28:14 solve     SIONNA_HOUDINI_pipeline_4_result.json  35.9 kB
+2026-10-19 19:28:14 solve   2 files, 47.4 kB in 0.3 s
+2026-10-19 19:28:14 solve solve done after 2.8 s
+2026-10-19 19:28:14 solve N004 10 paths, result written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172808Z/SIONNA_HOUDINI_pipeline_4_result.json
+2026-10-19 19:28:14 solve N006 radio map: 162 cells on 1 surfaces, 1 transmitters
+2026-10-19 19:28:14 solve solve passed (0 errors, 0 warnings)
+2026-10-19 19:28:16 import paths: gain -71.4 to -61.0 dB, 5 line of sight
+2026-10-19 19:28:16 import results written for sionna_paths, sionna_links
+2026-10-19 19:28:16 import radio map: strongest tx per cell -63.4 to -55.5 dB, 0 cells without signal
+2026-10-19 19:28:16 import results written for sionna_radiomap
+2026-10-19 19:28:16 import N005 imported 10 paths, 5 links
+2026-10-19 19:28:16 import N006 radio map: 162 cells on 1 surfaces, 1 transmitters
+2026-10-19 19:28:16 import import passed (0 errors, 0 warnings)
+2026-10-19 19:28:39 validate scene: 1 object, 8192 triangles, 1 material
+2026-10-19 19:28:39 validate   medium_dry_ground      ITU          1 object   8192 triangles
+2026-10-19 19:28:39 validate radio map surfaces: measure_ground (162 cells)
+2026-10-19 19:28:39 validate devices: 2 tx (tx_0, tx_1), 20 rx (rx_0, rx_1, rx_2, ... rx_19)
+2026-10-19 19:28:39 validate frequency 3.5 GHz (wavelength 8.6 cm), target spark
+2026-10-19 19:28:39 validate N001 scene size: x 10.00 m, y 10.00 m, z 10.00 m (sionna axes, z up)
+2026-10-19 19:28:39 validate validate passed (0 errors, 0 warnings)
+2026-10-19 19:28:40 export run folder /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172840Z
+2026-10-19 19:28:40 export   meshes/  2 files, 157.1 kB (1 scene object, 1 radio map surface)
+2026-10-19 19:28:40 export   SIONNA_HOUDINI_pipeline_4_log.txt  171 B
+2026-10-19 19:28:40 export   SIONNA_HOUDINI_pipeline_4_materials.json  172 B
+2026-10-19 19:28:40 export   SIONNA_HOUDINI_pipeline_4_measure.json  18 B
+2026-10-19 19:28:40 export   SIONNA_HOUDINI_pipeline_4_meta.json  238 B
+2026-10-19 19:28:40 export   SIONNA_HOUDINI_pipeline_4_scene.xml  488 B
+2026-10-19 19:28:40 export   SIONNA_HOUDINI_pipeline_4_txrx.json  5.5 kB
+2026-10-19 19:28:40 export materials at 3.5 GHz:
+2026-10-19 19:28:40 export   medium_dry_ground      ITU model, evaluated by sionna  thickness 1 m
+2026-10-19 19:28:40 export code version: git 4452b37e, with uncommitted changes
+2026-10-19 19:28:40 export N001 scene size: x 10.00 m, y 10.00 m, z 10.00 m (sionna axes, z up)
+2026-10-19 19:28:40 export N002 exported to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172840Z
+2026-10-19 19:28:40 export export passed (0 errors, 0 warnings)
+2026-10-19 19:28:40 solve run folder /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172840Z
+2026-10-19 19:28:40 solve target spark: checking
+2026-10-19 19:28:41 solve target spark: gpu NVIDIA GB10, load 0%, other compute processes: none
+2026-10-19 19:28:41 solve send to spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_172840Z
+2026-10-19 19:28:41 solve     SIONNA_HOUDINI_pipeline_4_log.txt  171 B
+2026-10-19 19:28:41 solve     SIONNA_HOUDINI_pipeline_4_materials.json  172 B
+2026-10-19 19:28:41 solve     SIONNA_HOUDINI_pipeline_4_measure.json  18 B
+2026-10-19 19:28:41 solve     SIONNA_HOUDINI_pipeline_4_meta.json  238 B
+2026-10-19 19:28:41 solve     SIONNA_HOUDINI_pipeline_4_scene.xml  488 B
+2026-10-19 19:28:41 solve     SIONNA_HOUDINI_pipeline_4_settings.json  305 B
+2026-10-19 19:28:41 solve     SIONNA_HOUDINI_pipeline_4_txrx.json  5.5 kB
+2026-10-19 19:28:41 solve     sionna_run.py  9.0 kB
+2026-10-19 19:28:41 solve     meshes/ground.ply  153.7 kB
+2026-10-19 19:28:41 solve     meshes/measure_ground.ply  3.4 kB
+2026-10-19 19:28:41 solve   10 files, 173.0 kB in 0.4 s
+2026-10-19 19:28:41 solve run solve on spark
+2026-10-19 19:28:43 solve   spark | sionna 2.2.0, cuda_ad_mono_polarized
+2026-10-19 19:28:43 solve   spark | scene: 1 objects, 1 materials, 2 tx, 20 rx (0.1 s)
+2026-10-19 19:28:43 solve   spark | settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+2026-10-19 19:28:43 solve   spark | paths: 2 tx x 20 rx, 1e+06 samples per tx
+2026-10-19 19:28:43 solve   spark | paths: 80 valid paths over 40 links (0.3 s)
+2026-10-19 19:28:43 solve   spark | wrote SIONNA_HOUDINI_pipeline_4_result.json (250.4 kB)
+2026-10-19 19:28:43 solve   spark | radio map 'measure_ground': 162 cells, 1e+07 samples per tx
+2026-10-19 19:28:43 solve   spark | radio map 'measure_ground': 162 of 162 cells reached (0.0 s)
+2026-10-19 19:28:43 solve   spark | wrote SIONNA_HOUDINI_pipeline_4_radiomap.json (13.1 kB)
+2026-10-19 19:28:43 solve receive from spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_172840Z
+2026-10-19 19:28:44 solve     SIONNA_HOUDINI_pipeline_4_radiomap.json  13.1 kB
+2026-10-19 19:28:44 solve     SIONNA_HOUDINI_pipeline_4_result.json  250.4 kB
+2026-10-19 19:28:44 solve   2 files, 263.6 kB in 0.3 s
+2026-10-19 19:28:44 solve solve done after 3.1 s
+2026-10-19 19:28:44 solve N004 80 paths, result written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_172840Z/SIONNA_HOUDINI_pipeline_4_result.json
+2026-10-19 19:28:44 solve N006 radio map: 162 cells on 1 surfaces, 2 transmitters
+2026-10-19 19:28:44 solve solve passed (0 errors, 0 warnings)
+2026-10-19 19:28:45 import paths: gain -74.7 to -60.3 dB, 40 line of sight
+2026-10-19 19:28:45 import results written for sionna_paths, sionna_links
+2026-10-19 19:28:45 import radio map: strongest tx per cell -62.7 to -57.1 dB, 0 cells without signal
+2026-10-19 19:28:45 import results written for sionna_radiomap
+2026-10-19 19:28:45 import N005 imported 80 paths, 40 links
+2026-10-19 19:28:45 import N006 radio map: 162 cells on 1 surfaces, 2 transmitters
+2026-10-19 19:28:45 import import passed (0 errors, 0 warnings)
+2026-10-19 20:27:22 validate scene: 1 object, 512 triangles, 1 material
+2026-10-19 20:27:22 validate   medium_dry_ground      ITU          1 object    512 triangles
+2026-10-19 20:27:22 validate radio map surfaces: measure_ground (162 cells)
+2026-10-19 20:27:22 validate devices: 1 tx (tx_0), 5 rx (rx_0, rx_1, rx_2, ... rx_4)
+2026-10-19 20:27:22 validate frequency 3.5 GHz (wavelength 8.6 cm), target spark
+2026-10-19 20:27:22 validate N001 scene size: x 10.00 m, y 10.00 m, z 10.00 m (sionna axes, z up)
+2026-10-19 20:27:22 validate validate passed (0 errors, 0 warnings)
+2026-10-19 20:27:27 export run folder /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_182727Z
+2026-10-19 20:27:27 export   meshes/  2 files, 13.5 kB (1 scene object, 1 radio map surface)
+2026-10-19 20:27:27 export   SIONNA_HOUDINI_pipeline_4_log.txt  171 B
+2026-10-19 20:27:27 export   SIONNA_HOUDINI_pipeline_4_materials.json  172 B
+2026-10-19 20:27:27 export   SIONNA_HOUDINI_pipeline_4_measure.json  18 B
+2026-10-19 20:27:27 export   SIONNA_HOUDINI_pipeline_4_meta.json  238 B
+2026-10-19 20:27:27 export   SIONNA_HOUDINI_pipeline_4_scene.xml  488 B
+2026-10-19 20:27:27 export   SIONNA_HOUDINI_pipeline_4_txrx.json  1.5 kB
+2026-10-19 20:27:27 export materials at 3.5 GHz:
+2026-10-19 20:27:27 export   medium_dry_ground      ITU model, evaluated by sionna  thickness 1 m
+2026-10-19 20:27:27 export code version: git 4452b37e, with uncommitted changes
+2026-10-19 20:27:27 export N001 scene size: x 10.00 m, y 10.00 m, z 10.00 m (sionna axes, z up)
+2026-10-19 20:27:27 export N002 exported to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_182727Z
+2026-10-19 20:27:27 export export passed (0 errors, 0 warnings)
+2026-10-19 20:27:28 previz target spark: checking
+2026-10-19 20:27:28 previz target spark: gpu NVIDIA GB10, load 0%, other compute processes: none
+2026-10-19 20:27:28 previz send to spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_182727Z
+2026-10-19 20:27:29 previz     SIONNA_HOUDINI_pipeline_4_log.txt  171 B
+2026-10-19 20:27:29 previz     SIONNA_HOUDINI_pipeline_4_materials.json  172 B
+2026-10-19 20:27:29 previz     SIONNA_HOUDINI_pipeline_4_measure.json  18 B
+2026-10-19 20:27:29 previz     SIONNA_HOUDINI_pipeline_4_meta.json  238 B
+2026-10-19 20:27:29 previz     SIONNA_HOUDINI_pipeline_4_scene.xml  488 B
+2026-10-19 20:27:29 previz     SIONNA_HOUDINI_pipeline_4_txrx.json  1.5 kB
+2026-10-19 20:27:29 previz     sionna_run.py  9.0 kB
+2026-10-19 20:27:29 previz     meshes/ground.ply  10.1 kB
+2026-10-19 20:27:29 previz     meshes/measure_ground.ply  3.4 kB
+2026-10-19 20:27:29 previz   9 files, 25.1 kB in 0.4 s
+2026-10-19 20:27:29 previz run dump on spark
+2026-10-19 20:27:30 previz   spark | sionna 2.2.0, cuda_ad_mono_polarized
+2026-10-19 20:27:30 previz   spark | scene: 1 objects, 1 materials, 1 tx, 5 rx (0.1 s)
+2026-10-19 20:27:30 previz   spark | wrote SIONNA_HOUDINI_pipeline_4_dump.json (14.7 kB)
+2026-10-19 20:27:30 previz receive from spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_182727Z
+2026-10-19 20:27:31 previz     SIONNA_HOUDINI_pipeline_4_dump.json  14.7 kB
+2026-10-19 20:27:31 previz   1 files, 14.7 kB in 0.3 s
+2026-10-19 20:27:31 previz dump done after 3.0 s
+2026-10-19 20:27:31 previz loaded by sionna: 1 object, 512 triangles, 1 tx, 5 rx
+2026-10-19 20:27:31 previz N003 sionna dump written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_182727Z/SIONNA_HOUDINI_pipeline_4_dump.json
+2026-10-19 20:27:31 previz previz passed (0 errors, 0 warnings)
+2026-10-19 20:27:32 solve run folder /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_182727Z
+2026-10-19 20:27:32 solve target spark: checking
+2026-10-19 20:27:32 solve target spark: gpu NVIDIA GB10, load 0%, other compute processes: none
+2026-10-19 20:27:32 solve send to spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_182727Z
+2026-10-19 20:27:32 solve     SIONNA_HOUDINI_pipeline_4_settings.json  305 B
+2026-10-19 20:27:33 solve   1 files, 305 B in 0.3 s
+2026-10-19 20:27:33 solve run solve on spark
+2026-10-19 20:27:34 solve   spark | sionna 2.2.0, cuda_ad_mono_polarized
+2026-10-19 20:27:34 solve   spark | scene: 1 objects, 1 materials, 1 tx, 5 rx (0.1 s)
+2026-10-19 20:27:34 solve   spark | settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+2026-10-19 20:27:34 solve   spark | paths: 1 tx x 5 rx, 1e+06 samples per tx
+2026-10-19 20:27:34 solve   spark | paths: 10 valid paths over 5 links (0.0 s)
+2026-10-19 20:27:34 solve   spark | wrote SIONNA_HOUDINI_pipeline_4_result.json (35.9 kB)
+2026-10-19 20:27:34 solve   spark | radio map 'measure_ground': 162 cells, 1e+07 samples per tx
+2026-10-19 20:27:34 solve   spark | radio map 'measure_ground': 162 of 162 cells reached (0.0 s)
+2026-10-19 20:27:34 solve   spark | wrote SIONNA_HOUDINI_pipeline_4_radiomap.json (11.6 kB)
+2026-10-19 20:27:34 solve receive from spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_182727Z
+2026-10-19 20:27:34 solve     SIONNA_HOUDINI_pipeline_4_radiomap.json  11.6 kB
+2026-10-19 20:27:34 solve     SIONNA_HOUDINI_pipeline_4_result.json  35.9 kB
+2026-10-19 20:27:34 solve   2 files, 47.4 kB in 0.4 s
+2026-10-19 20:27:34 solve solve done after 2.7 s
+2026-10-19 20:27:34 solve N004 10 paths, result written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_182727Z/SIONNA_HOUDINI_pipeline_4_result.json
+2026-10-19 20:27:34 solve N006 radio map: 162 cells on 1 surfaces, 1 transmitters
+2026-10-19 20:27:34 solve solve passed (0 errors, 0 warnings)
+2026-10-19 20:27:40 import paths: gain -71.4 to -61.0 dB, 5 line of sight
+2026-10-19 20:27:40 import results written for sionna_paths, sionna_links
+2026-10-19 20:27:40 import radio map: strongest tx per cell -62.7 to -41.8 dB, 0 cells without signal
+2026-10-19 20:27:40 import results written for sionna_radiomap
+2026-10-19 20:27:40 import N005 imported 10 paths, 5 links
+2026-10-19 20:27:40 import N006 radio map: 162 cells on 1 surfaces, 1 transmitters
+2026-10-19 20:27:40 import import passed (0 errors, 0 warnings)
+2026-10-19 20:28:37 validate scene: 1 object, 512 triangles, 1 material
+2026-10-19 20:28:37 validate   medium_dry_ground      ITU          1 object    512 triangles
+2026-10-19 20:28:37 validate radio map surfaces: measure_ground (1620 cells)
+2026-10-19 20:28:37 validate devices: 1 tx (tx_0), 5 rx (rx_0, rx_1, rx_2, ... rx_4)
+2026-10-19 20:28:37 validate frequency 3.5 GHz (wavelength 8.6 cm), target spark
+2026-10-19 20:28:37 validate N001 scene size: x 10.53 m, y 10.00 m, z 10.00 m (sionna axes, z up)
+2026-10-19 20:28:37 validate validate passed (0 errors, 0 warnings)
+2026-10-19 20:28:38 export run folder /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_182838Z
+2026-10-19 20:28:38 export   meshes/  2 files, 42.5 kB (1 scene object, 1 radio map surface)
+2026-10-19 20:28:38 export   SIONNA_HOUDINI_pipeline_4_log.txt  171 B
+2026-10-19 20:28:38 export   SIONNA_HOUDINI_pipeline_4_materials.json  172 B
+2026-10-19 20:28:38 export   SIONNA_HOUDINI_pipeline_4_measure.json  18 B
+2026-10-19 20:28:38 export   SIONNA_HOUDINI_pipeline_4_meta.json  238 B
+2026-10-19 20:28:38 export   SIONNA_HOUDINI_pipeline_4_scene.xml  488 B
+2026-10-19 20:28:38 export   SIONNA_HOUDINI_pipeline_4_txrx.json  1.5 kB
+2026-10-19 20:28:38 export materials at 3.5 GHz:
+2026-10-19 20:28:38 export   medium_dry_ground      ITU model, evaluated by sionna  thickness 1 m
+2026-10-19 20:28:38 export code version: git 4452b37e, with uncommitted changes
+2026-10-19 20:28:38 export N001 scene size: x 10.53 m, y 10.00 m, z 10.00 m (sionna axes, z up)
+2026-10-19 20:28:38 export N002 exported to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_182838Z
+2026-10-19 20:28:38 export export passed (0 errors, 0 warnings)
+2026-10-19 20:28:39 previz target spark: checking
+2026-10-19 20:28:40 previz target spark: gpu NVIDIA GB10, load 0%, other compute processes: none
+2026-10-19 20:28:40 previz send to spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_182838Z
+2026-10-19 20:28:40 previz     SIONNA_HOUDINI_pipeline_4_log.txt  171 B
+2026-10-19 20:28:40 previz     SIONNA_HOUDINI_pipeline_4_materials.json  172 B
+2026-10-19 20:28:40 previz     SIONNA_HOUDINI_pipeline_4_measure.json  18 B
+2026-10-19 20:28:40 previz     SIONNA_HOUDINI_pipeline_4_meta.json  238 B
+2026-10-19 20:28:40 previz     SIONNA_HOUDINI_pipeline_4_scene.xml  488 B
+2026-10-19 20:28:40 previz     SIONNA_HOUDINI_pipeline_4_txrx.json  1.5 kB
+2026-10-19 20:28:40 previz     sionna_run.py  9.0 kB
+2026-10-19 20:28:40 previz     meshes/ground.ply  10.1 kB
+2026-10-19 20:28:40 previz     meshes/measure_ground.ply  32.5 kB
+2026-10-19 20:28:40 previz   9 files, 54.1 kB in 0.3 s
+2026-10-19 20:28:40 previz run dump on spark
+2026-10-19 20:28:42 previz   spark | sionna 2.2.0, cuda_ad_mono_polarized
+2026-10-19 20:28:42 previz   spark | scene: 1 objects, 1 materials, 1 tx, 5 rx (0.1 s)
+2026-10-19 20:28:42 previz   spark | wrote SIONNA_HOUDINI_pipeline_4_dump.json (14.7 kB)
+2026-10-19 20:28:42 previz receive from spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_182838Z
+2026-10-19 20:28:42 previz     SIONNA_HOUDINI_pipeline_4_dump.json  14.7 kB
+2026-10-19 20:28:42 previz   1 files, 14.7 kB in 0.3 s
+2026-10-19 20:28:42 previz dump done after 2.9 s
+2026-10-19 20:28:42 previz loaded by sionna: 1 object, 512 triangles, 1 tx, 5 rx
+2026-10-19 20:28:42 previz N003 sionna dump written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_182838Z/SIONNA_HOUDINI_pipeline_4_dump.json
+2026-10-19 20:28:42 previz previz passed (0 errors, 0 warnings)
+2026-10-19 20:28:43 solve run folder /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_182838Z
+2026-10-19 20:28:43 solve target spark: checking
+2026-10-19 20:28:44 solve target spark: gpu NVIDIA GB10, load 0%, other compute processes: none
+2026-10-19 20:28:44 solve send to spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_182838Z
+2026-10-19 20:28:44 solve     SIONNA_HOUDINI_pipeline_4_settings.json  305 B
+2026-10-19 20:28:44 solve   1 files, 305 B in 0.3 s
+2026-10-19 20:28:44 solve run solve on spark
+2026-10-19 20:28:45 solve   spark | sionna 2.2.0, cuda_ad_mono_polarized
+2026-10-19 20:28:45 solve   spark | scene: 1 objects, 1 materials, 1 tx, 5 rx (0.1 s)
+2026-10-19 20:28:45 solve   spark | settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+2026-10-19 20:28:45 solve   spark | paths: 1 tx x 5 rx, 1e+06 samples per tx
+2026-10-19 20:28:45 solve   spark | paths: 10 valid paths over 5 links (0.0 s)
+2026-10-19 20:28:45 solve   spark | wrote SIONNA_HOUDINI_pipeline_4_result.json (35.9 kB)
+2026-10-19 20:28:45 solve   spark | radio map 'measure_ground': 1620 cells, 1e+07 samples per tx
+2026-10-19 20:28:45 solve   spark | radio map 'measure_ground': 1620 of 1620 cells reached (0.0 s)
+2026-10-19 20:28:45 solve   spark | wrote SIONNA_HOUDINI_pipeline_4_radiomap.json (115.5 kB)
+2026-10-19 20:28:46 solve receive from spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_182838Z
+2026-10-19 20:28:46 solve     SIONNA_HOUDINI_pipeline_4_radiomap.json  115.5 kB
+2026-10-19 20:28:46 solve     SIONNA_HOUDINI_pipeline_4_result.json  35.9 kB
+2026-10-19 20:28:46 solve   2 files, 151.4 kB in 0.4 s
+2026-10-19 20:28:46 solve solve done after 2.7 s
+2026-10-19 20:28:46 solve N004 10 paths, result written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_182838Z/SIONNA_HOUDINI_pipeline_4_result.json
+2026-10-19 20:28:46 solve N006 radio map: 1620 cells on 1 surfaces, 1 transmitters
+2026-10-19 20:28:46 solve solve passed (0 errors, 0 warnings)
+2026-10-19 20:28:47 import paths: gain -71.4 to -61.0 dB, 5 line of sight
+2026-10-19 20:28:47 import results written for sionna_paths, sionna_links
+2026-10-19 20:28:47 import radio map: strongest tx per cell -65.4 to -41.8 dB, 0 cells without signal
+2026-10-19 20:28:47 import results written for sionna_radiomap
+2026-10-19 20:28:47 import N005 imported 10 paths, 5 links
+2026-10-19 20:28:47 import N006 radio map: 1620 cells on 1 surfaces, 1 transmitters
+2026-10-19 20:28:47 import import passed (0 errors, 0 warnings)
+2026-10-19 20:29:25 validate scene: 1 object, 512 triangles, 1 material
+2026-10-19 20:29:25 validate   medium_dry_ground      ITU          1 object    512 triangles
+2026-10-19 20:29:25 validate radio map surfaces: measure_ground (48020 cells)
+2026-10-19 20:29:25 validate devices: 1 tx (tx_0), 5 rx (rx_0, rx_1, rx_2, ... rx_4)
+2026-10-19 20:29:25 validate frequency 3.5 GHz (wavelength 8.6 cm), target spark
+2026-10-19 20:29:25 validate N001 scene size: x 10.53 m, y 10.00 m, z 10.00 m (sionna axes, z up)
+2026-10-19 20:29:25 validate validate passed (0 errors, 0 warnings)
+2026-10-19 20:29:35 export run folder /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_182931Z
+2026-10-19 20:29:35 export   meshes/  2 files, 912.8 kB (1 scene object, 1 radio map surface)
+2026-10-19 20:29:35 export   SIONNA_HOUDINI_pipeline_4_log.txt  171 B
+2026-10-19 20:29:35 export   SIONNA_HOUDINI_pipeline_4_materials.json  172 B
+2026-10-19 20:29:35 export   SIONNA_HOUDINI_pipeline_4_measure.json  18 B
+2026-10-19 20:29:35 export   SIONNA_HOUDINI_pipeline_4_meta.json  238 B
+2026-10-19 20:29:35 export   SIONNA_HOUDINI_pipeline_4_scene.xml  488 B
+2026-10-19 20:29:35 export   SIONNA_HOUDINI_pipeline_4_txrx.json  1.5 kB
+2026-10-19 20:29:35 export materials at 3.5 GHz:
+2026-10-19 20:29:35 export   medium_dry_ground      ITU model, evaluated by sionna  thickness 1 m
+2026-10-19 20:29:35 export code version: git 4452b37e, with uncommitted changes
+2026-10-19 20:29:35 export N001 scene size: x 10.53 m, y 10.00 m, z 10.00 m (sionna axes, z up)
+2026-10-19 20:29:35 export N002 exported to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_182931Z
+2026-10-19 20:29:35 export export passed (0 errors, 0 warnings)
+2026-10-19 20:29:36 solve run folder /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_182931Z
+2026-10-19 20:29:36 solve target spark: checking
+2026-10-19 20:29:36 solve target spark: gpu NVIDIA GB10, load 0%, other compute processes: none
+2026-10-19 20:29:37 solve send to spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_182931Z
+2026-10-19 20:29:37 solve     SIONNA_HOUDINI_pipeline_4_log.txt  171 B
+2026-10-19 20:29:37 solve     SIONNA_HOUDINI_pipeline_4_materials.json  172 B
+2026-10-19 20:29:37 solve     SIONNA_HOUDINI_pipeline_4_measure.json  18 B
+2026-10-19 20:29:37 solve     SIONNA_HOUDINI_pipeline_4_meta.json  238 B
+2026-10-19 20:29:37 solve     SIONNA_HOUDINI_pipeline_4_scene.xml  488 B
+2026-10-19 20:29:37 solve     SIONNA_HOUDINI_pipeline_4_settings.json  305 B
+2026-10-19 20:29:37 solve     SIONNA_HOUDINI_pipeline_4_txrx.json  1.5 kB
+2026-10-19 20:29:37 solve     sionna_run.py  9.0 kB
+2026-10-19 20:29:37 solve     meshes/ground.ply  10.1 kB
+2026-10-19 20:29:37 solve     meshes/measure_ground.ply  902.8 kB
+2026-10-19 20:29:37 solve   10 files, 924.7 kB in 0.4 s
+2026-10-19 20:29:37 solve run solve on spark
+2026-10-19 20:29:38 solve   spark | sionna 2.2.0, cuda_ad_mono_polarized
+2026-10-19 20:29:38 solve   spark | scene: 1 objects, 1 materials, 1 tx, 5 rx (0.1 s)
+2026-10-19 20:29:38 solve   spark | settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+2026-10-19 20:29:38 solve   spark | paths: 1 tx x 5 rx, 1e+06 samples per tx
+2026-10-19 20:29:38 solve   spark | paths: 10 valid paths over 5 links (0.0 s)
+2026-10-19 20:29:38 solve   spark | wrote SIONNA_HOUDINI_pipeline_4_result.json (35.9 kB)
+2026-10-19 20:29:38 solve   spark | radio map 'measure_ground': 48020 cells, 1e+07 samples per tx
+2026-10-19 20:29:38 solve   spark | radio map 'measure_ground': 48020 of 48020 cells reached (0.0 s)
+2026-10-19 20:29:38 solve   spark | wrote SIONNA_HOUDINI_pipeline_4_radiomap.json (3510.6 kB)
+2026-10-19 20:29:39 solve receive from spark:Documents/HyROPA/runs/SIONNA_HOUDINI_pipeline_4/20261019_182931Z
+2026-10-19 20:29:39 solve     SIONNA_HOUDINI_pipeline_4_radiomap.json  3.4 MB
+2026-10-19 20:29:39 solve     SIONNA_HOUDINI_pipeline_4_result.json  35.9 kB
+2026-10-19 20:29:39 solve   2 files, 3.5 MB in 0.5 s
+2026-10-19 20:29:39 solve solve done after 3.1 s
+2026-10-19 20:29:39 solve N004 10 paths, result written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_182931Z/SIONNA_HOUDINI_pipeline_4_result.json
+2026-10-19 20:29:39 solve N006 radio map: 48020 cells on 1 surfaces, 1 transmitters
+2026-10-19 20:29:39 solve solve passed (0 errors, 0 warnings)
+2026-10-19 20:29:48 import paths: gain -71.4 to -61.0 dB, 5 line of sight
+2026-10-19 20:29:48 import results written for sionna_paths, sionna_links
+2026-10-19 20:29:49 import radio map: strongest tx per cell -66.0 to -40.8 dB, 0 cells without signal
+2026-10-19 20:29:49 import results written for sionna_radiomap
+2026-10-19 20:29:49 import N005 imported 10 paths, 5 links
+2026-10-19 20:29:49 import N006 radio map: 48020 cells on 1 surfaces, 1 transmitters
+2026-10-19 20:29:49 import import passed (0 errors, 0 warnings)
