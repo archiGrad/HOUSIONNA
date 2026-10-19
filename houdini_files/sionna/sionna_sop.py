@@ -24,6 +24,7 @@ FREQUENCY = 3.5e9
 PYTHON_EXE = "$HIP/../.venv/Scripts/python.exe" if os.name == "nt" else "$HIP/../.venv/bin/python3"
 REMOTE_ROOT = "~/Documents/HyROPA"
 TIMEOUT = 1800
+MAX_RAYS = 4294967295
 SSH_OPTS = ["-o", "BatchMode=yes", "-o", "ConnectTimeout=10"]
 SETTINGS = {
     "frequency": FREQUENCY,
@@ -37,11 +38,11 @@ SETTINGS = {
     "diffraction": False,
     "bandwidth": 100e6,
     "cfr_points": 256,
-    "radiomap_samples": 10000000,
+    "radiomap_samples": 1000000,
 }
 
 CODES = {
-    "N001": "geometry is {x:.2f} x {y:.2f} x {z:.2f} m (x, y, z; z is up in sionna). is this correct?",
+    "N001": "scene size: x {x:.2f} m, y {y:.2f} m, z {z:.2f} m (sionna axes, z up)",
     "N002": "exported to {path}",
     "N003": "sionna dump written to {path}",
     "N004": "{count} paths, result written to {path}",
@@ -84,6 +85,8 @@ CODES = {
     "S006": "no exported run found, export first",
     "S008": "frequency changed since export ({exported:g} Hz exported, {current:g} Hz now): export again",
     "S009": "program not found: '{path}'",
+    "S010": "radio map needs {rays:.3g} rays ({samples:.3g} samples x {tx} tx), more than sionna's limit of "
+            "4.29e9 per radio map: set radiomap_samples to {max} or lower",
     "T001": "target '{target}' unreachable (vpn, ssh alias or key): {err}",
     "T002": "no python at '{path}' on target '{target}'",
     "T003": "no gpu on target '{target}': {err}",
@@ -115,10 +118,22 @@ def say(phase, text):
         fh.write(f"{stamp} {phase} {text}\n")
 
 
+def plural(n, word):
+    return f"{n} {word}{'' if n == 1 else 's'}"
+
+
 def report(phase, recs):
     for r in recs:
         say(phase, fmt(r))
-    say(phase, "FAILED" if has_errors(recs) else "ok")
+    errors = sum(1 for r in recs if r[0][0] not in "WN")
+    warnings = sum(1 for r in recs if r[0][0] == "W")
+    status = "FAILED" if errors else "passed"
+    say(phase, f"{phase} {status} ({plural(errors, 'error')}, {plural(warnings, 'warning')})")
+
+
+def short(names, n=3):
+    names = list(names)
+    return ", ".join(names[:n]) + (f", ... {names[-1]}" if len(names) > n else "")
 
 
 def size(n):
@@ -171,6 +186,21 @@ def resolve(entry, f):
     if "loss_factor" in entry:
         return er, entry["loss_factor"] * w
     return er, er * entry.get("loss_tangent", 0.0) * w
+
+
+def ray_limit(scene, s):
+    measure = scene.replace("_scene.xml", "_measure.json")
+    txrx = scene.replace("_scene.xml", "_txrx.json")
+    if not (os.path.isfile(measure) and os.path.isfile(txrx)):
+        return []
+    with open(measure) as fh:
+        names = json.load(fh)
+    with open(txrx) as fh:
+        ntx = len(json.load(fh)["tx"])
+    rays = s["radiomap_samples"] * ntx
+    if names and rays > MAX_RAYS:
+        return [("S010", {"rays": rays, "samples": s["radiomap_samples"], "tx": ntx, "max": MAX_RAYS // ntx})]
+    return []
 
 
 def stale(scene, s):
@@ -303,9 +333,40 @@ def frequency(node):
     return parm.eval() if parm else FREQUENCY
 
 
+def inventory(phase, geo, f, node):
+    if geo.findPrimAttrib("name") and geo.findPrimAttrib("material"):
+        mats = geo.primStringAttribValues("material")
+        names = geo.primStringAttribValues("name")
+        tris, objs = {}, {}
+        for m, n in zip(mats, names):
+            tris[m] = tris.get(m, 0) + 1
+            objs.setdefault(m, set()).add(n)
+        lib = library()
+        scene = sorted(m for m in tris if m != MEASURE)
+        say(phase, f"scene: {plural(sum(len(objs[m]) for m in scene), 'object')}, "
+                   f"{plural(sum(tris[m] for m in scene), 'triangle')}, {plural(len(scene), 'material')}")
+        for m in scene:
+            kind = "library" if m in lib else "ITU" if m in ITU else "unknown"
+            say(phase, f"  {m:<22} {kind:<8} {plural(len(objs[m]), 'object'):>12} {plural(tris[m], 'triangle'):>16}")
+        if MEASURE in tris:
+            say(phase, f"radio map surfaces: {short(sorted(objs[MEASURE]))} ({plural(tris[MEASURE], 'cell')})")
+        else:
+            say(phase, "radio map surfaces: none, solve computes paths only")
+    if geo.findPointAttrib("role") and geo.findPointAttrib("name"):
+        roles = geo.pointStringAttribValues("role")
+        names = geo.pointStringAttribValues("name")
+        tx = [n for r, n in zip(roles, names) if r == "tx"]
+        rx = [n for r, n in zip(roles, names) if r == "rx"]
+        say(phase, f"devices: {len(tx)} tx ({short(tx)}), {len(rx)} rx ({short(rx)})")
+    say(phase, f"frequency {f / 1e9:g} GHz (wavelength {299792458 / f * 100:.1f} cm), target {target(node)}")
+
+
 def on_validate():
     node = hou.pwd()
-    report("validate", validate(node.inputs()[0].geometry(), frequency(node)))
+    geo, f = node.inputs()[0].geometry(), frequency(node)
+    recs = validate(geo, f)
+    inventory("validate", geo, f, node)
+    report("validate", recs)
 
 
 # --- export ---
@@ -480,9 +541,37 @@ def on_export():
                 write(f"{folder}/{hip}_meta.json", json.dumps(meta, indent=2))
                 recs.append(("N002", {"path": folder}))
                 write(f"{folder}/{hip}_log.txt", "\n".join(fmt(r) for r in recs) + "\n")
+                export_summary("export", folder, f, objs, measure, meta)
             except OSError as e:
                 recs.append(("E002", {"path": e.filename}))
     report("export", recs)
+
+
+def export_summary(phase, folder, f, objs, measure, meta):
+    say(phase, f"run folder {folder}")
+    meshes = [os.path.join(folder, "meshes", m) for m in sorted(os.listdir(folder + "/meshes"))]
+    say(phase, f"  meshes/  {plural(len(meshes), 'file')}, {size(sum(os.path.getsize(m) for m in meshes))}"
+               f" ({plural(len(objs), 'scene object')}, {plural(len(measure), 'radio map surface')})")
+    for name in sorted(os.listdir(folder)):
+        path = os.path.join(folder, name)
+        if os.path.isfile(path):
+            say(phase, f"  {name}  {size(os.path.getsize(path))}")
+    say(phase, f"materials at {f / 1e9:g} GHz:")
+    seen = set()
+    for d in objs.values():
+        if d["material"] in seen:
+            continue
+        seen.add(d["material"])
+        if "relative_permittivity" in d:
+            say(phase, f"  {d['material']:<22} er {d['relative_permittivity']:7.2f}  sigma {d['conductivity']:8.4f} S/m"
+                       f"  thickness {d['thickness']:g} m  [{d['status']}]")
+        else:
+            say(phase, f"  {d['material']:<22} ITU model, evaluated by sionna  thickness {d['thickness']:g} m")
+    commit = meta.get("commit")
+    if commit:
+        say(phase, f"code version: git {commit[:8]}" + (", with uncommitted changes" if meta.get("dirty") else ""))
+    else:
+        say(phase, "code version: not in a git repository")
 
 
 # --- run ---
@@ -758,6 +847,9 @@ def on_previz():
         found = glob.glob(folder + "/*_dump.json")
         if found:
             geo = build_previz(found[0])
+            roles = geo.pointStringAttribValues("role")
+            say("previz", f"loaded by sionna: {plural(len(set(geo.primStringAttribValues('name'))), 'object')}, "
+                          f"{plural(len(geo.prims()), 'triangle')}, {roles.count('tx')} tx, {roles.count('rx')} rx")
             geo.saveToFile(found[0].replace("_dump.json", "_previz.bgeo.sc"))
             geo.saveToFile(hou.expandString(OUT + "/previz.bgeo.sc"))
             recs.append(("N003", {"path": found[0]}))
@@ -828,7 +920,7 @@ def on_solve():
     s = settings(node)
     write(scene.replace("_scene.xml", "_settings.json"), json.dumps(s, indent=2))
     say("solve", f"run folder {folder}")
-    recs = stale(scene, s) or run_sionna(node, "solve", folder, "solve")
+    recs = stale(scene, s) or ray_limit(scene, s) or run_sionna(node, "solve", folder, "solve")
     if not has_errors(recs):
         result = scene.replace("_scene.xml", "_result.json")
         rmap = scene.replace("_scene.xml", "_radiomap.json")
@@ -930,6 +1022,11 @@ def on_import():
                 geo.saveToFile(hou.expandString(f"{OUT}/{kind}.bgeo.sc"))
                 file_sop(node, f"sionna_{kind}", f"{OUT}/{kind}.bgeo.sc", (3, -1 - i))
             recs.append(("N005", {k: len(g.prims()) for k, g in geos.items()}))
+            gains = [p["gain_db"] for p in data["paths"] if p["gain_db"] is not None]
+            if gains:
+                say("import", f"paths: gain {min(gains):.1f} to {max(gains):.1f} dB, "
+                              f"{sum(1 for p in data['paths'] if not p['interactions'])} line of sight")
+            say("import", "updated sionna_paths, sionna_links")
         if rmap:
             with open(rmap[0]) as fh:
                 data = json.load(fh)
@@ -938,6 +1035,12 @@ def on_import():
             geo.saveToFile(hou.expandString(OUT + "/radiomap.bgeo.sc"))
             file_sop(node, "sionna_radiomap", OUT + "/radiomap.bgeo.sc", (3, -3))
             recs.append(("N006", {"cells": len(geo.prims()), "maps": len(data["maps"]), "tx": len(data["tx"])}))
+            peak = [v for v in geo.primFloatAttribValues("path_gain_db_max") if v > -999]
+            missed = len(geo.prims()) - len(peak)
+            if peak:
+                say("import", f"radio map: strongest tx per cell {min(peak):.1f} to {max(peak):.1f} dB, "
+                              f"{plural(missed, 'cell')} without signal")
+            say("import", "updated sionna_radiomap")
     except (ValueError, KeyError):
         recs.append(("I002", {}))
     report("import", recs)

@@ -1,2 +1,0 @@
-N001 geometry is 2.27 x 8.19 x 8.19 m (x, y, z; z is up in sionna). is this correct?
-N002 exported to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261019_124545Z
