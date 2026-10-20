@@ -17,10 +17,12 @@ import re
 import struct
 import sys
 import xml.etree.ElementTree as ET
+import zipfile
 from typing import Any, Callable
 from collections import OrderedDict
 import threading
 
+import numpy as np
 import yaml
 
 
@@ -55,6 +57,105 @@ def _one_file(folder: Path, suffix: str, *, required: bool = True) -> Path | Non
             raise ValueError(f"Required run artifact *{suffix} is missing from {folder}")
         return None
     return matches[0]
+
+
+def _artifact(folder: Path, stem: str, *, required: bool = True) -> Path | None:
+    """Find *<stem>.json (original exporter) or *<stem>.npz (multi-sim exporter, Oct 2026)."""
+    found = [path for suffix in (".json", ".npz")
+             if (path := _one_file(folder, stem + suffix, required=False)) is not None]
+    if len(found) > 1:
+        raise ValueError(f"{folder.name} has both *{stem}.json and *{stem}.npz; expected one result format")
+    if not found and required:
+        raise ValueError(f"Required run artifact *{stem}.json or *{stem}.npz is missing from {folder}")
+    return found[0] if found else None
+
+
+def _npz_info(data: dict[str, Any]) -> dict[str, Any]:
+    info = json.loads(str(data["info"])) if "info" in data else {}
+    return info if isinstance(info, dict) else {}
+
+
+def _result_from_npz(path: Path) -> dict[str, Any]:
+    """Rebuild the JSON result layout (paths as TX, interaction points, RX) from the NumPy export."""
+    with path.open("rb") as handle, np.load(handle, allow_pickle=False) as archive:
+        # NpzFile decompresses an array on every lookup, so read each array exactly once.
+        data = {key: archive[key] for key in archive.files}
+        info = _npz_info(data)
+        tx_names = [str(name) for name in data["tx"]]
+        rx_names = [str(name) for name in data["rx"]]
+        tx_positions = data["tx_position"].astype(float)
+        rx_positions = data["rx_position"].astype(float)
+        object_names = [str(name) for name in data["object_names"]]
+        interactions, objects = data["path_interactions"], data["path_objects"]
+        primitives, vertices = data["path_primitives"], data["path_vertices"].astype(float)
+        paths = []
+        for k, (t, r) in enumerate(zip(data["path_tx"].tolist(), data["path_rx"].tolist())):
+            used = interactions[k] != 0  # unused depth slots are 0 / object -1
+            object_ids = objects[k][used].tolist()
+            if any(index < 0 or index >= len(object_names) for index in object_ids):
+                raise ValueError(f"{path.name} path {k} refers to an object outside object_names")
+            paths.append({
+                "tx": tx_names[t], "rx": rx_names[r],
+                "vertices": [tx_positions[t].tolist(), *vertices[k][used].tolist(), rx_positions[r].tolist()],
+                "interactions": interactions[k][used].tolist(),
+                "objects": [object_names[index] for index in object_ids],
+                "primitives": primitives[k][used].tolist(),
+                **{key: float(data[f"path_{key}"][k]) for key in (
+                    "a_re", "a_im", "gain_db", "tau", "theta_t", "phi_t", "theta_r", "phi_r", "doppler")},
+            })
+        links = []  # link arrays are indexed [rx, tx]
+        for r, rx_name in enumerate(rx_names):
+            for t, tx_name in enumerate(tx_names):
+                links.append({
+                    "tx": tx_name, "rx": rx_name,
+                    "vertices": [tx_positions[t].tolist(), rx_positions[r].tolist()],
+                    "num_paths": int(data["link_num_paths"][r, t]),
+                    "gain_db_coherent": float(data["link_gain_db_coherent"][r, t]),
+                    "gain_db_incoherent": float(data["link_gain_db_incoherent"][r, t]),
+                    "delay_spread": float(data["link_delay_spread"][r, t]),
+                    "cfr_db": data["link_cfr_db"][r, t].astype(float).tolist(),
+                })
+        return {"sionna_rt": info.get("sionna_rt"), "variant": info.get("variant"),
+                "settings": info.get("settings"), "cfr_frequencies": data["cfr_frequencies"].tolist(),
+                "paths": paths, "links": links}
+
+
+def _radiomap_from_npz(path: Path) -> dict[str, Any]:
+    """Split the concatenated NumPy radio maps back into one entry per measurement mesh."""
+    with path.open("rb") as handle, np.load(handle, allow_pickle=False) as archive:
+        data = {key: archive[key] for key in archive.files}
+        info = _npz_info(data)
+        vertices, faces = data["vertices"].astype(float), data["faces"]
+        cell_map, gains = data["cell_map"], data["path_gain_db"].astype(float)
+        maps, start = [], 0
+        for index, name in enumerate(str(item) for item in data["map_names"]):
+            selected = cell_map == index
+            map_faces = faces[selected]
+            # The exporter appends each mesh's vertices as one contiguous block, in map order.
+            if not len(map_faces) or int(map_faces.min()) < start:
+                raise ValueError(f"{path.name} map {name!r} has no faces or faces outside its vertex block")
+            end = int(map_faces.max())+1
+            maps.append({"name": name, "vertices": vertices[start:end].tolist(),
+                         "faces": (map_faces-start).tolist(), "path_gain_db": gains[selected].tolist()})
+            start = end
+        return {"sionna_rt": info.get("sionna_rt"), "settings": info.get("settings"),
+                "tx": [str(name) for name in data["tx"]], "maps": maps}
+
+
+def _read_npz(path: Path, convert: Callable[[Path], dict[str, Any]]) -> dict[str, Any]:
+    # A damaged archive must make this one run invalid, not break discovery of every run.
+    try:
+        return convert(path)
+    except (OSError, EOFError, KeyError, IndexError, ValueError, zipfile.BadZipFile) as error:
+        raise ValueError(f"{path.name} is not a readable HOUSIONNA NumPy export ({error})") from error
+
+
+def _read_result(path: Path) -> Any:
+    return _read_npz(path, _result_from_npz) if path.suffix == ".npz" else _read_json(path)
+
+
+def _read_radiomap(path: Path) -> Any:
+    return _read_npz(path, _radiomap_from_npz) if path.suffix == ".npz" else _read_json(path)
 
 
 def _required_number(value: Any, label: str) -> float:
@@ -101,10 +202,10 @@ def _safe_run_file(folder: Path, relative_name: str, label: str) -> Path:
 def _source_fingerprint(folder: Path) -> tuple[str, dict[str, str]]:
     """Hash the inputs used by the adapter, including every exported PLY mesh."""
     selected: dict[str, Path] = {}
-    for suffix in ("_scene.xml", "_txrx.json", "_settings.json", "_result.json",
-                   "_dump.json", "_measure.json", "_radiomap.json"):
-        artifact = _one_file(folder, suffix, required=suffix in {
-            "_scene.xml", "_txrx.json", "_settings.json", "_result.json"})
+    artifacts = [_one_file(folder, suffix, required=suffix in {"_scene.xml", "_txrx.json", "_settings.json"})
+                 for suffix in ("_scene.xml", "_txrx.json", "_settings.json", "_dump.json", "_measure.json")]
+    artifacts += [_artifact(folder, "_result"), _artifact(folder, "_radiomap", required=False)]
+    for artifact in artifacts:
         if artifact is not None:
             relative = artifact.relative_to(folder).as_posix()
             selected[relative] = _safe_run_file(folder, relative, "Source artifact")
@@ -606,7 +707,7 @@ def _radio_maps(folder: Path, radio_file: Path | None, measure_file: Path | None
     measure_names = _read_json(measure_file)
     if not isinstance(measure_names, list) or not all(isinstance(name, str) for name in measure_names):
         raise ValueError(f"{measure_file.name} must be a JSON array of measurement mesh names")
-    data = _read_json(radio_file)
+    data = _read_radiomap(radio_file)
     if not isinstance(data, dict) or not isinstance(data.get("maps"), list):
         raise ValueError(f"{radio_file.name} must contain a 'maps' array")
     result_tx_names = data.get("tx")
@@ -706,16 +807,16 @@ def import_run(run_folder: str | Path, project_root: str | Path, *,
     scene_file = _one_file(folder, "_scene.xml")
     txrx_file = _one_file(folder, "_txrx.json")
     settings_file = _one_file(folder, "_settings.json")
-    result_file = _one_file(folder, "_result.json")
+    result_file = _artifact(folder, "_result")
     dump_file = _one_file(folder, "_dump.json", required=False)
     measure_file = _one_file(folder, "_measure.json", required=False)
-    radio_file = _one_file(folder, "_radiomap.json", required=False)
+    radio_file = _artifact(folder, "_radiomap", required=False)
     assert scene_file and txrx_file and settings_file and result_file
 
     devices_data = _read_json(txrx_file)
     tx_devices, rx_devices = _devices(devices_data)
     settings = _read_json(settings_file)
-    result = _read_json(result_file)
+    result = _read_result(result_file)
     if not isinstance(settings, dict):
         raise ValueError(f"{settings_file.name} must contain a JSON object")
     if not isinstance(result, dict):
@@ -1019,7 +1120,7 @@ def discover_runs(project_root: str | Path) -> list[dict[str, Any]]:
     # changed exports still undergo the complete geometry/result validation.
     summaries = list_imports(root)
     tolerance = configured_path_endpoint_tolerance(root)
-    required_suffixes = ("_scene.xml", "_txrx.json", "_settings.json", "_result.json")
+    required_suffixes = ("_scene.xml", "_txrx.json", "_settings.json", ("_result.json", "_result.npz"))
     for folder in (child for child in runs_root.iterdir() if child.is_dir()):
         row: dict[str, Any] = {"run_id": folder.name, "status": "invalid", "errors": []}
         if folder.is_symlink() or not _valid_run_id(folder.name):
@@ -1030,7 +1131,8 @@ def discover_runs(project_root: str | Path) -> list[dict[str, Any]]:
         try:
             for suffix in required_suffixes:
                 if not any(file.is_file() and file.name.endswith(suffix) for file in folder.iterdir()):
-                    missing.append(f"*{suffix}")
+                    names = suffix if isinstance(suffix, tuple) else (suffix,)
+                    missing.append(" or ".join(f"*{name}" for name in names))
             if missing:
                 row.update({"status": "incomplete", "missing_artifacts": missing})
             else:
