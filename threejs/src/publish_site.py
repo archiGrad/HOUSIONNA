@@ -1,7 +1,9 @@
 """Write the read-only public website: the 3D viewer plus the current results as plain files.
 
-    python run.py publish                 # -> outputs/site/
-    python run.py publish --out D:/site   # somewhere else
+    python run.py publish                          # every imported run -> outputs/site/
+    python run.py publish --batch 20261020_095105Z # only this batch (repeatable)
+    python run.py publish --no-single-runs         # batches only
+    python run.py publish --out D:/site            # somewhere else
 
 Upload the contents of the output folder to any static web host (one.com, GitHub Pages, a university server).
 The site needs no Python server: the viewer reads data/viewer_scene.json and one data/runs/<import>.json per
@@ -14,6 +16,7 @@ import argparse
 import json
 import re
 import shutil
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -47,6 +50,39 @@ Options -Indexes
 """
 
 
+def _compact(value: Any) -> Any:
+    """Six significant digits: micrometres on a 10 m scene, 0.0001 dB, and tiny linear gains survive (unlike fixed
+    decimals). Cuts run files by about a third."""
+    if isinstance(value, float):
+        return float(f"{value:.6g}")
+    if isinstance(value, list):
+        return [_compact(item) for item in value]
+    if isinstance(value, dict):
+        return {key: _compact(item) for key, item in value.items()}
+    return value
+
+
+def _select(scene: dict[str, Any], batches: list[str] | None, single_runs: bool) -> dict[str, Any]:
+    """Keep the built-in scenes plus the chosen HOUSIONNA runs; the rest leave the published scene file."""
+    def keep(row: dict[str, Any]) -> bool:
+        if row.get("source_type") != "housionna":
+            return True
+        batch = (row.get("run_metadata") or {}).get("batch", {}).get("id")
+        return (batch in batches) if batch and batches is not None else (bool(batch) or single_runs)
+    names = [name for name in scene["scenario_order"] if keep(scene["scenarios"][name])]
+    if batches is not None:
+        found = {(scene["scenarios"][name].get("run_metadata") or {}).get("batch", {}).get("id") for name in names}
+        missing = sorted(set(batches) - found)
+        if missing:
+            raise ValueError(f"No imported runs for batch {', '.join(missing)}")
+    selected = {**scene, "scenario_order": names, "scenarios": {name: scene["scenarios"][name] for name in names},
+                "scenario_labels": {name: label for name, label in scene.get("scenario_labels", {}).items() if name in names}}
+    if selected.get("featured_scenario") not in selected["scenarios"]:
+        housionna = [name for name in names if selected["scenarios"][name].get("source_type") == "housionna"]
+        selected["featured_scenario"] = (housionna or names)[-1] if names else None
+    return selected
+
+
 def _write_json(path: Path, value: Any) -> int:
     text = json.dumps(value, separators=(",", ":"), ensure_ascii=False)
     leak = LOCAL_PATH.search(text)
@@ -66,14 +102,15 @@ def _clear(out: Path) -> None:
     shutil.rmtree(out)
 
 
-def publish(project_root: Path = ROOT, out: Path | None = None) -> dict[str, Any]:
+def publish(project_root: Path = ROOT, out: Path | None = None, *,
+            batches: list[str] | None = None, single_runs: bool = True) -> dict[str, Any]:
     project_root = Path(project_root).resolve()
     out = Path(out or project_root / "outputs" / "site").resolve()
     bundle = project_root / "viewer" / "digital-twin-dist"
     if not (bundle / "index.html").is_file():
         raise FileNotFoundError("The viewer bundle is missing. Build it first: npm --prefix frontend run build")
 
-    scene = json.loads(build_viewer_scene(project_root).read_text(encoding="utf-8"))
+    scene = _select(json.loads(build_viewer_scene(project_root).read_text(encoding="utf-8")), batches, single_runs)
     import_ids = sorted({row["import_id"] for row in scene["scenarios"].values()
                          if row.get("source_type") == "housionna" and row.get("import_id")})
     for import_id in import_ids:
@@ -89,10 +126,11 @@ def publish(project_root: Path = ROOT, out: Path | None = None) -> dict[str, Any
         raise ValueError("Unexpected index.html: could not mark it as the static site")
     index.write_text(html.replace('<html lang="en">', '<html lang="en" data-site="static">', 1), encoding="utf-8")
 
-    sizes = {"scene": _write_json(out / "data" / "viewer_scene.json", scene)}
+    # The scene file's run summaries get the same rounding as the run files, so values compare equal in the viewer.
+    sizes = {"scene": _write_json(out / "data" / "viewer_scene.json", _compact(scene))}
     for import_id in import_ids:
         sizes[import_id] = _write_json(out / "data" / "runs" / f"{import_id}.json",
-                                       housionna_viewer_payload(project_root, import_id))
+                                       _compact(housionna_viewer_payload(project_root, import_id)))
     (out / ".htaccess").write_text(HTACCESS, encoding="utf-8")
     (out / MARKER).write_text("Made by run.py publish; the next publish replaces this whole folder.\n", encoding="utf-8")
 
@@ -104,8 +142,16 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="run.py publish", description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--out", type=Path, help="output folder (default: outputs/site)")
+    parser.add_argument("--batch", action="append", metavar="ID", help="publish only this batch (repeatable)")
+    parser.add_argument("--no-single-runs", action="store_true", help="leave out runs that are not in a batch")
     args = parser.parse_args(argv)
-    result = publish(ROOT, args.out)
+    try:
+        result = publish(ROOT, args.out, batches=args.batch, single_runs=not args.no_single_runs)
+    except (ValueError, FileNotFoundError) as error:
+        print(f"Publish failed: {error}", file=sys.stderr)
+        return 2
     print(f"Published {result['runs']} HOUSIONNA run(s) and the built-in farm to {result['out']}")
     print(f"Total {result['total_bytes']/1e6:.1f} MB. Upload the folder's contents (including .htaccess) to your web host.")
+    if result["total_bytes"] > 300e6:
+        print("That is a large upload; --batch publishes only the batches you name.")
     return 0

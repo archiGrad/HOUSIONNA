@@ -1636,8 +1636,8 @@ function updateTxWarning() {
   else warning.classList.add('hidden');
 }
 
-async function apiJson(url,options={}) {
-  const started=performance.now(),controller=new AbortController(),timer=setTimeout(()=>controller.abort(),20000);
+async function apiJson(url,{timeoutMs=20000,...options}={}) {
+  const started=performance.now(),controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeoutMs);
   let response;
   let body;
   let headersAt,downloadAt,parseAt;
@@ -1646,7 +1646,7 @@ async function apiJson(url,options={}) {
     const text=await response.text();downloadAt=performance.now();
     try{body=JSON.parse(text);}catch(error){throw new Error(`Invalid JSON from ${url}: ${error.message}`);}
     parseAt=performance.now();
-  }catch(error){error.resource=url;error.status=response?.status;if(error.name==='AbortError')error=new Error(`Request timed out after 20 s: ${url}. The calculation may still be running; refresh to reconnect.`);throw error;}
+  }catch(error){error.resource=url;error.status=response?.status;if(error.name==='AbortError')error=new Error(`Request timed out after ${Math.round(timeoutMs/1000)} s: ${url}. The calculation may still be running; refresh to reconnect.`);throw error;}
   finally{clearTimeout(timer);}
   if(!response.ok) {
     const error=new Error(body.error||`HTTP ${response.status} while requesting ${url}`);error.resource=url;error.status=response.status;throw error;
@@ -2057,8 +2057,15 @@ function populateHousionnaTxSelect(group, preferredTx) {
 function housionnaRunsByTime() {
   return housionnaGroups().sort((a,b)=>String(a.run_id).localeCompare(String(b.run_id))||String(a.imported_at_utc||'').localeCompare(String(b.imported_at_utc||'')));
 }
+// The stepper walks one batch in work-item order, or the single (non-batch) runs in export order.
+function stepperRuns(batchId) {
+  return batchId
+    ?housionnaRunsByTime().filter((group)=>group.batch_id===batchId).sort((a,b)=>(a.wedge_index??0)-(b.wedge_index??0)||String(a.run_id).localeCompare(String(b.run_id)))
+    :housionnaRunsByTime().filter((group)=>!group.batch_id);
+}
 function stepHousionnaRun(delta) {
-  const runs=housionnaRunsByTime(),index=runs.findIndex((group)=>group.import_id===$('#housionnaRunSelect').value);
+  const current=housionnaGroups().find((group)=>group.import_id===$('#housionnaRunSelect').value);
+  const runs=stepperRuns(current?.batch_id),index=runs.findIndex((group)=>group.import_id===current?.import_id);
   const target=runs[index+delta];if(!target)return;
   $('#housionnaRunSelect').value=target.import_id;$('#housionnaRunSelect').dispatchEvent(new Event('change'));
 }
@@ -2090,7 +2097,7 @@ function runChanges(previous,current) {
   const changes=[],fmt=(value,digits=2)=>Number(value).toFixed(digits),pm=previous.run_metadata||{},cm=current.run_metadata||{};
   const pa=pm.parameters||{},pc=cm.parameters||{};
   for(const key of [...new Set([...Object.keys(pa),...Object.keys(pc)])].sort())
-    if(pa[key]!==pc[key])changes.push(`${paramLabel(key)} ${paramValue(pa[key])} → ${paramValue(pc[key])}`);
+    if(paramValue(pa[key])!==paramValue(pc[key]))changes.push(`${paramLabel(key)} ${paramValue(pa[key])} → ${paramValue(pc[key])}`);
   if(previous.frequency_hz!==current.frequency_hz)changes.push(`frequency ${fmt(previous.frequency_hz/1e9,3)} → ${fmt(current.frequency_hz/1e9,3)} GHz`);
   for(const [key,label] of [['tx_count','TX'],['rx_count','RX'],['mesh_count','scene objects']])if(pm[key]!==cm[key])changes.push(`${label} ${pm[key]??'?'} → ${cm[key]??'?'}`);
   const a=surfaceBounds(previous),b=surfaceBounds(current);
@@ -2148,7 +2155,7 @@ let seriesFilter={batch:null,current:null,values:{}};
 function seriesPoints(scenario) {
   const scene=scenario.run_metadata?.scene_name,txName=scenario.transmitter?.name,batch=scenario.run_metadata?.batch?.id;
   const runs=batch
-    ?housionnaRunsByTime().filter((group)=>group.batch_id===batch).sort((a,b)=>(a.wedge_index??0)-(b.wedge_index??0)||String(a.run_id).localeCompare(String(b.run_id)))
+    ?stepperRuns(batch)
     :housionnaRunsByTime().filter((group)=>group.scene_name===scene&&!group.batch_id);
   return runs.map((group,index)=>{
     const run=runScenarioFor(group,txName);
@@ -2249,14 +2256,15 @@ function renderRunSeries(scenario) {
 
 function syncRunStepper(scenario) {
   renderRunSeries(scenario);
-  const runs=housionnaRunsByTime(),index=runs.findIndex((group)=>group.import_id===(scenario?.import_id||scenario?.run_metadata?.import_id));
+  const runs=stepperRuns(scenario?.run_metadata?.batch?.id),index=runs.findIndex((group)=>group.import_id===(scenario?.import_id||scenario?.run_metadata?.import_id));
   const visible=scenario?.source_type==='housionna'&&index>=0;
   $('.run-stepper').classList.toggle('hidden',!visible||runs.length<2);
   $('#housionnaRunChanges').classList.toggle('hidden',!visible);
   if(!visible)return;
   $('#housionnaOlderRun').disabled=index<=0;$('#housionnaNewerRun').disabled=index>=runs.length-1;
   $('#housionnaRunPosition').textContent=`${index+1} / ${runs.length}`;
-  if(index<=0){$('#housionnaRunChanges').textContent='Oldest imported run.';return;}
+  $('#housionnaRunPosition').title=scenario.run_metadata?.batch?.id?`Work item ${index+1} of ${runs.length} imported in this batch`:`Run ${index+1} of ${runs.length} single runs`;
+  if(index<=0){$('#housionnaRunChanges').textContent=scenario.run_metadata?.batch?.id?'First imported work item of this batch.':'Oldest imported run.';return;}
   const previous=runScenarioFor(runs[index-1],scenario.transmitter?.name);
   const changes=previous?runChanges(previous,scenario):[];
   $('#housionnaRunChanges').innerHTML=changes.length
@@ -2283,10 +2291,19 @@ function populateSourceSelectors(preferredImportId=null, preferredTx=null) {
   $('#scenarioSelect').innerHTML=builtinNames.map((name)=>`<option value="${esc(name)}">${esc(data.scenarios[name].label)}</option>`).join('');
   if(builtinNames.includes(activeScenario))$('#scenarioSelect').value=activeScenario;
   const groups=housionnaGroups();
-  $('#housionnaRunSelect').innerHTML=groups.map((group)=>{
+  const option=(group)=>{
     const suffix=group.import_id.split('-').at(-1)?.slice(0,8)||'';
-    return `<option value="${esc(group.import_id)}">${esc(runLabel(group.run_id))} · ${esc(group.scene_name||'scene')} · ${esc(suffix)}</option>`;
-  }).join('');
+    if(!group.batch_id)return `<option value="${esc(group.import_id)}">${esc(runLabel(group.run_id))} · ${esc(group.scene_name||'scene')} · ${esc(suffix)}</option>`;
+    // Inside a batch the work item and its wedged values say more than the shared scene name.
+    const wedged=Object.entries(group.parameters||{}).map(([key,value])=>`${paramLabel(key)} ${paramValue(value)}`).join(', ');
+    return `<option value="${esc(group.import_id)}">${esc(String(group.run_id).split('.').at(-1))}${wedged?` · ${esc(wedged)}`:''}</option>`;
+  };
+  const singles=groups.filter((group)=>!group.batch_id);
+  const batches=[...new Set(groups.filter((group)=>group.batch_id).map((group)=>group.batch_id))].sort().reverse();
+  $('#housionnaRunSelect').innerHTML=[
+    singles.length?`<optgroup label="Single runs">${singles.map(option).join('')}</optgroup>`:'',
+    ...batches.map((batch)=>{const items=stepperRuns(batch);return `<optgroup label="Batch ${esc(batch)} (${items.length})">${items.map(option).join('')}</optgroup>`;}),
+  ].join('');
   const activeGroupId=preferredImportId||data.scenarios[activeScenario]?.import_id||groups[0]?.import_id;
   const group=groups.find((item)=>item.import_id===activeGroupId)||groups[0];
   if(group) {
@@ -2370,7 +2387,10 @@ function setHousionnaStatus(state,message) {
 }
 
 async function loadHousionnaCatalog() {
-  const [runsResult,importsResult]=await Promise.allSettled([apiJson('/api/housionna/runs'),apiJson('/api/housionna/imports')]);
+  // The first look at a new batch validates every work item once (about a minute for 280); later loads are quick.
+  const slow=setTimeout(()=>setHousionnaStatus('running','Checking exports… a new batch takes up to a few minutes the first time.'),3000);
+  const [runsResult,importsResult]=await Promise.allSettled([apiJson('/api/housionna/runs',{timeoutMs:600000}),apiJson('/api/housionna/imports')]);
+  clearTimeout(slow);
   if(runsResult.status==='fulfilled')housionnaRuns=runsResult.value.body.runs||[];
   if(importsResult.status==='fulfilled')housionnaImports=importsResult.value.body.imports||[];
   syncImportAllButton();
@@ -2414,8 +2434,9 @@ async function runHousionnaImportJob(runId=null,onProgress=()=>{},{rebuildScene=
 }
 // A run is new when no import carries its source fingerprint (so a re-exported folder counts as new too).
 function newHousionnaExports() {
-  const known=new Set(housionnaImports.map((row)=>row.source_sha256));
-  return housionnaRuns.filter((row)=>row.status==='valid'&&!known.has(row.source_sha256))
+  // Keyed by run id and content: two work items can export identical inputs and still both need importing.
+  const known=new Set(housionnaImports.map((row)=>`${row.run_id}\n${row.source_sha256}`));
+  return housionnaRuns.filter((row)=>row.status==='valid'&&!known.has(`${row.run_id}\n${row.source_sha256}`))
     .sort((a,b)=>String(a.run_id).localeCompare(String(b.run_id)));
 }
 function syncImportAllButton() {

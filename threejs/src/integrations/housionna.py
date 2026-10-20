@@ -37,6 +37,13 @@ INTERACTION_BITS = (
     (8, "diffraction"),
 )
 _RUN_VALIDATION_CACHE: dict[tuple[str, str], tuple[str, dict[str, Any]]] = {}
+# Discovery of a new 280-item batch validates every work item once (about 0.15 s each). The results and the file
+# fingerprints are kept in outputs/integrations/housionna/discovery_cache.json, so a server restart or a page load
+# only stats the files. A fingerprint is reused only while every source file keeps its size and mtime; imports
+# always hash the files again.
+_DISCOVERY_CACHE_LOCK = threading.Lock()
+_DISCOVERY_CACHE: dict[str, Any] = {"file": None, "runs": {}}
+DISCOVERY_CACHE_SCHEMA = 1
 _IMPORT_SUMMARY_CACHE = OrderedDict()
 _IMPORT_SUMMARY_LOCK = threading.Lock()
 
@@ -1211,13 +1218,53 @@ def _summary_from_document(import_id: str, document: dict[str, Any]) -> dict[str
     }
 
 
+def _folder_stat_key(folder: Path) -> list[list[Any]]:
+    """Name, size and mtime of every file a fingerprint can read: the run folder and its meshes/."""
+    key = []
+    for directory in (folder, folder / "meshes"):
+        if directory.is_dir():
+            for entry in os.scandir(directory):
+                if entry.is_file(follow_symlinks=False):
+                    stat = entry.stat(follow_symlinks=False)
+                    key.append([f"{directory.name}/{entry.name}" if directory != folder else entry.name,
+                                stat.st_size, stat.st_mtime_ns])
+    return sorted(key)
+
+
+def _load_discovery_cache(root: Path) -> dict[str, Any]:
+    cache_file = root / "outputs" / "integrations" / "housionna" / "discovery_cache.json"
+    if _DISCOVERY_CACHE["file"] != str(cache_file):
+        runs: dict[str, Any] = {}
+        try:
+            stored = _read_json(cache_file)
+            if stored.get("schema") == DISCOVERY_CACHE_SCHEMA and stored.get("adapter_version") == ADAPTER_VERSION:
+                runs = stored.get("runs") or {}
+        except (OSError, ValueError, AttributeError):
+            pass
+        _DISCOVERY_CACHE.update(file=str(cache_file), runs=runs)
+    return _DISCOVERY_CACHE["runs"]
+
+
+def _save_discovery_cache(root: Path) -> None:
+    from integrations.housionna_performance import atomic_json
+    cache_file = Path(_DISCOVERY_CACHE["file"])
+    cache_file.parent.mkdir(parents=True, exist_ok=True)
+    atomic_json(cache_file, {"schema": DISCOVERY_CACHE_SCHEMA, "adapter_version": ADAPTER_VERSION,
+                             "runs": _DISCOVERY_CACHE["runs"]}, compact=True)
+
+
 def discover_runs(project_root: str | Path, *, only: str | None = None) -> list[dict[str, Any]]:
+    with _DISCOVERY_CACHE_LOCK:
+        return _discover_runs(project_root, only=only)
+
+
+def _discover_runs(project_root: str | Path, *, only: str | None = None) -> list[dict[str, Any]]:
     """List child folders and validate complete exports without importing them."""
     root = Path(project_root).resolve()
     runs_root = configured_runs_directory(root)
-    if not runs_root.is_dir():
-        return []
     rows: list[dict[str, Any]] = []
+    stored = _load_discovery_cache(root)
+    changed = False
     # A validated normalized import can certify unchanged source bytes. New or
     # changed exports still undergo the complete geometry/result validation.
     summaries = list_imports(root)
@@ -1242,8 +1289,20 @@ def discover_runs(project_root: str | Path, *, only: str | None = None) -> list[
             if missing:
                 row.update({"status": "incomplete", "missing_artifacts": missing})
             else:
-                source_hash, _ = _source_fingerprint(folder.resolve())
+                stat_key = _folder_stat_key(folder)
+                entry = stored.get(f"{folder.resolve()}") or {}
+                if entry.get("stat_key") == stat_key and entry.get("source_sha256"):
+                    source_hash = entry["source_sha256"]
+                else:
+                    source_hash, _ = _source_fingerprint(folder.resolve())
+                    entry = {"stat_key": stat_key, "source_sha256": source_hash}
+                    stored[f"{folder.resolve()}"] = entry
+                    changed = True
                 signature = f"{source_hash}:{tolerance:.12g}"
+                if entry.get("signature") == signature and entry.get("row", {}).get("run_id") == run_id:
+                    row.update(entry["row"])
+                    rows.append(row)
+                    continue
                 cache_key = (str(runs_root.resolve()), run_id)
                 cached_validation = _RUN_VALIDATION_CACHE.get(cache_key)
                 if cached_validation and cached_validation[0] == signature:
@@ -1265,12 +1324,25 @@ def discover_runs(project_root: str | Path, *, only: str | None = None) -> list[
                 _RUN_VALIDATION_CACHE[cache_key] = (signature, dict(row))
                 while len(_RUN_VALIDATION_CACHE) > 4096:
                     _RUN_VALIDATION_CACHE.pop(next(iter(_RUN_VALIDATION_CACHE)))
+                entry.update(signature=signature, row=dict(row))
+                changed = True
         except (OSError, ValueError, KeyError, TypeError, AssertionError) as error:
             message = str(error).replace(str(folder), "run folder")
             message = re.sub(r"(?i)\b[a-z]:\\[^\r\n\"']+", "<local path>", message)
             row.update({"status": "invalid", "errors": [message[:360]]})
         rows.append(row)
     rows.sort(key=lambda row: (row.get("timestamp", ""), row["run_id"]), reverse=True)
+    if only is None:
+        # Forget folders that no longer exist, so the file stays the size of what is on disk.
+        present = {f"{folder.resolve()}" for _, folder in _run_folders(root)}
+        for key in [key for key in stored if key not in present]:
+            del stored[key]
+            changed = True
+    if changed:
+        try:
+            _save_discovery_cache(root)
+        except OSError:
+            pass  # the cache only saves time
     # Never return source paths through the local API.
     return rows
 
