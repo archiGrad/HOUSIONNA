@@ -24,6 +24,7 @@ from integrations.housionna_api import (
     HousionnaImportManager,
     api_compare,
     api_import,
+    api_import_viewer,
     api_imports,
     api_runs,
 )
@@ -133,6 +134,15 @@ class DashboardHandler(BaseHTTPRequestHandler):
                 return
             self._send_json(200, self.housionna_simulations.latest(source_run_id, import_id, transmitter))
             return
+        match = re.fullmatch(r"/api/housionna/imports/([^/]+)/viewer", route)
+        if match and self.housionna_imports:
+            try:
+                self._send_json(200, api_import_viewer(self.project_root, unquote(match.group(1))))
+            except FileNotFoundError:
+                self._send_json(404, {"error": "Imported HOUSIONNA run was not found"})
+            except (ValueError, OSError) as error:
+                self._send_json(400, {"error": str(error)[:360]})
+            return
         match = re.fullmatch(r"/api/housionna/imports/([^/]+)", route)
         if match and self.housionna_imports:
             try:
@@ -236,11 +246,12 @@ class DashboardHandler(BaseHTTPRequestHandler):
             if error_response:
                 self._send_json(*error_response)
                 return
-            if not isinstance(payload, dict) or set(payload) != {"run_id"}:
-                self._send_json(400, {"error": "Request body must contain only run_id"})
+            if (not isinstance(payload, dict) or "run_id" not in payload or set(payload) - {"run_id", "rebuild_scene"}
+                    or not isinstance(payload.get("rebuild_scene", True), bool)):
+                self._send_json(400, {"error": "Request body must contain run_id and optionally a boolean rebuild_scene"})
                 return
             try:
-                job = self.housionna_imports.start(payload["run_id"])
+                job = self.housionna_imports.start(payload["run_id"], rebuild_scene=payload.get("rebuild_scene", True))
                 self._send_json(202, job)
             except HousionnaApiError as error:
                 self._send_json(error.status, {"error": str(error)})

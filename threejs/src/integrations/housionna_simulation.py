@@ -31,9 +31,11 @@ if str(SRC_ROOT) not in sys.path:
 from integrations.housionna_performance import Timings, ImportCache, atomic_json, runtime_identity
 
 from integrations.housionna import (  # noqa: E402
+    _artifact,
     _devices,
     _one_file,
     _read_json,
+    _read_result,
     _source_fingerprint,
     configured_runs_directory,
     read_import,
@@ -59,12 +61,12 @@ def _source_documents(folder: Path, *, include_result: bool = True) -> tuple[Pat
     scene_file = _one_file(folder, "_scene.xml")
     txrx_file = _one_file(folder, "_txrx.json")
     settings_file = _one_file(folder, "_settings.json")
-    result_file = _one_file(folder, "_result.json")
+    result_file = _artifact(folder, "_result")
     assert scene_file and txrx_file and settings_file and result_file
     devices = _read_json(txrx_file)
     tx_devices, rx_devices = _devices(devices)
     settings = _read_json(settings_file)
-    original = _read_json(result_file) if include_result else {}
+    original = _read_result(result_file) if include_result else {}
     if not isinstance(settings, dict) or not isinstance(original, dict):
         raise ValueError("HOUSIONNA settings and result artifacts must be JSON objects")
     if include_result and (not isinstance(original.get("paths"), list) or not isinstance(original.get("links"), list)):
