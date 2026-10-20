@@ -10,7 +10,7 @@ import time
 import uuid
 from typing import Any
 
-from digital_twin_data import build_viewer_scene, housionna_viewer_payload
+from digital_twin_data import _import_summary, build_viewer_scene, housionna_viewer_payload
 from integrations.housionna import (
     compare_imports,
     configured_runs_directory,
@@ -132,6 +132,8 @@ class HousionnaImportManager:
             if not isinstance(output_file, Path):
                 raise RuntimeError("Adapter did not produce a normalized import file")
             import_id = output_file.parent.name
+            # Write the run's viewer summary now, so a batch's final scene rebuild reads small files only.
+            _import_summary(output_file)
             if self.jobs[job_id]["rebuild_scene"]:
                 self._set_stage(job_id, "updating_viewer", "Updating the existing digital-twin scene data")
                 build_viewer_scene(self.project_root)

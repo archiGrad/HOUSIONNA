@@ -202,6 +202,8 @@ class TransportAndMemoryTests(unittest.TestCase):
               'scenarios':{'tx':{'transmitter':{'name':'tx_0'}}}})
             with patch.dict('os.environ',{'HOUSIONNA_RUNS_DIRECTORY':str(exports)}),patch('integrations.housionna._source_fingerprint',return_value=('source',{})),patch('integrations.housionna.import_run') as importer:
                 self.assertEqual(discover_runs(root)[0]['status'],'valid');importer.assert_not_called()
+            # A real re-export rewrites files; discovery only re-hashes a run whose file sizes or mtimes change.
+            (run/'test_settings.json').write_text('{"changed": true}')
             with patch.dict('os.environ',{'HOUSIONNA_RUNS_DIRECTORY':str(exports)}),patch('integrations.housionna._source_fingerprint',return_value=('changed',{})),patch('integrations.housionna.import_run',side_effect=ValueError('Changed export rejected')) as importer:
                 self.assertEqual(discover_runs(root)[0]['status'],'invalid');importer.assert_called_once()
 
