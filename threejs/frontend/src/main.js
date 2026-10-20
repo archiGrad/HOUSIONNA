@@ -25,6 +25,7 @@ app.innerHTML = `
         <select id="scenarioSelect" class="select-control"></select>
       </div>
       <p id="scenarioDescription" class="muted-copy">Loading simulation-backed scene data…</p>
+      <p class="site-note">Research demo. Dimensions and RF materials are placeholders, not measured farm data; do not read the maps as real coverage predictions.</p>
       <section id="housionnaControls" class="housionna-panel hidden" aria-label="HOUSIONNA saved runs">
         <div class="section-title"><span>HOUSIONNA SAVED RUNS</span><span id="housionnaStatus" class="status-pill ready">READY</span></div>
         <label class="field-label" for="housionnaRunSelect">Imported run</label>
@@ -32,7 +33,8 @@ app.innerHTML = `
         <div class="run-stepper"><button id="housionnaOlderRun" class="small-button" type="button" aria-label="Previous (older) run">← Older</button><span id="housionnaRunPosition" class="run-position num"></span><button id="housionnaNewerRun" class="small-button" type="button" aria-label="Next (newer) run">Newer →</button></div>
         <div id="housionnaRunChanges" class="run-changes muted-copy" aria-live="polite"></div>
         <details id="runSeries" class="run-series hidden" open>
-          <summary>Across runs of this scene</summary>
+          <summary id="seriesSummary">Across runs of this scene</summary>
+          <p id="seriesBatch" class="series-batch muted-copy hidden"></p>
           <label class="field-label" for="seriesMetric">Value</label>
           <select id="seriesMetric" class="select-control">
             <option value="median_map">Median radio map (dB)</option>
@@ -42,6 +44,7 @@ app.innerHTML = `
           </select>
           <label class="field-label" for="seriesAxis">Along</label>
           <select id="seriesAxis" class="select-control"></select>
+          <div id="seriesFilters" class="series-filters"></div>
           <div id="seriesChart" class="series-chart"></div>
           <div id="seriesTooltip" class="series-tooltip hidden" role="status"></div>
           <details class="series-table"><summary>Show values</summary><div id="seriesTable"></div></details>
@@ -49,7 +52,7 @@ app.innerHTML = `
         <label class="field-label" for="housionnaExportSelect">Available export</label>
         <select id="housionnaExportSelect" class="select-control"></select>
         <button id="importSelectedHousionna" class="small-button housionna-import-selected">Import selected export</button>
-        <button id="importAllHousionna" class="small-button housionna-import-selected">Import all new runs</button>
+        <button id="importAllHousionna" class="small-button housionna-import-selected" disabled>Import all new runs</button>
         <label class="field-label" for="housionnaTxSelect">Transmitter</label>
         <select id="housionnaTxSelect" class="select-control"></select>
         <label class="field-label" for="housionnaResultVersion">Displayed RF result</label>
@@ -118,7 +121,7 @@ app.innerHTML = `
         <div class="section-title"><span id="simulationPanelTitle">SIONNA RT SIMULATION</span><span id="rfRunStatus" class="status-pill ready">READY</span></div>
         <div id="builtinScenarioRow"><label class="field-label" for="simulationScenario">RF scenario</label>
           <select id="simulationScenario" class="select-control">
-            <option value="farm_empty">Empty rack</option><option value="farm_proxy">RF plant proxy</option><option value="farm_dense">Dense RF proxy</option>
+            <option value="farm_empty">Empty rack</option><option value="farm_proxy">RF plant proxy</option><option value="farm_dense">Dense canopy proxy</option>
           </select>
         </div>
         <div id="housionnaSimulationContext" class="simulation-help hidden"></div>
@@ -194,6 +197,13 @@ let pulseMesh, pulseCurve = null, pulseRunning = false, pulseStarted = 0, animat
 let backendInfo = null, apiHistory = [], rfResultsStale = false, lastRunFingerprint = null, displayedScenarioSupported = true;
 let simulationRunning = false, simulationClock = null, simulationStartedAt = 0, draggingTx = null;
 let housionnaRuns = [], housionnaImports = [], housionnaImportBusy = false;
+// The published website (run.py publish) is the same build with <html data-site="static">: it reads plain JSON
+// files next to the page and has no Python server, so import, rerun and simulation controls are hidden.
+const STATIC_SITE = document.documentElement.dataset.site === 'static';
+const SCENE_URL = STATIC_SITE ? 'data/viewer_scene.json' : '/outputs/digital_twin/viewer_scene.json';
+const importViewerUrl = (importId) => STATIC_SITE
+  ? `data/runs/${encodeURIComponent(importId)}.json`
+  : `/api/housionna/imports/${encodeURIComponent(importId)}/viewer`;
 const housionnaOriginalResults = new Map(), housionnaLatestResults = new Map();
 let renderedGeometry=null;
 let frameDirty=true;
@@ -1312,7 +1322,7 @@ function onPointerDown(event) {
   const hit=raycaster.intersectObjects(objects,false)[0]; if(!hit) return;
   const object=hit.object.userData.pickParent||hit.object;
   if(object.userData.kind==='transmitter'&&
-     (activeScenario.startsWith('farm_')||data.scenarios[activeScenario]?.source_type==='housionna')&&
+     !STATIC_SITE&&(activeScenario.startsWith('farm_')||data.scenarios[activeScenario]?.source_type==='housionna')&&
      (!object.userData.scenarioKey||object.userData.scenarioKey===activeScenario)&&!simulationRunning) {
     event.preventDefault();event.stopPropagation();
     selectObject(txGroup.userData);
@@ -1774,6 +1784,7 @@ function installHousionnaPathResult(scenario,job) {
 }
 
 async function restoreLatestHousionnaResults(scenarioKey=activeScenario) {
+  if(STATIC_SITE)return;  // reruns live on the local server only
   const scenario=data?.scenarios?.[scenarioKey];
   if(scenario?.source_type!=='housionna'||housionnaLatestResults.has(scenarioKey))return;
   if(housionnaRestoreJobs.has(scenarioKey))return housionnaRestoreJobs.get(scenarioKey);
@@ -2000,7 +2011,8 @@ function housionnaGroups() {
     if(!id)continue;
     if(!groups.has(id))groups.set(id,{import_id:id,run_id:scenario.run_metadata?.run_id||scenario.provenance?.run_folder_name||id,
       scene_name:scenario.run_metadata?.scene_name,imported_at_utc:scenario.run_metadata?.imported_at_utc,
-      frequency_hz:scenario.frequency_hz,scenario_keys:[]});
+      frequency_hz:scenario.frequency_hz,batch_id:scenario.run_metadata?.batch?.id||null,
+      parameters:scenario.run_metadata?.parameters||null,wedge_index:scenario.run_metadata?.wedge?.wedgeindex??null,scenario_keys:[]});
     groups.get(id).scenario_keys.push(key);
   }
   return [...groups.values()].reverse();
@@ -2066,12 +2078,19 @@ function medianDb(scenario) {
   const values=(scenario?.radio_map?.surfaces||[]).flatMap((surface)=>surface.values_db||[]).filter((value)=>value!=null).sort((a,b)=>a-b);
   return values.length?values[Math.floor(values.length/2)]:null;
 }
+// Batch work items are "<batch>.wiNNN"; wedged Houdini attributes are TOPS_<name> (see run_metadata.parameters).
+const runLabel=(runId)=>String(runId??'').replace('.',' · ');
+const paramLabel=(key)=>key.replace(/^TOPS_/,'').replace(/_/g,' ');
+const paramValue=(value)=>value==null?'—':String(+Number(value).toFixed(3));
 function flatSettings(value,prefix='') {
   if(!value||typeof value!=='object')return {[prefix]:value};
   return Object.entries(value).reduce((out,[key,inner])=>({...out,...flatSettings(inner,prefix?`${prefix}.${key}`:key)}),{});
 }
 function runChanges(previous,current) {
   const changes=[],fmt=(value,digits=2)=>Number(value).toFixed(digits),pm=previous.run_metadata||{},cm=current.run_metadata||{};
+  const pa=pm.parameters||{},pc=cm.parameters||{};
+  for(const key of [...new Set([...Object.keys(pa),...Object.keys(pc)])].sort())
+    if(pa[key]!==pc[key])changes.push(`${paramLabel(key)} ${paramValue(pa[key])} → ${paramValue(pc[key])}`);
   if(previous.frequency_hz!==current.frequency_hz)changes.push(`frequency ${fmt(previous.frequency_hz/1e9,3)} → ${fmt(current.frequency_hz/1e9,3)} GHz`);
   for(const [key,label] of [['tx_count','TX'],['rx_count','RX'],['mesh_count','scene objects']])if(pm[key]!==cm[key])changes.push(`${label} ${pm[key]??'?'} → ${cm[key]??'?'}`);
   const a=surfaceBounds(previous),b=surfaceBounds(current);
@@ -2124,40 +2143,72 @@ function niceTicks(min,max,count=4) {
   for(let value=start;value<=max+step*0.5;value+=step)ticks.push(+value.toFixed(10));
   return {ticks,min:ticks[0],max:ticks.at(-1)};
 }
+// A batch (one Houdini cook) is its own series in work-item order; other runs group by scene name.
+let seriesFilter={batch:null,current:null,values:{}};
 function seriesPoints(scenario) {
-  const scene=scenario.run_metadata?.scene_name,txName=scenario.transmitter?.name;
-  const runs=housionnaRunsByTime().filter((group)=>group.scene_name===scene);
+  const scene=scenario.run_metadata?.scene_name,txName=scenario.transmitter?.name,batch=scenario.run_metadata?.batch?.id;
+  const runs=batch
+    ?housionnaRunsByTime().filter((group)=>group.batch_id===batch).sort((a,b)=>(a.wedge_index??0)-(b.wedge_index??0)||String(a.run_id).localeCompare(String(b.run_id)))
+    :housionnaRunsByTime().filter((group)=>group.scene_name===scene&&!group.batch_id);
   return runs.map((group,index)=>{
     const run=runScenarioFor(group,txName);
     return {group,index,run:run?.transmitter?.name===txName?run:null};
   });
 }
 function renderRunSeries(scenario) {
-  const panel=$('#runSeries'),points=scenario?.source_type==='housionna'?seriesPoints(scenario):[];
-  panel.classList.toggle('hidden',points.length<2);
-  if(points.length<2)return;
-  // Offer an x axis for every quantity that actually varies across this series.
-  const axisSelect=$('#seriesAxis'),kept=axisSelect.value;
-  const varying=Object.entries(SERIES_AXES).filter(([,axis])=>{
-    const values=points.filter((p)=>p.run).map((p)=>axis.value(p.run)).filter((v)=>v!=null).map((v)=>v.toFixed(3));
-    return new Set(values).size>1;});
-  axisSelect.innerHTML=['<option value="order">Run order</option>',...varying.map(([key,axis])=>`<option value="${key}">${esc(axis.label)}${axis.unit?` (${axis.unit})`:''}</option>`)].join('');
-  axisSelect.value=[...axisSelect.options].some((o)=>o.value===kept)?kept:'order';
-  const metric=SERIES_METRICS[$('#seriesMetric').value]||SERIES_METRICS.median_map,axisKey=axisSelect.value,axis=SERIES_AXES[axisKey];
-  const rows=points.map((p)=>({...p,x:axis?(p.run?axis.value(p.run):null):p.index+1,y:p.run?metric.value(p.run):null}));
-  const plotted=rows.filter((row)=>row.x!=null&&row.y!=null).sort((a,b)=>a.x-b.x||a.index-b.index);
-  const currentId=scenario.import_id||scenario.run_metadata?.import_id;
+  const panel=$('#runSeries'),allPoints=scenario?.source_type==='housionna'?seriesPoints(scenario):[];
+  panel.classList.toggle('hidden',allPoints.length<2);
+  if(allPoints.length<2)return;
   const fmt=(value,unit)=>{
     if(value==null)return '—';
     let text=Number(value).toFixed(Math.abs(value)>=100?0:2);
     if(text.includes('.'))text=text.replace(/0+$/,'').replace(/\.$/,'');  // trim decimals only, never 100 -> 1
     return `${text}${unit?` ${unit}`:''}`;
   };
+  const batch=scenario.run_metadata?.batch||null,currentId=scenario.import_id||scenario.run_metadata?.import_id;
+  // Wedged parameters that differ inside this batch. Several can vary at once (nested wedges), so all but the
+  // x axis become filters, set to the current run's values whenever another run is opened.
+  const params=batch?[...new Set(allPoints.flatMap((p)=>Object.keys(p.group.parameters||{})))]
+    .filter((key)=>new Set(allPoints.map((p)=>JSON.stringify(p.group.parameters?.[key]??null))).size>1).sort():[];
+  const own=scenario.run_metadata?.parameters||{};
+  const fresh=batch&&seriesFilter.batch!==batch.id;
+  if(fresh||(batch&&seriesFilter.current!==currentId&&params.some((key)=>!['any',own[key]].includes(seriesFilter.values[key]))))
+    seriesFilter={batch:batch.id,current:currentId,values:Object.fromEntries(params.map((key)=>[key,own[key]]))};
+  seriesFilter.current=currentId;
+  $('#seriesSummary').textContent=batch?'Across this batch':'Across runs of this scene';
+  // Offer an x axis for every quantity that actually varies across this series.
+  const axisSelect=$('#seriesAxis'),kept=axisSelect.value;
+  const paramAxes=params.map((key)=>[`param:${key}`,{label:paramLabel(key),unit:'',param:key,value:(run,group)=>group?.parameters?.[key]??null}]);
+  const varying=Object.entries(SERIES_AXES).filter(([,axis])=>{
+    const values=allPoints.filter((p)=>p.run).map((p)=>axis.value(p.run)).filter((v)=>v!=null).map((v)=>v.toFixed(3));
+    return new Set(values).size>1;});
+  const axes=Object.fromEntries([...paramAxes,...varying]);
+  axisSelect.innerHTML=['<option value="order">Run order</option>',...Object.entries(axes).map(([key,axis])=>`<option value="${esc(key)}">${esc(axis.label)}${axis.unit?` (${axis.unit})`:''}</option>`)].join('');
+  const wedged=batch&&scenario.run_metadata?.wedge?.wedgeattribs?`param:${scenario.run_metadata.wedge.wedgeattribs}`:null;
+  const has=(key)=>key&&[...axisSelect.options].some((o)=>o.value===key);
+  axisSelect.value=!fresh&&has(kept)?kept:has(wedged)?wedged:paramAxes[0]?.[0]||(has(kept)?kept:'order');
+  const metric=SERIES_METRICS[$('#seriesMetric').value]||SERIES_METRICS.median_map,axisKey=axisSelect.value,axis=axes[axisKey];
+  const filterKeys=params.filter((key)=>key!==axis?.param);
+  $('#seriesFilters').innerHTML=filterKeys.map((key)=>{
+    const values=[...new Set(allPoints.map((p)=>p.group.parameters?.[key]).filter((v)=>v!=null))].sort((a,b)=>a-b),selected=seriesFilter.values[key];
+    return `<label class="field-label" for="seriesFilter-${esc(key)}">${esc(paramLabel(key))}</label><select id="seriesFilter-${esc(key)}" class="select-control" data-param="${esc(key)}"><option value="any"${selected==='any'?' selected':''}>Any</option>${
+      values.map((v)=>`<option value="${esc(JSON.stringify(v))}"${v===selected?' selected':''}>${esc(paramValue(v))}</option>`).join('')}</select>`;
+  }).join('');
+  $('#seriesFilters').querySelectorAll('select').forEach((select)=>select.addEventListener('change',()=>{
+    seriesFilter.values[select.dataset.param]=select.value==='any'?'any':JSON.parse(select.value);
+    renderRunSeries(data.scenarios[activeScenario]);
+  }));
+  const points=allPoints.filter((p)=>filterKeys.every((key)=>seriesFilter.values[key]==='any'||p.group.parameters?.[key]===seriesFilter.values[key]))
+    .map((p,index)=>({...p,index}));
+  $('#seriesBatch').classList.toggle('hidden',!batch);
+  if(batch)$('#seriesBatch').textContent=`Batch ${batch.id} · ${allPoints.length}${batch.items?` of ${batch.items}`:''} work items imported${filterKeys.length?` · ${points.length} match the filters`:''}`;
+  const rows=points.map((p)=>({...p,x:axis?(p.run?axis.value(p.run,p.group):null):p.index+1,y:p.run?metric.value(p.run):null}));
+  const plotted=rows.filter((row)=>row.x!=null&&row.y!=null).sort((a,b)=>a.x-b.x||a.index-b.index);
   const xLabel=axis?`${axis.label}${axis.unit?` (${axis.unit})`:''}`:'Run (oldest first)';
   $('#seriesTable').innerHTML=`<table class="zone-table"><thead><tr><th scope="col">Run</th><th scope="col">${esc(axis?axis.label:'#')}</th><th scope="col">${esc(metric.label)}</th></tr></thead><tbody>${
-    rows.map((row)=>`<tr${row.group.import_id===currentId?' class="current"':''}><th scope="row">${esc(row.group.run_id)}</th><td class="num">${axis?fmt(row.x,axis.unit):row.x}</td><td class="num">${row.run?fmt(row.y,metric.unit):`no ${esc(scenario.transmitter?.name||'TX')}`}</td></tr>`).join('')}</tbody></table>`;
+    rows.map((row)=>`<tr${row.group.import_id===currentId?' class="current"':''}><th scope="row">${esc(runLabel(row.group.run_id))}</th><td class="num">${axis?fmt(row.x,axis.unit):row.x}</td><td class="num">${row.run?fmt(row.y,metric.unit):`no ${esc(scenario.transmitter?.name||'TX')}`}</td></tr>`).join('')}</tbody></table>`;
   const chart=$('#seriesChart');
-  if(plotted.length<2){chart.innerHTML='<p class="muted-copy">Fewer than two runs have this value for the selected transmitter.</p>';return;}
+  if(plotted.length<2){chart.innerHTML=`<p class="muted-copy">Fewer than two runs ${filterKeys.length?'match these filters and ':''}have this value for the selected transmitter.</p>`;return;}
   const width=Math.max(220,chart.clientWidth||250),height=168,pad={l:38,r:12,t:12,b:34};
   const xs=niceTicks(Math.min(...plotted.map((r)=>r.x)),Math.max(...plotted.map((r)=>r.x)),axis?4:Math.min(plotted.length-1,5));
   const ys=niceTicks(Math.min(...plotted.map((r)=>r.y)),Math.max(...plotted.map((r)=>r.y)),3);
@@ -2174,12 +2225,12 @@ function renderRunSeries(scenario) {
     ${drawLine?`<polyline class="series-line" points="${plotted.map((r)=>`${sx(r.x)},${sy(r.y)}`).join(' ')}"/>`:''}
     ${plotted.map((r)=>`<circle class="series-dot${r===current?' current':''}" cx="${sx(r.x)}" cy="${sy(r.y)}" r="${r===current?5:4}"/>`).join('')}
     ${current?`<text class="series-value" x="${Math.min(sx(current.x)+8,width-pad.r)}" y="${sy(current.y)-8}" text-anchor="${sx(current.x)+8>width-70?'end':'start'}">${fmt(current.y,metric.unit)}</text>`:''}
-    ${plotted.map((r,i)=>`<circle class="series-hit" data-index="${i}" cx="${sx(r.x)}" cy="${sy(r.y)}" r="12" tabindex="0" role="button" aria-label="${esc(r.group.run_id)}: ${esc(fmt(r.y,metric.unit))}. Open this run."/>`).join('')}
+    ${plotted.map((r,i)=>`<circle class="series-hit" data-index="${i}" cx="${sx(r.x)}" cy="${sy(r.y)}" r="12" tabindex="0" role="button" aria-label="${esc(runLabel(r.group.run_id))}: ${esc(fmt(r.y,metric.unit))}. Open this run."/>`).join('')}
   </svg>`;
   const tooltip=$('#seriesTooltip');
   const show=(event)=>{
     const row=plotted[Number(event.target.dataset.index)];if(!row)return;
-    tooltip.innerHTML=`<b>${esc(row.group.run_id)}</b><br>${esc(metric.label)}: ${esc(fmt(row.y,metric.unit))}${axis?`<br>${esc(axis.label)}: ${esc(fmt(row.x,axis.unit))}`:''}`;
+    tooltip.innerHTML=`<b>${esc(runLabel(row.group.run_id))}</b><br>${esc(metric.label)}: ${esc(fmt(row.y,metric.unit))}${axis?`<br>${esc(axis.label)}: ${esc(fmt(row.x,axis.unit))}`:''}`;
     const box=event.target.getBoundingClientRect(),host=panel.getBoundingClientRect(),plotTop=chart.getBoundingClientRect().top-host.top;
     tooltip.classList.remove('hidden');
     const above=box.top-host.top-tooltip.offsetHeight-4;  // flip below the point when it would cover the controls
@@ -2209,8 +2260,8 @@ function syncRunStepper(scenario) {
   const previous=runScenarioFor(runs[index-1],scenario.transmitter?.name);
   const changes=previous?runChanges(previous,scenario):[];
   $('#housionnaRunChanges').innerHTML=changes.length
-    ?`<b>Since ${esc(runs[index-1].run_id)}:</b> ${changes.map(esc).join(' · ')}`
-    :`<b>Since ${esc(runs[index-1].run_id)}:</b> no change in settings, devices or measurement surface.`;
+    ?`<b>Since ${esc(runLabel(runs[index-1].run_id))}:</b> ${changes.map(esc).join(' · ')}`
+    :`<b>Since ${esc(runLabel(runs[index-1].run_id))}:</b> no change in settings, devices or measurement surface.`;
 }
 
 function renderHousionnaMetadata(scenario) {
@@ -2223,7 +2274,8 @@ function renderHousionnaMetadata(scenario) {
   const meta=scenario.run_metadata||{}, mapTriangles=(scenario.radio_map?.surfaces||[]).reduce((sum,row)=>sum+(row.mesh?.faces?.length||row.values_db?.length||0),0);
   const runId=meta.run_id||scenario.provenance?.run_folder_name||'unknown';
   const allMapSamples=Number(meta.radio_map_triangle_count??mapTriangles);
-  target.innerHTML=`<b>${esc(runId)}</b>${meta.scene_name?` / ${esc(meta.scene_name)}`:''}<br>${(Number(scenario.frequency_hz)/1e9).toFixed(3)} GHz / ${meta.tx_count??1} TX / ${meta.rx_count??scenario.receivers.length} RX / ${meta.mesh_count??scenario.geometry.objects.length} RF scene meshes<br>${meta.path_count??scenario.paths.length} total paths / ${allMapSamples.toLocaleString()} map samples across TXs<br>Selected ${esc(scenario.transmitter.name)}: ${scenario.paths.length} paths / ${mapTriangles.toLocaleString()} measurement triangles`;
+  const wedged=Object.entries(meta.parameters||{}).map(([key,value])=>`${esc(paramLabel(key))} ${esc(paramValue(value))}`).join(' / ');
+  target.innerHTML=`<b>${esc(runLabel(runId))}</b>${meta.scene_name?` / ${esc(meta.scene_name)}`:''}<br>${wedged?`${wedged}<br>`:''}${(Number(scenario.frequency_hz)/1e9).toFixed(3)} GHz / ${meta.tx_count??1} TX / ${meta.rx_count??scenario.receivers.length} RX / ${meta.mesh_count??scenario.geometry.objects.length} RF scene meshes<br>${meta.path_count??scenario.paths.length} total paths / ${allMapSamples.toLocaleString()} map samples across TXs<br>Selected ${esc(scenario.transmitter.name)}: ${scenario.paths.length} paths / ${mapTriangles.toLocaleString()} measurement triangles`;
 }
 
 function populateSourceSelectors(preferredImportId=null, preferredTx=null) {
@@ -2233,7 +2285,7 @@ function populateSourceSelectors(preferredImportId=null, preferredTx=null) {
   const groups=housionnaGroups();
   $('#housionnaRunSelect').innerHTML=groups.map((group)=>{
     const suffix=group.import_id.split('-').at(-1)?.slice(0,8)||'';
-    return `<option value="${esc(group.import_id)}">${esc(group.run_id)} · ${esc(group.scene_name||'scene')} · ${esc(suffix)}</option>`;
+    return `<option value="${esc(group.import_id)}">${esc(runLabel(group.run_id))} · ${esc(group.scene_name||'scene')} · ${esc(suffix)}</option>`;
   }).join('');
   const activeGroupId=preferredImportId||data.scenarios[activeScenario]?.import_id||groups[0]?.import_id;
   const group=groups.find((item)=>item.import_id===activeGroupId)||groups[0];
@@ -2331,8 +2383,7 @@ async function loadHousionnaCatalog() {
 }
 
 async function refreshViewerScene(importId,txName) {
-  const url='/outputs/digital_twin/viewer_scene.json';
-  const {body:next}=await apiJson(url);
+  const {body:next}=await apiJson(SCENE_URL);
   if(next.schema_version!==1||!next.scenarios)throw new Error('Refreshed viewer data has an unsupported schema');
   resolveViewerAssets(next);data=next;rememberHousionnaStubs();
   await ensureHousionnaImport(importId);
@@ -2455,7 +2506,7 @@ async function ensureHousionnaImport(importId) {
   if(!keys.length||keys.every((key)=>!data.scenarios[key].stub)){if(keys.length)housionnaLoaded.set(importId,performance.now());return;}
   if(!housionnaLoading.has(importId))housionnaLoading.set(importId,(async()=>{
     $('#housionnaImportStatus').textContent='Loading the selected run…';
-    const {body}=await apiJson(`/api/housionna/imports/${encodeURIComponent(importId)}/viewer`);
+    const {body}=await apiJson(importViewerUrl(importId));
     resolveViewerAssets(body);
     for(const key of body.scenario_order)if(data.scenarios[key])data.scenarios[key]=body.scenarios[key];
     housionnaLoaded.set(importId,performance.now());
@@ -2467,7 +2518,7 @@ async function ensureHousionnaImport(importId) {
       for(const key of importScenarioKeys(id))if(housionnaStubs.has(key))data.scenarios[key]=housionnaStubs.get(key);
       housionnaLoaded.delete(id);
     }
-    $('#housionnaImportStatus').textContent='';
+    $('#housionnaImportStatus').textContent=STATIC_SITE?'Published results. This public view is read-only.':'';
   })().finally(()=>housionnaLoading.delete(importId)));
   await housionnaLoading.get(importId);
 }
@@ -2681,8 +2732,7 @@ function wireUI() {
 
 async function start() {
   try {
-    const sceneUrl='/outputs/digital_twin/viewer_scene.json';
-    data=(await apiJson(sceneUrl)).body;
+    data=(await apiJson(SCENE_URL)).body;
     if(data.schema_version!==1||!data.scenarios) throw new Error('Unsupported viewer scene data schema');
     resolveViewerAssets(data);rememberHousionnaStubs();
     activeScenario=data.featured_scenario||'current';
@@ -2704,6 +2754,11 @@ async function start() {
     buildScenario();
     syncSimulationControls(data.scenarios[activeScenario]);
     $('#sceneLoading').remove();
+    if(STATIC_SITE) {
+      const runs=housionnaGroups().length;
+      setHousionnaStatus('ready',`Published results · ${runs} run${runs===1?'':'s'}. This public view is read-only.`);
+      return;
+    }
     loadApiStatus();
     await loadHousionnaCatalog();
     await restoreLatestHousionnaResults(activeScenario);

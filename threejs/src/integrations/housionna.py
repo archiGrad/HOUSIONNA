@@ -776,18 +776,19 @@ def _sanitize_json(value: Any) -> Any:
 
 def import_run(run_folder: str | Path, project_root: str | Path, *,
                progress_callback: Callable[[str], None] | None = None,
-               dry_run: bool = False) -> Path | dict[str, Any]:
+               dry_run: bool = False, run_id: str | None = None) -> Path | dict[str, Any]:
     """Validate and normalize a HOUSIONNA run; return its viewer-import file."""
     folder = Path(run_folder).expanduser().resolve()
     if not folder.is_dir():
         raise ValueError(f"HOUSIONNA run folder does not exist or is not a directory: {folder}")
+    run_id = run_id or _run_id_for_folder(folder)
     def report(stage: str) -> None:
         if progress_callback:
             progress_callback(stage)
 
     report("validating_export")
     source_sha256, source_file_hashes = _source_fingerprint(folder)
-    folder_tag = re.sub(r"[^A-Za-z0-9_]+", "_", folder.name).strip("_") or "run"
+    folder_tag = re.sub(r"[^A-Za-z0-9_]+", "_", run_id).strip("_") or "run"
     output_tag = f"{folder_tag}-{source_sha256[:12]}"
     root = Path(project_root).resolve()
     path_endpoint_tolerance_m = configured_path_endpoint_tolerance(root)
@@ -905,12 +906,12 @@ def import_run(run_folder: str | Path, project_root: str | Path, *,
         map_max = max(map_values) if map_values else None
         scene_entry = {
             "name": scenario_key,
-            "label": f"HOUSIONNA {folder.name} · {tx_name}",
-            "description": f"Imported HOUSIONNA Houdini → Sionna RT result from run {folder.name}; viewing {tx_name}.",
+            "label": f"HOUSIONNA {run_id} · {tx_name}",
+            "description": f"Imported HOUSIONNA Houdini → Sionna RT result from run {run_id}; viewing {tx_name}.",
             "source_type": "housionna",
             "provenance": {
                 "pipeline": "HOUSIONNA Houdini → Sionna RT → Houdini",
-                "run_folder_name": folder.name,
+                "run_folder_name": run_id,
                 "source_run_folder": str(folder),
                 "source_scene_file": scene_file.name,
                 "source_device_file": txrx_file.name,
@@ -926,14 +927,14 @@ def import_run(run_folder: str | Path, project_root: str | Path, *,
                 "max_path_endpoint_error_m": max_path_endpoint_error_m,
             },
             "run_metadata": {
-                "run_id": folder.name,
+                "run_id": run_id,
                 "import_id": output_tag,
                 "imported_at_utc": None,
                 "source_sha256": source_sha256,
             },
             "frequency_hz": frequency_hz,
             "greenhouse": {"length_m": dimensions[0], "width_m": dimensions[1], "height_m": dimensions[2]},
-            "environment": {"label": f"HOUSIONNA run {folder.name}"},
+            "environment": {"label": f"HOUSIONNA run {run_id}"},
             "scene_dimensions_m": dimensions,
             "scene_bounds_m": overall_bounds,
             "structure_config": {},
@@ -982,7 +983,7 @@ def import_run(run_folder: str | Path, project_root: str | Path, *,
     total_path_count = sum(len(rows) for rows in path_rows_by_tx.values())
     total_map_triangles = sum(len(surface["values_db"]) for surface in radio_surfaces)
     run_metadata = {
-        "run_id": folder.name,
+        "run_id": run_id,
         "scene_name": scene_name,
         "import_id": output_tag,
         "imported_at_utc": imported_at,
@@ -993,6 +994,7 @@ def import_run(run_folder: str | Path, project_root: str | Path, *,
         "path_count": total_path_count,
         "radio_map_triangle_count": total_map_triangles,
         "source_sha256": source_sha256,
+        **_houdini_metadata(folder),
     }
     for scenario in scenarios.values():
         scenario["run_metadata"]["imported_at_utc"] = imported_at
@@ -1008,7 +1010,7 @@ def import_run(run_folder: str | Path, project_root: str | Path, *,
         "provenance": {
             "pipeline": "HOUSIONNA Houdini → Sionna RT → Houdini",
             "source_run_folder": str(folder),
-            "source_run_name": folder.name,
+            "source_run_name": run_id,
             "source_files": artifact_names,
             "source_file_sha256": source_file_hashes,
             "source_sha256": source_sha256,
@@ -1082,6 +1084,106 @@ def configured_path_endpoint_tolerance(project_root: str | Path) -> float:
     return tolerance
 
 
+# Batch exports (Oct 2026): <batches>/<batch>/wiNNN/ holds one complete run per Houdini work item, next to
+# batch.json and status.json. Such a run is addressed as "<batch>.wiNNN"; plain runs keep their folder name.
+BATCH_RUN_ID = re.compile(r"([A-Za-z0-9][A-Za-z0-9_-]*)\.(wi\d+)")
+WORK_ITEM = re.compile(r"wi\d+")
+
+
+def configured_batches_directory(project_root: str | Path) -> Path:
+    """housionna.batches_directory, or the "batches" folder next to the runs directory."""
+    root = Path(project_root).resolve()
+    value = os.environ.get("HOUSIONNA_BATCHES_DIRECTORY")
+    config_file = root / "config" / "housionna.yaml"
+    if not value and config_file.is_file():
+        try:
+            raw = yaml.safe_load(config_file.read_text(encoding="utf-8")) or {}
+        except yaml.YAMLError as error:
+            raise ValueError("config/housionna.yaml is not valid YAML") from error
+        section = raw.get("housionna") if isinstance(raw, dict) else None
+        value = section.get("batches_directory") if isinstance(section, dict) else None
+    if not value:
+        return configured_runs_directory(root).parent / "batches"
+    configured = Path(value).expanduser()
+    return (configured if configured.is_absolute() else root / configured).resolve()
+
+
+def _batch_of(run_id: str) -> str | None:
+    match = BATCH_RUN_ID.fullmatch(run_id)
+    return match.group(1) if match else None
+
+
+def _run_id_for_folder(folder: Path) -> str:
+    if WORK_ITEM.fullmatch(folder.name) and (folder.parent / "batch.json").is_file():
+        return f"{folder.parent.name}.{folder.name}"
+    return folder.name
+
+
+def _run_folders(project_root: str | Path) -> list[tuple[str, Path]]:
+    """Every candidate run: direct children of the runs directory, then each work item of each batch."""
+    runs_root = configured_runs_directory(project_root)
+    found = [(child.name, child) for child in runs_root.iterdir() if child.is_dir()] if runs_root.is_dir() else []
+    batches_root = configured_batches_directory(project_root)
+    if batches_root.is_dir():
+        for batch in sorted(batches_root.iterdir()):
+            if batch.is_dir() and not batch.is_symlink() and (batch / "batch.json").is_file():
+                found += [(f"{batch.name}.{item.name}", item) for item in sorted(batch.iterdir())
+                          if item.is_dir() and WORK_ITEM.fullmatch(item.name)]
+    return found
+
+
+def resolve_run_folder(project_root: str | Path, run_id: Any) -> Path:
+    """Map a run id from the API to its folder, without accepting paths, traversal or symlinks."""
+    if not _valid_run_id(run_id):
+        raise ValueError("Invalid HOUSIONNA run identifier")
+    batch = _batch_of(run_id)
+    if batch:
+        base = configured_batches_directory(project_root).resolve()
+        unresolved = base / batch / run_id.split(".", 1)[1]
+        links = (base / batch).is_symlink() or unresolved.is_symlink()
+        folder = unresolved.resolve()
+        inside = folder.parent.parent == base
+    else:
+        base = configured_runs_directory(project_root).resolve()
+        unresolved = base / run_id
+        links = unresolved.is_symlink()
+        folder = unresolved.resolve()
+        inside = folder.parent == base
+    if links or not inside or not folder.is_dir():
+        raise FileNotFoundError(f"HOUSIONNA run {run_id!r} is not available")
+    return folder
+
+
+def _houdini_metadata(folder: Path) -> dict[str, Any]:
+    """Provenance and wedge parameters from <hip>_meta.json (and the batch's batch.json), without local paths.
+
+    The meta file is not part of the source hash: it describes the run and never changes its RF content.
+    """
+    out: dict[str, Any] = {}
+    meta_file = _one_file(folder, "_meta.json", required=False)
+    meta = _read_json(meta_file) if meta_file else {}
+    if isinstance(meta, dict) and meta:
+        out["houdini"] = {key: meta[key] for key in ("houdini", "commit", "dirty", "exported_utc") if key in meta}
+        if isinstance(meta.get("hip"), str):
+            out["houdini"]["hip_file"] = re.split(r"[\\/]", meta["hip"])[-1]  # file name only, never the path
+        wedge = meta.get("wedge") if isinstance(meta.get("wedge"), dict) else {}
+        # Every wedged attribute starts with TOPS_ (agreed with Joris, Oct 2026).
+        parameters = {key: value for key, value in wedge.items()
+                      if key.startswith("TOPS_") and isinstance(value, (int, float)) and not isinstance(value, bool)}
+        if parameters:
+            out["parameters"] = parameters
+        if wedge:
+            out["wedge"] = {key: wedge[key] for key in ("wedgeindex", "wedgetotal", "wedgeattribs") if key in wedge}
+    batch_file = folder.parent / "batch.json"
+    if WORK_ITEM.fullmatch(folder.name) and batch_file.is_file():
+        batch = _read_json(batch_file)
+        if isinstance(batch, dict):
+            out["batch"] = {"id": folder.parent.name, "work_item": folder.name,
+                            "top_node": batch.get("top_node"), "created_utc": batch.get("created_utc"),
+                            "items": len(batch.get("items") or {}) or None}
+    return out
+
+
 def _valid_run_id(run_id: Any) -> bool:
     return (isinstance(run_id, str) and len(run_id) <= 128 and
             re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]*", run_id) is not None and
@@ -1109,7 +1211,7 @@ def _summary_from_document(import_id: str, document: dict[str, Any]) -> dict[str
     }
 
 
-def discover_runs(project_root: str | Path) -> list[dict[str, Any]]:
+def discover_runs(project_root: str | Path, *, only: str | None = None) -> list[dict[str, Any]]:
     """List child folders and validate complete exports without importing them."""
     root = Path(project_root).resolve()
     runs_root = configured_runs_directory(root)
@@ -1121,9 +1223,13 @@ def discover_runs(project_root: str | Path) -> list[dict[str, Any]]:
     summaries = list_imports(root)
     tolerance = configured_path_endpoint_tolerance(root)
     required_suffixes = ("_scene.xml", "_txrx.json", "_settings.json", ("_result.json", "_result.npz"))
-    for folder in (child for child in runs_root.iterdir() if child.is_dir()):
-        row: dict[str, Any] = {"run_id": folder.name, "status": "invalid", "errors": []}
-        if folder.is_symlink() or not _valid_run_id(folder.name):
+    # only=<run id> validates one run (an import job) instead of every run in every batch.
+    for run_id, folder in (item for item in _run_folders(root) if only is None or item[0] == only):
+        row: dict[str, Any] = {"run_id": run_id, "status": "invalid", "errors": []}
+        batch = _batch_of(run_id)
+        if batch:
+            row["batch_id"] = batch
+        if folder.is_symlink() or not _valid_run_id(run_id):
             row["errors"].append("Run folder name is not a supported identifier")
             rows.append(row)
             continue
@@ -1138,26 +1244,26 @@ def discover_runs(project_root: str | Path) -> list[dict[str, Any]]:
             else:
                 source_hash, _ = _source_fingerprint(folder.resolve())
                 signature = f"{source_hash}:{tolerance:.12g}"
-                cache_key = (str(runs_root.resolve()), folder.name)
+                cache_key = (str(runs_root.resolve()), run_id)
                 cached_validation = _RUN_VALIDATION_CACHE.get(cache_key)
                 if cached_validation and cached_validation[0] == signature:
                     row.update(cached_validation[1])
                     rows.append(row)
                     continue
-                summary = next((item for item in summaries if item.get("run_id") == folder.name and
+                summary = next((item for item in summaries if item.get("run_id") == run_id and
                                 item.get("source_sha256") == source_hash and item.get("adapter_version") == ADAPTER_VERSION and
                                 item.get("path_endpoint_tolerance_m") == tolerance), None)
                 if summary is None:
-                    document = import_run(folder, root, dry_run=True)
+                    document = import_run(folder, root, dry_run=True, run_id=run_id)
                     assert isinstance(document, dict)
                     summary = _summary_from_document("", document)
                 row.update({key: summary[key] for key in (
                     "scene_name", "frequency_hz", "tx_count", "rx_count", "mesh_count",
                     "path_count", "radio_map_triangle_count", "source_sha256", "transmitters")})
                 row["status"] = "valid"
-                row["timestamp"] = _run_timestamp(folder)
+                row["timestamp"] = _run_timestamp(folder.parent if batch else folder)
                 _RUN_VALIDATION_CACHE[cache_key] = (signature, dict(row))
-                while len(_RUN_VALIDATION_CACHE) > 128:
+                while len(_RUN_VALIDATION_CACHE) > 4096:
                     _RUN_VALIDATION_CACHE.pop(next(iter(_RUN_VALIDATION_CACHE)))
         except (OSError, ValueError, KeyError, TypeError, AssertionError) as error:
             message = str(error).replace(str(folder), "run folder")
@@ -1197,7 +1303,7 @@ def list_imports(project_root: str | Path) -> list[dict[str, Any]]:
                     if document.get("schema_version") != 1:continue
                     entry=(signature,_summary_from_document(import_file.parent.name,document))
                 _IMPORT_SUMMARY_CACHE[str(import_file)]=entry
-                while len(_IMPORT_SUMMARY_CACHE)>16:_IMPORT_SUMMARY_CACHE.popitem(last=False)
+                while len(_IMPORT_SUMMARY_CACHE)>4096:_IMPORT_SUMMARY_CACHE.popitem(last=False)  # small summaries; batches hold hundreds of runs
                 rows.append(dict(entry[1]))
         except (OSError, ValueError, AttributeError):
             continue

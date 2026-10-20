@@ -8,6 +8,7 @@ viewer/digital-twin-dist/
 optix7cache.db
 # regenerable
 outputs/live/
+outputs/site/
 outputs/digital_twin/
 outputs/integrations/
 outputs/performance_refinement/

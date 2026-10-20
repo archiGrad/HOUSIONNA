@@ -69,6 +69,10 @@ def vertical_farm_scenario_config(base: dict[str, Any], name: str) -> dict[str, 
     )
     cfg["material_status"] = case["material_status"]
     cfg["rf_geometry"]["zones_per_level"] = int(case["zones_per_level"])
+    canopy_material = case.get("canopy_material", "canopy_placeholder")
+    if canopy_material not in cfg["materials"]:
+        raise ValueError(f"Scenario {name} names an unknown canopy material: {canopy_material}")
+    cfg["rf_geometry"]["canopy_material"] = canopy_material
     cfg["scene_dimensions_m"] = [width, depth, height]
     cfg["greenhouse"] = {
         "length_m": width, "width_m": depth, "height_m": height,
@@ -86,6 +90,7 @@ def vertical_farm_scenario_config(base: dict[str, Any], name: str) -> dict[str, 
         "zones_per_level": int(case["zones_per_level"]),
         "level_count": len(levels),
         "plant_zone_height_m": float(cfg["rf_geometry"]["plant_zone_height_m"]),
+        "material": canopy_material,
     }
     cfg["transmitter"] = {
         "name": cfg["tx"]["name"],
@@ -161,6 +166,7 @@ def vertical_farm_scenario_config(base: dict[str, Any], name: str) -> dict[str, 
         "dimensions_m": {"width": width, "depth": depth, "height": height},
         "shelf_levels_m": levels,
         "rf_zones_per_level": int(case["zones_per_level"]),
+        "rf_canopy_material": canopy_material,
         "rf_plant_model_limitations": [
             "RF canopy zones are coarse solid boxes, not detailed leaf geometry.",
             "The crop material is an uncalibrated placeholder; no crop water-content or dielectric measurements were supplied.",
@@ -265,7 +271,7 @@ def generate_vertical_farm_geometry(cfg: dict[str, Any]) -> dict[str, Any]:
             for zone_index in range(zone_count):
                 x0 = usable_x0+zone_index*(zone_width+gap)
                 zone_id = f"rf_plant_zone_level_{index+1}_zone_{zone_index+1}"
-                add(zone_id, "rf_plant_zone", "canopy_placeholder",
+                add(zone_id, "rf_plant_zone", rf.get("canopy_material", "canopy_placeholder"),
                     (x0, x0+zone_width, usable_y0, usable_y1, z0, z1),
                     shelf_id=shelf_id, level=index+1, zone=zone_index+1,
                     rf_role="coarse RF-only canopy proxy", visual_only=False)

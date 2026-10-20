@@ -14,6 +14,7 @@ from digital_twin_data import build_viewer_scene, housionna_viewer_payload
 from integrations.housionna import (
     compare_imports,
     configured_runs_directory,
+    resolve_run_folder,
     discover_runs,
     import_run,
     list_imports,
@@ -94,8 +95,8 @@ class HousionnaImportManager:
         runs_root = self.project_root
         try:
             runs_root = configured_runs_directory(self.project_root)
-            candidates = discover_runs(self.project_root)
             requested = self.jobs[job_id]["requested_run_id"]
+            candidates = discover_runs(self.project_root, only=requested) if requested else discover_runs(self.project_root)
             if requested is None:
                 selected = next((row for row in candidates if row["status"] == "valid"), None)
                 if selected is None:
@@ -106,13 +107,12 @@ class HousionnaImportManager:
                                  if row["run_id"] == requested and row["status"] == "valid"), None)
                 if selected is None:
                     raise HousionnaApiError(404, "The selected HOUSIONNA run is incomplete or invalid")
-            run_folder = (runs_root / requested).resolve()
             try:
-                run_folder.relative_to(runs_root.resolve())
+                run_folder = resolve_run_folder(self.project_root, requested)
             except ValueError as error:
-                raise HousionnaApiError(400, "The selected run is outside the configured directory") from error
-            if run_folder.is_symlink() or not run_folder.is_dir():
-                raise HousionnaApiError(404, "The selected HOUSIONNA run is unavailable")
+                raise HousionnaApiError(400, "The selected run is not a valid HOUSIONNA run") from error
+            except FileNotFoundError as error:
+                raise HousionnaApiError(404, "The selected HOUSIONNA run is unavailable") from error
             with self.lock:
                 self.jobs[job_id]["run_id"] = requested
             self._set_stage(job_id, "validating_export", "Validating the selected export")
@@ -128,7 +128,7 @@ class HousionnaImportManager:
                 }
                 self._set_stage(job_id, stage, messages.get(stage))
 
-            output_file = import_run(run_folder, self.project_root, progress_callback=progress)
+            output_file = import_run(run_folder, self.project_root, progress_callback=progress, run_id=requested)
             if not isinstance(output_file, Path):
                 raise RuntimeError("Adapter did not produce a normalized import file")
             import_id = output_file.parent.name

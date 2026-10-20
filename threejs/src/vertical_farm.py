@@ -143,11 +143,11 @@ def _save_comparison(results: dict[str, dict[str, Any]], profile: str | None = N
         "description": "Controlled vertical-farm RF proxy comparison against the empty rack.",
         "frequency_hz": float(results[FARM_SCENARIOS[0]]["cfg"]["frequency_hz"]),
         "unchanged_parameters": [
-            "cabinet/rack geometry", "shelf count and heights", "materials",
+            "cabinet/rack geometry", "shelf count and heights", "non-canopy materials",
             "transmitter and receivers", "radio-map grid", "solver and seed",
             "decorative visual plant layout",
         ],
-        "changed_parameter": "rf_geometry.zones_per_level",
+        "changed_parameter": "canopy: farm_proxy adds one RF canopy zone per level; farm_dense uses the same zones with a denser material",
         "difference_quantity": "scenario minus empty 10*log10(path gain); path gain floored at 1e-15 for display",
         "stats": rows,
         "stats_note": ("Floored statistics over the viewer plane only; dominated by cells without signal. "
@@ -201,11 +201,16 @@ def _validate_controlled_cases(results: dict[str, dict[str, Any]]) -> None:
     expected = {
         "farm_empty": 0,
         "farm_proxy": len(results["farm_proxy"]["cfg"]["environment"]["shelf_levels_m"]),
-        "farm_dense": 2*len(results["farm_dense"]["cfg"]["environment"]["shelf_levels_m"]),
+        "farm_dense": len(results["farm_dense"]["cfg"]["environment"]["shelf_levels_m"]),
     }
     for name, count in expected.items():
         actual = sum(obj["category"] == "rf_plant_zone" for obj in results[name]["geometry"]["objects"])
         assert actual == count, f"{name} expected {count} RF zones, found {actual}"
+    # Proxy and dense must differ only in canopy material, so the dense-vs-proxy difference is the density effect.
+    zones = {name: [(obj["id"], obj["bounds_m"], obj["material_key"]) for obj in results[name]["geometry"]["objects"]
+                    if obj["category"] == "rf_plant_zone"] for name in ("farm_proxy", "farm_dense")}
+    assert [z[:2] for z in zones["farm_proxy"]] == [z[:2] for z in zones["farm_dense"]], "dense canopy zones moved"
+    assert {z[2] for z in zones["farm_proxy"]} != {z[2] for z in zones["farm_dense"]}, "dense canopy uses the proxy material"
 
 
 def _validate_map_planes(results: dict[str, dict[str, Any]]) -> None:

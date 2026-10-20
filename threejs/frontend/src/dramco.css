@@ -168,3 +168,21 @@
 :root[data-theme] .series-table { margin-top: 6px; }
 :root[data-theme] .series-table > summary { cursor: pointer; color: var(--muted); font-size: 10.5px; }
 :root[data-theme] .series-table tr.current > * { color: var(--text); font-weight: 700; }
+
+/* Published read-only website (run.py publish): no server, so hide everything that imports, reruns or simulates. */
+.site-note { display: none; }
+:root[data-site="static"] .site-note { display: block; margin: 8px 0 0; font-size: 12px; line-height: 1.45; color: var(--muted); }
+:root[data-site="static"] .simulation-panel,
+:root[data-site="static"] label[for="housionnaExportSelect"],
+:root[data-site="static"] #housionnaExportSelect,
+:root[data-site="static"] #importSelectedHousionna,
+:root[data-site="static"] #importAllHousionna,
+:root[data-site="static"] #housionnaControls > .housionna-actions,
+:root[data-site="static"] label[for="housionnaResultVersion"],
+:root[data-site="static"] #housionnaResultVersion,
+:root[data-site="static"] #housionnaLiveComparison,
+:root[data-site="static"] .comparison-panel { display: none !important; }
+
+/* Batch series: which cook, and the wedged parameters held fixed while one is on the x axis. */
+:root[data-theme] .series-batch { margin: 4px 0 6px; font-size: 12px; }
+:root[data-theme] .series-filters:empty { display: none; }

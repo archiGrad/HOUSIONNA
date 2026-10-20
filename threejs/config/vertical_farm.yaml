@@ -77,6 +77,17 @@ materials:
     scattering_pattern: lambertian
     color_rgb: [0.29, 0.57, 0.31]
     note: DEMO PLACEHOLDER; coarse solid canopy proxy, not a calibrated plant model
+  canopy_dense_placeholder:
+    # Same box as canopy_placeholder, standing in for a fuller crop: more leaf water per volume, so a higher
+    # effective permittivity and loss. Values are as arbitrary as the sparse ones, chosen only to be clearly denser.
+    relative_permittivity: 15.0
+    conductivity_s_per_m: 0.5
+    thickness_m: 0.34
+    scattering_coefficient: 0.0
+    xpd_coefficient: 0.0
+    scattering_pattern: lambertian
+    color_rgb: [0.2, 0.45, 0.24]
+    note: DEMO PLACEHOLDER; denser coarse canopy proxy, not a calibrated plant model
 
 antenna:
   rows: 1
@@ -152,7 +163,9 @@ scenarios:
     visual_plants_visible_by_default: true
     material_status: Placeholder RF canopy proxy · one zone per level
   farm_dense:
-    label: Vertical farm · Dense RF proxy
-    zones_per_level: 2
+    # Same canopy box as farm_proxy; only the canopy material is denser (canopy_dense_placeholder).
+    label: Vertical farm · Dense canopy proxy
+    zones_per_level: 1
+    canopy_material: canopy_dense_placeholder
     visual_plants_visible_by_default: true
-    material_status: Placeholder RF canopy proxy · two zones per level
+    material_status: Placeholder dense RF canopy proxy · one zone per level, higher-loss material
