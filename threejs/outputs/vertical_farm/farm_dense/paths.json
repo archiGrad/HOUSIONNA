@@ -143,10 +143,10 @@
       "delay_s": 2.128611953366999e-09,
       "delay_ns": 2.1286120414733887,
       "path_length_m_from_delay": 0.6381418108940125,
-      "a_real": -0.006013219710439444,
-      "a_imag": 0.005743564106523991,
-      "magnitude": 0.008315487764775753,
-      "magnitude_db": -41.60224542236452,
+      "a_real": -0.007349364459514618,
+      "a_imag": 0.006717798765748739,
+      "magnitude": 0.009957006201148033,
+      "magnitude_db": -40.03742444792672,
       "interaction_type_ids": [
         1
       ],
@@ -154,11 +154,11 @@
         "specular_reflection"
       ],
       "interacted_objects": [
-        "rf_plant_zone_level_2_zone_2"
+        "rf_plant_zone_level_2_zone_1"
       ],
       "interaction_vertices_m": [
         [
-          0.8567107915878296,
+          0.8567108511924744,
           0.10499999672174454,
           1.1512956619262695
         ]
@@ -199,10 +199,10 @@
       "delay_s": 6.582399958432461e-09,
       "delay_ns": 6.582399845123291,
       "path_length_m_from_delay": 1.9733537435531616,
-      "a_real": 7.505086250603199e-05,
-      "a_imag": -0.0001694368402240798,
-      "magnitude": 0.00018531452224124223,
-      "magnitude_db": -74.64181091398821,
+      "a_real": 0.00014819003990851343,
+      "a_imag": -0.0002702719357330352,
+      "magnitude": 0.000308232381939888,
+      "magnitude_db": -70.22243475173826,
       "interaction_type_ids": [
         1,
         1
@@ -213,18 +213,18 @@
       ],
       "interacted_objects": [
         "enclosure_top_panel",
-        "rf_plant_zone_level_3_zone_2"
+        "rf_plant_zone_level_3_zone_1"
       ],
       "interaction_vertices_m": [
         [
-          0.7961887717247009,
-          0.004429868888109922,
+          0.7961887121200562,
+          0.004429844208061695,
           2.065000057220459
         ],
         [
           0.8567087650299072,
           0.10499999672174454,
-          1.7167834043502808
+          1.7167832851409912
         ]
       ],
       "is_los": false
@@ -235,10 +235,10 @@
       "delay_s": 7.826201908756047e-09,
       "delay_ns": 7.826201915740967,
       "path_length_m_from_delay": 2.346236228942871,
-      "a_real": -1.733599310682621e-05,
-      "a_imag": -0.00018999670282937586,
-      "magnitude": 0.00019078596960753202,
-      "magnitude_db": -74.38907132912418,
+      "a_real": 2.293564466526732e-05,
+      "a_imag": -0.00037234078627079725,
+      "magnitude": 0.0003730465250555426,
+      "magnitude_db": -68.56474002254713,
       "interaction_type_ids": [
         1,
         1
@@ -249,18 +249,18 @@
       ],
       "interacted_objects": [
         "farm_floor",
-        "rf_plant_zone_level_1_zone_2"
+        "rf_plant_zone_level_1_zone_1"
       ],
       "interaction_vertices_m": [
         [
-          0.7803090214729309,
-          -0.021953018382191658,
+          0.7803090810775757,
+          -0.02195299230515957,
           0.0
         ],
         [
           0.8567107915878296,
           0.10499999672174454,
-          0.5312814116477966
+          0.5312813520431519
         ]
       ],
       "is_los": false
@@ -315,10 +315,10 @@
       "delay_s": 1.3606032744917229e-08,
       "delay_ns": 13.606032371520996,
       "path_length_m_from_delay": 4.078985691070557,
-      "a_real": -1.1062546036555432e-05,
-      "a_imag": -1.3535715879697818e-05,
-      "magnitude": 1.7481290342402644e-05,
-      "magnitude_db": -95.14853028082544,
+      "a_real": 1.1019173143722583e-05,
+      "a_imag": -5.651604624290485e-06,
+      "magnitude": 1.2383973626128864e-05,
+      "magnitude_db": -98.1427996313485,
       "interaction_type_ids": [
         1,
         1,
@@ -331,23 +331,23 @@
       ],
       "interacted_objects": [
         "farm_floor",
-        "rf_plant_zone_level_3_zone_2",
+        "rf_plant_zone_level_3_zone_1",
         "enclosure_top_panel"
       ],
       "interaction_vertices_m": [
         [
-          0.7120962738990784,
-          -0.13529181480407715,
+          0.7120964527130127,
+          -0.13529177010059357,
           0.0
         ],
         [
-          0.856712281703949,
-          0.10499999672174454,
-          1.7932231426239014
+          0.8567123413085938,
+          0.10499998927116394,
+          1.79322350025177
         ],
         [
           0.8786283731460571,
-          0.06858666986227036,
+          0.06858669966459274,
           2.065000057220459
         ]
       ],
@@ -372,6 +372,34 @@
     {
       "receiver": "RX_C",
       "path_index": 1,
+      "delay_s": 2.9490252462238686e-09,
+      "delay_ns": 2.9490251541137695,
+      "path_length_m_from_delay": 0.8840954899787903,
+      "a_real": -0.003932220861315727,
+      "a_imag": 0.002701586578041315,
+      "magnitude": 0.0047708419151604176,
+      "magnitude_db": -46.42809947645493,
+      "interaction_type_ids": [
+        1
+      ],
+      "interaction_types": [
+        "specular_reflection"
+      ],
+      "interacted_objects": [
+        "rf_plant_zone_level_3_zone_1"
+      ],
+      "interaction_vertices_m": [
+        [
+          0.6214352250099182,
+          0.10499999672174454,
+          1.5790693759918213
+        ]
+      ],
+      "is_los": false
+    },
+    {
+      "receiver": "RX_C",
+      "path_index": 2,
       "delay_s": 9.570746861697899e-09,
       "delay_ns": 9.570746421813965,
       "path_length_m_from_delay": 2.8692376613616943,
@@ -393,50 +421,6 @@
           0.62311190366745,
           -0.1931474506855011,
           0.0
-        ]
-      ],
-      "is_los": false
-    },
-    {
-      "receiver": "RX_C",
-      "path_index": 2,
-      "delay_s": 5.703482575114549e-09,
-      "delay_ns": 5.703482627868652,
-      "path_length_m_from_delay": 1.7098610401153564,
-      "a_real": 0.0008367133559659123,
-      "a_imag": 0.0005083875730633736,
-      "magnitude": 0.0009790542535483837,
-      "magnitude_db": -60.18386482861878,
-      "interaction_type_ids": [
-        4,
-        4,
-        1
-      ],
-      "interaction_types": [
-        "refraction",
-        "refraction",
-        "specular_reflection"
-      ],
-      "interacted_objects": [
-        "shelf_level_3_tray",
-        "shelf_level_3_tray",
-        "enclosure_back_panel"
-      ],
-      "interaction_vertices_m": [
-        [
-          0.6224642992019653,
-          0.5111207365989685,
-          1.434999942779541
-        ],
-        [
-          0.6223077178001404,
-          0.5600000023841858,
-          1.4569272994995117
-        ],
-        [
-          0.6221314072608948,
-          0.6150000095367432,
-          1.4815995693206787
         ]
       ],
       "is_los": false

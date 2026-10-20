@@ -182,23 +182,10 @@
     {
       "id": "rf_plant_zone_level_1_zone_1",
       "category": "rf_plant_zone",
-      "material_key": "canopy_placeholder",
+      "material_key": "canopy_dense_placeholder",
       "bounds_m": {
         "x_min": 0.23500000000000001,
-        "x_max": 0.595,
-        "y_min": 0.10500000000000001,
-        "y_max": 0.5349999999999999,
-        "z_min": 0.30500000000000005,
-        "z_max": 0.645
-      }
-    },
-    {
-      "id": "rf_plant_zone_level_1_zone_2",
-      "category": "rf_plant_zone",
-      "material_key": "canopy_placeholder",
-      "bounds_m": {
-        "x_min": 0.655,
-        "x_max": 1.0150000000000001,
+        "x_max": 1.015,
         "y_min": 0.10500000000000001,
         "y_max": 0.5349999999999999,
         "z_min": 0.30500000000000005,
@@ -260,23 +247,10 @@
     {
       "id": "rf_plant_zone_level_2_zone_1",
       "category": "rf_plant_zone",
-      "material_key": "canopy_placeholder",
+      "material_key": "canopy_dense_placeholder",
       "bounds_m": {
         "x_min": 0.23500000000000001,
-        "x_max": 0.595,
-        "y_min": 0.10500000000000001,
-        "y_max": 0.5349999999999999,
-        "z_min": 0.905,
-        "z_max": 1.245
-      }
-    },
-    {
-      "id": "rf_plant_zone_level_2_zone_2",
-      "category": "rf_plant_zone",
-      "material_key": "canopy_placeholder",
-      "bounds_m": {
-        "x_min": 0.655,
-        "x_max": 1.0150000000000001,
+        "x_max": 1.015,
         "y_min": 0.10500000000000001,
         "y_max": 0.5349999999999999,
         "z_min": 0.905,
@@ -338,23 +312,10 @@
     {
       "id": "rf_plant_zone_level_3_zone_1",
       "category": "rf_plant_zone",
-      "material_key": "canopy_placeholder",
+      "material_key": "canopy_dense_placeholder",
       "bounds_m": {
         "x_min": 0.23500000000000001,
-        "x_max": 0.595,
-        "y_min": 0.10500000000000001,
-        "y_max": 0.5349999999999999,
-        "z_min": 1.505,
-        "z_max": 1.845
-      }
-    },
-    {
-      "id": "rf_plant_zone_level_3_zone_2",
-      "category": "rf_plant_zone",
-      "material_key": "canopy_placeholder",
-      "bounds_m": {
-        "x_min": 0.655,
-        "x_max": 1.0150000000000001,
+        "x_max": 1.015,
         "y_min": 0.10500000000000001,
         "y_max": 0.5349999999999999,
         "z_min": 1.505,

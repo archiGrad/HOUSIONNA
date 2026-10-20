@@ -46,7 +46,7 @@
   "grid_y_cells": 8,
   "positive_cell_count": 78,
   "min_positive_path_gain_linear": 4.067358672088517e-10,
-  "max_path_gain_linear": 0.0014868687139824033,
+  "max_path_gain_linear": 0.0015162886120378971,
   "seeds_averaged": [
     71,
     72,

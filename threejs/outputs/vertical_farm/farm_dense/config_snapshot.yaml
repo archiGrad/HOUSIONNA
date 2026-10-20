@@ -1,6 +1,6 @@
-description: "Vertical farm \xB7 Dense RF proxy. Compact, semi-open indoor rack with\
-  \ 3 configurable growing levels. Dimensions and RF materials are artificial software-demo\
-  \ placeholders."
+description: "Vertical farm \xB7 Dense canopy proxy. Compact, semi-open indoor rack\
+  \ with 3 configurable growing levels. Dimensions and RF materials are artificial\
+  \ software-demo placeholders."
 frequency_hz: 2400000000.0
 environment:
   label: Indoor vertical farm
@@ -37,7 +37,8 @@ rf_geometry:
   plant_zone_height_m: 0.34
   plant_zone_side_inset_m: 0.1
   inter_zone_gap_m: 0.06
-  zones_per_level: 2
+  zones_per_level: 1
+  canopy_material: canopy_dense_placeholder
 visual_plants:
   visualization_only: true
   in_sionna_scene: false
@@ -142,6 +143,18 @@ materials:
     - 0.57
     - 0.31
     note: DEMO PLACEHOLDER; coarse solid canopy proxy, not a calibrated plant model
+  canopy_dense_placeholder:
+    relative_permittivity: 15.0
+    conductivity_s_per_m: 0.5
+    thickness_m: 0.34
+    scattering_coefficient: 0.0
+    xpd_coefficient: 0.0
+    scattering_pattern: lambertian
+    color_rgb:
+    - 0.2
+    - 0.45
+    - 0.24
+    note: DEMO PLACEHOLDER; denser coarse canopy proxy, not a calibrated plant model
 antenna:
   rows: 1
   columns: 1
@@ -261,12 +274,15 @@ scenarios:
     visual_plants_visible_by_default: true
     material_status: "Placeholder RF canopy proxy \xB7 one zone per level"
   farm_dense:
-    label: "Vertical farm \xB7 Dense RF proxy"
-    zones_per_level: 2
+    label: "Vertical farm \xB7 Dense canopy proxy"
+    zones_per_level: 1
+    canopy_material: canopy_dense_placeholder
     visual_plants_visible_by_default: true
-    material_status: "Placeholder RF canopy proxy \xB7 two zones per level"
+    material_status: "Placeholder dense RF canopy proxy \xB7 one zone per level, higher-loss\
+      \ material"
 scenario: farm_dense
-material_status: "Placeholder RF canopy proxy \xB7 two zones per level"
+material_status: "Placeholder dense RF canopy proxy \xB7 one zone per level, higher-loss\
+  \ material"
 scene_dimensions_m:
 - 1.25
 - 0.65
@@ -287,9 +303,10 @@ structure:
   frame_cross_section_m: 0.035
 canopy:
   enabled: true
-  zones_per_level: 2
+  zones_per_level: 1
   level_count: 3
   plant_zone_height_m: 0.34
+  material: canopy_dense_placeholder
 transmitter:
   name: TX
   position_m:
@@ -326,7 +343,8 @@ model_metadata:
     depth: 0.65
     height: 2.1
   shelf_levels_m: *id001
-  rf_zones_per_level: 2
+  rf_zones_per_level: 1
+  rf_canopy_material: canopy_dense_placeholder
   rf_plant_model_limitations:
   - RF canopy zones are coarse solid boxes, not detailed leaf geometry.
   - The crop material is an uncalibrated placeholder; no crop water-content or dielectric

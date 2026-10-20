@@ -172,8 +172,8 @@ class DashboardHandler(BaseHTTPRequestHandler):
                    else self.housionna_simulations.result(job_id))
             self._send_json(200 if job else 404, job or {"error": "HOUSIONNA simulation was not found"})
             return
-        if route == "/" and self.digital_twin_root and (self.digital_twin_root / "index.html").is_file():
-            # The 3D twin is the only view.
+        if route in ("/", "/digital-twin") and self.digital_twin_root and (self.digital_twin_root / "index.html").is_file():
+            # The 3D twin is the only view. The trailing slash matters: the bundle uses relative asset paths.
             self.send_response(302)
             self.send_header("Location", "/digital-twin/")
             self.end_headers()
@@ -339,7 +339,6 @@ def serve(project_root: Path, *, open_browser: bool = True, port: int | None = N
         # The 3D view still opens if the optional study outputs are missing; it shows the remedy in the page.
         print(f"Digital Twin data is not ready yet: {error}")
     routes = {
-        "/digital-twin": digital_twin_root / "index.html",
         "/digital-twin/": digital_twin_root / "index.html",
         "/outputs/digital_twin/viewer_scene.json": project_root / "outputs" / "digital_twin" / "viewer_scene.json",
     }

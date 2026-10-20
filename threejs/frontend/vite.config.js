@@ -1,7 +1,8 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: '/digital-twin/',
+  // Relative, so the same build works under /digital-twin/ locally and from any folder on a web host.
+  base: './',
   build: {
     outDir: '../viewer/digital-twin-dist',
     emptyOutDir: true,

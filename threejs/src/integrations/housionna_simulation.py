@@ -38,6 +38,7 @@ from integrations.housionna import (  # noqa: E402
     _read_result,
     _source_fingerprint,
     configured_runs_directory,
+    resolve_run_folder,
     read_import,
     _paths_for_tx,
     _links_for_tx,
@@ -50,11 +51,10 @@ def resolve_source_run(project_root: Path, run_id: str) -> Path:
     if (not isinstance(run_id, str) or not run_id or run_id in {".", ".."} or
             any(character in run_id for character in ("/", "\\", ":"))):
         raise ValueError("source_run_id must be a run folder name")
-    runs_root = configured_runs_directory(project_root).resolve()
-    folder = (runs_root / run_id).resolve()
-    if folder.parent != runs_root or not folder.is_dir():
-        raise ValueError(f"HOUSIONNA run {run_id!r} is not available under the configured runs directory")
-    return folder
+    try:
+        return resolve_run_folder(project_root, run_id)  # plain run or <batch>.wiNNN
+    except (ValueError, FileNotFoundError) as error:
+        raise ValueError(f"HOUSIONNA run {run_id!r} is not available under the configured runs directory") from error
 
 
 def _source_documents(folder: Path, *, include_result: bool = True) -> tuple[Path, dict[str, Any], dict[str, Any], dict[str, Any], list[dict], list[dict]]:

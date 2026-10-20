@@ -27,7 +27,7 @@ from vertical_farm_geometry import (
 SCENARIO_LABELS = {
     "farm_empty": "Vertical farm · Empty rack",
     "farm_proxy": "Vertical farm · RF plant proxy",
-    "farm_dense": "Vertical farm · Dense RF proxy",
+    "farm_dense": "Vertical farm · Dense canopy proxy",
     "empty": "Empty",
     "transparent": "Transparent control",
     "weak_loss": "Weak-loss placeholder",

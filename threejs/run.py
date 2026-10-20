@@ -36,6 +36,10 @@ if __name__ == "__main__":
         from integrations.housionna_simulation import simulation_worker_main
 
         raise SystemExit(simulation_worker_main(sys.argv[2:]))
+    if len(sys.argv) > 1 and sys.argv[1] == "publish":
+        from publish_site import main as publish_site
+
+        raise SystemExit(publish_site(sys.argv[2:]))
     from poc import main  # noqa: E402
 
     main()
