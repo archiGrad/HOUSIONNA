@@ -18,6 +18,8 @@ from integrations.housionna import (
     _RUN_VALIDATION_CACHE,
     compare_imports,
     _load_ply,
+    _radiomap_from_npz,
+    _result_from_npz,
     configured_path_endpoint_tolerance,
     configured_runs_directory,
     discover_runs,
@@ -27,27 +29,35 @@ from integrations.housionna_api import HousionnaApiError, HousionnaImportManager
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-SAMPLE_RUN_ID = "20261007_200100Z"
-SAMPLE_RUN = configured_runs_directory(PROJECT_ROOT) / SAMPLE_RUN_ID
-HAS_SAMPLE = SAMPLE_RUN.is_dir()
-LARGE_RUN_ID = "20261007_195457Z"
-LARGE_RUN = configured_runs_directory(PROJECT_ROOT) / LARGE_RUN_ID
-HAS_LARGE_RUN = LARGE_RUN.is_dir()
+# A trimmed copy of a real HOUSIONNA export (2 TX, 20 RX, a ground mesh and one measurement wall), kept in
+# the tests so they do not depend on run folders in houdini_files/, which get pruned.
+SAMPLE_RUN_ID = "20261019_195611Z"
+SAMPLE_RUN = PROJECT_ROOT / "tests" / "fixtures" / "housionna" / SAMPLE_RUN_ID
 
 
-@unittest.skipUnless(HAS_SAMPLE, "The real HOUSIONNA sample export is not available locally")
-class HousionnaRealExportTests(unittest.TestCase):
-    def copy_sample(self, parent: Path, run_id: str = SAMPLE_RUN_ID) -> Path:
+def write_json_layout(run_folder: Path) -> None:
+    """Rewrite a NumPy export in the original exporter's JSON layout, so both formats stay tested."""
+    for stem, convert in (("_result", _result_from_npz), ("_radiomap", _radiomap_from_npz)):
+        source = next(run_folder.glob(f"*{stem}.npz"))
+        source.with_suffix(".json").write_text(json.dumps(convert(source)), encoding="utf-8")
+        source.unlink()
+
+
+class PointAssertions(unittest.TestCase):
+    def assertPointClose(self, first, second, tolerance_m=1e-6):
+        # NumPy exports store path endpoints as float32, so they match device positions to ~1e-7 m.
+        self.assertEqual(len(first), len(second))
+        for a, b in zip(first, second):
+            self.assertAlmostEqual(a, b, delta=tolerance_m)
+
+
+class HousionnaRealExportTests(PointAssertions):
+    def copy_sample(self, parent: Path, run_id: str = SAMPLE_RUN_ID, *, as_json: bool = False) -> Path:
         target = parent / run_id
         target.parent.mkdir(parents=True, exist_ok=True)
-        target.mkdir(parents=True)
-        for source in list(SAMPLE_RUN.glob("*.json")) + list(SAMPLE_RUN.glob("*_scene.xml")):
-            shutil.copy2(source, target / source.name)
-        source_meshes = SAMPLE_RUN / "meshes"
-        target_meshes = target / "meshes"
-        target_meshes.mkdir()
-        for source in source_meshes.glob("*.ply"):
-            shutil.copy2(source, target_meshes / source.name)
+        shutil.copytree(SAMPLE_RUN, target)
+        if as_json:
+            write_json_layout(target)
         return target
 
     def import_into_temp_project(self, run_folder: Path, project_root: Path) -> tuple[Path, dict]:
@@ -69,7 +79,7 @@ class HousionnaRealExportTests(unittest.TestCase):
             self.assertEqual(by_id[SAMPLE_RUN_ID]["status"], "valid")
             newest_valid = next(row for row in rows if row["status"] == "valid")
             self.assertEqual(newest_valid["run_id"], SAMPLE_RUN_ID)
-            self.assertEqual(newest_valid["tx_count"], 15)
+            self.assertEqual(newest_valid["tx_count"], 2)
 
     def test_import_latest_and_specific_run_reuse_real_result(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -80,24 +90,31 @@ class HousionnaRealExportTests(unittest.TestCase):
                 latest = next(row for row in discover_runs(PROJECT_ROOT) if row["status"] == "valid")
             output, document = self.import_into_temp_project(exports / latest["run_id"], root / "project")
             self.assertEqual(document["run_metadata"]["run_id"], SAMPLE_RUN_ID)
-            self.assertEqual(document["run_metadata"]["path_count"], 530)
+            self.assertEqual(document["run_metadata"]["path_count"], 80)
             first_mtime = output.stat().st_mtime_ns
             cached = import_run(run_folder, root / "project")
             self.assertEqual(cached, output)
             self.assertEqual(output.stat().st_mtime_ns, first_mtime)
             self.assertEqual(document["adapter_version"], "2.2.0")
 
-    def test_corrupt_json_is_reported_invalid(self):
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            run_folder = self.copy_sample(root)
-            next(run_folder.glob("*_result.json")).write_text("{", encoding="utf-8")
-            with patch.dict(os.environ, {"HOUSIONNA_RUNS_DIRECTORY": str(root)}):
-                row = discover_runs(PROJECT_ROOT)[0]
-            self.assertEqual(row["status"], "invalid")
+    def test_corrupt_result_is_reported_invalid(self):
+        for as_json, damage in ((True, b"{"), (False, b"not a zip archive"), (False, b"PK\x03\x04truncated")):
+            with self.subTest(as_json=as_json, damage=damage), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                run_folder = self.copy_sample(root, as_json=as_json)
+                next(run_folder.glob("*_result.json" if as_json else "*_result.npz")).write_bytes(damage)
+                _RUN_VALIDATION_CACHE.clear()
+                with patch.dict(os.environ, {"HOUSIONNA_RUNS_DIRECTORY": str(root)}):
+                    row = discover_runs(PROJECT_ROOT)[0]
+                self.assertEqual(row["status"], "invalid")
 
     def test_binary_ply_matches_ascii(self):
-        vertices, faces = _load_ply(SAMPLE_RUN / "meshes" / "ground.ply")
+        vertices, faces = _load_ply(SAMPLE_RUN / "meshes" / "ground.ply")  # exported as binary float32
+        ascii_text = "ply\nformat ascii 1.0\n" + (
+            f"element vertex {len(vertices)}\nproperty float x\nproperty float y\nproperty float z\n"
+            f"element face {len(faces)}\nproperty list uchar int vertex_indices\nend_header\n")
+        ascii_text += "".join(" ".join(map(repr, vertex)) + "\n" for vertex in vertices)
+        ascii_text += "".join("3 " + " ".join(map(str, face)) + "\n" for face in faces)
         header = ("ply\nformat binary_little_endian 1.0\n"
                   f"element vertex {len(vertices)}\nproperty double x\nproperty double y\nproperty double z\n"
                   f"element face {len(faces)}\nproperty list uchar int vertex_indices\nend_header\n")
@@ -107,6 +124,9 @@ class HousionnaRealExportTests(unittest.TestCase):
             binary = Path(directory) / "ground.ply"
             binary.write_bytes(header.encode("ascii") + body)
             self.assertEqual(_load_ply(binary), (vertices, faces))
+            ascii_file = Path(directory) / "ground_ascii.ply"
+            ascii_file.write_text(ascii_text, encoding="ascii")
+            self.assertEqual(_load_ply(ascii_file), (vertices, faces))
             binary.write_bytes(header.encode("ascii") + body[:-4])
             with self.assertRaisesRegex(ValueError, "ended before"):
                 _load_ply(binary)
@@ -114,11 +134,10 @@ class HousionnaRealExportTests(unittest.TestCase):
     def test_free_space_run_without_scene_objects_imports(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            run_folder = self.copy_sample(root / "exports")
+            run_folder = self.copy_sample(root / "exports", as_json=True)
             scene = next(run_folder.glob("*_scene.xml"))
             scene.write_text('<scene version="2.1.0">\n</scene>\n', encoding="utf-8")
-            for name in ("ground.ply", "box.ply"):
-                (run_folder / "meshes" / name).unlink()
+            (run_folder / "meshes" / "ground.ply").unlink()
             result_file = next(run_folder.glob("*_result.json"))
             result = json.loads(result_file.read_text(encoding="utf-8"))
             result["paths"], result["links"] = [], []  # sample paths reference the removed objects
@@ -163,7 +182,7 @@ class HousionnaRealExportTests(unittest.TestCase):
     def test_malformed_path_and_unknown_interaction_object_are_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            run_folder = self.copy_sample(root)
+            run_folder = self.copy_sample(root, as_json=True)
             result_file = next(run_folder.glob("*_result.json"))
             result = json.loads(result_file.read_text(encoding="utf-8"))
             row = next(path for path in result["paths"] if path.get("objects"))
@@ -183,11 +202,21 @@ class HousionnaRealExportTests(unittest.TestCase):
             self.assertEqual(malformed["status"], "invalid")
 
     def test_coordinates_missing_map_values_and_multiple_transmitters(self):
-        document = import_run(SAMPLE_RUN, PROJECT_ROOT, dry_run=True)
+        with tempfile.TemporaryDirectory() as directory:
+            run = self.copy_sample(Path(directory), as_json=True)
+            radio_file = next(run.glob("*_radiomap.json"))
+            radio = json.loads(radio_file.read_text(encoding="utf-8"))
+            for row, column in ((0, 0), (2, 0), (5, 1)):  # the sample reaches every cell; mark a few as missing
+                radio["maps"][0]["path_gain_db"][row][column] = -999.0
+            radio_file.write_text(json.dumps(radio), encoding="utf-8")
+            self.check_coordinates_and_map_values(run)
+
+    def check_coordinates_and_map_values(self, run: Path):
+        document = import_run(run, PROJECT_ROOT, dry_run=True)
         self.assertIsInstance(document, dict)
-        source_devices = json.loads(next(SAMPLE_RUN.glob("*_txrx.json")).read_text(encoding="utf-8"))
-        source_results = json.loads(next(SAMPLE_RUN.glob("*_result.json")).read_text(encoding="utf-8"))
-        source_maps = json.loads(next(SAMPLE_RUN.glob("*_radiomap.json")).read_text(encoding="utf-8"))
+        source_devices = json.loads(next(run.glob("*_txrx.json")).read_text(encoding="utf-8"))
+        source_results = json.loads(next(run.glob("*_result.json")).read_text(encoding="utf-8"))
+        source_maps = json.loads(next(run.glob("*_radiomap.json")).read_text(encoding="utf-8"))
         first_tx = source_devices["tx"][0]
         key = document["featured_scenario"]
         scenario = document["scenarios"][key]
@@ -195,17 +224,17 @@ class HousionnaRealExportTests(unittest.TestCase):
         geometry = document["assets"]["geometries"][scenario["geometry_ref"]]
         self.assertEqual(geometry["units"], "m")
         self.assertEqual(geometry["up_axis"], "z")
-        self.assertEqual(len(document["scenario_order"]), 15)
-        self.assertEqual(sum(row["path_count"] for row in document["scenarios"].values()), 530)
+        self.assertEqual(len(document["scenario_order"]), 2)
+        self.assertEqual(sum(row["path_count"] for row in document["scenarios"].values()), 80)
         source_tx_paths = [row for row in source_results["paths"] if row["tx"] == first_tx["name"]]
         source_path = source_tx_paths[0]
         normalized_path = scenario["paths"][0]
         source_rx = next(row for row in source_devices["rx"] if row["name"] == source_path["rx"])
-        self.assertEqual(source_path["vertices"][0], scenario["transmitter"]["position_m"])
-        self.assertEqual(source_path["vertices"][-1], source_rx["position"])
+        self.assertPointClose(source_path["vertices"][0], scenario["transmitter"]["position_m"])
+        self.assertPointClose(source_path["vertices"][-1], source_rx["position"])
         self.assertEqual(normalized_path["interaction_vertices_m"], source_path["vertices"][1:-1])
         surface = scenario["radio_map"]["surfaces"][0]
-        self.assertEqual(len(surface["values_db"]), 19602)
+        self.assertEqual(len(surface["values_db"]), 4802)
         source_map = source_maps["maps"][0]
         for tx_index, tx in enumerate(source_maps["tx"]):
             tx_scenario = document["scenarios"][document["scenario_order"][tx_index]]
@@ -222,7 +251,7 @@ class HousionnaRealExportTests(unittest.TestCase):
     def test_path_endpoint_tolerance_is_configurable(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            run_folder = self.copy_sample(root / "exports")
+            run_folder = self.copy_sample(root / "exports", as_json=True)
             result_file = next(run_folder.glob("*_result.json"))
             result = json.loads(result_file.read_text(encoding="utf-8"))
             result["paths"][0]["vertices"][0][0] += 0.005
@@ -241,7 +270,7 @@ class HousionnaRealExportTests(unittest.TestCase):
             (tolerant_project / "config" / "housionna.yaml").write_text(
                 "housionna:\n  path_endpoint_tolerance_m: 0.01\n", encoding="utf-8")
             accepted = import_run(run_folder, tolerant_project, dry_run=True)
-            self.assertAlmostEqual(accepted["provenance"]["max_path_endpoint_error_m"], 0.005)
+            self.assertAlmostEqual(accepted["provenance"]["max_path_endpoint_error_m"], 0.005, places=6)
             self.assertEqual(accepted["provenance"]["path_endpoint_tolerance_m"], 0.01)
 
     def test_comparison_checks_triangle_alignment_before_cell_deltas(self):
@@ -283,32 +312,38 @@ class HousionnaApiInputTests(unittest.TestCase):
         self.assertEqual(error.exception.status, 400)
 
 
-@unittest.skipUnless(HAS_LARGE_RUN, "The real 102-transmitter HOUSIONNA run is not available locally")
-class HousionnaLargeExportValidationTests(unittest.TestCase):
+class HousionnaFullExportValidationTests(PointAssertions):
     def test_meshes_devices_paths_and_all_map_columns_match_source(self):
-        document = import_run(LARGE_RUN, PROJECT_ROOT, dry_run=True)
+        with tempfile.TemporaryDirectory() as directory:
+            run = Path(directory) / SAMPLE_RUN_ID
+            shutil.copytree(SAMPLE_RUN, run)
+            write_json_layout(run)
+            self.check_full_export(run)
+
+    def check_full_export(self, run: Path):
+        document = import_run(run, PROJECT_ROOT, dry_run=True)
         self.assertIsInstance(document, dict)
-        devices = json.loads(next(LARGE_RUN.glob("*_txrx.json")).read_text(encoding="utf-8"))
-        result = json.loads(next(LARGE_RUN.glob("*_result.json")).read_text(encoding="utf-8"))
-        radio = json.loads(next(LARGE_RUN.glob("*_radiomap.json")).read_text(encoding="utf-8"))
+        devices = json.loads(next(run.glob("*_txrx.json")).read_text(encoding="utf-8"))
+        result = json.loads(next(run.glob("*_result.json")).read_text(encoding="utf-8"))
+        radio = json.loads(next(run.glob("*_radiomap.json")).read_text(encoding="utf-8"))
         scenario_by_tx = {
             row["transmitter"]["name"]: row for row in document["scenarios"].values()
         }
         geometry = document["assets"]["geometries"][next(iter(document["assets"]["geometries"]))]
         objects = {row["name"]: row for row in geometry["objects"]}
 
-        self.assertEqual(len(objects), 2)
-        self.assertEqual(document["run_metadata"]["mesh_count"], 2)
+        self.assertEqual(len(objects), 1)
+        self.assertEqual(document["run_metadata"]["mesh_count"], 1)
         self.assertEqual(document["provenance"]["path_endpoint_tolerance_m"], 0.001)
-        self.assertEqual(document["provenance"]["max_path_endpoint_error_m"], 0.0)
-        self.assertEqual(document["scenarios"][document["featured_scenario"]]["provenance"][
-            "max_path_endpoint_error_m"], 0.0)
+        # Path endpoints are float32 in the export and agree with the device positions to float32 precision.
+        self.assertLess(document["provenance"]["max_path_endpoint_error_m"], 1e-6)
+        self.assertLess(document["scenarios"][document["featured_scenario"]]["provenance"][
+            "max_path_endpoint_error_m"], 1e-6)
         self.assertEqual({name: objects[name]["material_key"] for name in objects}, {
             "ground": "medium_dry_ground_t1_s0",
-            "box": "concrete_t0p2_s0",
         })
-        for name in ("ground", "box"):
-            source_vertices, source_faces = _load_ply(LARGE_RUN / "meshes" / f"{name}.ply")
+        for name in ("ground",):
+            source_vertices, source_faces = _load_ply(run / "meshes" / f"{name}.ply")
             imported = objects[name]
             self.assertEqual(imported["vertices"], source_vertices)
             self.assertEqual(imported["faces"], source_faces)
@@ -335,10 +370,6 @@ class HousionnaLargeExportValidationTests(unittest.TestCase):
             self.assertEqual(degenerate, 0)
             self.assertEqual(duplicate, 0)
             self.assertEqual(sum(count > 2 for count in edge_counts.values()), 0)
-            if name == "box":
-                self.assertEqual(len(source_vertices), 266)
-                self.assertEqual(len(source_faces), 528)
-                self.assertEqual(sum(count == 1 for count in edge_counts.values()), 0)
 
         source_tx = {row["name"]: row for row in devices["tx"]}
         for tx_name, scenario in scenario_by_tx.items():
@@ -361,9 +392,10 @@ class HousionnaLargeExportValidationTests(unittest.TestCase):
                 self.assertEqual(normalized["source_angles_rad"], {
                     key: raw[key] for key in ("theta_t", "phi_t", "theta_r", "phi_r")
                 })
-                joined = [scenario["transmitter"]["position_m"], *normalized["interaction_vertices_m"],
-                          scenario["receivers"][0]["position_m"]]
-                self.assertEqual(joined, raw["vertices"])
+                self.assertEqual(normalized["receiver"], raw["rx"])
+                receiver = next(row for row in scenario["receivers"] if row["name"] == raw["rx"])
+                self.assertPointClose(scenario["transmitter"]["position_m"], raw["vertices"][0])
+                self.assertPointClose(receiver["position_m"], raw["vertices"][-1])
 
             source_links = [row for row in result["links"] if row["tx"] == tx_name]
             self.assertEqual(len(scenario["links"]), len(source_links))
@@ -379,7 +411,8 @@ class HousionnaLargeExportValidationTests(unittest.TestCase):
                 self.assertEqual(normalized["vertices_m"], raw["vertices"])
             receiver_metric = next(row for row in scenario["receiver_metrics"]
                                    if row["receiver"] == devices["rx"][0]["name"])
-            self.assertEqual(receiver_metric["path_count"], len(source_paths))
+            self.assertEqual(receiver_metric["path_count"],
+                             sum(row["rx"] == devices["rx"][0]["name"] for row in source_paths))
             self.assertEqual(receiver_metric["link_metrics"]["gain_db_coherent"],
                              source_links[0].get("gain_db_coherent"))
             self.assertEqual(receiver_metric["link_metrics"]["gain_db_incoherent"],
@@ -391,12 +424,10 @@ class HousionnaLargeExportValidationTests(unittest.TestCase):
         source_surface = radio["maps"][0]
         normalized_surface = scenario_by_tx[radio["tx"][0]]["radio_map"]["surfaces"][0]
         map_mesh = document["assets"]["meshes"][normalized_surface["mesh_ref"]]
-        measurement_vertices, measurement_faces = _load_ply(LARGE_RUN / "meshes" / "measure_ground.ply")
+        measurement_vertices, measurement_faces = _load_ply(run / "meshes" / "measure_ground.ply")
         self.assertEqual(map_mesh["faces"], measurement_faces)
         self.assertEqual(map_mesh["vertices_m"], source_surface["vertices"])
-        # The PLY mesh is serialized to six decimal places, while the JSON
-        # radio map carries higher precision. Compare those independent source
-        # representations within the PLY serialization precision.
+        # The PLY mesh and the radio map come from separate exporter steps; compare them within float32 precision.
         coordinate_error = max(
             abs(measurement_vertices[vertex][axis] - source_surface["vertices"][vertex][axis])
             for vertex in range(len(measurement_vertices))
@@ -404,7 +435,7 @@ class HousionnaLargeExportValidationTests(unittest.TestCase):
         )
         self.assertLessEqual(coordinate_error, 5.1e-7)
         self.assertEqual(map_mesh["faces"], source_surface["faces"])
-        self.assertEqual(len(source_surface["faces"]), 19602)
+        self.assertEqual(len(source_surface["faces"]), 4802)
         self.assertEqual(sum(value is None for value in normalized_surface["values_db"]),
                          sum(row[0] == -999 for row in source_surface["path_gain_db"]))
         for tx_index, tx_name in enumerate(radio["tx"]):

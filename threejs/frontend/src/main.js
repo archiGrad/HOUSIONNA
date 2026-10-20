@@ -29,9 +29,27 @@ app.innerHTML = `
         <div class="section-title"><span>HOUSIONNA SAVED RUNS</span><span id="housionnaStatus" class="status-pill ready">READY</span></div>
         <label class="field-label" for="housionnaRunSelect">Imported run</label>
         <select id="housionnaRunSelect" class="select-control"></select>
+        <div class="run-stepper"><button id="housionnaOlderRun" class="small-button" type="button" aria-label="Previous (older) run">← Older</button><span id="housionnaRunPosition" class="run-position num"></span><button id="housionnaNewerRun" class="small-button" type="button" aria-label="Next (newer) run">Newer →</button></div>
+        <div id="housionnaRunChanges" class="run-changes muted-copy" aria-live="polite"></div>
+        <details id="runSeries" class="run-series hidden" open>
+          <summary>Across runs of this scene</summary>
+          <label class="field-label" for="seriesMetric">Value</label>
+          <select id="seriesMetric" class="select-control">
+            <option value="median_map">Median radio map (dB)</option>
+            <option value="mean_link">Mean link gain over RX (dB)</option>
+            <option value="reached">Reached map cells (%)</option>
+            <option value="paths">Path count</option>
+          </select>
+          <label class="field-label" for="seriesAxis">Along</label>
+          <select id="seriesAxis" class="select-control"></select>
+          <div id="seriesChart" class="series-chart"></div>
+          <div id="seriesTooltip" class="series-tooltip hidden" role="status"></div>
+          <details class="series-table"><summary>Show values</summary><div id="seriesTable"></div></details>
+        </details>
         <label class="field-label" for="housionnaExportSelect">Available export</label>
         <select id="housionnaExportSelect" class="select-control"></select>
         <button id="importSelectedHousionna" class="small-button housionna-import-selected">Import selected export</button>
+        <button id="importAllHousionna" class="small-button housionna-import-selected">Import all new runs</button>
         <label class="field-label" for="housionnaTxSelect">Transmitter</label>
         <select id="housionnaTxSelect" class="select-control"></select>
         <label class="field-label" for="housionnaResultVersion">Displayed RF result</label>
@@ -677,7 +695,7 @@ function updateSceneSemantics(scenario) {
 function buildScenario({preserveView = false} = {}) {
   frameDirty=true;
   const scenario=data.scenarios[activeScenario];
-  if(!scenario)return;
+  if(!scenarioReady(scenario))return;  // HOUSIONNA stubs are loaded by ensureHousionnaImport first
   if(preserveView&&scenario.source_type==='housionna'&&renderedGeometry===scenario.geometry&&layerGroups.devices){
     buildDeviceMarkers(scenario);
     updateMap();setLayerVisibility();setScenarioSummary(scenario);buildReceiverSelector(scenario);refreshReceiverMetrics(scenario);refreshPaths();
@@ -942,6 +960,10 @@ function renderZoneReport(scenario,level) {
     <div class="zone-coverage">Coverage <b class="num">${pct(row.coverage_empty)} → ${pct(row.coverage_scenario)}</b>${sensitivity==null?'':` <span class="subtle">at ${sensitivity} dBm (placeholder)</span>`}</div>
     <table class="zone-table"><thead><tr><th scope="col">Zone</th><th scope="col">Median Δ</th><th scope="col">Coverage</th></tr></thead><tbody>${Object.entries(row.zones).map(([zone,stats])=>`<tr><th scope="row" title="${esc(labels[zone]||zone)}">${esc(ZONE_NAMES[zone]||zone)}</th><td class="num">${db(stats.median_delta_db)}</td><td class="num">${pct(stats.coverage_empty)} → ${pct(stats.coverage_scenario)}</td></tr>`).join('')}</tbody></table>
     <p class="muted-copy">Median over cells with signal in both maps. Placeholder materials: not a real-farm prediction.</p>`;
+}
+
+function scenarioReady(scenario) {
+  return Boolean(scenario)&&!scenario.stub;
 }
 
 function updateMap() {
@@ -1896,8 +1918,10 @@ async function reconnectHousionnaJob(){
   try{
     const {body:{job}}=await apiJson('/api/housionna/simulations/active');
     if(!job||simulationRunning)return;
-    const scenario=Object.values(data.scenarios).find(row=>row.source_type==='housionna'&&row.import_id===job.import_id&&row.transmitter.name===job.transmitter);
-    if(!scenario)return;
+    const find=()=>Object.values(data.scenarios).find(row=>row.source_type==='housionna'&&row.import_id===job.import_id&&row.transmitter.name===job.transmitter);
+    if(!find())return;
+    await ensureHousionnaImport(job.import_id);  // the job's run may still be a stub
+    const scenario=find();
     if(activeScenario!==scenario.name){setSourceControls('housionna');populateSourceSelectors(job.import_id,job.transmitter);}
     activeScenario=scenario.name;buildScenario({preserveView:true});syncSimulationControls(scenario);
     simulationRunning=true;simulationStartedAt=performance.now()-1000*Number(job.elapsed_seconds||0);setSimulationInputsDisabled(true);
@@ -2017,7 +2041,180 @@ function populateHousionnaTxSelect(group, preferredTx) {
   return key;
 }
 
+// Procedural tests produce many runs of one scene: step through them in export order and show what changed.
+function housionnaRunsByTime() {
+  return housionnaGroups().sort((a,b)=>String(a.run_id).localeCompare(String(b.run_id))||String(a.imported_at_utc||'').localeCompare(String(b.imported_at_utc||'')));
+}
+function stepHousionnaRun(delta) {
+  const runs=housionnaRunsByTime(),index=runs.findIndex((group)=>group.import_id===$('#housionnaRunSelect').value);
+  const target=runs[index+delta];if(!target)return;
+  $('#housionnaRunSelect').value=target.import_id;$('#housionnaRunSelect').dispatchEvent(new Event('change'));
+}
+function runScenarioFor(group,txName) {
+  const keys=group.scenario_keys||[];
+  return data.scenarios[keys.find((key)=>data.scenarios[key]?.transmitter?.name===txName)||keys[0]];
+}
+function surfaceBounds(scenario) {
+  if(scenario?.stub)return scenario.summary?.surface_bounds||null;
+  const boxes=(scenario?.radio_map?.surfaces||[]).map((surface)=>surface.mesh?.bounds_m).filter(Boolean);
+  if(!boxes.length)return null;
+  const box={};for(const axis of 'xyz'){box[`${axis}_min`]=Math.min(...boxes.map((b)=>b[`${axis}_min`]));box[`${axis}_max`]=Math.max(...boxes.map((b)=>b[`${axis}_max`]));}
+  return box;
+}
+function medianDb(scenario) {
+  if(scenario?.stub)return scenario.summary?.median_db??null;
+  const values=(scenario?.radio_map?.surfaces||[]).flatMap((surface)=>surface.values_db||[]).filter((value)=>value!=null).sort((a,b)=>a-b);
+  return values.length?values[Math.floor(values.length/2)]:null;
+}
+function flatSettings(value,prefix='') {
+  if(!value||typeof value!=='object')return {[prefix]:value};
+  return Object.entries(value).reduce((out,[key,inner])=>({...out,...flatSettings(inner,prefix?`${prefix}.${key}`:key)}),{});
+}
+function runChanges(previous,current) {
+  const changes=[],fmt=(value,digits=2)=>Number(value).toFixed(digits),pm=previous.run_metadata||{},cm=current.run_metadata||{};
+  if(previous.frequency_hz!==current.frequency_hz)changes.push(`frequency ${fmt(previous.frequency_hz/1e9,3)} → ${fmt(current.frequency_hz/1e9,3)} GHz`);
+  for(const [key,label] of [['tx_count','TX'],['rx_count','RX'],['mesh_count','scene objects']])if(pm[key]!==cm[key])changes.push(`${label} ${pm[key]??'?'} → ${cm[key]??'?'}`);
+  const a=surfaceBounds(previous),b=surfaceBounds(current);
+  if(a&&b)for(const axis of 'xyz') {
+    const centreA=(a[`${axis}_min`]+a[`${axis}_max`])/2,centreB=(b[`${axis}_min`]+b[`${axis}_max`])/2;
+    const sizeA=a[`${axis}_max`]-a[`${axis}_min`],sizeB=b[`${axis}_max`]-b[`${axis}_min`];
+    if(Math.abs(centreA-centreB)>0.01)changes.push(`measurement surface ${axis} ${fmt(centreA)} → ${fmt(centreB)} m`);
+    else if(Math.abs(sizeA-sizeB)>0.01)changes.push(`measurement surface ${axis}-size ${fmt(sizeA)} → ${fmt(sizeB)} m`);
+  }
+  const from=previous.transmitter?.position_m,to=current.transmitter?.position_m;
+  if(from&&to&&previous.transmitter.name===current.transmitter.name) {
+    const moved=Math.hypot(...to.map((value,index)=>value-from[index]));
+    if(moved>0.01)changes.push(`${current.transmitter.name} moved ${fmt(moved)} m`);
+  }
+  const settingsA=flatSettings(previous.solver),settingsB=flatSettings(current.solver);
+  for(const key of new Set([...Object.keys(settingsA),...Object.keys(settingsB)]))
+    if(JSON.stringify(settingsA[key])!==JSON.stringify(settingsB[key]))changes.push(`${key} ${settingsA[key]??'—'} → ${settingsB[key]??'—'}`);
+  const medianA=medianDb(previous),medianB=medianDb(current);
+  if(medianA!=null&&medianB!=null&&Math.abs(medianA-medianB)>=0.05)changes.push(`median map ${fmt(medianA,1)} → ${fmt(medianB,1)} dB`);
+  return changes;
+}
+// One series (a value per run of this scene), so no legend box: the Value selector names it.
+// Colour is DRAMCO --data-1, the guide's first data token for dark backgrounds (contrast checked on --card).
+const SERIES_METRICS={
+  median_map:{label:'Median radio map',unit:'dB',value:(scenario)=>medianDb(scenario)},
+  mean_link:{label:'Mean link gain over RX',unit:'dB',value:(scenario)=>{
+    if(scenario.stub)return scenario.summary?.mean_link_db??null;
+    const gains=(scenario.links||[]).map((link)=>link.gain_db_coherent).filter((value)=>value!=null);
+    return gains.length?gains.reduce((sum,value)=>sum+value,0)/gains.length:null;}},
+  reached:{label:'Reached map cells',unit:'%',value:(scenario)=>{
+    if(scenario.stub)return scenario.summary?.reached_pct??null;
+    const values=(scenario.radio_map?.surfaces||[]).flatMap((surface)=>surface.values_db||[]);
+    return values.length?100*values.filter((value)=>value!=null).length/values.length:null;}},
+  paths:{label:'Path count',unit:'',value:(scenario)=>scenario.stub?scenario.summary?.path_count??null:(scenario.paths||[]).length},
+};
+const SERIES_AXES={
+  surface_x:{label:'Measurement surface x',unit:'m',value:(s)=>{const b=surfaceBounds(s);return b?(b.x_min+b.x_max)/2:null;}},
+  surface_y:{label:'Measurement surface y',unit:'m',value:(s)=>{const b=surfaceBounds(s);return b?(b.y_min+b.y_max)/2:null;}},
+  surface_z:{label:'Measurement surface z',unit:'m',value:(s)=>{const b=surfaceBounds(s);return b?(b.z_min+b.z_max)/2:null;}},
+  tx_x:{label:'TX x',unit:'m',value:(s)=>s.transmitter?.position_m?.[0]??null},
+  tx_y:{label:'TX y',unit:'m',value:(s)=>s.transmitter?.position_m?.[1]??null},
+  tx_z:{label:'TX z',unit:'m',value:(s)=>s.transmitter?.position_m?.[2]??null},
+  frequency:{label:'Frequency',unit:'GHz',value:(s)=>s.frequency_hz?s.frequency_hz/1e9:null},
+  rx_count:{label:'RX count',unit:'',value:(s)=>s.run_metadata?.rx_count??null},
+};
+function niceTicks(min,max,count=4) {
+  if(!(max>min)){const pad=Math.abs(min)*0.05||1;min-=pad;max+=pad;}
+  const raw=(max-min)/count,power=10**Math.floor(Math.log10(raw)),step=[1,2,2.5,5,10].map((f)=>f*power).find((v)=>v>=raw);
+  const start=Math.floor(min/step)*step,ticks=[];
+  for(let value=start;value<=max+step*0.5;value+=step)ticks.push(+value.toFixed(10));
+  return {ticks,min:ticks[0],max:ticks.at(-1)};
+}
+function seriesPoints(scenario) {
+  const scene=scenario.run_metadata?.scene_name,txName=scenario.transmitter?.name;
+  const runs=housionnaRunsByTime().filter((group)=>group.scene_name===scene);
+  return runs.map((group,index)=>{
+    const run=runScenarioFor(group,txName);
+    return {group,index,run:run?.transmitter?.name===txName?run:null};
+  });
+}
+function renderRunSeries(scenario) {
+  const panel=$('#runSeries'),points=scenario?.source_type==='housionna'?seriesPoints(scenario):[];
+  panel.classList.toggle('hidden',points.length<2);
+  if(points.length<2)return;
+  // Offer an x axis for every quantity that actually varies across this series.
+  const axisSelect=$('#seriesAxis'),kept=axisSelect.value;
+  const varying=Object.entries(SERIES_AXES).filter(([,axis])=>{
+    const values=points.filter((p)=>p.run).map((p)=>axis.value(p.run)).filter((v)=>v!=null).map((v)=>v.toFixed(3));
+    return new Set(values).size>1;});
+  axisSelect.innerHTML=['<option value="order">Run order</option>',...varying.map(([key,axis])=>`<option value="${key}">${esc(axis.label)}${axis.unit?` (${axis.unit})`:''}</option>`)].join('');
+  axisSelect.value=[...axisSelect.options].some((o)=>o.value===kept)?kept:'order';
+  const metric=SERIES_METRICS[$('#seriesMetric').value]||SERIES_METRICS.median_map,axisKey=axisSelect.value,axis=SERIES_AXES[axisKey];
+  const rows=points.map((p)=>({...p,x:axis?(p.run?axis.value(p.run):null):p.index+1,y:p.run?metric.value(p.run):null}));
+  const plotted=rows.filter((row)=>row.x!=null&&row.y!=null).sort((a,b)=>a.x-b.x||a.index-b.index);
+  const currentId=scenario.import_id||scenario.run_metadata?.import_id;
+  const fmt=(value,unit)=>{
+    if(value==null)return '—';
+    let text=Number(value).toFixed(Math.abs(value)>=100?0:2);
+    if(text.includes('.'))text=text.replace(/0+$/,'').replace(/\.$/,'');  // trim decimals only, never 100 -> 1
+    return `${text}${unit?` ${unit}`:''}`;
+  };
+  const xLabel=axis?`${axis.label}${axis.unit?` (${axis.unit})`:''}`:'Run (oldest first)';
+  $('#seriesTable').innerHTML=`<table class="zone-table"><thead><tr><th scope="col">Run</th><th scope="col">${esc(axis?axis.label:'#')}</th><th scope="col">${esc(metric.label)}</th></tr></thead><tbody>${
+    rows.map((row)=>`<tr${row.group.import_id===currentId?' class="current"':''}><th scope="row">${esc(row.group.run_id)}</th><td class="num">${axis?fmt(row.x,axis.unit):row.x}</td><td class="num">${row.run?fmt(row.y,metric.unit):`no ${esc(scenario.transmitter?.name||'TX')}`}</td></tr>`).join('')}</tbody></table>`;
+  const chart=$('#seriesChart');
+  if(plotted.length<2){chart.innerHTML='<p class="muted-copy">Fewer than two runs have this value for the selected transmitter.</p>';return;}
+  const width=Math.max(220,chart.clientWidth||250),height=168,pad={l:38,r:12,t:12,b:34};
+  const xs=niceTicks(Math.min(...plotted.map((r)=>r.x)),Math.max(...plotted.map((r)=>r.x)),axis?4:Math.min(plotted.length-1,5));
+  const ys=niceTicks(Math.min(...plotted.map((r)=>r.y)),Math.max(...plotted.map((r)=>r.y)),3);
+  const sx=(v)=>pad.l+(v-xs.min)/(xs.max-xs.min||1)*(width-pad.l-pad.r),sy=(v)=>pad.t+(1-(v-ys.min)/(ys.max-ys.min||1))*(height-pad.t-pad.b);
+  const xTicks=axis?xs.ticks:xs.ticks.filter((t)=>Number.isInteger(t)&&t>=1&&t<=points.length);
+  const current=plotted.find((row)=>row.group.import_id===currentId);
+  // A line implies continuity; when several runs share an x value, show the points only.
+  const drawLine=!axis||new Set(plotted.map((row)=>row.x.toFixed(6))).size===plotted.length;
+  chart.innerHTML=`<svg class="series-svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" aria-label="${esc(metric.label)} along ${esc(xLabel)}">
+    ${ys.ticks.map((t)=>`<line class="grid" x1="${pad.l}" x2="${width-pad.r}" y1="${sy(t)}" y2="${sy(t)}"/><text class="tick" x="${pad.l-6}" y="${sy(t)+3}" text-anchor="end">${fmt(t,'')}</text>`).join('')}
+    <line class="axis" x1="${pad.l}" x2="${width-pad.r}" y1="${height-pad.b}" y2="${height-pad.b}"/>
+    ${xTicks.map((t)=>`<text class="tick" x="${sx(t)}" y="${height-pad.b+13}" text-anchor="middle">${fmt(t,'')}</text>`).join('')}
+    <text class="axis-title" x="${(pad.l+width-pad.r)/2}" y="${height-4}" text-anchor="middle">${esc(xLabel)}</text>
+    ${drawLine?`<polyline class="series-line" points="${plotted.map((r)=>`${sx(r.x)},${sy(r.y)}`).join(' ')}"/>`:''}
+    ${plotted.map((r)=>`<circle class="series-dot${r===current?' current':''}" cx="${sx(r.x)}" cy="${sy(r.y)}" r="${r===current?5:4}"/>`).join('')}
+    ${current?`<text class="series-value" x="${Math.min(sx(current.x)+8,width-pad.r)}" y="${sy(current.y)-8}" text-anchor="${sx(current.x)+8>width-70?'end':'start'}">${fmt(current.y,metric.unit)}</text>`:''}
+    ${plotted.map((r,i)=>`<circle class="series-hit" data-index="${i}" cx="${sx(r.x)}" cy="${sy(r.y)}" r="12" tabindex="0" role="button" aria-label="${esc(r.group.run_id)}: ${esc(fmt(r.y,metric.unit))}. Open this run."/>`).join('')}
+  </svg>`;
+  const tooltip=$('#seriesTooltip');
+  const show=(event)=>{
+    const row=plotted[Number(event.target.dataset.index)];if(!row)return;
+    tooltip.innerHTML=`<b>${esc(row.group.run_id)}</b><br>${esc(metric.label)}: ${esc(fmt(row.y,metric.unit))}${axis?`<br>${esc(axis.label)}: ${esc(fmt(row.x,axis.unit))}`:''}`;
+    const box=event.target.getBoundingClientRect(),host=panel.getBoundingClientRect(),plotTop=chart.getBoundingClientRect().top-host.top;
+    tooltip.classList.remove('hidden');
+    const above=box.top-host.top-tooltip.offsetHeight-4;  // flip below the point when it would cover the controls
+    tooltip.style.left=`${Math.max(0,Math.min(box.left-host.left-60,host.width-150))}px`;
+    tooltip.style.top=`${above>=plotTop?above:box.bottom-host.top+4}px`;
+  };
+  const hide=()=>tooltip.classList.add('hidden');
+  const open=(event)=>{const row=plotted[Number(event.target.dataset.index)];if(!row||row.group.import_id===currentId)return;
+    $('#housionnaRunSelect').value=row.group.import_id;$('#housionnaRunSelect').dispatchEvent(new Event('change'));};
+  chart.querySelectorAll('.series-hit').forEach((hit)=>{
+    hit.addEventListener('mouseenter',show);hit.addEventListener('focus',show);
+    hit.addEventListener('mouseleave',hide);hit.addEventListener('blur',hide);
+    hit.addEventListener('click',open);hit.addEventListener('keydown',(event)=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();open(event);}});
+  });
+}
+
+function syncRunStepper(scenario) {
+  renderRunSeries(scenario);
+  const runs=housionnaRunsByTime(),index=runs.findIndex((group)=>group.import_id===(scenario?.import_id||scenario?.run_metadata?.import_id));
+  const visible=scenario?.source_type==='housionna'&&index>=0;
+  $('.run-stepper').classList.toggle('hidden',!visible||runs.length<2);
+  $('#housionnaRunChanges').classList.toggle('hidden',!visible);
+  if(!visible)return;
+  $('#housionnaOlderRun').disabled=index<=0;$('#housionnaNewerRun').disabled=index>=runs.length-1;
+  $('#housionnaRunPosition').textContent=`${index+1} / ${runs.length}`;
+  if(index<=0){$('#housionnaRunChanges').textContent='Oldest imported run.';return;}
+  const previous=runScenarioFor(runs[index-1],scenario.transmitter?.name);
+  const changes=previous?runChanges(previous,scenario):[];
+  $('#housionnaRunChanges').innerHTML=changes.length
+    ?`<b>Since ${esc(runs[index-1].run_id)}:</b> ${changes.map(esc).join(' · ')}`
+    :`<b>Since ${esc(runs[index-1].run_id)}:</b> no change in settings, devices or measurement surface.`;
+}
+
 function renderHousionnaMetadata(scenario) {
+  syncRunStepper(scenario);
   const target=$('#housionnaRunMetadata');
   if(!scenario||scenario.source_type!=='housionna') {
     target.textContent=housionnaGroups().length?'Select an imported HOUSIONNA run.':'No imported HOUSIONNA runs are available yet.';
@@ -2085,7 +2282,7 @@ function updateCompareTxOptions() {
   $('#compareHousionna').disabled=common.length===0;
 }
 
-function chooseSceneSource(source, importId=null, transmitterName=null) {
+async function chooseSceneSource(source, importId=null, transmitterName=null) {
   if(source==='builtin') {
     const names=builtinScenarioNames();
     if(!names.length)return;
@@ -2105,6 +2302,8 @@ function chooseSceneSource(source, importId=null, transmitterName=null) {
     return;
   }
   const group=groups.find((item)=>item.import_id===importId)||groups.find((item)=>item.import_id===data.scenarios[activeScenario]?.import_id)||groups[0];
+  try {await ensureHousionnaImport(group.import_id);}
+  catch(error){setHousionnaStatus('failed',`Could not load ${group.run_id}: ${error.message||error}`);return;}
   const key=group.scenario_keys.find((name)=>data.scenarios[name].transmitter?.name===transmitterName)||group.scenario_keys[0];
   activeScenario=key;$('#housionnaRunSelect').value=group.import_id;populateHousionnaTxSelect(group,data.scenarios[key].transmitter.name);
   $('#scenarioSelect').value=builtinScenarioNames()[0]||'';
@@ -2122,6 +2321,7 @@ async function loadHousionnaCatalog() {
   const [runsResult,importsResult]=await Promise.allSettled([apiJson('/api/housionna/runs'),apiJson('/api/housionna/imports')]);
   if(runsResult.status==='fulfilled')housionnaRuns=runsResult.value.body.runs||[];
   if(importsResult.status==='fulfilled')housionnaImports=importsResult.value.body.imports||[];
+  syncImportAllButton();
   populateSourceSelectors(data.scenarios[activeScenario]?.import_id,data.scenarios[activeScenario]?.transmitter?.name);
   const valid=housionnaRuns.filter((row)=>row.status==='valid').length;
   const incomplete=housionnaRuns.filter((row)=>row.status!=='valid').length;
@@ -2134,7 +2334,8 @@ async function refreshViewerScene(importId,txName) {
   const url='/outputs/digital_twin/viewer_scene.json';
   const {body:next}=await apiJson(url);
   if(next.schema_version!==1||!next.scenarios)throw new Error('Refreshed viewer data has an unsupported schema');
-  resolveViewerAssets(next);data=next;
+  resolveViewerAssets(next);data=next;rememberHousionnaStubs();
+  await ensureHousionnaImport(importId);
   housionnaOriginalResults.clear();housionnaLatestResults.clear();housionnaDisplayedVersions.clear();housionnaCompletedFingerprints.clear();
   const target=Object.values(data.scenarios).find((scenario)=>scenario.source_type==='housionna'&&scenario.import_id===importId&&scenario.transmitter?.name===txName)
     ||Object.values(data.scenarios).find((scenario)=>scenario.source_type==='housionna'&&scenario.import_id===importId);
@@ -2146,20 +2347,69 @@ async function refreshViewerScene(importId,txName) {
   await loadHousionnaCatalog();
 }
 
+// One import job, polled to completion. Shared by single imports and "Import all new runs".
+async function runHousionnaImportJob(runId=null,onProgress=()=>{},{rebuildScene=true}={}) {
+  const route=runId?'/api/housionna/import':'/api/housionna/import-latest';
+  const body=rebuildScene?{run_id:runId}:{run_id:runId,rebuild_scene:false};
+  const options=runId?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}:{method:'POST'};
+  let job=(await apiJson(route,options)).body;
+  while(job.status==='running') {
+    onProgress(job);
+    await new Promise((resolve)=>setTimeout(resolve,500));
+    job=(await apiJson(`/api/housionna/jobs/${encodeURIComponent(job.job_id)}`)).body;
+  }
+  if(job.status!=='complete')throw new Error(job.error||job.message||'HOUSIONNA import failed');
+  return job;
+}
+// A run is new when no import carries its source fingerprint (so a re-exported folder counts as new too).
+function newHousionnaExports() {
+  const known=new Set(housionnaImports.map((row)=>row.source_sha256));
+  return housionnaRuns.filter((row)=>row.status==='valid'&&!known.has(row.source_sha256))
+    .sort((a,b)=>String(a.run_id).localeCompare(String(b.run_id)));
+}
+function syncImportAllButton() {
+  const count=newHousionnaExports().length,button=$('#importAllHousionna');
+  button.textContent=count?`Import all new runs (${count})`:'All runs imported';
+  button.disabled=housionnaImportBusy||count===0;
+}
+async function importAllNewHousionna() {
+  if(housionnaImportBusy)return;
+  const pending=newHousionnaExports();if(!pending.length){syncImportAllButton();return;}
+  housionnaImportBusy=true;
+  ['importLatestHousionna','reloadHousionna','importSelectedHousionna','importAllHousionna'].forEach((id)=>{$(`#${id}`).disabled=true;});
+  const failed=[];let last=null;
+  try {
+    for(const [index,row] of pending.entries()) {
+      const prefix=`Importing ${index+1} of ${pending.length}: ${row.run_id}`;
+      setHousionnaStatus('running',`${prefix}…`);
+      try {
+        const job=await runHousionnaImportJob(row.run_id,(running)=>setHousionnaStatus('running',`${prefix} · ${running.message||'running'}`),{rebuildScene:false});
+        last={job,runId:row.run_id,tx:row.transmitters?.[0]||'tx_0'};
+      } catch(error) {failed.push(`${row.run_id} (${error.message||error})`);}
+    }
+    if(last) {
+      // Rebuild the scene data once for the whole batch: re-importing the last run is a cache hit plus the rebuild.
+      setHousionnaStatus('running',`Updating the viewer scene with ${pending.length-failed.length} new run${pending.length-failed.length===1?'':'s'}…`);
+      await runHousionnaImportJob(last.runId);
+      await refreshViewerScene(last.job.import_id,last.tx);
+    }
+    const done=pending.length-failed.length;
+    setHousionnaStatus(failed.length?'failed':'complete',`Imported ${done} of ${pending.length} new run${pending.length===1?'':'s'}${failed.length?` · failed: ${failed.join('; ')}`:''}`);
+  } catch(error) {
+    setHousionnaStatus('failed',error.message||String(error));
+  } finally {
+    housionnaImportBusy=false;$('#importLatestHousionna').disabled=false;$('#reloadHousionna').disabled=false;
+    $('#importSelectedHousionna').disabled=!housionnaRuns.some((row)=>row.status==='valid');
+    syncImportAllButton();
+  }
+}
+
 async function importHousionna(runId=null) {
   if(housionnaImportBusy)return;
   housionnaImportBusy=true;$('#importLatestHousionna').disabled=true;$('#reloadHousionna').disabled=true;
   setHousionnaStatus('running',runId?`Validating selected run ${runId}…`:'Discovering runs…');
   try {
-    const route=runId?'/api/housionna/import':'/api/housionna/import-latest';
-    const options=runId?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({run_id:runId})}:{method:'POST'};
-    const {body:initial}=await apiJson(route,options);let job=initial;
-    while(job.status==='running') {
-      setHousionnaStatus('running',job.message||'Import is running');
-      await new Promise((resolve)=>setTimeout(resolve,500));
-      job=(await apiJson(`/api/housionna/jobs/${encodeURIComponent(job.job_id)}`)).body;
-    }
-    if(job.status!=='complete')throw new Error(job.error||job.message||'HOUSIONNA import failed');
+    const job=await runHousionnaImportJob(runId,(running)=>setHousionnaStatus('running',running.message||'Import is running'));
     const available=housionnaRuns.find((row)=>row.run_id===job.run_id||row.run_id===runId);
     const currentTx=data.scenarios[activeScenario]?.transmitter?.name;
     const selected=available?.transmitters?.includes(currentTx)?currentTx:(available?.transmitters?.[0]||'tx_0');
@@ -2170,6 +2420,7 @@ async function importHousionna(runId=null) {
   } finally {
     housionnaImportBusy=false;$('#importLatestHousionna').disabled=false;$('#reloadHousionna').disabled=false;
     $('#importSelectedHousionna').disabled=!housionnaRuns.some((row)=>row.status==='valid');
+    syncImportAllButton();
   }
 }
 
@@ -2186,6 +2437,39 @@ async function compareHousionnaRuns() {
     output.innerHTML=`<b>${compatible?"Metadata compatible":"Metadata differs"}</b><br>Frequency ${flags.same_frequency?"matches":"differs"} / geometry ${flags.same_scene_geometry?"matches":"differs"} / TX-RX ${flags.same_transmitter_configuration&&flags.same_receiver_configuration?"match":"differ"}<br>Materials ${flags.same_material_definitions?"match":"differ"} / solver ${flags.same_solver_settings?"matches":"differs"}<br><b>Radio map:</b> ${esc(body.radio_map.reason)}${body.radio_map.compatible&&map?`<br>${map.valid_cells.toLocaleString()} shared cells / mean delta ${Number(map.mean_delta_db).toFixed(2)} dB / mean absolute delta ${Number(map.mean_absolute_delta_db).toFixed(2)} dB / RMS ${Number(map.rms_delta_db).toFixed(2)} dB`:""}<br>${body.link_deltas.map((row)=>`${esc(row.receiver)}: ${row.path_count_reference} -> ${row.path_count_comparison} paths / coherent gain delta ${row.coherent_gain_delta_db==null?"-":`${Number(row.coherent_gain_delta_db).toFixed(2)} dB`} / strongest delay delta ${row.strongest_path_delay_delta_ns==null?"-":`${Number(row.strongest_path_delay_delta_ns).toFixed(3)} ns`} / spread delta ${row.delay_spread_delta_ns==null?"-":`${Number(row.delay_spread_delta_ns).toFixed(3)} ns`}`).join("<br>")}`;
   } catch(error) {output.textContent=`Comparison failed: ${error.message||error}`;}
   finally {updateCompareTxOptions();}
+}
+
+// The scene file lists HOUSIONNA scenarios as small stubs (scenario.stub). A run's full scenarios are
+// fetched when it is selected; at most HOUSIONNA_LOADED_LIMIT runs stay loaded, older ones revert to stubs.
+const HOUSIONNA_LOADED_LIMIT=4;
+const housionnaStubs=new Map(),housionnaLoaded=new Map(),housionnaLoading=new Map();
+function rememberHousionnaStubs() {
+  housionnaStubs.clear();housionnaLoaded.clear();
+  for(const [key,scenario] of Object.entries(data.scenarios))if(scenario?.stub)housionnaStubs.set(key,scenario);
+}
+function importScenarioKeys(importId) {
+  return data.scenario_order.filter((key)=>data.scenarios[key]?.source_type==='housionna'&&data.scenarios[key].import_id===importId);
+}
+async function ensureHousionnaImport(importId) {
+  const keys=importScenarioKeys(importId);
+  if(!keys.length||keys.every((key)=>!data.scenarios[key].stub)){if(keys.length)housionnaLoaded.set(importId,performance.now());return;}
+  if(!housionnaLoading.has(importId))housionnaLoading.set(importId,(async()=>{
+    $('#housionnaImportStatus').textContent='Loading the selected run…';
+    const {body}=await apiJson(`/api/housionna/imports/${encodeURIComponent(importId)}/viewer`);
+    resolveViewerAssets(body);
+    for(const key of body.scenario_order)if(data.scenarios[key])data.scenarios[key]=body.scenarios[key];
+    housionnaLoaded.set(importId,performance.now());
+    // Keep memory bounded: put the least recently used runs (never the one on screen) back to stubs.
+    const activeImport=data.scenarios[activeScenario]?.import_id;
+    for(const [id] of [...housionnaLoaded].sort((a,b)=>a[1]-b[1])) {
+      if(housionnaLoaded.size<=HOUSIONNA_LOADED_LIMIT)break;
+      if(id===importId||id===activeImport)continue;
+      for(const key of importScenarioKeys(id))if(housionnaStubs.has(key))data.scenarios[key]=housionnaStubs.get(key);
+      housionnaLoaded.delete(id);
+    }
+    $('#housionnaImportStatus').textContent='';
+  })().finally(()=>housionnaLoading.delete(importId)));
+  await housionnaLoading.get(importId);
 }
 
 function resolveViewerAssets(viewerData) {
@@ -2208,14 +2492,26 @@ function resolveViewerAssets(viewerData) {
 function wireUI() {
   $('#sceneSourceSelect').addEventListener('change',(event)=>chooseSceneSource(event.target.value));
   $('#scenarioSelect').addEventListener('change',(event)=>{ activeScenario=event.target.value;rfResultsStale=false;buildScenario();syncSimulationControls(data.scenarios[activeScenario]); });
-  $('#housionnaRunSelect').addEventListener('change',(event)=>{
+  $('#housionnaRunSelect').addEventListener('change',async(event)=>{
     const group=housionnaGroups().find((item)=>item.import_id===event.target.value);if(!group)return;
     const currentTx=data.scenarios[activeScenario]?.transmitter?.name;
+    try {await ensureHousionnaImport(group.import_id);}
+    catch(error){setHousionnaStatus('failed',`Could not load ${group.run_id}: ${error.message||error}`);return;}
+    if($('#housionnaRunSelect').value!==group.import_id)return;  // a newer selection won the race
     const key=populateHousionnaTxSelect(group,currentTx);if(!key)return;
     activeScenario=key;rfResultsStale=false;buildScenario({preserveView:true});syncSimulationControls(data.scenarios[activeScenario]);renderHousionnaMetadata(data.scenarios[activeScenario]);void restoreLatestHousionnaResults(activeScenario);
   });
-  $('#housionnaTxSelect').addEventListener('change',(event)=>{
+  $('#housionnaOlderRun').addEventListener('click',()=>stepHousionnaRun(-1));
+  ['seriesMetric','seriesAxis'].forEach((id)=>$(`#${id}`).addEventListener('change',()=>renderRunSeries(data.scenarios[activeScenario])));
+  // Redraw at the new width when a side panel is resized.
+  let seriesWidth=0;
+  new ResizeObserver(([entry])=>{const width=Math.round(entry.contentRect.width);
+    if(width&&Math.abs(width-seriesWidth)>4){seriesWidth=width;renderRunSeries(data.scenarios[activeScenario]);}}).observe($('#seriesChart'));
+  $('#housionnaNewerRun').addEventListener('click',()=>stepHousionnaRun(1));
+  $('#housionnaTxSelect').addEventListener('change',async(event)=>{
     if(!data.scenarios[event.target.value])return;
+    try {await ensureHousionnaImport(data.scenarios[event.target.value].import_id);}
+    catch(error){setHousionnaStatus('failed',error.message||String(error));return;}
     activeScenario=event.target.value;rfResultsStale=false;buildScenario({preserveView:true});syncSimulationControls(data.scenarios[activeScenario]);renderHousionnaMetadata(data.scenarios[activeScenario]);void restoreLatestHousionnaResults(activeScenario);
   });
   $('#housionnaResultVersion').addEventListener('change',(event)=>{
@@ -2239,6 +2535,7 @@ function wireUI() {
   });
   $('#runRadioMapBtn').addEventListener('click',runHousionnaRadioMap);
   $('#importLatestHousionna').addEventListener('click',()=>importHousionna());
+  $('#importAllHousionna').addEventListener('click',importAllNewHousionna);
   $('#importSelectedHousionna').addEventListener('click',()=>{
     const runId=$('#housionnaExportSelect').value;
     if(runId)importHousionna(runId);
@@ -2387,8 +2684,16 @@ async function start() {
     const sceneUrl='/outputs/digital_twin/viewer_scene.json';
     data=(await apiJson(sceneUrl)).body;
     if(data.schema_version!==1||!data.scenarios) throw new Error('Unsupported viewer scene data schema');
-    resolveViewerAssets(data);
+    resolveViewerAssets(data);rememberHousionnaStubs();
     activeScenario=data.featured_scenario||'current';
+    if(data.scenarios[activeScenario]?.stub) {
+      try {await ensureHousionnaImport(data.scenarios[activeScenario].import_id);}
+      catch(error) {
+        // The scene file can list an import that has since been removed: open the built-in scene instead of failing.
+        console.warn('Featured HOUSIONNA run could not be loaded; opening the built-in scene',error);
+        activeScenario=data.scenario_order.find((key)=>data.scenarios[key]?.source_type!=='housionna')||activeScenario;
+      }
+    }
     const initialScenario=data.scenarios[activeScenario];
     populateSourceSelectors(initialScenario?.import_id,initialScenario?.transmitter?.name);
     const initialSource=initialScenario?.source_type==='housionna'?'housionna':'builtin';

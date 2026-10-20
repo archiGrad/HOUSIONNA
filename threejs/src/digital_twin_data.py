@@ -153,6 +153,102 @@ def _entry(name: str, cfg: dict[str, Any], geometry: dict[str, Any],
     }
 
 
+
+SUMMARY_SCHEMA = 1
+STUB_FIELDS = ("name", "label", "description", "source_type", "import_id", "run_metadata", "frequency_hz",
+               "transmitter", "solver", "material_status", "scene_dimensions_m", "scene_bounds_m")
+
+
+def _prepare_import(import_file: Path, imported: dict[str, Any]) -> tuple[list[str], dict[str, Any], dict[str, Any]]:
+    """Validate one normalized import and give it the browser-facing shape (no local paths)."""
+    if imported.get("schema_version") != 1:
+        raise ValueError(f"Unsupported HOUSIONNA viewer import schema in {import_file}")
+    order = imported.get("scenario_order", [])
+    scenarios = imported.get("scenarios", {})
+    if not isinstance(order, list) or not isinstance(scenarios, dict):
+        raise ValueError(f"Malformed HOUSIONNA viewer import in {import_file}")
+    import_id = import_file.parent.name
+    run_id = (imported.get("run_metadata", {}).get("run_id") if isinstance(imported.get("run_metadata"), dict)
+              else imported.get("provenance", {}).get("source_run_name"))
+    for name in order:
+        if name not in scenarios:
+            raise ValueError(f"HOUSIONNA import {import_file} references missing scenario {name!r}")
+        scenario = scenarios[name]
+        scenario["import_id"] = import_id
+        provenance = scenario.get("provenance")
+        if isinstance(provenance, dict):
+            # The import on disk keeps the exact local source location; the browser needs only run IDs.
+            provenance.pop("source_run_folder", None)
+        metadata = scenario.setdefault("run_metadata", {})
+        if not isinstance(metadata, dict):
+            metadata = {}
+            scenario["run_metadata"] = metadata
+        metadata.setdefault("import_id", import_id)
+        metadata.setdefault("run_id", run_id)
+    return order, scenarios, imported.get("assets", {})
+
+
+def _scenario_stub(scenario: dict[str, Any], assets: dict[str, Any]) -> dict[str, Any]:
+    """The few values the run list, stepper and series chart need, so the viewer loads full runs on demand."""
+    surfaces = scenario.get("radio_map", {}).get("surfaces", []) or []
+    meshes = assets.get("meshes", {})
+    boxes = [meshes[row["mesh_ref"]]["bounds_m"] for row in surfaces
+             if row.get("mesh_ref") in meshes and meshes[row["mesh_ref"]].get("bounds_m")]
+    bounds = ({f"{axis}_{side}": (min if side == "min" else max)(box[f"{axis}_{side}"] for box in boxes)
+               for axis in "xyz" for side in ("min", "max")} if boxes else None)
+    values = sorted(value for row in surfaces for value in row.get("values_db") or [] if value is not None)
+    cells = sum(len(row.get("values_db") or []) for row in surfaces)
+    gains = [row["gain_db_coherent"] for row in scenario.get("links", []) or [] if row.get("gain_db_coherent") is not None]
+    stub = {key: scenario.get(key) for key in STUB_FIELDS}
+    stub.update(stub=True, summary={
+        "surface_bounds": bounds,
+        "median_db": values[len(values)//2] if values else None,  # same rule as the viewer's medianDb
+        "mean_link_db": sum(gains)/len(gains) if gains else None,
+        "reached_pct": 100.0*len(values)/cells if cells else None,
+        "path_count": len(scenario.get("paths", []) or []),
+    })
+    return stub
+
+
+def _import_summary(import_file: Path) -> dict[str, Any]:
+    """Stubs and dedupe key for one import, cached next to it and rebuilt only when the import changes."""
+    stat = import_file.stat()
+    signature = [stat.st_size, stat.st_mtime_ns]
+    cache_file = import_file.with_name("viewer_summary.json")
+    try:
+        cached = _read_json(cache_file)
+        if cached.get("schema") == SUMMARY_SCHEMA and cached.get("source_signature") == signature:
+            return cached
+    except (OSError, ValueError):
+        pass
+    imported = _read_json(import_file)
+    content_signature = _housionna_content_signature(imported)
+    order, scenarios, assets = _prepare_import(import_file, imported)
+    metadata = imported.get("run_metadata", {})
+    source_name = ((metadata.get("run_id") if isinstance(metadata, dict) else None)
+                   or imported.get("provenance", {}).get("source_run_name") or import_file.parent.name)
+    summary = {
+        "schema": SUMMARY_SCHEMA, "source_signature": signature,
+        "semantic_key": [str(source_name), content_signature],
+        "featured_scenario": imported.get("featured_scenario"),
+        "scenario_order": order,
+        "stubs": {name: _scenario_stub(scenarios[name], assets) for name in order},
+    }
+    atomic_json(cache_file, summary, compact=True)
+    return summary
+
+
+def housionna_viewer_payload(project_root: Path, import_id: str) -> dict[str, Any]:
+    """Full viewer data for one import, fetched by the browser when that run is selected."""
+    from integrations.housionna import read_import
+    document = read_import(project_root, import_id)
+    import_file = Path(project_root).resolve() / "outputs" / "integrations" / "housionna" / import_id / "viewer_import.json"
+    order, scenarios, assets = _prepare_import(import_file, document)
+    return {"schema_version": 1, "import_id": import_id, "scenario_order": order,
+            "scenarios": {name: scenarios[name] for name in order},
+            "assets": {"geometries": assets.get("geometries", {}), "meshes": assets.get("meshes", {})}}
+
+
 def build_viewer_scene(project_root: Path) -> Path:
     """Combine current run artifacts without running or inventing RF results."""
     project_root = Path(project_root).resolve()
@@ -227,77 +323,33 @@ def build_viewer_scene(project_root: Path) -> Path:
         },
     }
 
-    # Integration adapters write a normalized, viewer-facing document. Merge
-    # those documents here so the Three.js app never reads an external schema.
+    # Integration adapters write a normalized, viewer-facing document per import. The scene file carries
+    # only a small stub per HOUSIONNA scenario; the viewer fetches a run's full data when it is selected
+    # (/api/housionna/imports/<id>/viewer). This keeps the scene file and its rebuild small however many
+    # procedural runs are imported.
     integration_root = output_root / "integrations" / "housionna"
-    imported_assets = {"geometries": {}, "meshes": {}}
     imported_featured = None
     if integration_root.is_dir():
         import_files = sorted(
             integration_root.glob("*/viewer_import.json"),
             key=lambda path: path.stat().st_mtime_ns,
         )
-        # Older sessions may have produced a path-addressed import and then a
-        # content-addressed import of the exact same RF data. Keep the newest
-        # normalized copy in the viewer while retaining both files on disk.
-        newest_semantic_copy: dict[tuple[str, str], Path] = {}
-        semantic_keys: dict[Path, tuple[str, str]] = {}
-        import_documents = {}
-        for import_file in import_files:
-            imported = _read_json(import_file)
-            import_documents[import_file] = imported
-            if imported.get("schema_version") != 1:
+        summaries = {import_file: _import_summary(import_file) for import_file in import_files}
+        # Older sessions may have produced a path-addressed import and then a content-addressed import of
+        # the exact same RF data. Keep the newest copy in the viewer while retaining both files on disk.
+        newest_semantic_copy = {tuple(summary["semantic_key"]): import_file for import_file, summary in summaries.items()}
+        for import_file, summary in summaries.items():
+            if newest_semantic_copy.get(tuple(summary["semantic_key"])) != import_file:
                 continue
-            provenance = imported.get("provenance", {})
-            metadata = imported.get("run_metadata", {})
-            source_name = (metadata.get("run_id") if isinstance(metadata, dict) else None) or provenance.get("source_run_name") or import_file.parent.name
-            semantic_key = (str(source_name), _housionna_content_signature(imported))
-            semantic_keys[import_file] = semantic_key
-            newest_semantic_copy[semantic_key] = import_file
-        for import_file in import_files:
-            semantic_key = semantic_keys.get(import_file)
-            if semantic_key is not None and newest_semantic_copy.get(semantic_key) != import_file:
-                continue
-            imported = import_documents.pop(import_file)
-            if imported.get("schema_version") != 1:
-                raise ValueError(f"Unsupported HOUSIONNA viewer import schema in {import_file}")
-            payload_assets = imported.get("assets", {})
-            for asset_kind in ("geometries", "meshes"):
-                imported_assets[asset_kind].update(payload_assets.get(asset_kind, {}))
-            imported_order = imported.get("scenario_order", [])
-            imported_scenarios = imported.get("scenarios", {})
-            if not isinstance(imported_order, list) or not isinstance(imported_scenarios, dict):
-                raise ValueError(f"Malformed HOUSIONNA viewer import in {import_file}")
-            for name in imported_order:
-                if name not in imported_scenarios:
-                    raise ValueError(f"HOUSIONNA import {import_file} references missing scenario {name!r}")
+            for name in summary["scenario_order"]:
                 if name in scenarios:
                     raise ValueError(f"Imported scenario name conflicts with an existing scenario: {name}")
-                scenario = imported_scenarios[name]
-                scenario["import_id"] = import_file.parent.name
-                provenance = scenario.get("provenance")
-                if isinstance(provenance, dict):
-                    # The normalized import on disk retains the exact local
-                    # source location. The browser-facing document needs only
-                    # run IDs and must not publish machine-specific paths.
-                    provenance.pop("source_run_folder", None)
-                metadata = scenario.setdefault("run_metadata", {})
-                if not isinstance(metadata, dict):
-                    metadata = {}
-                    scenario["run_metadata"] = metadata
-                metadata.setdefault("import_id", import_file.parent.name)
-                metadata.setdefault("run_id", imported.get("run_metadata", {}).get("run_id")
-                                    if isinstance(imported.get("run_metadata"), dict)
-                                    else imported.get("provenance", {}).get("source_run_name"))
-                scenarios[name] = scenario
+                scenarios[name] = summary["stubs"][name]
                 scene["scenario_order"].append(name)
-                scene["scenario_labels"][name] = scenario.get("label", name)
-            featured = imported.get("featured_scenario")
-            if featured in imported_scenarios:
-                imported_featured = featured
+                scene["scenario_labels"][name] = summary["stubs"][name].get("label", name)
+            if summary.get("featured_scenario") in summary["stubs"]:
+                imported_featured = summary["featured_scenario"]
 
-    if imported_assets["geometries"] or imported_assets["meshes"]:
-        scene["assets"] = imported_assets
     if imported_featured:
         scene["featured_scenario"] = imported_featured
         scene["semantics"]["housionna_imports"] = (

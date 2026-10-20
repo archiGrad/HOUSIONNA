@@ -10,7 +10,7 @@ import time
 import uuid
 from typing import Any
 
-from digital_twin_data import build_viewer_scene
+from digital_twin_data import build_viewer_scene, housionna_viewer_payload
 from integrations.housionna import (
     compare_imports,
     configured_runs_directory,
@@ -49,7 +49,9 @@ class HousionnaImportManager:
         message = re.sub(r"(?i)\b[a-z]:\\[^\r\n\"']+", "<local path>", message)
         return f"{type(error).__name__}: {message[:360]}"
 
-    def start(self, run_id: Any = None) -> dict[str, Any]:
+    def start(self, run_id: Any = None, *, rebuild_scene: bool = True) -> dict[str, Any]:
+        # rebuild_scene=False lets a batch import skip the full viewer-scene rebuild (most of an import's time)
+        # until its last run.
         if run_id is not None and (not isinstance(run_id, str) or not run_id or
                                    re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,127}", run_id) is None or
                                    ".." in run_id):
@@ -68,6 +70,7 @@ class HousionnaImportManager:
                 "stage": "discovering_runs",
                 "message": "Discovering completed HOUSIONNA exports",
                 "requested_run_id": run_id,
+                "rebuild_scene": bool(rebuild_scene),
                 "run_id": None,
                 "started_monotonic": time.monotonic(),
                 "started_at_utc": datetime.now(timezone.utc).isoformat(),
@@ -129,8 +132,9 @@ class HousionnaImportManager:
             if not isinstance(output_file, Path):
                 raise RuntimeError("Adapter did not produce a normalized import file")
             import_id = output_file.parent.name
-            self._set_stage(job_id, "updating_viewer", "Updating the existing digital-twin scene data")
-            build_viewer_scene(self.project_root)
+            if self.jobs[job_id]["rebuild_scene"]:
+                self._set_stage(job_id, "updating_viewer", "Updating the existing digital-twin scene data")
+                build_viewer_scene(self.project_root)
             document = read_import(self.project_root, import_id)
             run_metadata = document.get("run_metadata", {})
             with self.lock:
@@ -185,6 +189,10 @@ def api_runs(project_root: str | Path) -> dict[str, Any]:
 
 def api_imports(project_root: str | Path) -> dict[str, Any]:
     return {"imports": list_imports(project_root)}
+
+
+def api_import_viewer(project_root: str | Path, import_id: str) -> dict[str, Any]:
+    return housionna_viewer_payload(Path(project_root), import_id)
 
 
 def api_import(project_root: str | Path, import_id: str) -> dict[str, Any]:
