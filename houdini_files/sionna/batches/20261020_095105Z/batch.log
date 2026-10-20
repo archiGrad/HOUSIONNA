@@ -1,0 +1,212 @@
+batch: 21 work items, pid 2466381
+[1/21] wi000
+sionna 2.2.0, cuda_ad_mono_polarized
+scene: 2 objects, 2 materials, 1 tx, 5 rx (0.1 s)
+settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 1 tx x 5 rx, 1e+06 samples per tx
+paths: 8 valid paths over 5 links (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_result.npz (0.01 MB)
+radio map 'measure_ground': 4802 cells, 1e+07 samples per tx
+radio map 'measure_ground': 4793 of 4802 cells reached (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_radiomap.npz (0.04 MB)
+[2/21] wi001
+sionna 2.2.0, cuda_ad_mono_polarized
+scene: 2 objects, 2 materials, 1 tx, 20 rx (0.0 s)
+settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 1 tx x 20 rx, 1e+06 samples per tx
+paths: 37 valid paths over 20 links (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_result.npz (0.02 MB)
+radio map 'measure_ground': 4802 cells, 1e+07 samples per tx
+radio map 'measure_ground': 4793 of 4802 cells reached (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_radiomap.npz (0.04 MB)
+[3/21] wi002
+sionna 2.2.0, cuda_ad_mono_polarized
+scene: 2 objects, 2 materials, 2 tx, 5 rx (0.0 s)
+settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 2 tx x 5 rx, 1e+06 samples per tx
+paths: 22 valid paths over 10 links (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_result.npz (0.01 MB)
+radio map 'measure_ground': 4802 cells, 1e+07 samples per tx
+radio map 'measure_ground': 4802 of 4802 cells reached (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_radiomap.npz (0.06 MB)
+[4/21] wi003
+sionna 2.2.0, cuda_ad_mono_polarized
+scene: 2 objects, 2 materials, 2 tx, 20 rx (0.0 s)
+settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 2 tx x 20 rx, 1e+06 samples per tx
+paths: 76 valid paths over 40 links (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_result.npz (0.03 MB)
+radio map 'measure_ground': 4802 cells, 1e+07 samples per tx
+radio map 'measure_ground': 4802 of 4802 cells reached (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_radiomap.npz (0.06 MB)
+[5/21] wi004
+sionna 2.2.0, cuda_ad_mono_polarized
+scene: 2 objects, 2 materials, 1 tx, 5 rx (0.0 s)
+settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 1 tx x 5 rx, 1e+06 samples per tx
+paths: 8 valid paths over 5 links (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_result.npz (0.01 MB)
+radio map 'measure_ground': 4802 cells, 1e+07 samples per tx
+radio map 'measure_ground': 4310 of 4802 cells reached (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_radiomap.npz (0.04 MB)
+[6/21] wi005
+sionna 2.2.0, cuda_ad_mono_polarized
+scene: 2 objects, 2 materials, 1 tx, 20 rx (0.0 s)
+settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 1 tx x 20 rx, 1e+06 samples per tx
+paths: 37 valid paths over 20 links (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_result.npz (0.02 MB)
+radio map 'measure_ground': 4802 cells, 1e+07 samples per tx
+radio map 'measure_ground': 4310 of 4802 cells reached (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_radiomap.npz (0.04 MB)
+[7/21] wi006
+sionna 2.2.0, cuda_ad_mono_polarized
+scene: 2 objects, 2 materials, 2 tx, 5 rx (0.0 s)
+settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 2 tx x 5 rx, 1e+06 samples per tx
+paths: 22 valid paths over 10 links (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_result.npz (0.01 MB)
+radio map 'measure_ground': 4802 cells, 1e+07 samples per tx
+radio map 'measure_ground': 4802 of 4802 cells reached (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_radiomap.npz (0.06 MB)
+[8/21] wi007
+sionna 2.2.0, cuda_ad_mono_polarized
+scene: 2 objects, 2 materials, 2 tx, 20 rx (0.0 s)
+settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 2 tx x 20 rx, 1e+06 samples per tx
+paths: 76 valid paths over 40 links (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_result.npz (0.03 MB)
+radio map 'measure_ground': 4802 cells, 1e+07 samples per tx
+radio map 'measure_ground': 4802 of 4802 cells reached (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_radiomap.npz (0.06 MB)
+[9/21] wi008
+sionna 2.2.0, cuda_ad_mono_polarized
+scene: 2 objects, 2 materials, 1 tx, 5 rx (0.0 s)
+settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 1 tx x 5 rx, 1e+06 samples per tx
+paths: 8 valid paths over 5 links (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_result.npz (0.01 MB)
+radio map 'measure_ground': 4802 cells, 1e+07 samples per tx
+radio map 'measure_ground': 3827 of 4802 cells reached (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_radiomap.npz (0.04 MB)
+[10/21] wi009
+sionna 2.2.0, cuda_ad_mono_polarized
+scene: 2 objects, 2 materials, 1 tx, 20 rx (0.0 s)
+settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 1 tx x 20 rx, 1e+06 samples per tx
+paths: 37 valid paths over 20 links (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_result.npz (0.02 MB)
+radio map 'measure_ground': 4802 cells, 1e+07 samples per tx
+radio map 'measure_ground': 3827 of 4802 cells reached (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_radiomap.npz (0.04 MB)
+[11/21] wi010
+sionna 2.2.0, cuda_ad_mono_polarized
+scene: 2 objects, 2 materials, 2 tx, 5 rx (0.0 s)
+settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 2 tx x 5 rx, 1e+06 samples per tx
+paths: 22 valid paths over 10 links (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_result.npz (0.01 MB)
+radio map 'measure_ground': 4802 cells, 1e+07 samples per tx
+radio map 'measure_ground': 4802 of 4802 cells reached (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_radiomap.npz (0.06 MB)
+[12/21] wi011
+sionna 2.2.0, cuda_ad_mono_polarized
+scene: 2 objects, 2 materials, 2 tx, 20 rx (0.0 s)
+settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 2 tx x 20 rx, 1e+06 samples per tx
+paths: 76 valid paths over 40 links (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_result.npz (0.03 MB)
+radio map 'measure_ground': 4802 cells, 1e+07 samples per tx
+radio map 'measure_ground': 4802 of 4802 cells reached (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_radiomap.npz (0.06 MB)
+[13/21] wi012
+sionna 2.2.0, cuda_ad_mono_polarized
+scene: 2 objects, 2 materials, 1 tx, 5 rx (0.0 s)
+settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 1 tx x 5 rx, 1e+06 samples per tx
+paths: 8 valid paths over 5 links (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_result.npz (0.01 MB)
+radio map 'measure_ground': 4802 cells, 1e+07 samples per tx
+radio map 'measure_ground': 3770 of 4802 cells reached (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_radiomap.npz (0.04 MB)
+[14/21] wi013
+sionna 2.2.0, cuda_ad_mono_polarized
+scene: 2 objects, 2 materials, 1 tx, 20 rx (0.0 s)
+settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 1 tx x 20 rx, 1e+06 samples per tx
+paths: 37 valid paths over 20 links (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_result.npz (0.02 MB)
+radio map 'measure_ground': 4802 cells, 1e+07 samples per tx
+radio map 'measure_ground': 3770 of 4802 cells reached (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_radiomap.npz (0.04 MB)
+[15/21] wi014
+sionna 2.2.0, cuda_ad_mono_polarized
+scene: 2 objects, 2 materials, 2 tx, 5 rx (0.0 s)
+settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 2 tx x 5 rx, 1e+06 samples per tx
+paths: 22 valid paths over 10 links (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_result.npz (0.01 MB)
+radio map 'measure_ground': 4802 cells, 1e+07 samples per tx
+radio map 'measure_ground': 4802 of 4802 cells reached (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_radiomap.npz (0.06 MB)
+[16/21] wi015
+sionna 2.2.0, cuda_ad_mono_polarized
+scene: 2 objects, 2 materials, 2 tx, 20 rx (0.0 s)
+settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 2 tx x 20 rx, 1e+06 samples per tx
+paths: 77 valid paths over 40 links (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_result.npz (0.03 MB)
+radio map 'measure_ground': 4802 cells, 1e+07 samples per tx
+radio map 'measure_ground': 4802 of 4802 cells reached (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_radiomap.npz (0.06 MB)
+[17/21] wi016
+sionna 2.2.0, cuda_ad_mono_polarized
+scene: 2 objects, 2 materials, 1 tx, 5 rx (0.0 s)
+settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 1 tx x 5 rx, 1e+06 samples per tx
+paths: 8 valid paths over 5 links (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_result.npz (0.01 MB)
+radio map 'measure_ground': 4802 cells, 1e+07 samples per tx
+radio map 'measure_ground': 3910 of 4802 cells reached (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_radiomap.npz (0.04 MB)
+[18/21] wi017
+sionna 2.2.0, cuda_ad_mono_polarized
+scene: 2 objects, 2 materials, 1 tx, 20 rx (0.0 s)
+settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 1 tx x 20 rx, 1e+06 samples per tx
+paths: 37 valid paths over 20 links (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_result.npz (0.02 MB)
+radio map 'measure_ground': 4802 cells, 1e+07 samples per tx
+radio map 'measure_ground': 3910 of 4802 cells reached (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_radiomap.npz (0.04 MB)
+[19/21] wi018
+sionna 2.2.0, cuda_ad_mono_polarized
+scene: 2 objects, 2 materials, 2 tx, 5 rx (0.0 s)
+settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 2 tx x 5 rx, 1e+06 samples per tx
+paths: 22 valid paths over 10 links (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_result.npz (0.01 MB)
+radio map 'measure_ground': 4802 cells, 1e+07 samples per tx
+radio map 'measure_ground': 4802 of 4802 cells reached (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_radiomap.npz (0.06 MB)
+[20/21] wi019
+sionna 2.2.0, cuda_ad_mono_polarized
+scene: 2 objects, 2 materials, 2 tx, 20 rx (0.0 s)
+settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 2 tx x 20 rx, 1e+06 samples per tx
+paths: 76 valid paths over 40 links (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_result.npz (0.03 MB)
+radio map 'measure_ground': 4802 cells, 1e+07 samples per tx
+radio map 'measure_ground': 4802 of 4802 cells reached (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_radiomap.npz (0.06 MB)
+[21/21] wi020
+sionna 2.2.0, cuda_ad_mono_polarized
+scene: 2 objects, 2 materials, 1 tx, 5 rx (0.0 s)
+settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 1 tx x 5 rx, 1e+06 samples per tx
+paths: 8 valid paths over 5 links (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_result.npz (0.01 MB)
+radio map 'measure_ground': 4802 cells, 1e+07 samples per tx
+radio map 'measure_ground': 4052 of 4802 cells reached (0.0 s)
+wrote SIONNA_HOUDINI_pipeline_5_radiomap.npz (0.04 MB)
+batch: finished, 21 solved, 0 skipped, 0 failed

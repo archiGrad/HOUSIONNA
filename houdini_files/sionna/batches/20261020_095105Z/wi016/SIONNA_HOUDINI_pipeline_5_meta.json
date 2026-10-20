@@ -1,0 +1,24 @@
+{
+  "exported_utc": "20261020_095107Z",
+  "hip": "/home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/SIONNA_HOUDINI_pipeline_5.hipnc",
+  "houdini": "21.0.440",
+  "commit": "e593cbe5740b7bf9b5e489b3ff4e79a0dfce285f",
+  "dirty": true,
+  "work_item": {
+    "index": 16,
+    "id": 515,
+    "name": "output0_515"
+  },
+  "wedge": {
+    "wedgetotal": 280,
+    "TOPS_rx_n": 5.0,
+    "wedgenum": 0,
+    "wedgeattribs": "TOPS_radiomap_tx",
+    "wedgecount": 2,
+    "wedgeindex": 16,
+    "TOPS_scene_geometry_res": 1,
+    "runs": 0,
+    "TOPS_tx_n": 1,
+    "TOPS_radiomap_tx": -0.5555555555555554
+  }
+}

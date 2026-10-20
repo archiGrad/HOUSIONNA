@@ -4,8 +4,7 @@ Run [Sionna RT](https://nvlabs.github.io/sionna/rt/) radio propagation simulatio
 
 Houdini is the procedural generator: geometry, materials and devices are built with nodes, so one network can produce an unlimited number of scene variations, and each variation can be simulated and inspected within seconds.
 
-![Paths and radio map in Houdini](docs/prev.png)
-![Paths and radio map in Houdini](docs/2preview.png)
+![Paths and radio map in Houdini](docs/preview.png)
 
 ## What it is
 
@@ -291,7 +290,7 @@ Defaults, each overridable by a parm of the same name on the Null:
 
 ## Terminal output
 
-Every message, including all error and warning codes, is printed to the terminal and appended to `sionna/log.txt` with a timestamp. Each button ends with a line such as `solve passed (0 errors, 1 warning)` or `export FAILED (2 errors, 0 warnings)`.
+Every message, including all error and warning codes, is printed to the terminal and appended to `sionna/log.txt` with a timestamp. Each button ends with a line such as `solve passed (0 errors, 1 warning) after 21.4 s` or `export FAILED (2 errors, 0 warnings) after 0.3 s`; the time counts from the button press.
 
 | Button | Prints |
 |---|---|

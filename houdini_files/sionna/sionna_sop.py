@@ -27,6 +27,7 @@ REMOTE_ROOT = "~/Documents/HyROPA"
 TIMEOUT = 1800
 MAX_RAYS = 4294967295
 SSH_OPTS = ["-o", "BatchMode=yes", "-o", "ConnectTimeout=10"]
+STARTED = time.time()
 TOPNET = "../topnet1"
 SETTINGS = {
     "frequency": FREQUENCY,
@@ -141,7 +142,8 @@ def report(phase, recs):
     errors = sum(1 for r in recs if r[0][0] not in "WN")
     warnings = sum(1 for r in recs if r[0][0] == "W")
     status = "FAILED" if errors else "passed"
-    say(phase, f"{phase} {status} ({plural(errors, 'error')}, {plural(warnings, 'warning')})")
+    say(phase, f"{phase} {status} ({plural(errors, 'error')}, {plural(warnings, 'warning')}) "
+               f"after {time.time() - STARTED:.1f} s")
 
 
 def short(names, n=3):
@@ -229,50 +231,88 @@ def stale(scene, s):
 
 # --- validate ---
 
-def grow(box, bb):
-    if box is None:
-        return hou.BoundingBox(*bb.minvec(), *bb.maxvec())
-    box.enlargeToContain(bb)
-    return box
+SCAN = """
+int pts[] = primpoints(0, @primnum);
+i@sionna_nv = len(pts);
+i@sionna_closed = primintrinsic(0, "closed", @primnum);
+s@sionna_type = primintrinsic(0, "typename", @primnum);
+i@sionna_p0 = len(pts) > 0 ? pts[0] : -1;
+i@sionna_p1 = len(pts) > 1 ? pts[1] : -1;
+i@sionna_p2 = len(pts) > 2 ? pts[2] : -1;
+addpointattrib(0, "sionna_used", 0);
+foreach (int pt; pts)
+    setpointattrib(0, "sionna_used", pt, 1);
+"""
 
 
-def dist_to_box(p, bb):
-    lo, hi = bb.minvec(), bb.maxvec()
-    return hou.Vector3([p[i] - min(max(p[i], lo[i]), hi[i]) for i in range(3)]).length()
+def scan(geo):
+    import numpy as np
+    src = geo.sopNode()
+    with hou.undos.disabler():
+        wrangle = src.parent().createNode("attribwrangle", "sionna_scan")
+        try:
+            wrangle.setInput(0, src)
+            wrangle.parm("class").set(1)
+            wrangle.parm("snippet").set(SCAN)
+            out = wrangle.geometry()
+            res = {
+                "tri": np.array([out.primIntAttribValues(f"sionna_p{i}") for i in range(3)]).T.reshape(-1, 3),
+                "ok": (np.array(out.primStringAttribValues("sionna_type")) == "Poly")
+                      & (np.array(out.primIntAttribValues("sionna_nv")) == 3)
+                      & (np.array(out.primIntAttribValues("sionna_closed")) == 1),
+                "used": np.array(out.pointIntAttribValues("sionna_used")) == 1,
+            }
+        finally:
+            wrangle.destroy()
+    res["P"] = np.frombuffer(geo.pointFloatAttribValuesAsString("P"), dtype=np.float32).reshape(-1, 3).astype(float)
+    return res
+
+
+def prim_values(geo, name):
+    kind = geo.findPrimAttrib(name).dataType()
+    if kind == hou.attribData.String:
+        return geo.primStringAttribValues(name)
+    if kind == hou.attribData.Int:
+        return geo.primIntAttribValues(name)
+    return geo.primFloatAttribValues(name)
+
+
+def sionna_axes(v):
+    return v[:, [0, 2, 1]] * (1.0, -1.0, 1.0)
 
 
 def validate(geo, frequency=FREQUENCY):
-    recs = []
-    if not geo.prims():
+    import numpy as np
+    if not geo.intrinsicValue("primitivecount"):
         return [("V001", {})]
-    for a in ("name", "material"):
-        if geo.findPrimAttrib(a) is None:
-            recs.append(("V002", {"attr": a}))
+    recs = [("V002", {"attr": a}) for a in ("name", "material") if geo.findPrimAttrib(a) is None]
     if recs:
         return recs
 
+    s = scan(geo)
+    P, tri, ok, used = s["P"], s["tri"], s["ok"], s["used"]
+    names = np.array(geo.primStringAttribValues("name"))
+    corner = P[np.where(ok[:, None], tri, 0)]
+    area = 0.5 * np.linalg.norm(np.cross(corner[:, 1] - corner[:, 0], corner[:, 2] - corner[:, 0]), axis=1)
+    uniq, inv = np.unique(names, return_inverse=True)
+    valid = np.array([bool(re.fullmatch(r"[A-Za-z0-9_-]+", u)) for u in uniq.tolist()])[inv.ravel()]
+    recs += [("V003", {"prim": i}) for i in np.nonzero(~ok)[0].tolist()]
+    recs += [("V004", {"prim": i}) for i in np.nonzero(ok & (area < 1e-12))[0].tolist()]
+    recs += [("V010", {"prim": i}) for i in np.nonzero(ok & (names == ""))[0].tolist()]
+    recs += [("V005", {"prim": i, "name": names[i]}) for i in np.nonzero(ok & (names != "") & ~valid)[0].tolist()]
+
     present = [a for a in MAT_ATTRS if geo.findPrimAttrib(a)]
-    seen, boxes, scene = {}, {}, None
-    for p in geo.prims():
-        n = p.number()
-        bb = p.boundingBox()
-        scene = grow(scene, bb)
-        if p.type() != hou.primType.Polygon or p.numVertices() != 3 or not p.isClosed():
-            recs.append(("V003", {"prim": n}))
-            continue
-        if p.intrinsicValue("measuredarea") < 1e-12:
-            recs.append(("V004", {"prim": n}))
-        name = p.attribValue("name")
-        if not name:
-            recs.append(("V010", {"prim": n}))
-            continue
-        if not re.fullmatch(r"[A-Za-z0-9_-]+", name):
-            recs.append(("V005", {"prim": n, "name": name}))
-            continue
-        boxes[name] = grow(boxes.get(name), bb)
-        vals = tuple(p.attribValue(a) for a in present)
-        if seen.setdefault(name, vals) != vals:
-            recs.append(("V006", {"prim": n, "name": name}))
+    cols = [prim_values(geo, a) for a in present]
+    good = np.nonzero(ok & valid)[0]
+    _, first, ginv = np.unique(names[good], return_index=True, return_inverse=True)
+    ginv = ginv.ravel()
+    diff = np.zeros(len(good), bool)
+    for c in cols:
+        c = np.array(c)[good]
+        diff |= c != c[first][ginv]
+    recs += [("V006", {"prim": int(good[k]), "name": str(names[good[k]])}) for k in np.nonzero(diff)[0]]
+    order = sorted(first.tolist())
+    seen = {str(names[good[f]]): tuple(c[good[f]] for c in cols) for f in order}
 
     lib, warned = library(), set()
     for name, vals in seen.items():
@@ -298,46 +338,44 @@ def validate(geo, frequency=FREQUENCY):
         if not 0 <= v.get("scattering_coefficient", 0) <= 1:
             recs.append(("V009", {"name": name}))
 
-    size = scene.sizevec()
-    diag = size.length()
+    lo, hi = P[used].min(axis=0), P[used].max(axis=0)
+    size = (hi - lo).tolist()
+    diag = float(np.linalg.norm(hi - lo))
     recs.insert(0, ("N001", {"x": size[0], "y": size[2], "z": size[1]}))
     if not 1 <= diag <= 50000:
         recs.append(("W001", {"diag": diag}))
     lam = 299792458 / frequency
-    for name, bb in boxes.items():
-        s = bb.sizevec()
-        if max(s[0], s[1], s[2]) < lam:
-            recs.append(("W002", {"name": name, "lam": lam}))
+    if len(good):
+        blo = np.full((len(first), 3), np.inf)
+        bhi = -blo
+        np.minimum.at(blo, ginv, corner[good].min(axis=1))
+        np.maximum.at(bhi, ginv, corner[good].max(axis=1))
+        small = (bhi - blo).max(axis=1) < lam
+        recs += [("W002", {"name": str(names[good[first[k]]]), "lam": lam})
+                 for k in sorted(range(len(first)), key=lambda k: first[k]) if small[k]]
 
     missing = [a for a in ("role", "name") if geo.findPointAttrib(a) is None]
     if missing:
         return recs + [("V101", {"attr": a}) for a in missing]
 
-    devs = []
-    for pt in geo.points():
-        role = pt.attribValue("role")
-        if role in ("tx", "rx"):
-            devs.append((role, pt.attribValue("name"), pt.position()))
-        elif not pt.prims():
-            recs.append(("V106", {"pt": pt.number(), "role": role}))
-    if not any(d[0] == "tx" for d in devs):
+    roles = np.array(geo.pointStringAttribValues("role"))
+    pnames = np.array(geo.pointStringAttribValues("name"))
+    tx, rx = roles == "tx", roles == "rx"
+    dev = tx | rx
+    recs += [("V106", {"pt": i, "role": str(roles[i])}) for i in np.nonzero(~dev & ~used)[0].tolist()]
+    if not tx.any():
         recs.append(("V102", {"role": "tx"}))
-    if not any(d[0] == "rx" for d in devs):
+    if not rx.any():
         measure = any(dict(zip(present, v))["material"] == MEASURE for v in seen.values())
         recs.append(("W004", {}) if measure else ("V107", {}))
-    names = [d[1] for d in devs]
-    if "" in names:
+    if (pnames[dev] == "").any():
         recs.append(("V103", {}))
-    for n in sorted({n for n in names if n and names.count(n) > 1}):
-        recs.append(("V104", {"name": n}))
-    for _, tx, a in (d for d in devs if d[0] == "tx"):
-        for _, rx, b in (d for d in devs if d[0] == "rx"):
-            if a.distanceTo(b) < 1e-4:
-                recs.append(("V105", {"tx": tx, "rx": rx}))
-    for _, name, pos in devs:
-        dist = dist_to_box(pos, scene)
-        if dist > diag:
-            recs.append(("W003", {"name": name, "dist": dist}))
+    dup, counts = np.unique(pnames[dev & (pnames != "")], return_counts=True)
+    recs += [("V104", {"name": n}) for n in dup[counts > 1].tolist()]
+    close = np.linalg.norm(P[tx][:, None] - P[rx][None], axis=2) < 1e-4
+    recs += [("V105", {"tx": str(pnames[tx][i]), "rx": str(pnames[rx][j])}) for i, j in zip(*np.nonzero(close))]
+    dist = np.linalg.norm(P[dev] - np.clip(P[dev], lo, hi), axis=1)
+    recs += [("W003", {"name": str(n), "dist": float(d)}) for n, d in zip(pnames[dev], dist) if d > diag]
     return recs
 
 
@@ -386,13 +424,13 @@ def on_validate():
 # --- export ---
 
 def materials(geo):
-    present = [a for a in MAT_ATTRS if geo.findPrimAttrib(a)]
+    import numpy as np
+    names = geo.primStringAttribValues("name")
+    cols = {a: prim_values(geo, a) for a in MAT_ATTRS if geo.findPrimAttrib(a)}
     out = {}
-    for p in geo.prims():
-        name = p.attribValue("name")
-        if name not in out:
-            v = {a: p.attribValue(a) for a in present}
-            out[name] = (v["material"], v.get("thickness", 0.0), v.get("scattering_coefficient", 0.0))
+    for i in sorted(np.unique(names, return_index=True)[1].tolist()):
+        v = {a: c[i] for a, c in cols.items()}
+        out[names[i]] = (v["material"], v.get("thickness", 0.0), v.get("scattering_coefficient", 0.0))
     return out
 
 
@@ -458,30 +496,29 @@ def build_xml(objs):
     return "\n".join(lines)
 
 
-def to_sionna(v):
-    return (v[0], -v[2], v[1])
-
-
 def build_devices(geo):
-    def vec(pt, attr):
-        return pt.attribValue(attr) if geo.findPointAttrib(attr) else (0.0, 0.0, 0.0)
+    import numpy as np
+
+    def vec(attr):
+        if geo.findPointAttrib(attr):
+            return np.array(geo.pointFloatAttribValues(attr)).reshape(-1, 3)
+        return np.zeros((len(roles), 3))
 
     def rnd(v):
-        return [round(c, 6) for c in v]
+        return [round(float(c), 6) for c in v]
 
+    roles = geo.pointStringAttribValues("role")
+    names = geo.pointStringAttribValues("name")
+    pos = sionna_axes(vec("P"))
+    ori, vel = vec("orientation"), sionna_axes(vec("velocity"))
+    power = geo.pointFloatAttribValues("power_dbm") if geo.findPointAttrib("power_dbm") else None
     out = {"tx": [], "rx": []}
-    for pt in geo.points():
-        role = pt.attribValue("role")
+    for i, role in enumerate(roles):
         if role not in out:
             continue
-        d = {
-            "name": pt.attribValue("name"),
-            "position": rnd(to_sionna(pt.position())),
-            "orientation": rnd(vec(pt, "orientation")),
-            "velocity": rnd(to_sionna(vec(pt, "velocity"))),
-        }
-        if role == "tx" and geo.findPointAttrib("power_dbm"):
-            d["power_dbm"] = round(pt.attribValue("power_dbm"), 6)
+        d = {"name": names[i], "position": rnd(pos[i]), "orientation": rnd(ori[i]), "velocity": rnd(vel[i])}
+        if role == "tx" and power is not None:
+            d["power_dbm"] = round(power[i], 6)
         out[role].append(d)
     return out
 
@@ -492,21 +529,14 @@ def write(path, text):
 
 
 def write_meshes(geo, folder):
-    pieces = {}
-    for p in geo.prims():
-        pieces.setdefault(p.attribValue("name"), []).append(p)
-    for name, prims in pieces.items():
-        idx, pts, faces = {}, [], []
-        for p in prims:
-            f = []
-            for v in p.vertices():
-                pt = v.point()
-                if pt.number() not in idx:
-                    idx[pt.number()] = len(pts)
-                    pts.append(to_sionna(pt.position()))
-                f.append(idx[pt.number()])
-            faces.append(f[::-1])
-        write_ply(f"{folder}/{name}.ply", pts, faces)
+    import numpy as np
+    s = scan(geo)
+    names, _, group = np.unique(geo.primStringAttribValues("name"), return_index=True, return_inverse=True)
+    group = group.ravel()
+    prims = np.split(np.argsort(group, kind="stable"), np.cumsum(np.bincount(group))[:-1])
+    for name, idx in zip(names.tolist(), prims):
+        u, inv = np.unique(s["tri"][idx].ravel(), return_inverse=True)
+        write_ply(f"{folder}/{name}.ply", sionna_axes(s["P"][u]), inv.reshape(-1, 3)[:, ::-1])
 
 
 def write_ply(path, pts, faces):
@@ -1235,7 +1265,7 @@ def on_batch_export():
     batch.update(git)
     say("batch", f"batch {stamp}: {plural(len(items), 'work item')} ({items[0].index} to {items[-1].index}) "
                  f"from {top.path()}")
-    before, t0 = top.getSelectedWorkItem(), time.time()
+    before = top.getSelectedWorkItem()
     try:
         for n, wi in enumerate(items, 1):
             t1, name = time.time(), item_name(wi.index)
@@ -1253,7 +1283,7 @@ def on_batch_export():
             batch["items"][name] = entry
             codes = f", {' '.join(entry['codes'])}" if entry["codes"] else ""
             say("batch", f"  [{n}/{len(items)}] {name}: {entry['status']}, "
-                         f"{plural(len(geo.prims()) if geo else 0, 'prim')}{codes} ({time.time() - t1:.1f} s)")
+                         f"{plural(geo.intrinsicValue('primitivecount') if geo else 0, 'prim')}{codes} ({time.time() - t1:.1f} s)")
             for r in recs:
                 if r[0][0] not in "WN":
                     say("batch", f"    {fmt(r)}")
@@ -1262,7 +1292,6 @@ def on_batch_export():
         os.makedirs(folder, exist_ok=True)
         write(folder + "/batch.json", json.dumps(batch, indent=2))
     failed = sum(1 for e in batch["items"].values() if e["status"] == "failed")
-    say("batch", f"export done after {time.time() - t0:.1f} s")
     recs = [("N009", {"name": stamp, "ok": len(items) - failed, "failed": failed, "path": folder})]
     if node.parm("batch"):
         node.parm("batch").set(stamp)

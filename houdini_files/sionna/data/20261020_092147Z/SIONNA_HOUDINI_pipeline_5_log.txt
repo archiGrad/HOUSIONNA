@@ -1,0 +1,2 @@
+N001 scene size: x 10.00 m, y 10.00 m, z 10.00 m (sionna axes, z up)
+N002 exported to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261020_092147Z
