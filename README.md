@@ -4,7 +4,7 @@ Run [Sionna RT](https://nvlabs.github.io/sionna/rt/) radio propagation simulatio
 
 Houdini is the procedural generator: geometry, materials and devices are built with nodes, so one network can produce an unlimited number of scene variations, and each variation can be simulated and inspected within seconds.
 
-![Paths and radio map in Houdini](docs/preview.png)
+![Paths and radio map in Houdini](docs/sim.png)
 
 ## What it is
 
