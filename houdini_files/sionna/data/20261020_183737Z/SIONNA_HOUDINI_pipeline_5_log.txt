@@ -1,0 +1,3 @@
+N001 scene size: x 10.13 m, y 10.59 m, z 6.83 m (sionna axes, z up)
+W005 material 'polypropylene' is not confirmed: permittivity confirmed, loss assumed zero
+N002 exported to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261020_183737Z

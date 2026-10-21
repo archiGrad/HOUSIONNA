@@ -1,0 +1,9 @@
+sionna 2.2.0, cuda_ad_mono_polarized
+scene: 5 objects, 5 materials, 3 tx, 5 rx (0.1 s)
+settings: 3.5 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 3 tx x 5 rx, 1e+06 samples per tx
+paths: 863 valid paths over 15 links (0.6 s)
+wrote SIONNA_HOUDINI_pipeline_5_result.npz (0.07 MB)
+radio map 'measure_floor': 16384 cells, 1e+07 samples per tx
+radio map 'measure_floor': 16384 of 16384 cells reached (0.2 s)
+wrote SIONNA_HOUDINI_pipeline_5_radiomap.npz (0.24 MB)

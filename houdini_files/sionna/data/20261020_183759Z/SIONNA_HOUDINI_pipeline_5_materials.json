@@ -1,0 +1,20 @@
+{
+  "frequency": 3500000000.0,
+  "objects": {
+    "walls": {
+      "material": "glass",
+      "thickness": 0.004000000189989805,
+      "scattering_coefficient": 0.0
+    },
+    "trays": {
+      "material": "polypropylene",
+      "thickness": 0.003000000026077032,
+      "scattering_coefficient": 0.0,
+      "relative_permittivity": 2.25,
+      "conductivity": 0.0,
+      "xpd_coefficient": 0.0,
+      "source": "RF Cafe dielectric table (2.2); Ellingson, Electromagnetics II (2.3)",
+      "status": "permittivity confirmed, loss assumed zero"
+    }
+  }
+}
