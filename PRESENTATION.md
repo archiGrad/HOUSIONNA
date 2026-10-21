@@ -37,3 +37,10 @@
 ![HyROPA_presentatie_18](docs/presentation_21-10-2026/HyROPA_presentatie_18.png)
 
 ![HyROPA_presentatie_19](docs/presentation_21-10-2026/HyROPA_presentatie_19.png)
+
+
+
+
+
+showcase video
+https://www.youtube.com/watch?v=GcwktsATHTg

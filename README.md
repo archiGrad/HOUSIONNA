@@ -32,7 +32,7 @@ Export never contacts the server; previz, solve and the batch buttons except exp
 .
 ├── .venv/                      local Sionna RT environment (not committed)
 ├── requirements.txt
-├── docs/preview.png
+├── docs/                       preview image, presentations (see Update #1)
 └── houdini_files/
     ├── <scene>.hip
     └── sionna/
@@ -106,6 +106,8 @@ exec(open(hou.expandString('$HIP/sionna/sionna_sop.py')).read()); on_validate()
 The code is read from `sionna/sionna_sop.py` on every press, so the file in git is the only copy.
 
 Start Houdini from a terminal. All feedback is printed there and appended to `sionna/log.txt`; there are no pop-ups.
+
+Validate and export read the geometry in bulk. To get which points belong to which triangle, they create a temporary Attribute Wrangle `sionna_scan` next to the node that feeds the Null, cook it and delete it again. This adds no undo steps, but marks the hip file as changed.
 
 ## Compute target
 
@@ -446,3 +448,85 @@ if (tx >= 0) {
 - **Validation does not check** whether a device sits inside an object or below a floor, or whether ITU materials are defined at the run frequency.
 - **Remote targets need `ssh` and `rsync`** on your machine (standard on Linux and macOS, not on Windows).
 - Developed against Sionna RT 2.2.0.
+
+## Update #1 (21-10-2026)
+
+Procedural greenhouse variations from a TOP network, exported, solved as one batch on the Spark and loaded back per work item.
+
+### Video
+
+[![Video of the pipeline](https://img.youtube.com/vi/GcwktsATHTg/0.jpg)](https://www.youtube.com/watch?v=GcwktsATHTg)
+
+https://www.youtube.com/watch?v=GcwktsATHTg
+
+### Presentation
+
+![Slide 1](docs/presentation_21-10-2026/HyROPA_presentatie_1.png)
+![Slide 2](docs/presentation_21-10-2026/HyROPA_presentatie_2.png)
+![Slide 3](docs/presentation_21-10-2026/HyROPA_presentatie_3.png)
+![Slide 4](docs/presentation_21-10-2026/HyROPA_presentatie_4.png)
+![Slide 5](docs/presentation_21-10-2026/HyROPA_presentatie_5.png)
+![Slide 6](docs/presentation_21-10-2026/HyROPA_presentatie_6.png)
+![Slide 7](docs/presentation_21-10-2026/HyROPA_presentatie_7.png)
+![Slide 8](docs/presentation_21-10-2026/HyROPA_presentatie_8.png)
+![Slide 9](docs/presentation_21-10-2026/HyROPA_presentatie_9.png)
+![Slide 10](docs/presentation_21-10-2026/HyROPA_presentatie_10.png)
+![Slide 11](docs/presentation_21-10-2026/HyROPA_presentatie_11.png)
+![Slide 12](docs/presentation_21-10-2026/HyROPA_presentatie_12.png)
+![Slide 13](docs/presentation_21-10-2026/HyROPA_presentatie_13.png)
+![Slide 14](docs/presentation_21-10-2026/HyROPA_presentatie_14.png)
+![Slide 15](docs/presentation_21-10-2026/HyROPA_presentatie_15.png)
+![Slide 16](docs/presentation_21-10-2026/HyROPA_presentatie_16.png)
+![Slide 17](docs/presentation_21-10-2026/HyROPA_presentatie_17.png)
+![Slide 18](docs/presentation_21-10-2026/HyROPA_presentatie_18.png)
+![Slide 19](docs/presentation_21-10-2026/HyROPA_presentatie_19.png)
+
+### Annotated screenshots
+
+Front view: greenhouse shell, TX frame with TX, RX, racks with plants
+
+![Front view: greenhouse shell, TX frame with TX, RX, racks with plants](docs/presentation_21-10-2026/annotated_images/annotated_298ad846.png)
+
+Greenhouse with rack rows, TX frame and RX
+
+![Greenhouse with rack rows, TX frame and RX](docs/presentation_21-10-2026/annotated_images/annotated_cbe7a67c.png)
+
+Greenhouse with a grid of racks, TX frame and RX
+
+![Greenhouse with a grid of racks, TX frame and RX](docs/presentation_21-10-2026/annotated_images/annotated_7f4aaac7.png)
+
+Close-up of the racks: trays, legs, plants, RX
+
+![Close-up of the racks: trays, legs, plants, RX](docs/presentation_21-10-2026/annotated_images/annotated_00bbc1c9.png)
+
+One variation: TX, links and RX
+
+![One variation: TX, links and RX](docs/presentation_21-10-2026/annotated_images/annotated_23cd7903.png)
+
+One variation: all paths
+
+![One variation: all paths](docs/presentation_21-10-2026/annotated_images/annotated_7a2c2e1c.png)
+
+Paths in several variations at once
+
+![Paths in several variations at once](docs/presentation_21-10-2026/annotated_images/annotated_92642889.png)
+
+Radio map under four racks
+
+![Radio map under four racks](docs/presentation_21-10-2026/annotated_images/annotated_1e853020.png)
+
+### Screenshots
+
+![Screenshot 2026-10-20-212001](docs/presentation_21-10-2026/2026-10-20-212001_1300x940_scrot.png)
+![Screenshot 2026-10-20-212214](docs/presentation_21-10-2026/2026-10-20-212214_1296x970_scrot.png)
+![Screenshot 2026-10-20-212229](docs/presentation_21-10-2026/2026-10-20-212229_1295x995_scrot.png)
+![Screenshot 2026-10-20-215721](docs/presentation_21-10-2026/2026-10-20-215721_1920x1034_scrot.png)
+![Screenshot 2026-10-20-215730](docs/presentation_21-10-2026/2026-10-20-215730_1920x1032_scrot.png)
+![Screenshot 2026-10-20-215744](docs/presentation_21-10-2026/2026-10-20-215744_1920x1028_scrot.png)
+![Screenshot 2026-10-20-215809](docs/presentation_21-10-2026/2026-10-20-215809_1920x1031_scrot.png)
+![Screenshot 2026-10-20-215850](docs/presentation_21-10-2026/2026-10-20-215850_1920x1032_scrot.png)
+![Screenshot 2026-10-20-215912](docs/presentation_21-10-2026/2026-10-20-215912_1920x1029_scrot.png)
+![Screenshot 2026-10-21-102447](docs/presentation_21-10-2026/2026-10-21-102447_1920x1061_scrot.png)
+![Screenshot 2026-10-21-102633](docs/presentation_21-10-2026/2026-10-21-102633_1920x1060_scrot.png)
+![Screenshot 2026-10-21-102655](docs/presentation_21-10-2026/2026-10-21-102655_1920x1028_scrot.png)
+![Screenshot 2026-10-21-102800](docs/presentation_21-10-2026/2026-10-21-102800_1917x1033_scrot.png)
