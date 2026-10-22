@@ -128,9 +128,13 @@ def publish(project_root: Path = ROOT, out: Path | None = None, *,
 
     # The scene file's run summaries get the same rounding as the run files, so values compare equal in the viewer.
     sizes = {"scene": _write_json(out / "data" / "viewer_scene.json", _compact(scene))}
-    for import_id in import_ids:
-        sizes[import_id] = _write_json(out / "data" / "runs" / f"{import_id}.json",
-                                       _compact(housionna_viewer_payload(project_root, import_id)))
+    # One file per transmitter, matching how the viewer loads runs (data/runs/<import>/<scenario>.json).
+    for name, row in scene["scenarios"].items():
+        if row.get("source_type") == "housionna" and row.get("import_id"):
+            if not SAFE_ID.match(name):
+                raise ValueError(f"Scenario name {name!r} is not safe as a file name")
+            sizes[name] = _write_json(out / "data" / "runs" / row["import_id"] / f"{name}.json",
+                                      _compact(housionna_viewer_payload(project_root, row["import_id"], name)))
     (out / ".htaccess").write_text(HTACCESS, encoding="utf-8")
     (out / MARKER).write_text("Made by run.py publish; the next publish replaces this whole folder.\n", encoding="utf-8")
 

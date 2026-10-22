@@ -223,6 +223,23 @@ On the controlled 162-triangle CPU test, a fresh Low request took 2.73 s; exact 
 
 See [docs/PERFORMANCE_RELIABILITY.md](docs/PERFORMANCE_RELIABILITY.md) for measured before/after results, browser evidence, sampling statistics, cache rules, diagnostics, timeouts and remaining limitations. Tests: `.\.venv\Scripts\python.exe -m unittest discover -s tests -v` and `node scripts/test_rf_inputs.mjs`.
 
+## Application engine and reference cases
+
+These commands work on imported HOUSIONNA runs (use **Import all** in the viewer first). Application profiles are in `config/applications.yaml`. Values marked EXAMPLE there, such as the BLE and LoRa sensitivities and the rectifier curve, are placeholders until measured device data replaces them.
+
+- `python run.py apps --batch <batch>` (or `--import <id>`, or no option for every run) computes the following and writes them to `outputs/applications/<scope>/`:
+  - received power, link margin, best server, coverage and the worst case over a batch;
+  - for RF wireless power transfer with a total power budget: the incident power for four strategies (best single TX; equal split without phase alignment; equal split in phase without channel knowledge; coherent maximum-ratio transmission), the harvested DC power and the shortest sustainable reporting interval.
+- `python run.py placement --run <run>` treats every transmitter of a run as a candidate position. For each number of transmitters k it finds the subset that is best for the worst receiver, exhaustively for up to 16 candidates and greedy beyond. Output goes to `outputs/placement/<run>/`.
+- `python run.py maps --run <run> [--placement-k K | --tx NAME ...]` computes the same metrics per triangle of the radio-map surface and reports the share of the area where a node can run. Maps carry no phase, so coherent MRT appears there as its local average P Σ g_i. Output goes to `outputs/applications/maps/<run>/`.
+- `python scripts/reference_cases.py` compares Sionna RT against analytical cases and writes `outputs/validation/`:
+  - free space;
+  - a single slab (ITU-R P.2040);
+  - a closed block, whose thickness Sionna applies at every surface it crosses;
+  - thin objects, where paths with a segment shorter than 1 cm are discarded (`MIN_SEGMENT_LENGTH` in Sionna RT 2.2).
+
+Coherent quantities use h = Σ a_k exp(-j2π f_c τ_k). The exported coefficients are Sionna's `Paths.a`, which do not include the propagation phase; `Paths.cir()` returns them with the phase applied.
+
 ## Output layout
 
 Each run writes under `outputs/`:

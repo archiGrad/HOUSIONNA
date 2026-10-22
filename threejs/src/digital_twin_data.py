@@ -6,6 +6,7 @@ import json
 import hashlib
 from math import log10
 import platform
+import threading
 from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 from typing import Any
@@ -238,15 +239,60 @@ def _import_summary(import_file: Path) -> dict[str, Any]:
     return summary
 
 
-def housionna_viewer_payload(project_root: Path, import_id: str) -> dict[str, Any]:
-    """Full viewer data for one import, fetched by the browser when that run is selected."""
-    from integrations.housionna import read_import
-    document = read_import(project_root, import_id)
+SPLIT_SCHEMA = 1
+_SPLIT_LOCK = threading.Lock()
+
+
+def _scenario_payload(import_id: str, name: str, scenario: dict[str, Any], assets: dict[str, Any]) -> dict[str, Any]:
+    """One transmitter's scenario with only the geometry and meshes it references."""
+    geometry_ref = scenario.get("geometry_ref")
+    mesh_refs = {row.get("mesh_ref") for row in (scenario.get("radio_map") or {}).get("surfaces") or [] if row.get("mesh_ref")}
+    return {"schema_version": 1, "import_id": import_id, "scenario_order": [name], "scenarios": {name: scenario},
+            "assets": {"geometries": {key: value for key, value in assets.get("geometries", {}).items() if key == geometry_ref},
+                       "meshes": {key: value for key, value in assets.get("meshes", {}).items() if key in mesh_refs}}}
+
+
+def housionna_viewer_payload(project_root: Path, import_id: str, scenario: str | None = None) -> dict[str, Any]:
+    """Viewer data for one import (all transmitters), or for one of its scenarios when ``scenario`` is given.
+
+    Joris's multi-TX runs reach 76 MB (15 TX, 70k paths), too much for a browser to parse at once, so the viewer
+    asks for one transmitter. The first such request splits the import into viewer_split/<n>.json, one file per
+    scenario, rebuilt whenever viewer_import.json changes.
+    """
+    from integrations.housionna import _valid_run_id, read_import
+    if not _valid_run_id(import_id):
+        raise ValueError("Invalid imported run identifier")
     import_file = Path(project_root).resolve() / "outputs" / "integrations" / "housionna" / import_id / "viewer_import.json"
-    order, scenarios, assets = _prepare_import(import_file, document)
-    return {"schema_version": 1, "import_id": import_id, "scenario_order": order,
-            "scenarios": {name: scenarios[name] for name in order},
-            "assets": {"geometries": assets.get("geometries", {}), "meshes": assets.get("meshes", {})}}
+    if scenario is None:
+        document = read_import(project_root, import_id)
+        order, scenarios, assets = _prepare_import(import_file, document)
+        return {"schema_version": 1, "import_id": import_id, "scenario_order": order,
+                "scenarios": {name: scenarios[name] for name in order},
+                "assets": {"geometries": assets.get("geometries", {}), "meshes": assets.get("meshes", {})}}
+    split = import_file.with_name("viewer_split")
+    with _SPLIT_LOCK:
+        if not import_file.is_file():
+            raise FileNotFoundError("Imported HOUSIONNA run was not found")
+        stat = import_file.stat()
+        signature = [stat.st_size, stat.st_mtime_ns]
+        try:
+            manifest = _read_json(split / "manifest.json")
+            current = manifest.get("schema") == SPLIT_SCHEMA and manifest.get("source_signature") == signature
+        except (OSError, ValueError, AttributeError):
+            current = False
+        if not current:
+            order, scenarios, assets = _prepare_import(import_file, read_import(project_root, import_id))
+            split.mkdir(exist_ok=True)
+            files = {}
+            for index, name in enumerate(order):
+                atomic_json(split / f"{index}.json", _scenario_payload(import_id, name, scenarios[name], assets), compact=True)
+                files[name] = f"{index}.json"
+            manifest = {"schema": SPLIT_SCHEMA, "source_signature": signature, "files": files}
+            atomic_json(split / "manifest.json", manifest, compact=True)
+    file_name = manifest["files"].get(scenario)
+    if not file_name:
+        raise FileNotFoundError(f"Scenario {scenario!r} is not part of import {import_id}")
+    return _read_json(split / file_name)
 
 
 def build_viewer_scene(project_root: Path) -> Path:

@@ -132,8 +132,11 @@ class HousionnaImportManager:
             if not isinstance(output_file, Path):
                 raise RuntimeError("Adapter did not produce a normalized import file")
             import_id = output_file.parent.name
-            # Write the run's viewer summary now, so a batch's final scene rebuild reads small files only.
-            _import_summary(output_file)
+            # Write the run's viewer summary now, so a batch's final scene rebuild reads small files only, and split
+            # it per transmitter, so the first view of a large multi-TX run does not wait for that.
+            summary = _import_summary(output_file)
+            if summary.get("scenario_order"):
+                housionna_viewer_payload(self.project_root, import_id, summary["scenario_order"][0])
             if self.jobs[job_id]["rebuild_scene"]:
                 self._set_stage(job_id, "updating_viewer", "Updating the existing digital-twin scene data")
                 build_viewer_scene(self.project_root)
@@ -193,8 +196,8 @@ def api_imports(project_root: str | Path) -> dict[str, Any]:
     return {"imports": list_imports(project_root)}
 
 
-def api_import_viewer(project_root: str | Path, import_id: str) -> dict[str, Any]:
-    return housionna_viewer_payload(Path(project_root), import_id)
+def api_import_viewer(project_root: str | Path, import_id: str, scenario: str | None = None) -> dict[str, Any]:
+    return housionna_viewer_payload(Path(project_root), import_id, scenario)
 
 
 def api_import(project_root: str | Path, import_id: str) -> dict[str, Any]:

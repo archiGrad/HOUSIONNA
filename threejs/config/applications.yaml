@@ -1,0 +1,41 @@
+# Application profiles for the application engine (python run.py apps). They turn the propagation results of
+# imported HOUSIONNA runs into communication and wireless-power metrics (paper, Section "Application metrics").
+#
+# Values marked EXAMPLE are typical or illustrative, not measured for a specific device. Replace them with the data
+# of the device being studied before drawing conclusions.
+
+communication:
+  # Margin M = P_r - S - L_impl - M_reserve (dB). P_r uses the incoherent (local-average) link gain sum |a|^2.
+  ble_1m:
+    label: BLE 1M PHY
+    sensitivity_dbm: -95.0        # EXAMPLE: datasheet class of current BLE SoCs
+    implementation_loss_db: 0.0
+    reserve_db: 10.0              # design reserve for fading, detuning and body or plant shadowing
+  lora_sf7_125k:
+    label: LoRa SF7 / 125 kHz
+    sensitivity_dbm: -124.5       # EXAMPLE: datasheet class of current LoRa transceivers
+    implementation_loss_db: 0.0
+    reserve_db: 10.0
+
+wpt:
+  label: RF wireless power transfer
+  total_power_dbm: 30.0           # total conducted power of all transmitters together (1 W)
+  rx_antenna_gain_dbi: 0.0        # the simulations use isotropic antennas; add the harvester antenna gain here
+  quiescent_power_w: 1.0e-6       # EXAMPLE: storage leakage and always-on circuitry of the node
+  harvester:
+    label: EXAMPLE rectifier curve, not a measured device
+    frequency_hz: 915.0e6         # the curve applies near this frequency; runs far from it are flagged
+    # [incident RF power (dBm), RF-to-DC efficiency (0..1)]. Below the first point nothing is harvested.
+    efficiency_curve:
+      - [-25.0, 0.00]
+      - [-20.0, 0.05]
+      - [-15.0, 0.15]
+      - [-10.0, 0.30]
+      - [-5.0, 0.45]
+      - [0.0, 0.55]
+      - [5.0, 0.60]
+      - [10.0, 0.60]
+  # Energy per measurement-and-transmission cycle of the RF-powered plant movement sensor (Cappelle et al. 2025).
+  cycles_j:
+    imu_ble_basic: 2.88e-3
+    imu_ble_full: 9.11e-3

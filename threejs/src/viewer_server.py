@@ -137,7 +137,8 @@ class DashboardHandler(BaseHTTPRequestHandler):
         match = re.fullmatch(r"/api/housionna/imports/([^/]+)/viewer", route)
         if match and self.housionna_imports:
             try:
-                self._send_json(200, api_import_viewer(self.project_root, unquote(match.group(1))))
+                scenarios = parse_qs(parsed.query).get("scenario") or [None]
+                self._send_json(200, api_import_viewer(self.project_root, unquote(match.group(1)), scenarios[0]))
             except FileNotFoundError:
                 self._send_json(404, {"error": "Imported HOUSIONNA run was not found"})
             except (ValueError, OSError) as error:
