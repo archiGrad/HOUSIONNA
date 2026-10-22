@@ -20,8 +20,9 @@ def atomic_json(path: Path, document: dict, *, compact: bool = False) -> None:
     with tempfile.NamedTemporaryFile(mode='w',encoding='utf-8',dir=path.parent,
                                     prefix=path.name+'-',suffix='.tmp',delete=False) as handle:
         temporary=Path(handle.name)
-        json.dump(document,handle,allow_nan=False,indent=None if compact else 2,
-                  separators=(',',':') if compact else None)
+        # dumps + one write: json.dump streams thousands of small writes, several times slower on big imports.
+        handle.write(json.dumps(document,allow_nan=False,indent=None if compact else 2,
+                                separators=(',',':') if compact else None))
     try:
         for attempt in range(10):
             try:

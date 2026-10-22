@@ -186,3 +186,11 @@
 /* Batch series: which cook, and the wedged parameters held fixed while one is on the x axis. */
 :root[data-theme] .series-batch { margin: 4px 0 6px; font-size: 12px; }
 :root[data-theme] .series-filters:empty { display: none; }
+
+/* Analysis view toggle and its legend (colours come from the 3D scene, text stays in text tokens). */
+:root[data-theme] .quiet-button[aria-pressed="true"] { background: var(--text); color: var(--ink); border-color: var(--text); }
+:root[data-theme] .analysis-legend { position: absolute; left: 16px; right: 16px; bottom: 74px; display: flex; flex-wrap: wrap; gap: 6px 14px;
+  font-size: 11px; letter-spacing: 0.06em; color: var(--muted); pointer-events: none; }
+:root[data-theme] .analysis-legend.hidden { display: none; }
+:root[data-theme] .analysis-legend span { display: inline-flex; align-items: center; gap: 6px; }
+:root[data-theme] .analysis-legend i { width: 8px; height: 8px; border-radius: 50%; background: var(--c); }

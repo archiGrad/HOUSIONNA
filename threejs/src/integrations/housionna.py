@@ -1095,6 +1095,7 @@ def configured_path_endpoint_tolerance(project_root: str | Path) -> float:
 # batch.json and status.json. Such a run is addressed as "<batch>.wiNNN"; plain runs keep their folder name.
 BATCH_RUN_ID = re.compile(r"([A-Za-z0-9][A-Za-z0-9_-]*)\.(wi\d+)")
 WORK_ITEM = re.compile(r"wi\d+")
+WEDGE_BOOKKEEPING = frozenset({"runs", "wedgeindex", "wedgetotal", "wedgecount", "wedgenum", "wedgeattribs"})
 
 
 def configured_batches_directory(project_root: str | Path) -> Path:
@@ -1174,9 +1175,10 @@ def _houdini_metadata(folder: Path) -> dict[str, Any]:
         if isinstance(meta.get("hip"), str):
             out["houdini"]["hip_file"] = re.split(r"[\\/]", meta["hip"])[-1]  # file name only, never the path
         wedge = meta.get("wedge") if isinstance(meta.get("wedge"), dict) else {}
-        # Every wedged attribute starts with TOPS_ (agreed with Joris, Oct 2026).
+        # Wedged attributes are every numeric entry except Houdini PDG's own bookkeeping. They were named TOPS_*
+        # in the first batches (20 Oct 2026) and plain a, b, c... from 21 Oct, so no prefix is required.
         parameters = {key: value for key, value in wedge.items()
-                      if key.startswith("TOPS_") and isinstance(value, (int, float)) and not isinstance(value, bool)}
+                      if key not in WEDGE_BOOKKEEPING and isinstance(value, (int, float)) and not isinstance(value, bool)}
         if parameters:
             out["parameters"] = parameters
         if wedge:

@@ -13,7 +13,7 @@ app.innerHTML = `
   <header class="topbar">
     <div class="brand"><img class="brand-logo" src="dramco-mark-white.png" alt="DRAMCO" width="32" height="32"><div><b>HyROPA</b><span>INDOOR VERTICAL FARM TWIN</span></div></div>
     <div class="top-context"><span class="live-dot"></span><span id="scenarioHeading">Loading scene data</span><span class="separator">/</span><span id="frequencyHeading">RF propagation study</span></div>
-    <div class="top-actions"><span id="visualWarning" class="visual-warning">VISUAL PLANTS ≠ RF MODEL</span><button id="layersBtn" class="quiet-button panel-button" aria-expanded="true">Layers</button><button id="inspectorBtn" class="quiet-button panel-button" aria-expanded="true">Inspector</button><button id="captureBtn" class="quiet-button">Capture view</button></div>
+    <div class="top-actions"><span id="visualWarning" class="visual-warning">VISUAL PLANTS ≠ RF MODEL</span><button id="layersBtn" class="quiet-button panel-button" aria-expanded="true">Layers</button><button id="inspectorBtn" class="quiet-button panel-button" aria-expanded="true">Inspector</button><button id="analysisBtn" class="quiet-button" aria-pressed="false" title="Black background, flat colours, ray hit points">Analysis view</button><button id="captureBtn" class="quiet-button">Capture view</button></div>
   </header>
   <main class="workspace">
     <aside class="left-panel">
@@ -168,6 +168,7 @@ app.innerHTML = `
       <div class="viewport-toolbar"><div class="view-pill"><span class="view-dot"></span>3D SCENE</div><div id="sceneMeta" class="scene-meta">Loading dimensions…</div><button id="diagnosticsBtn" class="icon-button" title="Toggle diagnostics">Diagnostics</button></div>
       <div id="viewport" class="viewport"><div id="sceneLoading" class="scene-loading"><div class="loading-mark">H</div><b>Building configured farm scene</b><span>Loading exported geometry and Sionna RF outputs</span></div></div>
       <div class="scale-chip"><span class="scale-line"></span><span>1 m</span></div>
+      <div id="analysisLegend" class="analysis-legend hidden" aria-label="Analysis view legend"></div>
       <div id="diagnostics" class="diagnostics hidden"></div>
       <div class="viewport-footer"><span id="legendSemantics">PANELS / RACK <b>VISUAL + RF</b> &nbsp; DETAILED PLANTS <b>VISUAL ONLY</b> &nbsp; RF PLANT ZONES <b>RF ONLY</b></span><span>METRES / Z UP</span></div>
     </section>
@@ -201,9 +202,9 @@ let housionnaRuns = [], housionnaImports = [], housionnaImportBusy = false;
 // files next to the page and has no Python server, so import, rerun and simulation controls are hidden.
 const STATIC_SITE = document.documentElement.dataset.site === 'static';
 const SCENE_URL = STATIC_SITE ? 'data/viewer_scene.json' : '/outputs/digital_twin/viewer_scene.json';
-const importViewerUrl = (importId) => STATIC_SITE
-  ? `data/runs/${encodeURIComponent(importId)}.json`
-  : `/api/housionna/imports/${encodeURIComponent(importId)}/viewer`;
+const importViewerUrl = (importId, scenarioKey) => STATIC_SITE
+  ? `data/runs/${encodeURIComponent(importId)}/${encodeURIComponent(scenarioKey)}.json`
+  : `/api/housionna/imports/${encodeURIComponent(importId)}/viewer?scenario=${encodeURIComponent(scenarioKey)}`;
 const housionnaOriginalResults = new Map(), housionnaLatestResults = new Map();
 let renderedGeometry=null;
 let frameDirty=true;
@@ -549,7 +550,8 @@ function createPathPolyline(path, scenario) {
   const types = path.interaction_types || [];
   const color = types.length ? (interactionColors[types[0]] || '#75818b') : interactionColors.los;
   const geometry = new THREE.BufferGeometry().setFromPoints(pts);
-  const material = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.82, depthTest: true });
+  // fog:false: the scene fog starts at 22 m, so paths in a large greenhouse would fade into the background.
+  const material = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.9, depthTest: true, fog: false });
   const line = new THREE.Line(geometry, material);
   line.userData = { kind: 'path', path, receiver: rx, rfIncluded: true, hoverColor: color };
   line.computeLineDistances?.();
@@ -614,9 +616,90 @@ function solidColorFor(item) {
   if(category==='floor')return '#c2c2b8';
   if(category==='greenhouse_shell'||category==='enclosure_panel'||itu.includes('glass'))return '#8fb8c0';
   if(category==='metal_structure'||category==='shelf_tray'||itu.includes('metal')||itu.includes('steel'))return '#68777c';
-  if(category==='vegetation'||category==='rf_plant_zone'||itu.includes('vegetation'))return '#75946c';
+  if(category==='vegetation'||category==='rf_plant_zone'||itu.includes('vegetation')||isPlantObject(item))return '#75946c';
   if(itu.includes('concrete'))return '#a39a8c';
   return '#89969a';
+}
+// HOUSIONNA scenes can model plants as RF objects (leaves.ply, stems.ply from 21 Oct 2026); the exporter gives
+// them no ITU type, so recognise them by object or material name.
+function isPlantObject(item) {
+  return /\b(leaf|leaves|stem|stems|plant|plants|crop|canopy|foliage)\b/i.test(`${item.name||item.id||''} ${String(item.material_key||'').replace(/_t\d.*$/,'')}`);
+}
+// Analysis view: the look of a Houdini viewport for reading RF results. Black background, flat unlit colours by
+// role (glass as blue outlines, structure magenta, plants green, TX green, RX red), the radio map on, and every
+// path interaction point of the shown transmitter as a point cloud. Plants get one colour: shading them by height
+// would read as a signal value.
+let analysisView=false,analysisSaved=null;
+// Per mesh, not in userData: a device marker's stem, sphere and antenna share one userData object.
+const analysisOriginals=new WeakMap();
+const ANALYSIS_COLORS={glass:'#2f4dff',structure:'#ff2fa8',plant:'#3ddc6e',floor:'#1b1b1f',light:'#f4efc2',other:'#8a93a6',tx:'#39ff5a',rx:'#ff3030',hits:'#3dff74'};
+function analysisRole(mesh) {
+  const data=mesh.userData||{};
+  if(data.kind==='transmitter')return 'tx';
+  if(data.kind==='receiver')return 'rx';
+  if(data.kind==='visual-plant')return 'plant';
+  const object=data.object;if(!object)return null;
+  const category=String(object.category||'').toLowerCase(),itu=String(object.metadata?.itu_type||'').toLowerCase();
+  if(category==='greenhouse_shell'||category==='enclosure_panel'||itu.includes('glass'))return 'glass';
+  if(category==='floor')return 'floor';
+  if(category==='grow_light')return 'light';
+  if(category==='vegetation'||category==='rf_plant_zone'||isPlantObject(object))return 'plant';
+  if(['metal_structure','shelf_tray','equipment'].includes(category)||itu.includes('metal'))return 'structure';
+  return 'other';
+}
+function applyAnalysisView(scenario=data?.scenarios?.[activeScenario]) {
+  if(!scene||!rootGroup)return;
+  rootGroup.getObjectByName('analysis-hits')?.removeFromParent();
+  rootGroup.traverse((mesh)=>{
+    if(!mesh.isMesh&&!mesh.isInstancedMesh)return;
+    const original=analysisOriginals.get(mesh);
+    if(!analysisView) {
+      if(original){mesh.material.dispose?.();mesh.material=original;analysisOriginals.delete(mesh);}
+      mesh.getObjectByName('analysis-edges')?.removeFromParent();
+      return;
+    }
+    if(original)return;  // already in analysis look
+    const role=analysisRole(mesh);if(!role)return;
+    const proxy=String(mesh.userData.object?.category||'')==='rf_plant_zone';  // coarse RF block: keep it see-through
+    const stem=(role==='tx'||role==='rx')&&mesh.geometry?.type==='CylinderGeometry';
+    const material=new THREE.MeshBasicMaterial({color:stem?'#3a3f48':ANALYSIS_COLORS[role],side:THREE.DoubleSide,toneMapped:false,
+      transparent:role==='glass'||proxy,opacity:role==='glass'?0:(proxy?0.28:1),depthWrite:role!=='glass'&&!proxy,depthTest:mesh.material?.depthTest!==false});
+    analysisOriginals.set(mesh,mesh.material);mesh.material=material;
+    if(role==='glass') {
+      const edges=new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry,25),new THREE.LineBasicMaterial({color:ANALYSIS_COLORS.glass,toneMapped:false}));
+      edges.name='analysis-edges';edges.raycast=()=>{};mesh.add(edges);
+    }
+  });
+  if(analysisView&&scenario) {
+    const positions=[];
+    for(const path of scenario.paths||[])for(const point of path.interaction_vertices_m||[]) {
+      if(positions.length>=900000)break;
+      positions.push(Number(point[0]),Number(point[1]),Number(point[2]));
+    }
+    if(positions.length) {
+      const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));
+      const hits=new THREE.Points(geometry,new THREE.PointsMaterial({color:ANALYSIS_COLORS.hits,size:2,sizeAttenuation:false,transparent:true,opacity:0.75,toneMapped:false,depthWrite:false}));
+      hits.name='analysis-hits';hits.raycast=()=>{};hits.renderOrder=6;rootGroup.add(hits);
+    }
+  }
+  $('#analysisLegend').classList.toggle('hidden',!analysisView);
+  if(analysisView)$('#analysisLegend').innerHTML=`<span><i style="--c:${ANALYSIS_COLORS.hits}"></i>Ray hit points · ${(scenario?.paths||[]).length.toLocaleString()} paths of ${esc(scenario?.transmitter?.name||'TX')}</span><span><i style="--c:${ANALYSIS_COLORS.structure}"></i>Structure</span><span><i style="--c:${ANALYSIS_COLORS.plant}"></i>Plants</span><span><i style="--c:${ANALYSIS_COLORS.glass}"></i>Glass</span><span><i style="--c:${ANALYSIS_COLORS.tx}"></i>TX</span><span><i style="--c:${ANALYSIS_COLORS.rx}"></i>RX</span>`;
+  frameDirty=true;
+}
+function setAnalysisView(on) {
+  if(on===analysisView)return;
+  analysisView=on;
+  $('#analysisBtn').setAttribute('aria-pressed',String(on));
+  if(on) {
+    analysisSaved={fog:scene.fog,background:scene.background,map:$('[data-layer="map"]').checked};
+    scene.fog=null;scene.background=new THREE.Color('#000000');
+    $('[data-layer="map"]').checked=true;
+  } else if(analysisSaved) {
+    scene.fog=analysisSaved.fog;scene.background=analysisSaved.background;
+    $('[data-layer="map"]').checked=analysisSaved.map;analysisSaved=null;applySceneTheme();
+  }
+  setLayerVisibility();updateMap();applyAnalysisView();
+  if(on)focusScene('analysis');
 }
 function applyHousionnaGeometryMode(scenario) {
   const imported=scenario?.source_type==='housionna';
@@ -629,18 +712,20 @@ function applyHousionnaGeometryMode(scenario) {
     const mesh=objectMeshes.get(item.id);
     if(!mesh?.material)return;
     const color=mode==='object-colors'?objectColorFor(item,index):solidColorFor(item);
-    const material=mesh.material;
+    const material=analysisOriginals.get(mesh)||mesh.material;
     material.color.set(color);
     material.roughness=0.86;
     material.metalness=0.035;
     material.flatShading=true;
+    // Glass walls stay see-through in Solid mode, so a greenhouse does not hide the rack and plants inside it.
+    const glass=mode==='solid'&&(String(item.metadata?.itu_type||'').toLowerCase().includes('glass')||String(item.category||'')==='greenhouse_shell');
     material.wireframe=mode==='wireframe';
-    material.transparent=mode==='transparent'||mode==='wireframe';
-    material.opacity=mode==='transparent'?0.32:(mode==='wireframe'?0.82:1);
-    material.depthWrite=mode!=='transparent'&&mode!=='wireframe';
+    material.transparent=mode==='transparent'||mode==='wireframe'||glass;
+    material.opacity=mode==='transparent'?0.32:(mode==='wireframe'?0.82:(glass?0.16:1));
+    material.depthWrite=mode!=='transparent'&&mode!=='wireframe'&&!glass;
     material.side=THREE.DoubleSide;
     material.needsUpdate=true;
-    mesh.renderOrder=mode==='transparent'?4:1;
+    mesh.renderOrder=mode==='transparent'||glass?4:1;
     legendRows.push(`<div><i style="--object-color:${color}"></i><span>${esc(item.name||item.id)}</span><b>${esc(item.material_key||item.metadata?.material_name||item.category)}</b></div>`);
   });
   if(legend){legend.innerHTML=legendRows.join('');legend.classList.toggle('hidden',mode!=='object-colors'||!legendRows.length);}
@@ -705,7 +790,7 @@ function updateSceneSemantics(scenario) {
 function buildScenario({preserveView = false} = {}) {
   frameDirty=true;
   const scenario=data.scenarios[activeScenario];
-  if(!scenarioReady(scenario))return;  // HOUSIONNA stubs are loaded by ensureHousionnaImport first
+  if(!scenarioReady(scenario))return;  // HOUSIONNA stubs are loaded by ensureHousionnaScenario first
   if(preserveView&&scenario.source_type==='housionna'&&renderedGeometry===scenario.geometry&&layerGroups.devices){
     buildDeviceMarkers(scenario);
     updateMap();setLayerVisibility();setScenarioSummary(scenario);buildReceiverSelector(scenario);refreshReceiverMetrics(scenario);refreshPaths();
@@ -716,6 +801,7 @@ function buildScenario({preserveView = false} = {}) {
     renderDiagnostics(scenario,{},triangles);
     const key=selectedObject?.object?.id||selectedObject?.name;
     selectObject(objectMeshes.get(key)?.userData||{kind:'scene',name:scenario.environment?.label||'Scene',detail:scenario,rfIncluded:true});
+    applyAnalysisView(scenario);
     return;
   }
   renderedGeometry=scenario.geometry;
@@ -775,8 +861,8 @@ function buildScenario({preserveView = false} = {}) {
   if(!selectedObject)selectObject({kind:'scene',name:scenario.environment?.label||'Scene',detail:scenario,rfIncluded:true});
   else selectObject(selectedObject);
   if(savedCamera&&savedTarget&&cameraFitsScene(scenario,savedCamera,savedTarget)){camera.position.copy(savedCamera);camera.up.copy(savedUp);controls.target.copy(savedTarget);camera.lookAt(savedTarget);controls.update();}
-  else focusScene('isometric');
-  updateMap();refreshPaths();
+  else focusScene(analysisView?'analysis':'isometric');
+  updateMap();refreshPaths();applyAnalysisView(scenario);
 }
 
 function renderDiagnostics(scenario,plantStats,triangleCount) {
@@ -1267,6 +1353,16 @@ function focusScene(mode) {
     const rx=scenario.receivers.find(item=>item.name===activeReceiver)||scenario.receivers[0];
     if(rx)centerPoint.copy(vec(rx.position_m));scale=Math.max(2,sceneScale*0.42);
     offset=new THREE.Vector3(scale*0.75,-scale*1.25,scale*0.85);
+  } else if(mode==='analysis') {
+    // Front view framed on the racks, plants and devices rather than the whole building.
+    const inside=scenario.geometry.objects.filter((item)=>item.bounds_m&&!['greenhouse_shell','enclosure_panel','floor'].includes(item.category)&&!String(item.metadata?.itu_type||'').includes('glass'));
+    const points=[...inside.flatMap((item)=>[[item.bounds_m.x_min,item.bounds_m.y_min,item.bounds_m.z_min],[item.bounds_m.x_max,item.bounds_m.y_max,item.bounds_m.z_max]]),
+      scenario.transmitter.position_m,...scenario.receivers.map((row)=>row.position_m)].filter(Boolean);
+    const box=new THREE.Box3().setFromPoints(points.map(vec));
+    box.getCenter(centerPoint);const size=box.getSize(new THREE.Vector3());
+    // Fit the width and height in the 42 degree view, measured from the front of the framed box.
+    scale=Math.max(size.x,size.z*1.6,1);
+    offset=new THREE.Vector3(0,-(size.y/2+scale*1.45),scale*0.16);
   } else if(mode==='top'){offset=new THREE.Vector3(0.01,0.01,sceneScale*1.9);camera.up.set(0,1,0);}
   else if(mode==='front')offset=new THREE.Vector3(0,-sceneScale*1.9,sceneScale*0.10);
   else if(mode==='side')offset=new THREE.Vector3(sceneScale*1.95,0,sceneScale*0.12);
@@ -1303,11 +1399,23 @@ function onPointerMove(event) {
   }
   const rect=renderer.domElement.getBoundingClientRect(); pointer.set(((event.clientX-rect.left)/rect.width)*2-1,-((event.clientY-rect.top)/rect.height)*2+1);
   raycaster.setFromCamera(pointer,camera);
-  const objects=[]; rootGroup.traverse((child)=>{ if((child.isMesh||child.isLine)&&isVisibleInScene(child)&&child.userData.kind) objects.push(child); });
-  const hit=raycaster.intersectObjects(objects,false)[0];
+  const objects=[]; rootGroup.traverse((child)=>{ if((child.isMesh||child.isLine)&&isVisibleInScene(child)&&pickable(child)&&child.userData.kind) objects.push(child); });
+  const hit=firstSolidHit(raycaster.intersectObjects(objects,false));
   viewport.style.cursor=hit?'pointer':'grab';
   if(hoverMesh && hoverMesh!==hit?.object) { setHover(hoverMesh,false); hoverMesh=null; }
   if(hit && hit.object!==hoverMesh) { hoverMesh=hit.object; setHover(hoverMesh,true); }
+}
+// See-through glass around a whole greenhouse would catch every click: prefer the first hit behind it (a device,
+// the rack, a path) and select the glass only when nothing else is under the pointer.
+function firstSolidHit(hits) {
+  const seeThrough=(hit)=>{const material=hit.object.material;return Boolean(material&&!Array.isArray(material)&&material.transparent&&material.opacity<0.3&&hit.object.userData.kind==='geometry');};
+  // Devices are small and every path starts at the TX, so a device under the pointer wins over lines and surfaces.
+  return hits.find((hit)=>['transmitter','receiver'].includes(hit.object.userData.kind))||hits.find((hit)=>!seeThrough(hit))||hits[0];
+}
+// Fully transparent surfaces (glass in the analysis view) must not catch clicks meant for what is behind them.
+function pickable(object) {
+  const material=object.material;
+  return !(material&&!Array.isArray(material)&&material.transparent&&material.opacity===0);
 }
 function setHover(object,on) {
   const target=object.userData.pickParent||object;
@@ -1318,8 +1426,8 @@ function onPointerDown(event) {
   if(event.button!==0||event.target!==renderer.domElement) return;
   const rect=renderer.domElement.getBoundingClientRect(); pointer.set(((event.clientX-rect.left)/rect.width)*2-1,-((event.clientY-rect.top)/rect.height)*2+1);
   raycaster.setFromCamera(pointer,camera);
-  const objects=[]; rootGroup.traverse((child)=>{ if((child.isMesh||child.isLine)&&isVisibleInScene(child)&&child.userData.kind) objects.push(child); });
-  const hit=raycaster.intersectObjects(objects,false)[0]; if(!hit) return;
+  const objects=[]; rootGroup.traverse((child)=>{ if((child.isMesh||child.isLine)&&isVisibleInScene(child)&&pickable(child)&&child.userData.kind) objects.push(child); });
+  const hit=firstSolidHit(raycaster.intersectObjects(objects,false)); if(!hit) return;
   const object=hit.object.userData.pickParent||hit.object;
   if(object.userData.kind==='transmitter'&&
      !STATIC_SITE&&(activeScenario.startsWith('farm_')||data.scenarios[activeScenario]?.source_type==='housionna')&&
@@ -1931,7 +2039,7 @@ async function reconnectHousionnaJob(){
     if(!job||simulationRunning)return;
     const find=()=>Object.values(data.scenarios).find(row=>row.source_type==='housionna'&&row.import_id===job.import_id&&row.transmitter.name===job.transmitter);
     if(!find())return;
-    await ensureHousionnaImport(job.import_id);  // the job's run may still be a stub
+    await ensureHousionnaScenario(find().name);  // the job's run may still be a stub
     const scenario=find();
     if(activeScenario!==scenario.name){setSourceControls('housionna');populateSourceSelectors(job.import_id,job.transmitter);}
     activeScenario=scenario.name;buildScenario({preserveView:true});syncSimulationControls(scenario);
@@ -2193,7 +2301,11 @@ function renderRunSeries(scenario) {
   axisSelect.innerHTML=['<option value="order">Run order</option>',...Object.entries(axes).map(([key,axis])=>`<option value="${esc(key)}">${esc(axis.label)}${axis.unit?` (${axis.unit})`:''}</option>`)].join('');
   const wedged=batch&&scenario.run_metadata?.wedge?.wedgeattribs?`param:${scenario.run_metadata.wedge.wedgeattribs}`:null;
   const has=(key)=>key&&[...axisSelect.options].some((o)=>o.value===key);
-  axisSelect.value=!fresh&&has(kept)?kept:has(wedged)?wedged:paramAxes[0]?.[0]||(has(kept)?kept:'order');
+  // Default x axis: the parameter with the most runs once the others are held at this run's values (a partly
+  // exported batch can have a single run along the attribute Houdini lists as wedged); ties go to that attribute.
+  const sliceSize=(key)=>allPoints.filter((p)=>params.every((other)=>other===key||p.group.parameters?.[other]===own[other])).length;
+  const best=paramAxes.map(([key,axis])=>[key,sliceSize(axis.param)+(key===wedged?0.5:0)]).sort((a,b)=>b[1]-a[1])[0]?.[0];
+  axisSelect.value=!fresh&&has(kept)?kept:best||(has(wedged)?wedged:has(kept)?kept:'order');
   const metric=SERIES_METRICS[$('#seriesMetric').value]||SERIES_METRICS.median_map,axisKey=axisSelect.value,axis=axes[axisKey];
   const filterKeys=params.filter((key)=>key!==axis?.param);
   $('#seriesFilters').innerHTML=filterKeys.map((key)=>{
@@ -2371,9 +2483,9 @@ async function chooseSceneSource(source, importId=null, transmitterName=null) {
     return;
   }
   const group=groups.find((item)=>item.import_id===importId)||groups.find((item)=>item.import_id===data.scenarios[activeScenario]?.import_id)||groups[0];
-  try {await ensureHousionnaImport(group.import_id);}
-  catch(error){setHousionnaStatus('failed',`Could not load ${group.run_id}: ${error.message||error}`);return;}
   const key=group.scenario_keys.find((name)=>data.scenarios[name].transmitter?.name===transmitterName)||group.scenario_keys[0];
+  try {await ensureHousionnaScenario(key);}
+  catch(error){setHousionnaStatus('failed',`Could not load ${group.run_id}: ${error.message||error}`);return;}
   activeScenario=key;$('#housionnaRunSelect').value=group.import_id;populateHousionnaTxSelect(group,data.scenarios[key].transmitter.name);
   $('#scenarioSelect').value=builtinScenarioNames()[0]||'';
   rfResultsStale=false;buildScenario({preserveView:true});syncSimulationControls(data.scenarios[activeScenario]);
@@ -2406,7 +2518,7 @@ async function refreshViewerScene(importId,txName) {
   const {body:next}=await apiJson(SCENE_URL);
   if(next.schema_version!==1||!next.scenarios)throw new Error('Refreshed viewer data has an unsupported schema');
   resolveViewerAssets(next);data=next;rememberHousionnaStubs();
-  await ensureHousionnaImport(importId);
+  await ensureHousionnaScenario(housionnaScenarioKey(importId,txName));
   housionnaOriginalResults.clear();housionnaLatestResults.clear();housionnaDisplayedVersions.clear();housionnaCompletedFingerprints.clear();
   const target=Object.values(data.scenarios).find((scenario)=>scenario.source_type==='housionna'&&scenario.import_id===importId&&scenario.transmitter?.name===txName)
     ||Object.values(data.scenarios).find((scenario)=>scenario.source_type==='housionna'&&scenario.import_id===importId);
@@ -2511,9 +2623,10 @@ async function compareHousionnaRuns() {
   finally {updateCompareTxOptions();}
 }
 
-// The scene file lists HOUSIONNA scenarios as small stubs (scenario.stub). A run's full scenarios are
-// fetched when it is selected; at most HOUSIONNA_LOADED_LIMIT runs stay loaded, older ones revert to stubs.
-const HOUSIONNA_LOADED_LIMIT=4;
+// The scene file lists HOUSIONNA scenarios as small stubs (scenario.stub). A scenario (one transmitter of a run) is
+// fetched when it is shown; at most HOUSIONNA_LOADED_LIMIT stay loaded, older ones revert to stubs. Per transmitter,
+// because a 15-TX run is 76 MB in full but about 5 MB for one TX.
+const HOUSIONNA_LOADED_LIMIT=8;
 const housionnaStubs=new Map(),housionnaLoaded=new Map(),housionnaLoading=new Map();
 function rememberHousionnaStubs() {
   housionnaStubs.clear();housionnaLoaded.clear();
@@ -2522,26 +2635,31 @@ function rememberHousionnaStubs() {
 function importScenarioKeys(importId) {
   return data.scenario_order.filter((key)=>data.scenarios[key]?.source_type==='housionna'&&data.scenarios[key].import_id===importId);
 }
-async function ensureHousionnaImport(importId) {
+// The scenario key of a run for a transmitter name (from stubs, so nothing has to be loaded first).
+function housionnaScenarioKey(importId,transmitterName) {
   const keys=importScenarioKeys(importId);
-  if(!keys.length||keys.every((key)=>!data.scenarios[key].stub)){if(keys.length)housionnaLoaded.set(importId,performance.now());return;}
-  if(!housionnaLoading.has(importId))housionnaLoading.set(importId,(async()=>{
-    $('#housionnaImportStatus').textContent='Loading the selected run…';
-    const {body}=await apiJson(importViewerUrl(importId));
+  return keys.find((key)=>data.scenarios[key]?.transmitter?.name===transmitterName)||keys[0];
+}
+async function ensureHousionnaScenario(key) {
+  const stub=data.scenarios[key];
+  if(!stub||stub.source_type!=='housionna')return;
+  if(!stub.stub){housionnaLoaded.set(key,performance.now());return;}
+  if(!housionnaLoading.has(key))housionnaLoading.set(key,(async()=>{
+    $('#housionnaImportStatus').textContent=`Loading ${stub.transmitter?.name||'the selected transmitter'}…`;
+    const {body}=await apiJson(importViewerUrl(stub.import_id,key),{timeoutMs:120000});
     resolveViewerAssets(body);
-    for(const key of body.scenario_order)if(data.scenarios[key])data.scenarios[key]=body.scenarios[key];
-    housionnaLoaded.set(importId,performance.now());
-    // Keep memory bounded: put the least recently used runs (never the one on screen) back to stubs.
-    const activeImport=data.scenarios[activeScenario]?.import_id;
-    for(const [id] of [...housionnaLoaded].sort((a,b)=>a[1]-b[1])) {
+    for(const name of body.scenario_order)if(data.scenarios[name])data.scenarios[name]=body.scenarios[name];
+    housionnaLoaded.set(key,performance.now());
+    // Keep memory bounded: put the least recently used scenarios (never the one on screen) back to stubs.
+    for(const [name] of [...housionnaLoaded].sort((a,b)=>a[1]-b[1])) {
       if(housionnaLoaded.size<=HOUSIONNA_LOADED_LIMIT)break;
-      if(id===importId||id===activeImport)continue;
-      for(const key of importScenarioKeys(id))if(housionnaStubs.has(key))data.scenarios[key]=housionnaStubs.get(key);
-      housionnaLoaded.delete(id);
+      if(name===key||name===activeScenario)continue;
+      if(housionnaStubs.has(name))data.scenarios[name]=housionnaStubs.get(name);
+      housionnaLoaded.delete(name);
     }
     $('#housionnaImportStatus').textContent=STATIC_SITE?'Published results. This public view is read-only.':'';
-  })().finally(()=>housionnaLoading.delete(importId)));
-  await housionnaLoading.get(importId);
+  })().finally(()=>housionnaLoading.delete(key)));
+  await housionnaLoading.get(key);
 }
 
 function resolveViewerAssets(viewerData) {
@@ -2567,7 +2685,7 @@ function wireUI() {
   $('#housionnaRunSelect').addEventListener('change',async(event)=>{
     const group=housionnaGroups().find((item)=>item.import_id===event.target.value);if(!group)return;
     const currentTx=data.scenarios[activeScenario]?.transmitter?.name;
-    try {await ensureHousionnaImport(group.import_id);}
+    try {await ensureHousionnaScenario(housionnaScenarioKey(group.import_id,currentTx));}
     catch(error){setHousionnaStatus('failed',`Could not load ${group.run_id}: ${error.message||error}`);return;}
     if($('#housionnaRunSelect').value!==group.import_id)return;  // a newer selection won the race
     const key=populateHousionnaTxSelect(group,currentTx);if(!key)return;
@@ -2582,9 +2700,11 @@ function wireUI() {
   $('#housionnaNewerRun').addEventListener('click',()=>stepHousionnaRun(1));
   $('#housionnaTxSelect').addEventListener('change',async(event)=>{
     if(!data.scenarios[event.target.value])return;
-    try {await ensureHousionnaImport(data.scenarios[event.target.value].import_id);}
+    const wanted=event.target.value;
+    try {await ensureHousionnaScenario(wanted);}
     catch(error){setHousionnaStatus('failed',error.message||String(error));return;}
-    activeScenario=event.target.value;rfResultsStale=false;buildScenario({preserveView:true});syncSimulationControls(data.scenarios[activeScenario]);renderHousionnaMetadata(data.scenarios[activeScenario]);void restoreLatestHousionnaResults(activeScenario);
+    if($('#housionnaTxSelect').value!==wanted)return;  // a newer selection won the race
+    activeScenario=wanted;rfResultsStale=false;buildScenario({preserveView:true});syncSimulationControls(data.scenarios[activeScenario]);renderHousionnaMetadata(data.scenarios[activeScenario]);void restoreLatestHousionnaResults(activeScenario);
   });
   $('#housionnaResultVersion').addEventListener('change',(event)=>{
     const scenario=data.scenarios[activeScenario],mode=event.target.value;
@@ -2652,6 +2772,7 @@ function wireUI() {
   $('#pathsToggle').addEventListener('change',()=>{ setLayerVisibility(); refreshPaths(); });
   $('#pathFilter').addEventListener('change',refreshPaths);
   $('#cameraSelect').addEventListener('change',(event)=>focusScene(event.target.value));
+  $('#analysisBtn').addEventListener('click',()=>setAnalysisView(!analysisView));
   $('#housionnaGeometryMode').addEventListener('change',()=>{const scenario=data.scenarios[activeScenario];applyHousionnaGeometryMode(scenario);renderDiagnostics(scenario,{plants:0,leaves:0},scenario.geometry.objects.reduce((sum,item)=>sum+(item.triangle_count??item.faces?.length??0),0));});
   $('#deviceDisplayMode').addEventListener('change',()=>{buildDeviceMarkers(data.scenarios[activeScenario]);setLayerVisibility();});
   $('#deviceLabelMode').addEventListener('change',setLayerVisibility);
@@ -2758,7 +2879,7 @@ async function start() {
     resolveViewerAssets(data);rememberHousionnaStubs();
     activeScenario=data.featured_scenario||'current';
     if(data.scenarios[activeScenario]?.stub) {
-      try {await ensureHousionnaImport(data.scenarios[activeScenario].import_id);}
+      try {await ensureHousionnaScenario(activeScenario);}
       catch(error) {
         // The scene file can list an import that has since been removed: open the built-in scene instead of failing.
         console.warn('Featured HOUSIONNA run could not be loaded; opening the built-in scene',error);
