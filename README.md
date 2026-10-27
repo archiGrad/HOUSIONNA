@@ -4,7 +4,7 @@ Run [Sionna RT](https://nvlabs.github.io/sionna/rt/) radio propagation simulatio
 
 Houdini is the procedural generator: geometry, materials and devices are built with nodes, so one network can produce an unlimited number of scene variations, and each variation can be simulated and inspected within seconds.
 
-![Paths and radio map in Houdini](docs/sim.png)
+![Paths and radio map in Houdini](docs/preview.png)
 
 ## What it is
 
@@ -23,6 +23,8 @@ A set of Python functions called from buttons on one Houdini node, plus a solver
 | batch_solve | `on_batch_solve` | Sends the batch to the target and starts it there in the background; returns immediately |
 | batch_status | `on_batch_status` | Progress of the running batch: solved, failed, current work item, time left |
 | batch_fetch | `on_batch_fetch` | Copies the finished results of the batch back and converts them for the `sionna_batch_*` File SOPs, which show the result of the work item selected in the TOP network |
+| batch_clear | `on_clear("session")` | Deletes the batches of the current `batch_name` on the target, after confirmation |
+| clear_all | `on_clear("all")` | Deletes all runs and batches of this hip file on the target, after confirmation |
 
 Export never contacts the server; previz, solve and the batch buttons except export do. The first six buttons are for testing one scene step by step; run does the same in one press.
 
@@ -30,7 +32,7 @@ Export never contacts the server; previz, solve and the batch buttons except exp
 
 ```
 .
-├── .venv/                      local Sionna RT environment (not committed)
+├── venv/                       local Sionna RT environment (not committed)
 ├── requirements.txt
 ├── docs/                       preview image, presentations (see Update #1)
 └── houdini_files/
@@ -63,7 +65,7 @@ Export never contacts the server; previz, solve and the batch buttons except exp
                 ├── <hip>_previz.bgeo.sc
                 └── paths.bgeo.sc, links.bgeo.sc, radiomap.bgeo.sc
         └── batches/
-            └── <YYYYMMDD_HHMMSSZ>/
+            └── [<batch_name>_]<YYYYMMDD_HHMMSSZ>/
                 ├── batch.json            TOP node, range, git commit, export status per work item
                 ├── queue.json            work items sent with the last batch solve
                 ├── status.json           progress, written by the solver
@@ -86,11 +88,11 @@ On a remote target the folders are mirrored to:
 
 ## Setup
 
-Requires Houdini, and on the machine that computes: an NVIDIA GPU and Python 3.10 or later. Sionna RT is only needed on that machine, your own PC (local target) or a server (remote target).
+Requires Houdini, and on the machine that computes: Python 3.11 or later and Sionna RT. Sionna RT 2.2.0 installs on Python 3.10 but fails on import there (`cannot import name 'Self' from 'typing'`). Sionna RT is only needed on that machine, your own PC (local target) or a server (remote target). An NVIDIA GPU is optional: without one, Sionna runs on the CPU (see Compute target).
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate          # Linux; on Windows (Git Bash): .venv/Scripts/activate
+python -m venv venv
+source venv/bin/activate           # Linux; on Windows (Git Bash): venv/Scripts/activate
 pip install -r requirements.txt    # sionna-rt==2.2.0
 ```
 
@@ -113,7 +115,7 @@ Validate and export read the geometry in bulk. To get which points belong to whi
 
 A string parm `target` on the Null selects where the solver runs:
 
-- `local` (or empty): the venv on this machine, at `$HIP/../.venv/bin/python3` (Windows: `$HIP/../.venv/Scripts/python.exe`). Override with a string parm `python_exe`.
+- `local` (or empty): the venv on this machine, at `$HIP/../venv/bin/python3` (Windows: `$HIP/../venv/Scripts/python.exe`). Override with a string parm `python_exe`.
 - an SSH host alias, e.g. `spark`: a remote server. Override the remote folder with a string parm `remote_root` (default `~/Documents/HyROPA`).
 
 To pick the target per machine, set the parm to `$SIONNA_TARGET` and define it in each machine's `houdini.env`, e.g. `SIONNA_TARGET = spark`.
@@ -139,15 +141,32 @@ Remote setup, once per server:
 3. On the server, a venv at `<remote_root>/venv` with `requirements.txt` installed. Without it, every remote action fails with `T002`.
 4. `rsync` on both machines.
 
-Each remote run checks that the server and venv exist and reads the GPU status, mirrors the run folder (without `.bgeo.sc` files) to the server, runs the solver there, and copies the results back. The solver refuses to run on a machine without a CUDA variant (`T003`).
+Each remote run checks that the server and venv exist and reads the GPU status, mirrors the run folder (without `.bgeo.sc` files) to the server, runs the solver there, and copies the results back.
+
+### GPU or CPU
+
+A Toggle parm `use_gpu` on the Null (default on) selects the device, on every target:
+
+- on: Sionna runs on the GPU (CUDA). Without a usable GPU, check, solve and batch solve stop with `T003`.
+- off: Sionna runs on the CPU (LLVM), locally or on the Spark. Same results, but much slower: use small tests (few TX, `samples` 1e5, `radiomap_samples` 1e6). Needs the LLVM library, version 17 or newer, on that machine; if check reports the CPU as not available (`T005`), install it (Ubuntu: `sudo apt install llvm`). Check shows the LLVM version and warns (`W013`) below 17.
+
+Check prints what the target has and what is selected:
+
+```
+[sionna check] target local: sionna 2.2.0
+[sionna check]   gpu: not available (jit_init_thread_state(): the CUDA backend hasn't been initialized)
+[sionna check]   cpu: <cpu model>, 4 threads, available, LLVM 20.1.8
+[sionna check]   selected: cpu (use_gpu off)
+[sionna check] N008 target 'local': sionna 2.2.0, runs on the cpu
+```
 
 ## Batches
 
 For many scene variations from a TOP network (e.g. a Wedge TOP), next to the Null:
 
 1. Set the int parms `batch_start` and `batch_end` to a range of work item indices (both included; without the parms, all work items).
-2. **batch_export**: for each work item in the range, selects it in the TOP network, so the SOP network cooks that variation, then validates and exports it to `batches/<stamp>/wi<index>/`. The wedge attributes of the work item are stored in its `<hip>_meta.json`. A work item that fails validation or does not cook is recorded in `batch.json` and skipped; the others continue. The selection is restored afterwards.
-3. **batch_solve**: writes the current settings into every exported work item, sends the batch folder and starts one solver process on the target, which solves all work items one after the other in one Sionna session. The button returns at once; Houdini stays usable and the job keeps running if Houdini or the laptop is closed.
+2. **batch_export**: for each work item in the range, selects it in the TOP network, so the SOP network cooks that variation, then validates and exports it to `batches/<batch_name>_<stamp>/wi<index>/` (see Batch names). The wedge attributes of the work item are stored in its `<hip>_meta.json`. A work item that fails validation or does not cook is recorded in `batch.json` and skipped; the others continue. The selection is restored afterwards.
+3. **batch_solve**: writes the current settings into every exported work item, sends the batch folder and starts one solver process on the target, which solves all work items one after the other in one Sionna session. The button returns at once; Houdini stays usable and the job keeps running if Houdini or the laptop is closed. Houdini then checks the batch every 15 s in the background and prints a `[sionna watch]` line when work items are solved or fail, and one when the batch is finished or has stopped. It only prints; fetch is up to you. Watching ends with the batch, after 4 failed checks in a row (e.g. VPN down), or when Houdini closes; the job itself is not affected.
 4. **batch_status**: prints progress while it runs.
 5. **batch_fetch**: copies the results back, converts every new or changed result to `.bgeo.sc` in its `wi<index>` folder, and creates four File SOPs next to the Null: `sionna_batch_scene` (the geometry as exported for that work item), `sionna_batch_paths`, `sionna_batch_links`, `sionna_batch_radiomap`. Can be pressed while the batch is still running; press it again later for the rest.
 6. Click a work item in the TOP network: the SOP network cooks that variation and the `sionna_batch_*` File SOPs load its exported geometry and results. `sionna_batch_scene` is what was simulated, also after the network has been changed since the export. Their file path is
@@ -168,6 +187,19 @@ Pressing batch_solve again resumes: work items already solved with the same sett
 
 To stop a running batch: `ssh spark`, then `kill <pid>` with the pid printed by batch_solve (also in `batch.pid` in the remote batch folder).
 
+### Batch names
+
+A string parm `batch_name` on the Null groups batches into sessions, e.g. `plants_on` and `plants_off`. Batch export names the folder `<batch_name>_<YYYYMMDD_HHMMSSZ>`, or only the timestamp when `batch_name` is empty. Letters, digits, `_` and `-` only (`B009`).
+
+### Clearing
+
+Both buttons work on the selected `target` only: local deletes folders on this machine, a remote target deletes them on that machine, never both. When the remote target is not reachable they stop with `T001`.
+
+- **batch_clear**: all batches of this hip file with the current `batch_name`, any timestamp. With `batch_name` empty: the batches without a name.
+- **clear_all**: all single runs (`data/`, or `runs/<hip>/` remotely) and all batches of this hip file. Folders of other hip files in the same `sionna/` folder are kept.
+
+The folders and their size are listed in the terminal and in a dialog; nothing is deleted until you press Delete. A batch that is still running is kept (`W014`). File SOPs that pointed at deleted results load nothing.
+
 ## Scene: supported attributes
 
 Everything Sionna receives comes from the attributes below. Any other attribute (`Cd`, `N`, `uv`, groups) is ignored.
@@ -180,8 +212,9 @@ Everything Sionna receives comes from the attributes below. Any other attribute 
 | `material` | string | yes | An ITU material, a name from `materials.json`, or `measure` for a radio map surface |
 | `thickness` | float | no | Slab thickness in metres used for reflection and transmission. 0 or absent: library default, else 0.1. Not the mesh thickness. |
 | `scattering_coefficient` | float | no | 0 to 1. Share of reflected energy that is scattered diffusely. Only has an effect with `diffuse_reflection` on. 0 or absent: library default, else 0. |
+| `moisture` | float | no | Percent water, only for vegetation materials (`leaf`, `stem`: % of fresh mass, living leaves 70 to 90) and soil materials (`soil_*`: % of volume, 0 to 50). 0 or absent: library default. Ignored on other materials (`W011`); outside 0 to 100 is an error (`V012`). |
 
-All primitives with the same `name` must have the same material attributes (`V006`). Every surface is a slab of the given thickness, so a closed box is a hollow shell: a ray through it crosses two slabs.
+All primitives with the same `name` must have the same material attributes (`V006`). `moisture` may vary: it is rounded to whole percent and each value becomes its own Sionna object, named `<name>_m<percent>` (e.g. `leaves_m80`); that is the name in the results and in `object` of `sionna_paths`. Every surface is a slab of the given thickness, so a closed box is a hollow shell: a ray through it crosses two slabs.
 
 ### Devices (point attributes on loose points)
 
@@ -202,66 +235,76 @@ Solve computes paths when there is at least one RX, and a radio map when there i
 
 ### Not settable per primitive
 
-`xpd_coefficient`, and the model inputs `moisture`, `temperature_c` and `ionic_conductivity`, exist only per entry in `materials.json`. A moisture gradient over a canopy currently needs separate library entries (`leaf_70`, `leaf_90`, ...).
+`xpd_coefficient`, and the model inputs `temperature_c`, `ionic_conductivity` and the soil texture (`sand`, `clay`, `silt`, densities), exist only per entry in `materials.json`.
 
 ## Materials
 
-### ITU materials (built into Sionna)
+Every material name is looked up in `sionna/materials.json`. Values are computed at export for the run `frequency` and written to `<hip>_materials.json`, so changing the frequency requires a new export (`S008`). Every entry has a `source` and a `status`; a status other than `confirmed` gives warning `W005`. Entries with a measured frequency range give `W010` when the run frequency lies outside it: the values are then extrapolated and the solve still runs.
 
-Permittivity and conductivity follow ITU-R P.2040: `er = a * f^b`, `sigma = c * f^d` with f in GHz. **Each material is only defined in the listed frequency range; outside it Sionna stops with an error.** Validation does not check this yet. Coefficients for the range that covers 0.1 to 10 GHz, from Sionna's `itu.py`:
+### Kinds
 
-| Material | Range (GHz) | a | b | c | d | 433 MHz | 868 MHz | 2.4 GHz | 3.5 GHz | 5 GHz |
-|---|---|---|---|---|---|---|---|---|---|---|
-| `vacuum` | 0.001–100 | 1.0 | 0 | 0 | 0 | yes | yes | yes | yes | yes |
-| `wood` | 0.001–100 | 1.99 | 0 | 0.0047 | 1.0718 | yes | yes | yes | yes | yes |
-| `glass` | 0.1–100 | 6.31 | 0 | 0.0036 | 1.3394 | yes | yes | yes | yes | yes |
-| `concrete` | 1–100 | 5.24 | 0 | 0.0462 | 0.7822 | no | no | yes | yes | yes |
-| `brick` | 1–40 | 3.91 | 0 | 0.0238 | 0.16 | no | no | yes | yes | yes |
-| `plasterboard` | 1–100 | 2.73 | 0 | 0.0085 | 0.9395 | no | no | yes | yes | yes |
-| `ceiling_board` | 1–100 | 1.48 | 0 | 0.0011 | 1.0750 | no | no | yes | yes | yes |
-| `chipboard` | 1–100 | 2.58 | 0 | 0.0217 | 0.7800 | no | no | yes | yes | yes |
-| `plywood` | 1–40 | 2.71 | 0 | 0.33 | 0 | no | no | yes | yes | yes |
-| `marble` | 1–60 | 7.074 | 0 | 0.0055 | 0.9262 | no | no | yes | yes | yes |
-| `vinyl_tile` | 1–40 | 3.62 | 0 | 0.0051 | 0.8422 | no | no | yes | yes | yes |
-| `carpet_tile` | 1–40 | 2.08 | 0 | 0.0009 | 0.8200 | no | no | yes | yes | yes |
-| `asphalt_concrete` | 1–40 | 4.83 | 0 | 0.0108 | 1.3969 | no | no | yes | yes | yes |
-| `metal` | 1–100 | 1.0 | 0 | 1e7 | 0 | no | no | yes | yes | yes |
-| `very_dry_ground` | 1–10 | 3.0 | 0 | 0.00015 | 2.52 | no | no | yes | yes | yes |
-| `medium_dry_ground` | 1–10 | 15 | -0.1 | 0.035 | 1.63 | no | no | yes | yes | yes |
-| `wet_ground` | 1–10 | 30 | -0.4 | 0.15 | 1.30 | no | no | yes | yes | yes |
-| `floorboard` | 50–100 | 3.66 | 0 | 0.0044 | 1.3515 | no | no | no | no | no |
-| `clear_acrylic` | 110–330 | 2.58 | 0 | 0.0001 | 1.6524 | no | no | no | no | no |
-
-At 433 and 868 MHz only `vacuum`, `wood` and `glass` are usable. `vacuum` is in Sionna but not yet accepted by validation (`V007`).
-
-### Library materials (`materials.json`)
-
-| Kind | Fields | Permittivity and conductivity |
+| Kind | Fields | Model |
 |---|---|---|
-| `fixed` | `relative_permittivity` plus one of `conductivity`, `loss_tangent`, `loss_factor` | constant permittivity; loss converted to conductivity at the run frequency |
-| `water` | `temperature_c`, `ionic_conductivity` | Debye model (Liebe, Hufford, Manabe 1991) plus ionic conductivity |
-| `vegetation` | `moisture` (gravimetric, 0 to 1) | dual-dispersion model (Ulaby and El-Rayes 1987) |
+| `itu` | `ranges_ghz`: `[lo, hi, a, b, c, d]` per range | ITU-R P.2040-3: `er = a * f^b`, `sigma = c * f^d`, f in GHz. Outside every range the nearest range is used (`W010`) |
+| `cole_cole` | `eps_inf`, `eps_s`, `sigma_s`, `tau`, `alpha` | Cole-Cole fit to measurements |
+| `soil` | `sand`, `clay`, `silt` (%), `specific_gravity`, `bulk_density`, `moisture` (% volume), `temperature_c` | ITU-R P.527-6 section 5.2 |
+| `conductor` | `conductivity` | metal: permittivity 1, conductivity constant over frequency |
+| `fixed` | `relative_permittivity` plus one of `conductivity`, `loss_tangent`, `loss_factor` | constant permittivity; loss converted at the run frequency |
+| `water` | `temperature_c`, `ionic_conductivity` | Debye model (Liebe, Hufford, Manabe 1991, same equations as ITU-R P.527-6) plus ionic conductivity |
+| `vegetation` | `moisture` (% of fresh mass) | dual-dispersion model (Ulaby and El-Rayes 1987) |
 
-Every entry also has a default `thickness`, a `source` and a `status`. Values are resolved at export for the current `frequency` and written to `<hip>_materials.json`. Changing the frequency requires a new export (`S008`). A material whose status is not `confirmed` raises warning `W005`.
+### Entries
 
-Current entries:
+**Building materials in situ (kind `itu`, ITU-R P.2040-3 Table 3, coefficients as in Sionna's `itu.py`, status confirmed).** Inside their range the values are identical to Sionna's built-in ITU materials (checked); outside it they are extrapolated instead of stopping the solve:
+
+| Material | Measured range (GHz) | At 868/915 MHz |
+|---|---|---|
+| `vacuum`, `wood` | 0.001–100 | in range |
+| `glass` | 0.1–100 | in range |
+| `concrete`, `plasterboard`, `ceiling_board`, `chipboard` | 1–100 | extrapolated, `W010` |
+| `brick`, `plywood`, `vinyl_tile`, `carpet_tile`, `asphalt_concrete` | 1–40 | extrapolated, `W010` |
+| `marble` | 1–60 | extrapolated, `W010` |
+| `very_dry_ground`, `medium_dry_ground`, `wet_ground` | 1–10 | extrapolated, `W010`; below 1 GHz prefer `soil_*` |
+| `floorboard` | 50–100 | far outside, avoid |
+| `clear_acrylic` | 110–330 | far outside, use `pmma` |
+
+**Lab samples, air-dried (kind `cole_cole`, Zhekov, Franek, Pedersen 2020, IEEE Antennas Propag. Mag. 62(1), Table II, measured 0.2–67 GHz):** `pmma`, `polypropylene`, `ptfe`, `polystyrene` (solid, not foam), `pine_dry`, `hardboard_dry`, `plywood_dry`, `mdf_dry`, `chipboard_dry`, `wood_cement_board_dry`, `gypsum_dry`, `plasterboard_dry` (confirmed); `brick_red_dry`, `brick_yellow_dry`, `concrete_dry` (small gravel), `concrete_coarse_dry` (large gravel) give `W005`, because the paper reports a less reliable fit for brick and concrete.
+
+**Metals (kind `conductor`, no frequency limit, confirmed):** `metal` (1e7 S/m, as ITU), `steel` (6.99e6, carbon steel), `stainless_steel` (1.45e6), `aluminium` (3.5e7), `zinc` (1.69e7, galvanised coating), `copper` (5.96e7). Any of them acts as a near-perfect reflector at these frequencies.
+
+**Soils (kind `soil`, ITU-R P.527-6 section 5.2 with the textures of its Table 2, confirmed):** `soil_sandy_loam`, `soil_loam`, `soil_silty_loam`, `soil_silty_clay`. Default moisture 20 %, set per primitive with `moisture`. Range 0.3–18 GHz, the measurements the model is built on (Peplinski et al. 1995, Dobson et al. 1985). The implementation reproduces the reference values of MathWorks `earthSurfacePermittivity` (P.527-6) exactly. Example `soil_loam` at 868 MHz: er 4.1 / 11.2 / 20.9 and sigma 0.02 / 0.06 / 0.10 S/m at 5 / 20 / 35 % moisture.
+
+**Greenhouse materials:**
 
 | Material | Kind | Status |
 |---|---|---|
-| `polycarbonate` | fixed | permittivity from datasheets at 1 MHz only; no GHz value |
-| `polyethylene_film` | fixed | permittivity confirmed, loss assumed zero |
-| `polypropylene` | fixed | permittivity confirmed, loss assumed zero |
-| `pvc` | fixed | permittivity confirmed, loss assumed zero |
-| `water` | water | model equations match Liebe et al. 1991; not yet marked confirmed |
-| `nutrient_solution` | water | as water; ionic conductivity from an assumed EC of 2.5 mS/cm |
-| `leaf`, `stem` | vegetation | coefficients not yet checked against the paper |
-| `fruit` | fixed | strawberry values used for tomato |
-| `rockwool_wet` | fixed | placeholder, must be measured |
+| `water` | water | confirmed (equations checked against ITU-R P.527-6) |
+| `nutrient_solution` | water | `W005`: ionic conductivity from an assumed EC of 2.5 mS/cm |
+| `leaf`, `stem` | vegetation | `W005`: coefficients not yet checked against the paper; valid 0.2–20 GHz |
+| `fruit` | fixed | `W005`: strawberry values used for tomato |
+| `polycarbonate` | fixed | `W005`: permittivity from datasheets at 1 MHz only |
+| `polyethylene_film`, `pvc` | fixed | `W005`: permittivity confirmed, loss assumed zero |
+| `rockwool_wet` | fixed | `W005`: placeholder, must be measured |
+
+### In situ versus lab values
+
+The two sources disagree most for concrete and brick: the lab samples were dried, real walls hold water. Loss through a 23 cm concrete wall at normal incidence, computed with Sionna (CPU), against the 3GPP TR 38.901 formula for real walls (5 + 4 f dB):
+
+| Material | 868 MHz | 2.4 GHz | 5 GHz |
+|---|---|---|---|
+| `concrete` (ITU, in situ) | 8.0 dB | 16.5 dB | 28.2 dB |
+| `concrete_dry` (lab) | 1.8 dB | 1.5 dB | 2.6 dB |
+| `concrete_coarse_dry` (lab) | 1.9 dB | 2.7 dB | 4.3 dB |
+| 3GPP TR 38.901 | 8.5 dB | 14.6 dB | 25.0 dB |
+
+The ITU values match real walls within 0.5 to 3 dB, also when extrapolated to 868 MHz. Use the ITU names for real buildings; the `_dry` entries describe very dry material and are a lower bound on loss.
+
+### When a value is confirmed
 
 A value becomes `confirmed` only when it comes from a measurement or a source that states it for the frequency range in use, with the reference in `source`. Ways to get there, in order of strength:
 
 1. Measure it: dielectric probe or free-space measurement with a VNA, or fit it from channel measurements (CELSA T3; Sionna is differentiable for this).
-2. Peer-reviewed values at the right frequency: ITU-R P.2040 and P.527, Ulaby and El-Rayes 1987, Peng et al. 2013 (tomato), manufacturer data at GHz frequencies.
+2. Peer-reviewed values at the right frequency: ITU-R P.2040 and P.527, Zhekov et al. 2020, Ulaby and El-Rayes 1987, Peng et al. 2013 (tomato), manufacturer data at GHz frequencies.
 3. Datasheet values at 1 MHz (plastics) are not enough for 433 MHz to 5 GHz.
 
 ## Settings
@@ -285,10 +328,54 @@ Defaults, each overridable by a parm of the same name on the Null:
 | `target` | local | Where the solver runs: `local` or an SSH alias |
 | `remote_root` | ~/Documents/HyROPA | Folder on the remote target that holds `venv/` and `runs/` |
 | `timeout` | 1800 | Seconds before a previz or solve is aborted |
-| `python_exe` | `$HIP/../.venv/bin/python3` | Python for the local target |
+| `quality`, `band` | none | Menus that set a group of parms at once, see Presets |
+| `use_gpu` | on | Toggle. On: run on the GPU (CUDA). Off: run on the CPU (LLVM), locally or on the Spark |
+| `python_exe` | `$HIP/../venv/bin/python3` | Python for the local target |
 | `batch_start`, `batch_end` | all | Range of work item indices for batch export |
 | `top_node` | display node in `../topnet1` | TOP node whose work items are exported |
 | `batch` | set by batch export | Batch folder name used by the batch buttons and the `sionna_batch_*` File SOPs |
+| `batch_name` | empty | Session name in front of the batch timestamp; also selects what batch_clear deletes |
+
+### Presets
+
+`PRESETS` at the top of `sionna_sop.py` holds two independent sets of named parm values, each with its own menu on the Null:
+
+- `quality`: target, `use_gpu`, ray and depth settings, interaction toggles, `timeout`.
+- `band`: `frequency` and `bandwidth`.
+
+Neither sets the other's parms, so any quality can be combined with any band. Parms that are not on the Null are listed (`W012`) and left alone. Edit the dict to change or add presets; the menus follow it.
+
+| Quality | For |
+|---|---|
+| `laptop_test` | Small tests on the laptop CPU (`target` local, `use_gpu` off) |
+| `spark_quick` | Fast check on the Spark |
+| `spark_standard` | Normal single runs |
+| `dense_canopy` | Paths through plants: `max_depth` 8, more rays |
+| `batch` | Many variations: no frequency response, fewer radio map rays |
+| `final` | Highest accuracy, diffraction on |
+
+| Band | `frequency` | `bandwidth` |
+|---|---|---|
+| `lora_868` | 868 MHz | 125 kHz |
+| `lora_915` | 915 MHz | 125 kHz |
+| `wifi_2g4` | 2.437 GHz (channel 6) | 20 MHz |
+| `wifi_5g` | 5.18 GHz (channel 36) | 20 MHz |
+
+Setup on the Null: two String parms, `quality` and `band`. On the Menu tab of each: "Use Menu", Menu Script, Python:
+
+```python
+g = {}
+exec(open(hou.expandString('$HIP/sionna/sionna_sop.py')).read(), g)
+return g["preset_menu"]("quality")
+```
+
+and as callback script (Python), so a choice is applied immediately:
+
+```python
+exec(open(hou.expandString('$HIP/sionna/sionna_sop.py')).read()); on_preset("quality")
+```
+
+For `band`, replace `"quality"` with `"band"` in both.
 
 ## Terminal output
 
@@ -296,7 +383,7 @@ Every message, including all error and warning codes, is printed to the terminal
 
 | Button | Prints |
 |---|---|
-| check | target, Sionna version, Mitsuba variant, GPU and its load |
+| check | target, Sionna version, GPU (name, load) and CPU (model, threads) with their availability, selected device |
 | validate | objects, triangles and object count per material, radio map surfaces, devices, frequency and wavelength, scene size |
 | export | run folder, every file written with its size, permittivity and conductivity per material at the run frequency, git commit |
 | previz | files sent and received, Sionna's own progress, what Sionna loaded |
@@ -307,6 +394,8 @@ Every message, including all error and warning codes, is printed to the terminal
 | batch solve | work items queued, files sent, pid of the started job |
 | batch status | running, finished or stopped; solved, skipped and failed counts; current work item; seconds per work item and time left; errors of failed work items; last lines of `batch.log` |
 | batch fetch | files received and removed, work items converted to bgeo with time, number of results |
+| watch | work items solved or failed since the last check, then finished or stopped with totals |
+| clear | folders found with size (running ones marked), then the number deleted |
 
 ## Results
 
@@ -350,17 +439,22 @@ Codes starting with N are information, W warnings (do not block), all others are
 | N004 | paths, result written | Solve found paths |
 | N005 | imported paths, links | Import succeeded |
 | N006 | radio map cells | Radio map computed or imported |
-| N008 | target status | Result of check |
+| N008 | target status | Result of check: Sionna version and the device it will run on |
 | N009 | batch exported | Number of work items exported and failed |
 | N010 | batch started | The job runs on the target; follow it with batch status |
 | N011 | batch results | Work items with a result, failed, and not solved (yet) |
+| N012 | cleared | Number and size of the deleted folders |
+| N013 | nothing to clear | No runs or batches of this hip file (and `batch_name`) on the target |
 | W001 | scene diagonal outside 1 m to 50 km | Probably wrong units |
 | W002 | object smaller than one wavelength | Ray tracing is not valid for it; results for that object are unreliable |
 | W003 | device far from the geometry | Device probably misplaced or in other units |
 | W004 | no rx point | Only the radio map is computed |
 | W005 | material not confirmed | Library value not verified; results depend on it |
 | W006 | GPU in use by other processes | Runs slower; large jobs may run out of memory |
+| W010 | material outside its measured range | The run frequency lies outside the range the material was measured for; values are extrapolated. Below 1 GHz this applies to most ITU materials; see Materials |
+| W011 | moisture set on a material that does not use it | `moisture` only affects vegetation and soil materials |
 | W008 | node exists but is not a File SOP | A node next to the Null already has the name `sionna_previz`, `sionna_paths`, `sionna_links`, `sionna_radiomap` or `sionna_batch_scene`, `_paths`, `_links`, `_radiomap`. The result file is written but not loaded; rename that node. |
+| W014 | running batch not cleared | Clear again after it finished, or stop it first |
 | W009 | no `batch` parm on the Null | Add a string parm `batch`; the `sionna_batch_*` File SOPs read the batch name from it |
 | V001 | no primitives | Nothing to export; add geometry or a measurement surface |
 | V002 | missing prim attribute | Add `name` and `material` |
@@ -373,6 +467,7 @@ Codes starting with N are information, W warnings (do not block), all others are
 | V009 | scattering_coefficient outside 0 to 1 | Fix the attribute |
 | V010 | empty name | Every primitive needs a `name` |
 | V011 | material resolves to invalid values | Library entry gives permittivity < 1 or negative conductivity |
+| V012 | moisture outside 0 to 100 | Fix the `moisture` attribute (percent) |
 | V101 | missing point attribute | Add `role` and `name` to device points |
 | V102 | no tx point | At least one TX is required |
 | V103 | device with empty name | Name every device |
@@ -386,6 +481,7 @@ Codes starting with N are information, W warnings (do not block), all others are
 | S001 | python executable not found | Local venv missing; check `python_exe` |
 | S002 | solver script not found | `sionna/sionna_run.py` missing |
 | S003 | solver exited with an error | Last line of the solver output; full output in `solver.log`. A missing Sionna installation in the venv also ends here (`No module named 'sionna'`). |
+| S011 | python on target failed | Check could not import Sionna; the last lines of the error are printed above it. On Python 3.10: `cannot import name 'Self'`, use Python 3.11 or later |
 | S004 | solver timed out | Increase `timeout` or reduce the job |
 | S005 | solver produced no result file | Solver ended without writing results |
 | S006 | no exported run found | Export first |
@@ -394,14 +490,20 @@ Codes starting with N are information, W warnings (do not block), all others are
 | S010 | radio map exceeds the ray limit | `radiomap_samples` × number of TX is above Sionna's 4.29e9 rays per radio map. Lower `radiomap_samples` to the value shown. Checked before anything is sent. |
 | T001 | target unreachable | VPN off, wrong SSH alias, or key not installed. The SSH reason is shown. |
 | T002 | no python on target | No venv at `<remote_root>/venv` |
-| T003 | no GPU on target | Sionna would run on the CPU; refused |
+| T003 | no GPU on target | `use_gpu` is on but the target has no usable GPU. Switch `use_gpu` off to run on the CPU |
+| T005 | no CPU backend on target | `use_gpu` is off but the LLVM library is missing on the target; install it (Ubuntu: `sudo apt install llvm`) |
 | T004 | file transfer failed | rsync error; reason shown |
 | I001 | result file not found | Solve first |
 | I002 | result file unreadable | Damaged file; solve again. Runs solved before the switch to `.npz` give `I001`; solve them again. |
+| P001 | unknown preset | The `quality` or `band` parm holds a name that is not in `PRESETS` |
+| W013 | old LLVM for the cpu backend | Shown by check when `use_gpu` is off and the target's LLVM is older than 17. LLVM 15 aborts cpu solves with `LLVM ERROR: Cannot select`; LLVM 20 works. On Ubuntu 22.04 install `libllvm20` from apt.llvm.org |
+| W012 | preset parms missing on the Null | Those parms keep their defaults; add them to the Null to let the preset set them |
 | B001 | TOP node not found | No `../topnet1`, no node with the display flag in it, or a wrong `top_node` |
 | B002 | no work items in range | Check `batch_start` and `batch_end` against the work item indices |
 | B003 | no batch found | Batch export first, or check the `batch` parm |
 | B004 | batch already running | Wait for it, or stop it on the target |
+| B009 | invalid `batch_name` | Use only letters, digits, `_` and `-` |
+| C001 | clear failed on the target | The target was reached but listing or deleting failed; the error is shown |
 | B007 | nothing to solve | Every work item failed at export or at the checks before sending (`S008`, `S010`) |
 | B008 | input did not cook | The SOP network gave an error for this work item; it is skipped |
 
@@ -426,6 +528,8 @@ Analytic cases with known answers. Each should get its own hip file in `tests/`.
 
 **F. Canopy representations (study, not pass/fail).** A TX and RX with a canopy block between them, depth 0 to several metres, at 433 MHz, 868 MHz, 2.4 GHz and 5 GHz. Compare three representations (closed shell, stacked internal sheets, stochastic small triangles) against ITU-R P.833 and published greenhouse measurements. Expected: loss grows with depth; which representation gets the slope right is the question.
 
+**G. CPU.** Test C with `use_gpu` off on a machine without GPU: same path, −77.91 dB, and −49.36 dB in the radio map cell under the TX (checked).
+
 Radio map check per cell (Primitive Wrangle on `sionna_radiomap`, scene with TX points in the second input; set the wavelength for other frequencies):
 
 ```c
@@ -440,12 +544,13 @@ if (tx >= 0) {
 ## Current limitations
 
 - **One isotropic, vertically polarised antenna per device.** Every TX and RX is an ideal antenna radiating equally in all directions. Real antennas (dipoles, patches, arrays for wireless power transfer) have directional gain and their own polarisation. Sionna supports antenna patterns and arrays; the plugin does not expose them yet. Needed for the polarisation and multi-antenna parts of CELSA.
-- **ITU materials have frequency limits.** Below 1 GHz most of them are undefined and Sionna stops with an error (see the table). Sub-GHz scenes need library materials.
-- **Library values are mostly unverified** (see Materials).
+- **Below 1 GHz most building materials are extrapolated** (`W010`). For concrete the extrapolation still matches 3GPP (see Materials); for ground use the `soil_*` materials.
+- **Some library values are unverified** (`W005`): leaf, stem, fruit, polycarbonate, polyethylene film, PVC, rockwool, and the lab fits for brick and concrete.
+- **Sionna drops paths with a segment shorter than 1 cm** (`MIN_SEGMENT_LENGTH` in `sionna/rt/constants.py`). In paths and links, a closed object thinner than 1 cm (e.g. a thin stem modelled as a tube) blocks every path through it, as do two surfaces less than 1 cm apart along a ray, and a TX or RX within 1 cm of a surface. The radio map applies this limit only to diffraction, so there thin closed objects let rays through. Keep devices at least 1 to 2 cm from surfaces; model thin stems as single surfaces or leave them out.
 - **No volumetric media.** Materials live on surfaces, so canopies must be built from surfaces; see test F.
 - **Houdini is blocked while previz, solve or run is busy.** Batch solve runs in the background.
 - **Radio maps grow with cells × TX**: 4 bytes per value, so 100,000 cells and 100 TX is 40 MB before compression.
-- **Validation does not check** whether a device sits inside an object or below a floor, or whether ITU materials are defined at the run frequency.
+- **Validation does not check** whether a device sits inside an object or below a floor.
 - **Remote targets need `ssh` and `rsync`** on your machine (standard on Linux and macOS, not on Windows).
 - Developed against Sionna RT 2.2.0.
 

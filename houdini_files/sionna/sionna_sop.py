@@ -22,13 +22,17 @@ MEASURE = "measure"
 EPS0 = 8.8541878128e-12
 OUT = "$HIP/sionna"
 FREQUENCY = 3.5e9
-PYTHON_EXE = "$HIP/../.venv/Scripts/python.exe" if os.name == "nt" else "$HIP/../.venv/bin/python3"
+PYTHON_EXE = "$HIP/../venv/Scripts/python.exe" if os.name == "nt" else "$HIP/../venv/bin/python3"
 REMOTE_ROOT = "~/Documents/HyROPA"
 TIMEOUT = 1800
 MAX_RAYS = 4294967295
 SSH_OPTS = ["-o", "BatchMode=yes", "-o", "ConnectTimeout=10"]
 STARTED = time.time()
 TOPNET = "../topnet1"
+LLVM_MIN = 17
+LOG = hou.expandString(OUT + "/log.txt")
+WATCH_SECONDS = 15
+STAMP = r"\d{8}_\d{6}Z"
 SETTINGS = {
     "frequency": FREQUENCY,
     "max_depth": 3,
@@ -44,6 +48,30 @@ SETTINGS = {
     "radiomap_samples": 10000000,
 }
 
+INTERACTIONS = {"los": 1, "specular_reflection": 1, "refraction": 1, "diffuse_reflection": 0, "diffraction": 0}
+PRESETS = {
+    "quality": {
+        "laptop_test": dict(INTERACTIONS, target="local", use_gpu=0, max_depth=3, samples=100000, max_paths_per_tx=10000,
+                            radiomap_samples=1000000, cfr_points=0, timeout=1800),
+        "spark_quick": dict(INTERACTIONS, target="spark", use_gpu=1, max_depth=3, samples=1000000, max_paths_per_tx=100000,
+                            radiomap_samples=10000000, cfr_points=0, timeout=1800),
+        "spark_standard": dict(INTERACTIONS, target="spark", use_gpu=1, max_depth=5, samples=1000000,
+                               max_paths_per_tx=100000, radiomap_samples=20000000, cfr_points=64, timeout=1800),
+        "dense_canopy": dict(INTERACTIONS, target="spark", use_gpu=1, max_depth=8, samples=3000000, max_paths_per_tx=200000,
+                             radiomap_samples=30000000, cfr_points=64, timeout=3600),
+        "batch": dict(INTERACTIONS, target="spark", use_gpu=1, max_depth=5, samples=1000000, max_paths_per_tx=100000,
+                      radiomap_samples=10000000, cfr_points=0, timeout=1800),
+        "final": dict(INTERACTIONS, target="spark", use_gpu=1, max_depth=8, samples=10000000, max_paths_per_tx=200000,
+                      radiomap_samples=100000000, cfr_points=64, diffraction=1, timeout=7200),
+    },
+    "band": {
+        "lora_868": {"frequency": 868e6, "bandwidth": 125e3},
+        "lora_915": {"frequency": 915e6, "bandwidth": 125e3},
+        "wifi_2g4": {"frequency": 2.437e9, "bandwidth": 20e6},
+        "wifi_5g": {"frequency": 5.18e9, "bandwidth": 20e6},
+    },
+}
+
 CODES = {
     "N001": "scene size: x {x:.2f} m, y {y:.2f} m, z {z:.2f} m (sionna axes, z up)",
     "N002": "exported to {path}",
@@ -52,14 +80,21 @@ CODES = {
     "N005": "imported {paths} paths, {links} links",
     "N006": "radio map: {cells} cells on {maps} surfaces, {tx} transmitters",
     "N007": "{mode} on target '{target}'",
-    "N008": "target '{target}': sionna {version}, {variant}, gpu {gpu}",
+    "N008": "target '{target}': sionna {version}, runs on the {device}",
     "N009": "batch '{name}': {ok} exported, {failed} failed, written to {path}",
     "N010": "batch '{name}' started on '{target}' (pid {pid}): {count} work items queued, finished ones are skipped",
     "N011": "batch '{name}': {done} solved, {failed} failed, {missing} without result",
+    "N012": "cleared {folders} ({size}) on '{target}'",
+    "N013": "nothing to clear on '{target}': no {what}",
     "W004": "no rx point: only the radio map will be computed",
     "W005": "material '{material}' is not confirmed: {status}",
     "W006": "gpu on '{target}' in use by other processes: {apps}",
     "W008": "node '{name}' exists but is not a File SOP: result saved to {path} but not loaded; rename that node",
+    "W013": "target '{target}': LLVM {version} is older than {minimum}, cpu solves can abort with 'LLVM ERROR: Cannot select'; install libllvm{minimum} or newer",
+    "W014": "running batches on '{target}' not cleared: {names}",
+    "W012": "{kind} preset '{name}': parms not on this node, left unchanged: {parms}",
+    "W010": "material '{material}' at {f:g} GHz is outside its measured range ({ranges} GHz): values extrapolated",
+    "W011": "material '{material}' does not use moisture: attribute ignored on {count} primitives",
     "W009": "no string parm 'batch' on this node: add it, the sionna_batch File SOPs read the batch name from it",
     "W001": "scene diagonal is {diag:.3g} m (expected 1 m to 50 km): check units",
     "W002": "{name}: smaller than one wavelength ({lam:.3f} m)",
@@ -75,6 +110,7 @@ CODES = {
     "V009": "{name}: scattering_coefficient outside [0, 1]",
     "V010": "prim {prim}: empty name",
     "V011": "{name}: material '{material}' resolves to invalid permittivity or conductivity",
+    "V012": "{name}: moisture {value:g} % outside 0 to 100",
     "V101": "missing point attribute '{attr}'",
     "V102": "no {role} point",
     "V103": "device with empty name",
@@ -93,21 +129,26 @@ CODES = {
     "S006": "no exported run found, export first",
     "S008": "frequency changed since export ({exported:g} Hz exported, {current:g} Hz now): export again",
     "S009": "program not found: '{path}'",
+    "S011": "python on target '{target}' failed: {err}",
     "S010": "radio map needs {rays:.3g} rays ({samples:.3g} samples x {tx} tx), more than sionna's limit of "
             "4.29e9 per radio map: set radiomap_samples to {max} or lower",
     "T001": "target '{target}' unreachable (vpn, ssh alias or key): {err}",
     "T002": "no python at '{path}' on target '{target}'",
-    "T003": "no gpu on target '{target}': {err}",
+    "T003": "no gpu on target '{target}': {err} (switch use_gpu off to run on the cpu)",
     "T004": "file transfer with '{target}' failed: {err}",
+    "T005": "no cpu backend on target '{target}': {err} (is the LLVM library installed?)",
     "I001": "result file not found '{path}'",
     "I002": "result file unreadable or wrong format",
     "I003": "result does not match current scene (device names differ)",
+    "P001": "unknown {kind} preset '{name}', choose one of: {names}",
     "B001": "TOP node not found: '{path}'",
     "B002": "no work items with index {start} to {end} on '{path}'",
     "B003": "no batch found{name}, run batch export first",
     "B004": "batch '{name}' is already running on '{target}' (pid {pid})",
     "B007": "nothing to solve in batch '{name}'",
     "B008": "input did not cook: {err}",
+    "B009": "batch_name '{name}' may only contain letters, digits, _ and -",
+    "C001": "clear on '{target}' failed: {err}",
 }
 
 
@@ -125,10 +166,9 @@ def has_errors(recs):
 def say(phase, text):
     for line in str(text).splitlines() or [""]:
         print(f"[sionna {phase}] {line}", flush=True)
-    path = hou.expandString(OUT + "/log.txt")
-    os.makedirs(os.path.dirname(path), exist_ok=True)
+    os.makedirs(os.path.dirname(LOG), exist_ok=True)
     stamp = time.strftime("%Y-%m-%d %H:%M:%S")
-    with open(path, "a") as fh:
+    with open(LOG, "a") as fh:
         fh.write(f"{stamp} {phase} {text}\n")
 
 
@@ -168,6 +208,9 @@ def library():
         return json.load(fh)
 
 
+MOISTURE_KINDS = ("vegetation", "soil")
+
+
 def water_eps(f, temp_c, sigma_ion):
     theta = 1 - 300.0 / (temp_c + 273.15)
     es = 77.66 - 103.3 * theta
@@ -186,14 +229,80 @@ def vegetation_eps(f, mg, sigma=1.27):
     return er + vfw * free + vb * bound
 
 
-def resolve(entry, f):
+def pure_water(fg, temp_c):
+    th = 300.0 / (temp_c + 273.15) - 1
+    es = 77.66 + 103.3 * th
+    e1 = 0.0671 * es
+    einf = 3.52 - 7.52 * th
+    f1 = 20.20 - 146.4 * th + 316.0 * th ** 2
+    f2 = 39.8 * f1
+    re = (es - e1) / (1 + (fg / f1) ** 2) + (e1 - einf) / (1 + (fg / f2) ** 2) + einf
+    im = (fg / f1) * (es - e1) / (1 + (fg / f1) ** 2) + (fg / f2) * (e1 - einf) / (1 + (fg / f2) ** 2)
+    return re, im
+
+
+def soil_eps(f, entry, moisture):
+    fg, ps, pc = f / 1e9, entry["sand"], entry["clay"]
+    rs, rb, mv, a = entry["specific_gravity"], entry["bulk_density"], moisture / 100.0, 0.65
+    esm = (1.01 + 0.44 * rs) ** 2 - 0.062
+    b1 = 1.2748 - 0.00519 * ps - 0.00152 * pc
+    b2 = 1.33797 - 0.00603 * ps - 0.00166 * pc
+    s1 = 0.0467 + 0.2204 * rb - 0.004111 * ps - 0.006614 * pc
+    s2 = -1.645 + 1.939 * rb - 0.0225622 * ps + 0.01594 * pc
+    se1 = (fg / 1.35) * (s1 - s2) / (1 + (fg / 1.35) ** 2)
+    se2 = s2 + (s1 - s2) / (1 + (fg / 1.35) ** 2)
+    wr, wi = pure_water(fg, entry.get("temperature_c", 20.0))
+    k = 18.0 / fg * (rs - rb) / (rs * mv)
+    re = (1 + rb / rs * (esm ** a - 1) + mv ** b1 * (wr + se1 * k) ** a - mv) ** (1 / a)
+    im = (mv ** b2 * (wi + se2 * k) ** a) ** (1 / a)
+    return re, im
+
+
+def itu_row(entry, fg):
+    rows = entry["ranges_ghz"]
+    for row in rows:
+        if row[0] <= fg <= row[1]:
+            return row
+    return min(rows, key=lambda r: min(abs(math.log(fg / r[0])), abs(math.log(fg / r[1]))))
+
+
+def uses_moisture(entry):
+    return entry.get("kind") in MOISTURE_KINDS
+
+
+def measured_ranges(entry):
+    if entry.get("kind") == "itu":
+        return [(r[0], r[1]) for r in entry["ranges_ghz"]]
+    return [tuple(entry["range_ghz"])] if "range_ghz" in entry else []
+
+
+def outside_range(entry, f):
+    ranges = measured_ranges(entry)
+    return bool(ranges) and not any(lo <= f / 1e9 <= hi for lo, hi in ranges)
+
+
+def resolve(entry, f, moisture=0.0):
     w = 2 * math.pi * f * EPS0
     kind = entry.get("kind", "fixed")
+    wet = moisture if moisture > 0 else entry.get("moisture", 0.0)
     if kind == "water":
         eps = water_eps(f, entry.get("temperature_c", 25.0), entry.get("ionic_conductivity", 0.0))
         return eps.real, -eps.imag * w
     if kind == "vegetation":
-        eps = vegetation_eps(f, entry["moisture"])
+        eps = vegetation_eps(f, wet / 100.0)
+        return eps.real, -eps.imag * w
+    if kind == "soil":
+        re, im = soil_eps(f, entry, wet)
+        return re, im * w
+    if kind == "itu":
+        _, _, a, b, c, d = itu_row(entry, f / 1e9)
+        return a * (f / 1e9) ** b, c * (f / 1e9) ** d
+    if kind == "conductor":
+        return 1.0, entry["conductivity"]
+    if kind == "cole_cole":
+        ei, es = entry["eps_inf"], entry["eps_s"]
+        eps = ei + (es - ei) / (1 + (1j * 2 * math.pi * f * entry["tau"]) ** (1 - entry["alpha"]))
+        eps += entry["sigma_s"] / (1j * w)
         return eps.real, -eps.imag * w
     er = entry["relative_permittivity"]
     if "conductivity" in entry:
@@ -201,6 +310,19 @@ def resolve(entry, f):
     if "loss_factor" in entry:
         return er, entry["loss_factor"] * w
     return er, er * entry.get("loss_tangent", 0.0) * w
+
+
+def object_names(geo, names=None, lib=None):
+    import numpy as np
+    names = np.array(geo.primStringAttribValues("name")) if names is None else names
+    if not geo.findPrimAttrib("moisture"):
+        return names
+    lib = library() if lib is None else lib
+    wet = [m for m, e in lib.items() if uses_moisture(e)]
+    mats = np.array(geo.primStringAttribValues("material"))
+    m = np.round(np.array(prim_values(geo, "moisture"), dtype=float)).astype(int)
+    use = np.isin(mats, wet) & (m > 0)
+    return np.where(use, np.char.add(np.char.add(names, "_m"), m.astype(str)), names)
 
 
 def ray_limit(scene, s):
@@ -300,6 +422,8 @@ def validate(geo, frequency=FREQUENCY):
     recs += [("V004", {"prim": i}) for i in np.nonzero(ok & (area < 1e-12))[0].tolist()]
     recs += [("V010", {"prim": i}) for i in np.nonzero(ok & (names == ""))[0].tolist()]
     recs += [("V005", {"prim": i, "name": names[i]}) for i in np.nonzero(ok & (names != "") & ~valid)[0].tolist()]
+    lib = library()
+    names = object_names(geo, names, lib)
 
     present = [a for a in MAT_ATTRS if geo.findPrimAttrib(a)]
     cols = [prim_values(geo, a) for a in present]
@@ -313,8 +437,18 @@ def validate(geo, frequency=FREQUENCY):
     recs += [("V006", {"prim": int(good[k]), "name": str(names[good[k]])}) for k in np.nonzero(diff)[0]]
     order = sorted(first.tolist())
     seen = {str(names[good[f]]): tuple(c[good[f]] for c in cols) for f in order}
+    moist = np.array(prim_values(geo, "moisture"), dtype=float) if geo.findPrimAttrib("moisture") else None
+    wet = {str(names[good[f]]): float(round(moist[good[f]])) if moist is not None else 0.0 for f in order}
+    if moist is not None:
+        bad = (moist < 0) | (moist > 100)
+        for n in dict.fromkeys(names[bad].tolist()):
+            recs.append(("V012", {"name": n, "value": float(moist[names == n][0])}))
+        mats = np.array(prim_values(geo, "material"))
+        for mat in sorted(set(mats[moist > 0].tolist()) - {MEASURE}):
+            if not uses_moisture(lib.get(mat, {})):
+                recs.append(("W011", {"material": mat, "count": int(((mats == mat) & (moist > 0)).sum())}))
 
-    lib, warned = library(), set()
+    warned = set()
     for name, vals in seen.items():
         v = dict(zip(present, vals))
         mat = v["material"]
@@ -322,15 +456,19 @@ def validate(geo, frequency=FREQUENCY):
             continue
         if mat in lib:
             try:
-                er, sigma = resolve(lib[mat], frequency)
+                er, sigma = resolve(lib[mat], frequency, wet[name] if uses_moisture(lib[mat]) else 0.0)
             except (KeyError, TypeError, ValueError, ZeroDivisionError):
                 er, sigma = 0.0, -1.0
             status = lib[mat].get("status", "no status")
             if er < 1 or sigma < 0:
                 recs.append(("V011", {"name": name, "material": mat}))
-            elif status != "confirmed" and mat not in warned:
+            elif mat not in warned:
                 warned.add(mat)
-                recs.append(("W005", {"material": mat, "status": status}))
+                if status != "confirmed":
+                    recs.append(("W005", {"material": mat, "status": status}))
+                if outside_range(lib[mat], frequency):
+                    ranges = ", ".join(f"{lo:g} to {hi:g}" for lo, hi in measured_ranges(lib[mat]))
+                    recs.append(("W010", {"material": mat, "f": frequency / 1e9, "ranges": ranges}))
         elif mat not in ITU:
             recs.append(("V007", {"name": name, "material": mat}))
         if v.get("thickness", 0.1) < 0:
@@ -397,7 +535,7 @@ def inventory(phase, geo, f, node):
         say(phase, f"scene: {plural(sum(len(objs[m]) for m in scene), 'object')}, "
                    f"{plural(sum(tris[m] for m in scene), 'triangle')}, {plural(len(scene), 'material')}")
         for m in scene:
-            kind = "library" if m in lib else "ITU" if m in ITU else "unknown"
+            kind = lib[m].get("kind", "fixed") if m in lib else "ITU" if m in ITU else "unknown"
             say(phase, f"  {m:<22} {kind:<8} {plural(len(objs[m]), 'object'):>12} {plural(tris[m], 'triangle'):>16}")
         if MEASURE in tris:
             say(phase, f"radio map surfaces: {short(sorted(objs[MEASURE]))} ({plural(tris[MEASURE], 'cell')})")
@@ -425,19 +563,21 @@ def on_validate():
 
 def materials(geo):
     import numpy as np
-    names = geo.primStringAttribValues("name")
-    cols = {a: prim_values(geo, a) for a in MAT_ATTRS if geo.findPrimAttrib(a)}
+    lib = library()
+    names = object_names(geo, lib=lib).tolist()
+    cols = {a: prim_values(geo, a) for a in MAT_ATTRS + ("moisture",) if geo.findPrimAttrib(a)}
     out = {}
     for i in sorted(np.unique(names, return_index=True)[1].tolist()):
         v = {a: c[i] for a, c in cols.items()}
-        out[names[i]] = (v["material"], v.get("thickness", 0.0), v.get("scattering_coefficient", 0.0))
+        wet = float(round(v.get("moisture", 0.0))) if uses_moisture(lib.get(v["material"], {})) else 0.0
+        out[names[i]] = (v["material"], v.get("thickness", 0.0), v.get("scattering_coefficient", 0.0), max(wet, 0.0))
     return out
 
 
 def resolved(geo, f):
     lib = library()
     out = {}
-    for name, (mat, thick, scat) in materials(geo).items():
+    for name, (mat, thick, scat, wet) in materials(geo).items():
         if mat == MEASURE:
             continue
         entry = lib.get(mat, {})
@@ -447,7 +587,9 @@ def resolved(geo, f):
             "scattering_coefficient": scat if scat > 0 else entry.get("scattering_coefficient", 0.0),
         }
         if mat in lib:
-            d["relative_permittivity"], d["conductivity"] = resolve(entry, f)
+            d["relative_permittivity"], d["conductivity"] = resolve(entry, f, wet)
+            if uses_moisture(entry):
+                d["moisture"] = wet if wet > 0 else entry.get("moisture", 0.0)
             d["xpd_coefficient"] = entry.get("xpd_coefficient", 0.0)
             d["source"] = entry.get("source", "")
             d["status"] = entry.get("status", "no status")
@@ -456,7 +598,8 @@ def resolved(geo, f):
 
 
 def bsdf_id(d):
-    parts = [f"{k}{d[a]:g}".replace(".", "p") for k, a in (("t", "thickness"), ("s", "scattering_coefficient"))]
+    keys = (("t", "thickness"), ("s", "scattering_coefficient"), ("m", "moisture"))
+    parts = [f"{k}{d[a]:g}".replace(".", "p") for k, a in keys if a in d]
     return "_".join([d["material"]] + parts)
 
 
@@ -531,7 +674,7 @@ def write(path, text):
 def write_meshes(geo, folder):
     import numpy as np
     s = scan(geo)
-    names, _, group = np.unique(geo.primStringAttribValues("name"), return_index=True, return_inverse=True)
+    names, _, group = np.unique(object_names(geo), return_index=True, return_inverse=True)
     group = group.ravel()
     prims = np.split(np.argsort(group, kind="stable"), np.cumsum(np.bincount(group))[:-1])
     for name, idx in zip(names.tolist(), prims):
@@ -612,12 +755,14 @@ def export_summary(phase, folder, f, objs, measure, meta):
     say(phase, f"materials at {f / 1e9:g} GHz:")
     seen = set()
     for d in objs.values():
-        if d["material"] in seen:
+        key = (d["material"], d.get("moisture"))
+        if key in seen:
             continue
-        seen.add(d["material"])
+        seen.add(key)
         if "relative_permittivity" in d:
-            say(phase, f"  {d['material']:<22} er {d['relative_permittivity']:7.2f}  sigma {d['conductivity']:8.4f} S/m"
-                       f"  thickness {d['thickness']:g} m  [{d['status']}]")
+            wet = f"  moisture {d['moisture']:g} %" if "moisture" in d else ""
+            say(phase, f"  {d['material']:<22} er {d['relative_permittivity']:7.2f}  sigma {d['conductivity']:8.4g} S/m"
+                       f"  thickness {d['thickness']:g} m{wet}  [{d['status']}]")
         else:
             say(phase, f"  {d['material']:<22} ITU model, evaluated by sionna  thickness {d['thickness']:g} m")
     commit = meta.get("commit")
@@ -688,6 +833,15 @@ def local_python(node):
     return hou.expandString(parm_str(node, "python_exe", PYTHON_EXE))
 
 
+def use_gpu(node):
+    parm = node.parm("use_gpu")
+    return bool(parm.eval()) if parm else True
+
+
+def device(node):
+    return "gpu" if use_gpu(node) else "cpu"
+
+
 def timeout(node):
     parm = node.parm("timeout")
     return int(parm.eval()) if parm else TIMEOUT
@@ -746,11 +900,12 @@ def gpu_text(info):
     return f"{name.strip()}, load {load.strip()}%" if name else "none"
 
 
-def preflight(node):
+def preflight(node, need_gpu=True):
     host, py = target(node), remote_root(node) + "/venv/bin/python3"
     cmd = (
         f"test -x {shlex.quote(py)} || exit 3; "
-        "nvidia-smi --query-gpu=name,utilization.gpu --format=csv,noheader,nounits || exit 4; "
+        "nvidia-smi --query-gpu=name,utilization.gpu --format=csv,noheader,nounits "
+        + ("|| exit 4; " if need_gpu else "2>/dev/null || true; ") +
         "echo ---; nvidia-smi --query-compute-apps=pid,process_name --format=csv,noheader || true"
     )
     try:
@@ -785,15 +940,16 @@ def run_sionna(node, mode, folder, phase):
             exe = local_python(node)
             if not os.path.isfile(exe):
                 return [("S001", {"path": exe})]
-            say(phase, f"run {mode} locally with {exe}")
-            code, lines = stream([exe, "-u", folder + "/sionna_run.py", mode, folder], seconds, echo)
+            say(phase, f"run {mode} locally on the {device(node)} with {exe}")
+            code, lines = stream([exe, "-u", folder + "/sionna_run.py", mode, folder, device(node)], seconds, echo)
         else:
             say(phase, f"target {host}: checking")
-            pre, info = preflight(node)
+            pre, info = preflight(node, use_gpu(node))
             if has_errors(pre):
                 return pre
             busy = [r[1]["apps"] for r in pre if r[0] == "W006"]
-            say(phase, f"target {host}: gpu {gpu_text(info)}, other compute processes: {busy[0] if busy else 'none'}")
+            say(phase, f"target {host}: gpu {gpu_text(info)}, other compute processes: {busy[0] if busy else 'none'}, "
+                       f"runs on the {device(node)}")
             recs = pre
             root = remote_root(node)
             rdir = f"{root}/runs/{hou.expandString('$HIPNAME')}/{os.path.basename(folder)}"
@@ -806,7 +962,8 @@ def run_sionna(node, mode, folder, phase):
                 return recs + [("T004", {"target": host, "err": tail("\n".join(out), 300)})]
             say(phase, f"run {mode} on {host}")
             py, run = shlex.quote(root + "/venv/bin/python3"), shlex.quote(rdir + "/sionna_run.py")
-            code, lines = stream(["ssh", *SSH_OPTS, host, f"{py} -u {run} {mode} {shlex.quote(rdir)}"], seconds, echo)
+            code, lines = stream(["ssh", *SSH_OPTS, host, f"{py} -u {run} {mode} {shlex.quote(rdir)} {device(node)}"],
+                                 seconds, echo)
             if code == 255:
                 return recs + [("T001", {"target": host, "err": tail("\n".join(lines), 300)})]
         if code == 0 and host != "local":
@@ -823,6 +980,8 @@ def run_sionna(node, mode, folder, phase):
     recs = [] if host == "local" else recs
     if code == 3:
         return recs + [("T003", {"target": host, "err": lines[-1] if lines else ""})]
+    if code == 4:
+        return recs + [("T005", {"target": host, "err": lines[-1] if lines else ""})]
     if code:
         return recs + [("S003", {"code": code, "err": lines[-1] if lines else ""})]
     return recs
@@ -830,12 +989,33 @@ def run_sionna(node, mode, folder, phase):
 
 # --- check ---
 
-PROBE = "import sionna.rt, mitsuba as mi; print(sionna.rt.__version__, mi.variant())"
+PROBE = """
+import json, os, platform
+out = {"threads": os.cpu_count(), "cpu": platform.machine()}
+try:
+    with open("/proc/cpuinfo") as fh:
+        out["cpu"] = next(l.split(":", 1)[1].strip() for l in fh if l.lower().startswith("model name")) or out["cpu"]
+except (OSError, StopIteration):
+    pass
+import mitsuba as mi, drjit as dr
+for key, variant in (("gpu", "cuda_ad_mono_polarized"), ("cpu", "llvm_ad_mono_polarized")):
+    try:
+        mi.set_variant(variant)
+        dr.eval(mi.Float(1.0) + 1.0)
+        out[key + "_error"] = ""
+        if key == "cpu" and hasattr(dr.detail, "llvm_version"):
+            out["llvm"] = list(dr.detail.llvm_version())
+    except Exception as e:
+        out[key + "_error"] = (str(e).strip().splitlines() or [type(e).__name__])[-1].split(". ")[0][:200]
+import sionna.rt
+out["sionna"] = sionna.rt.__version__
+print(json.dumps(out))
+"""
 
 
 def on_check():
     node = hou.pwd()
-    host = target(node)
+    host, gpu = target(node), use_gpu(node)
     try:
         if host == "local":
             exe = local_python(node)
@@ -850,7 +1030,7 @@ def on_check():
                 pass
             r = call([exe, "-c", PROBE], 300)
         else:
-            recs, info = preflight(node)
+            recs, info = preflight(node, False)
             if has_errors(recs):
                 report("check", recs)
                 return
@@ -862,14 +1042,31 @@ def on_check():
     except FileNotFoundError as e:
         report("check", [("S009", {"path": e.filename})])
         return
-    if r.returncode:
-        report("check", recs + [("S003", {"code": r.returncode, "err": tail(r.stderr)})])
-        return
     lines = r.stdout.strip().splitlines()
-    version, _, variant = (lines[-1] if lines else "").partition(" ")
-    recs.append(("N008", {"target": host, "version": version, "variant": variant, "gpu": gpu_text(info)}))
-    if not variant.startswith("cuda"):
-        recs.append(("T003", {"target": host, "err": f"variant {variant}"}))
+    try:
+        p = json.loads(lines[-1])
+    except (IndexError, ValueError):
+        err = r.stderr.strip().splitlines() or [f"exit code {r.returncode}"]
+        for line in err[-6:-1]:
+            say("check", f"  {host} | {line}")
+        report("check", recs + [("S011", {"target": host, "err": err[-1]})])
+        return
+    say("check", f"target {host}: sionna {p['sionna']}")
+    gpu_err, cpu_err = p["gpu_error"], p["cpu_error"]
+    say("check", "  gpu: " + (f"not available ({gpu_err})" if gpu_err else gpu_text(info) if info else "available"))
+    llvm = p.get("llvm")
+    say("check", f"  cpu: {p['cpu']}, {p['threads']} threads, " + (f"not available ({cpu_err})" if cpu_err
+                                                                   else "available") +
+        (f", LLVM {'.'.join(map(str, llvm))}" if llvm else ""))
+    say("check", f"  selected: {device(node)} (use_gpu {'on' if gpu else 'off'})")
+    if gpu and gpu_err:
+        recs.append(("T003", {"target": host, "err": gpu_err}))
+    elif not gpu and cpu_err:
+        recs.append(("T005", {"target": host, "err": cpu_err}))
+    else:
+        if not gpu and llvm and llvm[0] < LLVM_MIN:
+            recs.append(("W013", {"target": host, "version": ".".join(map(str, llvm)), "minimum": LLVM_MIN}))
+        recs.append(("N008", {"target": host, "version": p["sionna"], "device": device(node)}))
     report("check", recs)
 
 
@@ -1232,11 +1429,18 @@ def batch_folder(node):
     name = parm_str(node, "batch", "")
     root = hou.expandString(OUT + "/batches")
     if not name and os.path.isdir(root):
-        found = sorted(d for d in os.listdir(root) if os.path.isfile(f"{root}/{d}/batch.json"))
+        found = sorted((d for d in os.listdir(root) if os.path.isfile(f"{root}/{d}/batch.json")), key=lambda d: d[-16:])
         name = found[-1] if found else ""
     if name and os.path.isfile(f"{root}/{name}/batch.json"):
         return f"{root}/{name}", []
     return None, [("B003", {"name": f" named '{name}'" if parm_str(node, "batch", "") else ""})]
+
+
+def batch_prefix(node):
+    name = parm_str(node, "batch_name", "")
+    if not re.fullmatch(r"[A-Za-z0-9_-]*", name):
+        return None, [("B009", {"name": name})]
+    return name, []
 
 
 def remote_batch(node, folder):
@@ -1257,7 +1461,12 @@ def on_batch_export():
     if not items:
         report("batch", [("B002", {"start": lo, "end": hi, "path": top.path()})])
         return
+    prefix, recs = batch_prefix(node)
+    if recs:
+        report("batch", recs)
+        return
     stamp = time.strftime("%Y%m%d_%H%M%SZ", time.gmtime())
+    stamp = f"{prefix}_{stamp}" if prefix else stamp
     folder = hou.expandString(f"{OUT}/batches/{stamp}")
     f, git = frequency(node), git_info()
     batch = {"created_utc": stamp, "hip": hou.hipFile.path(), "top_node": top.path(), "range": [lo, hi],
@@ -1342,7 +1551,87 @@ def on_batch_solve():
         recs = [("S004", {"seconds": seconds})]
     except FileNotFoundError as e:
         recs = [("S009", {"path": e.filename})]
+    started = any(r[0] == "N010" for r in recs)
+    if started or any(r[0] == "B004" for r in recs):
+        watch(folder, name, host, remote_batch(node, folder) if host != "local" else None, started)
     report("batch", recs)
+
+
+def watchers():
+    if not hasattr(hou.session, "sionna_watchers"):
+        hou.session.sionna_watchers = {}
+    return hou.session.sionna_watchers
+
+
+def watch(folder, name, host, rdir, restart):
+    key = f"{host}:{name}"
+    old = watchers().get(key)
+    if old and old[0].is_alive():
+        if not restart:
+            say("batch", f"already watching batch {name} on {host}")
+            return
+        old[1].set()
+    stop = threading.Event()
+    if rdir:
+        env = clean_env()
+        cmd = ["ssh", *SSH_OPTS, host, f"cd {shlex.quote(rdir)} 2>/dev/null || exit 0; cat status.json 2>/dev/null; "
+               "echo; echo ---; [ -f batch.pid ] && kill -0 \"$(cat batch.pid)\" 2>/dev/null && echo running; true"]
+
+        def poll():
+            r = subprocess.run(cmd, env=env, capture_output=True, text=True, timeout=60)
+            if r.returncode:
+                raise OSError(tail(r.stderr, 200) or f"ssh exit code {r.returncode}")
+            status, _, running = r.stdout.partition("---\n")
+            return (json.loads(status) if status.strip() else None), running.strip() == "running"
+    else:
+        def poll():
+            pid = read_pid(folder + "/batch.pid")
+            return read_status(folder), bool(pid) and alive(pid)
+
+    def loop():
+        t0, seen, misses = time.time(), None, 0
+        while True:
+            try:
+                status, running = poll()
+                misses = 0
+            except (OSError, ValueError, subprocess.SubprocessError) as e:
+                misses += 1
+                if misses == 4:
+                    say("watch", f"batch {name} on {host}: stopped watching after 4 failed checks: {e}")
+                    return
+                if stop.wait(WATCH_SECONDS):
+                    return
+                continue
+            status = status or {}
+            done, failed = status.get("done", []), status.get("failed", {})
+            total = status.get("total", 0)
+            finished = len(done) + len(status.get("skipped", [])) + len(failed)
+            if seen is None:
+                seen = set(done) | set(failed)
+                if finished:
+                    say("watch", f"batch {name} on {host}: {finished} of {total} finished so far")
+            for item, err in sorted(failed.items()):
+                if item not in seen:
+                    seen.add(item)
+                    say("watch", f"batch {name} on {host}: {item} failed: {err}")
+            new = [item for item in done if item not in seen]
+            seen.update(new)
+            if new:
+                say("watch", f"batch {name} on {host}: {', '.join(new)} solved, {finished} of {total} finished")
+            if status.get("finished"):
+                say("watch", f"batch {name} on {host}: finished, {len(done)} solved, {len(status.get('skipped', []))} "
+                             f"skipped, {len(failed)} failed ({(time.time() - t0) / 60:.1f} min), press batch fetch")
+                return
+            if not running:
+                say("watch", f"batch {name} on {host}: stopped, process not running, see batch status")
+                return
+            if stop.wait(WATCH_SECONDS):
+                return
+
+    t = threading.Thread(target=loop, name=f"sionna watch {key}", daemon=True)
+    watchers()[key] = (t, stop)
+    t.start()
+    say("batch", f"watching batch {name} on {host} every {WATCH_SECONDS} s, a line follows each finished work item")
 
 
 def alive(pid):
@@ -1386,7 +1675,7 @@ def start_local(node, folder, name, count):
         os.remove(folder + "/status.json")
     with open(folder + "/batch.log", "a") as log:
         p = subprocess.Popen(
-            [exe, "-u", folder + "/sionna_run.py", "batch", folder], env=clean_env(), cwd=folder,
+            [exe, "-u", folder + "/sionna_run.py", "batch", folder, device(node)], env=clean_env(), cwd=folder,
             stdout=log, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, start_new_session=True,
         )
     write(folder + "/batch.pid", str(p.pid))
@@ -1396,10 +1685,10 @@ def start_local(node, folder, name, count):
 def start_remote(node, folder, name, count, seconds):
     host = target(node)
     say("batch", f"target {host}: checking")
-    recs, info = preflight(node)
+    recs, info = preflight(node, use_gpu(node))
     if has_errors(recs):
         return recs
-    say("batch", f"target {host}: gpu {gpu_text(info)}")
+    say("batch", f"target {host}: gpu {gpu_text(info)}, runs on the {device(node)}")
     rdir, py = remote_batch(node, folder), shlex.quote(remote_root(node) + "/venv/bin/python3")
     q = shlex.quote(rdir)
     r = ssh(host, f"mkdir -p {q} && cd {q} && "
@@ -1414,7 +1703,7 @@ def start_remote(node, folder, name, count, seconds):
                       "--exclude", "batch.pid", "--exclude", "batch.log", "--exclude", "status.json")
     if c:
         return recs + [("T004", {"target": host, "err": tail("\n".join(out), 300)})]
-    r = ssh(host, f"rm -f {q}/status.json; nohup {py} -u {q}/sionna_run.py batch {q} >> {q}/batch.log 2>&1 < /dev/null & "
+    r = ssh(host, f"rm -f {q}/status.json; nohup {py} -u {q}/sionna_run.py batch {q} {device(node)} >> {q}/batch.log 2>&1 < /dev/null & "
                   f"echo $! > {q}/batch.pid; cat {q}/batch.pid")
     if r.returncode:
         return recs + [("T001", {"target": host, "err": tail(r.stderr, 300)})]
@@ -1534,3 +1823,169 @@ def on_batch_fetch():
     recs.append(("N011", {"name": name, "done": len(solved), "failed": len(failed),
                           "missing": len(items) - len(solved) - len(failed)}))
     report("batch", recs)
+
+
+# --- presets ---
+
+def preset_menu(kind):
+    return [x for name in PRESETS[kind] for x in (name, name.replace("_", " "))]
+
+
+def on_preset(kind):
+    node = hou.pwd()
+    presets = PRESETS[kind]
+    name = parm_str(node, kind, "")
+    if name not in presets:
+        report("preset", [("P001", {"kind": kind, "name": name, "names": ", ".join(presets)})])
+        return
+    missing, same = [], 0
+    for key, value in presets[name].items():
+        parm = node.parm(key)
+        if parm is None:
+            missing.append(key)
+            continue
+        old = parm.eval()
+        if old == value:
+            same += 1
+            continue
+        parm.set(value)
+        say("preset", f"  {key:<20} {old} -> {value}")
+    say("preset", f"{kind} preset {name} applied, {same} parms already had the preset value")
+    report("preset", [("W012", {"kind": kind, "name": name, "parms": ", ".join(missing)})] if missing else [])
+
+
+# --- clear ---
+
+CLEAN = r"""
+import json, os, re, shutil
+
+
+def alive(pid):
+    try:
+        if os.waitpid(pid, os.WNOHANG)[0] == pid:
+            return False
+    except ChildProcessError:
+        pass
+    try:
+        os.kill(pid, 0)
+        return True
+    except OSError:
+        return False
+
+
+def running(path):
+    try:
+        with open(path + "/batch.pid") as fh:
+            pid = int(fh.read().strip())
+    except (OSError, ValueError):
+        return False
+    try:
+        with open(path + "/status.json") as fh:
+            if json.load(fh).get("finished"):
+                return False
+    except (OSError, ValueError):
+        pass
+    return alive(pid)
+
+
+def owner(path):
+    try:
+        with open(path + "/batch.json") as fh:
+            return os.path.splitext(os.path.basename(json.load(fh)["hip"]))[0]
+    except (OSError, ValueError, KeyError):
+        return next((f[:-10] for f in os.listdir(path) if f.endswith("_meta.json")), "")
+
+
+def clean(spec, delete=None):
+    out = []
+    for root, pattern in spec["roots"]:
+        if not os.path.isdir(root):
+            continue
+        for name in sorted(os.listdir(root)):
+            path = os.path.join(root, name)
+            if not re.fullmatch(pattern, name) or os.path.islink(path) or not os.path.isdir(path):
+                continue
+            if owner(path) != spec["hip"]:
+                continue
+            d = {"path": path, "bytes": sum(os.lstat(os.path.join(a, f)).st_size for a, _, fs in os.walk(path) for f in fs),
+                 "running": running(path)}
+            if delete and path in delete and not d["running"]:
+                shutil.rmtree(path)
+                d["deleted"] = True
+            out.append(d)
+    return out
+"""
+
+
+def run_clean(host, spec, delete=None):
+    if host == "local":
+        g = {}
+        exec(CLEAN, g)
+        return g["clean"](spec, delete), []
+    payload = json.dumps({"spec": spec, "delete": delete})
+    script = CLEAN + f"\nargs = json.loads({payload!r})\nprint(json.dumps(clean(args['spec'], args['delete'])))\n"
+    try:
+        r = ssh(host, f"python3 -c {shlex.quote(script)}", 300)
+    except subprocess.TimeoutExpired:
+        return None, [("T001", {"target": host, "err": "timeout"})]
+    if r.returncode == 255:
+        return None, [("T001", {"target": host, "err": tail(r.stderr, 300)})]
+    try:
+        return json.loads(r.stdout.strip().splitlines()[-1]), []
+    except (IndexError, ValueError):
+        return None, [("C001", {"target": host, "err": tail(r.stderr, 300) or f"exit code {r.returncode}"})]
+
+
+def on_clear(scope):
+    node = hou.pwd()
+    host, hip = target(node), hou.expandString("$HIPNAME")
+    prefix, recs = batch_prefix(node)
+    if recs:
+        report("clear", recs)
+        return
+    session = (re.escape(prefix) + "_" if prefix else "") + STAMP
+    if host == "local":
+        runs, batches = hou.expandString(OUT + "/data"), hou.expandString(OUT + "/batches")
+    else:
+        root = remote_root(node)
+        runs, batches = f"{root}/runs/{hip}", f"{root}/batches/{hip}"
+    if scope == "all":
+        roots, what = [[runs, STAMP], [batches, r"(?:[A-Za-z0-9_-]+_)?" + STAMP]], f"runs or batches of {hip}"
+    else:
+        roots, what = [[batches, session]], f"batches of {hip} in session '{prefix}'" if prefix else \
+            f"batches of {hip} without a session name"
+    spec = {"hip": hip, "roots": roots}
+    say("clear", f"looking for {what} on {host}")
+    found, recs = run_clean(host, spec)
+    if recs:
+        report("clear", recs)
+        return
+    if not found:
+        report("clear", [("N013", {"target": host, "what": what})])
+        return
+    free = [d for d in found if not d["running"]]
+    busy = [os.path.basename(d["path"]) for d in found if d["running"]]
+    for d in found:
+        say("clear", f"  {d['path']}  {size(d['bytes'])}" + ("  running, kept" if d["running"] else ""))
+    if busy:
+        recs.append(("W014", {"target": host, "names": ", ".join(busy)}))
+    if not free:
+        report("clear", recs)
+        return
+    total = size(sum(d["bytes"] for d in free))
+    names = [os.path.basename(d["path"]) for d in free]
+    shown = "\n".join(names[:15]) + (f"\n... and {len(names) - 15} more" if len(names) > 15 else "")
+    choice = hou.ui.displayMessage(
+        f"Delete {plural(len(free), 'folder')} ({total}) on '{host}'?\n\n{shown}\n\nThis cannot be undone.",
+        buttons=("Delete", "Cancel"), default_choice=1, close_choice=1, severity=hou.severityType.Warning,
+        title="sionna clear")
+    if choice != 0:
+        say("clear", "cancelled, nothing deleted")
+        report("clear", recs)
+        return
+    done, more = run_clean(host, spec, [d["path"] for d in free])
+    if more:
+        report("clear", recs + more)
+        return
+    gone = [d for d in done if d.get("deleted")]
+    report("clear", recs + [("N012", {"folders": plural(len(gone), "folder"), "size": size(sum(d["bytes"] for d in gone)), "target": host})])

@@ -1,5 +1,0 @@
-N001 scene size: x 5.03 m, y 5.03 m, z 5.95 m (sionna axes, z up)
-W005 material 'polypropylene' is not confirmed: permittivity confirmed, loss assumed zero
-W005 material 'leaf' is not confirmed: model coefficients entered from memory, verify against the paper
-W005 material 'stem' is not confirmed: model coefficients entered from memory, verify against the paper
-N002 exported to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/batches/20261021_092007Z/wi001

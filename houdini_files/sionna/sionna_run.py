@@ -8,13 +8,21 @@ import time
 import traceback
 
 import numpy as np
-import sionna.rt
+import drjit as dr
 import mitsuba as mi
-from sionna.rt import load_scene, Transmitter, Receiver, PlanarArray, PathSolver, RadioMapSolver
 
-if not mi.variant().startswith("cuda"):
-    print(f"no CUDA variant on this machine: {mi.variant()}", file=sys.stderr)
-    sys.exit(3)
+DEVICE = sys.argv[3] if len(sys.argv) > 3 else "gpu"
+try:
+    mi.set_variant("cuda_ad_mono_polarized" if DEVICE == "gpu" else "llvm_ad_mono_polarized")
+    dr.eval(mi.Float(1.0) + 1.0)
+except Exception as e:
+    backend = "CUDA (gpu)" if DEVICE == "gpu" else "LLVM (cpu)"
+    print(f"no {backend} backend on this machine: {(str(e).strip().splitlines() or [type(e).__name__])[-1].split('. ')[0]}",
+          file=sys.stderr)
+    sys.exit(3 if DEVICE == "gpu" else 4)
+
+import sionna.rt
+from sionna.rt import load_scene, Transmitter, Receiver, PlanarArray, PathSolver, RadioMapSolver
 
 
 def log(text):
@@ -48,7 +56,7 @@ def db(x, k=20):
 
 def load(folder):
     t0 = time.time()
-    log(f"sionna {sionna.rt.__version__}, {mi.variant()}")
+    log(f"sionna {sionna.rt.__version__}, {mi.variant()}, on the {DEVICE}")
     scene = load_scene(find(folder, "_scene.xml"), merge_shapes=False)
     with open(find(folder, "_txrx.json")) as fh:
         devs = json.load(fh)
