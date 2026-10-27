@@ -110,6 +110,18 @@ class HousionnaBatchTests(unittest.TestCase):
         self.assertEqual(stub["run_metadata"]["parameters"], meta["parameters"])
         self.assertEqual(stub["run_metadata"]["batch"]["id"], BATCH)
 
+    def test_wedged_attributes_need_no_prefix(self):
+        # From 21 Oct 2026 the exporter writes plain names (a, b, c, ...) next to PDG's bookkeeping fields.
+        folder = resolve_run_folder(self.project, f"{BATCH}.wi000")
+        meta_file = next(folder.glob("*_meta.json"))
+        meta = json.loads(meta_file.read_text(encoding="utf-8"))
+        meta["wedge"] = {"runs": 0, "wedgeindex": 3, "wedgetotal": 675, "wedgeattribs": "a", "wedgecount": 1,
+                         "wedgenum": 0, "a": 1, "b": 1, "c": 1, "d": 2, "e": 1}
+        meta_file.write_text(json.dumps(meta), encoding="utf-8")
+        document = import_run(folder, self.project, dry_run=True)
+        self.assertEqual(document["run_metadata"]["parameters"], {"a": 1, "b": 1, "c": 1, "d": 2, "e": 1})
+        self.assertEqual(document["run_metadata"]["wedge"]["wedgeindex"], 3)
+
     def test_plain_runs_import_as_before(self):
         output = import_run(self.runs / "20261019_195611Z", self.project)
         meta = json.loads(output.read_text(encoding="utf-8"))["run_metadata"]

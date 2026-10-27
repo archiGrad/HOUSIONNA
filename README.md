@@ -566,6 +566,41 @@ https://www.youtube.com/watch?v=GcwktsATHTg
 
 ### Presentation
 
+
+meeting notes
+
+
+meeting notes 21-10-2026 relevant for us
+
+
+T1
+add more detail, windows, glass, set correct material coefficient. add noise-> people, multiple scattereres, miultiple configurations, autonomous driving machines for plant watering and inspection , including humans too
+
+make application engine
+
+perhaps include a 'data framework'-> presentation to Satish
+
+a relationship between objects... seems cool but not really sure what that means. an ontology. 
+self optimizations of ontology?  the onltologyu defines the communicstion prtotocol hierarchy and oiperations relationship 
+
+issue #1
+what is the hihgest frequency sionna can go?
+does it pass through the leaves
+
+issue #2
+volumetric data not really supported in sionna
+
+gilles was maybe checing for other tool?
+
+cool term:
+[ontology] for fleet management 
+
+find common scenario for simualtions and measuremenfts
+
+
+same scanenario for optical domai should be supported in t he pipeline 
+mobnthly update meeting wher e we are 
+
 ![Slide 1](docs/presentation_21-10-2026/HyROPA_presentatie_1.png)
 ![Slide 2](docs/presentation_21-10-2026/HyROPA_presentatie_2.png)
 ![Slide 3](docs/presentation_21-10-2026/HyROPA_presentatie_3.png)

@@ -125,6 +125,25 @@ class HousionnaOnDemandViewerTests(unittest.TestCase):
                 self.assertEqual(stub["summary"]["path_count"], len(full["paths"]))
                 self.assertIn(full["geometry_ref"], payload["assets"]["geometries"])
 
+    def test_one_transmitter_at_a_time(self):
+        # The viewer loads one scenario (transmitter) per request; it must equal that scenario of the full payload.
+        with tempfile.TemporaryDirectory() as directory:
+            project = Path(directory) / "project"
+            import_id = import_run(RUN, project).parent.name
+            full = housionna_viewer_payload(project, import_id)
+            for name in full["scenario_order"]:
+                single = housionna_viewer_payload(project, import_id, name)
+                self.assertEqual(single["scenario_order"], [name])
+                self.assertEqual(single["scenarios"][name], full["scenarios"][name])
+                scenario = single["scenarios"][name]
+                self.assertEqual(set(single["assets"]["geometries"]), {scenario["geometry_ref"]})
+                self.assertEqual(set(single["assets"]["meshes"]),
+                                 {row["mesh_ref"] for row in scenario["radio_map"]["surfaces"]})
+            with self.assertRaises(FileNotFoundError):
+                housionna_viewer_payload(project, import_id, "no_such_tx")
+            with self.assertRaises(ValueError):
+                housionna_viewer_payload(project, "../outside", full["scenario_order"][0])
+
     def test_summary_is_cached_until_the_import_changes(self):
         with tempfile.TemporaryDirectory() as directory:
             output = import_run(RUN, Path(directory) / "project")

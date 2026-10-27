@@ -36,6 +36,18 @@ if __name__ == "__main__":
         from integrations.housionna_simulation import simulation_worker_main
 
         raise SystemExit(simulation_worker_main(sys.argv[2:]))
+    if len(sys.argv) > 1 and sys.argv[1] == "maps":
+        from application_maps import main as application_maps
+
+        raise SystemExit(application_maps(sys.argv[2:]))
+    if len(sys.argv) > 1 and sys.argv[1] == "placement":
+        from placement import main as placement
+
+        raise SystemExit(placement(sys.argv[2:]))
+    if len(sys.argv) > 1 and sys.argv[1] == "apps":
+        from application_engine import main as application_engine
+
+        raise SystemExit(application_engine(sys.argv[2:]))
     if len(sys.argv) > 1 and sys.argv[1] == "publish":
         from publish_site import main as publish_site
 
