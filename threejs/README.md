@@ -225,7 +225,9 @@ See [docs/PERFORMANCE_RELIABILITY.md](docs/PERFORMANCE_RELIABILITY.md) for measu
 
 ## Application engine and reference cases
 
-These commands work on imported HOUSIONNA runs (use **Import all** in the viewer first). Application profiles are in `config/applications.yaml`. Values marked EXAMPLE there, such as the BLE and LoRa sensitivities and the rectifier curve, are placeholders until measured device data replaces them.
+These commands work on imported HOUSIONNA runs (use **Import all** in the viewer first). Application profiles are in `config/applications.yaml`. Values marked EXAMPLE there, such as the BLE and LoRa sensitivities, are placeholders until measured device data replaces them.
+
+The harvester is one of the named entries in the `harvesters` section; `apps` and `maps` take `--harvester <name>` and then add the name to their output folder or file names. The default `cappelle2025_chain` is the measured complete device (`data/devices/cappelle2025/`). The `rectifier_bound_915`, `_868` and `_2450` entries are upper bounds: the AEM30940 kit rectifiers alone at their best load voltage, from the AMBIENT-6G dataset (`python scripts/import_ambient6g.py`, see `data/devices/ambient6g/`).
 
 - `python run.py apps --batch <batch>` (or `--import <id>`, or no option for every run) computes the following and writes them to `outputs/applications/<scope>/`:
   - received power, link margin, best server, coverage and the worst case over a batch;

@@ -1,0 +1,22 @@
+# RF-powered batteryless plant movement sensor (Cappelle et al. 2025, arXiv:2509.13004).
+# Paper values from data/IEEE_Sensors_2025___RF_Power_Plant_Sensor_GROWTH_1/main.tex; quiescent currents and the
+# measurement antenna from J. Cappelle (personal communication, Oct 2026).
+harvester:
+  ic: AEM30940
+  frequency_hz: 915.0e6
+  antenna: monopole with matching network and rectifier
+  minimum_input_dbm: -15.0
+buffer:
+  capacitors_f:            # measured values (nominal 470 uF and 1 mF)
+    470uF: 490.0e-6
+    1mF: 1.1e-3
+  v_on_v: 4.5              # V_CHRDY: buck converter enabled
+  v_off_v: 2.2             # V_OVDIS: buck converter disabled
+  buck_output_v: 1.9
+node:
+  quiescent_current_a: 35.0e-9
+  buck_quiescent_current_a: 60.0e-9
+  ble: {phy: 1M, tx_power_dbm: 0.0, payload_bytes: 12, frequency_hz: 2.4e9}
+cycles_j:
+  case_I_imu_ble_basic: 2.88e-3     # buffer 470 uF
+  case_II_imu_ble_full: 9.11e-3     # buffer 1 mF

@@ -60,9 +60,18 @@ class RunChannels:
     tx_positions_m: np.ndarray = field(default_factory=lambda: np.zeros((0, 3)))
 
 
-def load_config(path: Path | None = None) -> dict[str, Any]:
+def load_config(path: Path | None = None, harvester: str | None = None) -> dict[str, Any]:
+    """Application profiles; wpt.harvester (or the harvester argument) names an entry of the harvesters section."""
     with Path(path or ROOT / "config" / "applications.yaml").open(encoding="utf-8") as handle:
-        return yaml.safe_load(handle)
+        config = yaml.safe_load(handle)
+    wpt = config.get("wpt")
+    name = harvester or (wpt or {}).get("harvester")
+    if wpt and isinstance(name, str):
+        library = config.get("harvesters", {})
+        if name not in library:
+            raise ValueError(f"Unknown harvester {name!r}; choose from {', '.join(library)}")
+        wpt["harvester"] = {"name": name, **library[name]}
+    return config
 
 
 def channels_from_payload(payload: dict[str, Any]) -> RunChannels:
@@ -120,10 +129,20 @@ def db(value: np.ndarray | float) -> np.ndarray:
 # --- communication -------------------------------------------------------------------------------------------------
 
 def link_margins_db(run: RunChannels, profile: dict[str, Any]) -> np.ndarray:
-    """M_ij = P_t,i + G_ij - S - L_impl - M_reserve (dB), with G the incoherent gain; -inf where no path."""
-    received = run.tx_power_dbm[:, None] + db(run.gain_incoherent)
+    """M_ij = P_t + G_ij - S - L_impl - M_reserve (dB), with G the incoherent gain; -inf where no path.
+
+    P_t is the profile's tx_power_dbm when given (e.g. an uplink from a 0 dBm node; the channel is reciprocal),
+    otherwise the transmit power of each transmitter in the run.
+    """
+    received = transmit_power_dbm(run.tx_power_dbm, profile)[:, None] + db(run.gain_incoherent)
     return received - float(profile["sensitivity_dbm"]) - float(profile.get("implementation_loss_db", 0.0)) \
         - float(profile.get("reserve_db", 0.0))
+
+
+def transmit_power_dbm(run_power_dbm: np.ndarray, profile: dict[str, Any]) -> np.ndarray:
+    if profile.get("tx_power_dbm") is None:
+        return np.asarray(run_power_dbm, dtype=float)
+    return np.full(len(run_power_dbm), float(profile["tx_power_dbm"]))
 
 
 def communication_summary(run: RunChannels, profile: dict[str, Any]) -> dict[str, Any]:
@@ -158,6 +177,77 @@ def wpt_received_power_w(run: RunChannels, total_power_w: float, rx_gain_dbi: fl
     }
 
 
+def net_power_curve(harvester: dict[str, Any], project_root: Path = ROOT) -> list[tuple[float, float]]:
+    """[(P_in dBm, net power W)] from measured buffer charge times (harvester.charge_time_csv).
+
+    P_net = 1/2 C (V_on^2 - V_off^2) / t between successive measurements, 1/2 C V_on^2 / t from a cold start; the
+    capacitors measured at each input power are averaged. The result includes conversion losses, leakage and the
+    quiescent currents during charging.
+    """
+    buffer = harvester["buffer"]
+    start = harvester.get("start", "successive")
+    v_on, v_off = float(buffer["v_on_v"]), float(buffer["v_off_v"])
+    rows: dict[float, list[float]] = {}
+    with (Path(project_root) / harvester["charge_time_csv"]).open(encoding="utf-8") as handle:
+        for row in csv.DictReader(handle):
+            if row["start"] != start:
+                continue
+            capacitance = float(buffer["capacitors_f"][row["capacitor"]])
+            energy = 0.5 * capacitance * (v_on ** 2 - (v_off ** 2 if start == "successive" else 0.0))
+            rows.setdefault(float(row["input_power_dbm"]), []).append(energy / float(row["charge_time_s"]))
+    if not rows:
+        raise ValueError(f"No {start!r} rows in {harvester['charge_time_csv']}")
+    return sorted((p_in, float(np.mean(values))) for p_in, values in rows.items())
+
+
+def harvest_w(p_rf_w: np.ndarray, harvester: dict[str, Any], project_root: Path = ROOT) -> np.ndarray:
+    """Usable DC power for an incident RF power, from measured charge times or from an efficiency curve.
+
+    Measured points are interpolated in log power over dBm. Below the first point nothing is harvested (the device
+    does not start); above the last point the last efficiency is kept.
+    """
+    if "charge_time_csv" not in harvester:
+        return harvested_power_w(p_rf_w, efficiency_curve(harvester, project_root))
+    points = np.array(net_power_curve(harvester, project_root))
+    p_rf = np.asarray(p_rf_w, dtype=float)
+    p_dbm = db(p_rf) + 30.0
+    inside = np.exp(np.interp(p_dbm, points[:, 0], np.log(points[:, 1])))
+    last_efficiency = points[-1, 1] / 10 ** ((points[-1, 0] - 30) / 10)
+    out = np.where(p_dbm > points[-1, 0], p_rf * last_efficiency, inside)
+    return np.where(p_dbm < points[0, 0], 0.0, out)
+
+
+def harvester_threshold_dbm(harvester: dict[str, Any], project_root: Path = ROOT) -> float:
+    if "charge_time_csv" in harvester:
+        return float(net_power_curve(harvester, project_root)[0][0])
+    return float(min(point[0] for point in efficiency_curve(harvester, project_root)))
+
+
+def efficiency_curve(harvester: dict[str, Any], project_root: Path = ROOT) -> list[list[float]]:
+    """[[P_in dBm, efficiency]] given inline (efficiency_curve) or from a rectifier envelope (efficiency_csv).
+
+    From the envelope (scripts/import_ambient6g.py): the measured frequency closest to harvester.frequency_hz, for one
+    rectifier or, with rectifier "best", the better of the rectifiers at each input power.
+    """
+    if "efficiency_csv" not in harvester:
+        return harvester["efficiency_curve"]
+    with (Path(project_root) / harvester["efficiency_csv"]).open(encoding="utf-8") as handle:
+        rows = list(csv.DictReader(line for line in handle if not line.startswith("#")))
+    rectifier = harvester.get("rectifier", "best")
+    if rectifier != "best":
+        rows = [row for row in rows if row["rectifier"] == rectifier]
+    if not rows:
+        raise ValueError(f"No rows for rectifier {rectifier!r} in {harvester['efficiency_csv']}")
+    target_mhz = float(harvester["frequency_hz"]) / 1e6
+    nearest = min({float(row["frequency_mhz"]) for row in rows}, key=lambda f: abs(f - target_mhz))
+    best: dict[float, float] = {}
+    for row in rows:
+        if float(row["frequency_mhz"]) == nearest:
+            p_in = float(row["input_power_dbm"])
+            best[p_in] = max(best.get(p_in, 0.0), float(row["efficiency"]))
+    return [[p_in, best[p_in]] for p_in in sorted(best)]
+
+
 def harvested_power_w(p_rf_w: np.ndarray, curve: list[list[float]]) -> np.ndarray:
     """DC power from a rectifier efficiency curve [[P_in dBm, efficiency], ...], interpolated in dBm.
 
@@ -183,7 +273,7 @@ def wpt_summary(run: RunChannels, cfg: dict[str, Any]) -> dict[str, Any]:
     p_rf = wpt_received_power_w(run, total_w, float(cfg.get("rx_antenna_gain_dbi", 0.0)))
     out: dict[str, Any] = {"strategies": {}}
     for strategy, values in p_rf.items():
-        p_dc = harvested_power_w(values, harvester["efficiency_curve"])
+        p_dc = harvest_w(values, harvester)
         out["strategies"][strategy] = {
             "p_rf_dbm": db(values) + 30.0,
             "p_dc_w": p_dc,
@@ -291,7 +381,7 @@ def _figures(results: list[tuple[RunChannels, dict[str, Any]]], config: dict[str
             values = np.sort(values[np.isfinite(values)])
             if values.size:
                 ax.step(values, np.arange(1, values.size + 1) / values.size, where="post", label=label, linewidth=1.4)
-        threshold = min(point[0] for point in config["wpt"]["harvester"]["efficiency_curve"])
+        threshold = harvester_threshold_dbm(config["wpt"]["harvester"])
         ax.axvline(threshold, color="0.5", linewidth=0.8, linestyle="--")
         ax.set_xlabel("Incident RF power (dBm)")
         ax.set_ylabel("Fraction of receivers")
@@ -311,9 +401,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--batch", action="append", help="evaluate the imported runs of this batch (repeatable)")
     parser.add_argument("--import", dest="imports", action="append", help="evaluate this import id (repeatable)")
     parser.add_argument("--config", type=Path, help="application profiles (default config/applications.yaml)")
+    parser.add_argument("--harvester", help="harvester from the config's harvesters section (default wpt.harvester)")
     parser.add_argument("--out", type=Path, help="output folder (default outputs/applications/<scope>)")
     args = parser.parse_args(argv)
-    config = load_config(args.config)
+    config = load_config(args.config, args.harvester)
     ids = _imports_in_scope(ROOT, args.batch, args.imports)
     if not ids:
         print("No imported runs in scope; import them in the viewer first (Import all).")
@@ -323,6 +414,8 @@ def main(argv: list[str] | None = None) -> int:
         run = load_channels(ROOT, import_id)
         results.append((run, evaluate_run(run, config)))
     scope = "_".join(args.batch) if args.batch else ("selected" if args.imports else "all")
+    if args.harvester:
+        scope += f"_{args.harvester}"
     out = args.out or ROOT / "outputs" / "applications" / scope
     written = write_outputs(results, config, out)
     for name in config.get("communication", {}):
@@ -331,6 +424,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"{config['communication'][name].get('label', name)}: worst-case margin {worst:.1f} dB, "
               f"mean coverage {coverage*100:.0f}% over {len(results)} run(s)")
     if config.get("wpt"):
+        print(f"WPT harvester: {config['wpt']['harvester'].get('label', config['wpt']['harvester'].get('name'))}")
         for strategy, label in WPT_STRATEGIES.items():
             p = np.concatenate([result["wpt"]["strategies"][strategy]["p_rf_dbm"] for _, result in results])
             print(f"WPT {label}: median incident power {np.median(p[np.isfinite(p)]):.1f} dBm")
