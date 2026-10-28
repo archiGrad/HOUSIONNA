@@ -24,7 +24,7 @@ from typing import Any
 
 import numpy as np
 
-from application_engine import ROOT, _jsonable, db, harvested_power_w, load_config, reporting_interval_s
+from application_engine import ROOT, _jsonable, db, harvest_w, load_config, reporting_interval_s, transmit_power_dbm
 
 MAP_STRATEGIES = {
     "single_best": "Best single TX",
@@ -111,7 +111,7 @@ def evaluate_maps(maps: MapChannels, config: dict[str, Any]) -> dict[str, Any]:
     share = lambda mask: float(areas[mask].sum() / areas.sum())  # noqa: E731
     out: dict[str, Any] = {"communication": {}, "wpt": {}, "area_m2": float(areas.sum())}
     for name, profile in config.get("communication", {}).items():
-        received = maps.tx_power_dbm[:, None] + db(maps.gain)
+        received = transmit_power_dbm(maps.tx_power_dbm, profile)[:, None] + db(maps.gain)
         margin = (received - float(profile["sensitivity_dbm"]) - float(profile.get("implementation_loss_db", 0.0))
                   - float(profile.get("reserve_db", 0.0))).max(axis=0)
         out["communication"][name] = {"margin_db": margin, "coverage_area_share": share(margin >= 0),
@@ -125,7 +125,7 @@ def evaluate_maps(maps: MapChannels, config: dict[str, Any]) -> dict[str, Any]:
                 "coherent_mrt_mean": total_w * maps.gain.sum(axis=0)}
         cycle_name, cycle_energy = next(iter(wpt["cycles_j"].items()))
         for strategy, values in p_rf.items():
-            p_dc = harvested_power_w(values, wpt["harvester"]["efficiency_curve"])
+            p_dc = harvest_w(values, wpt["harvester"])
             interval = reporting_interval_s(p_dc, float(cycle_energy), float(wpt.get("quiescent_power_w", 0.0)))
             out["wpt"][strategy] = {
                 "p_rf_dbm": db(values) + 30, "p_dc_w": p_dc, "interval_s": interval, "cycle": cycle_name,
@@ -204,6 +204,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--tx", action="append", help="use only these transmitters (repeatable)")
     parser.add_argument("--placement-k", type=int, help="use the best k coherent transmitters from run.py placement")
     parser.add_argument("--config", type=Path, help="application profiles (default config/applications.yaml)")
+    parser.add_argument("--harvester", help="harvester from the config's harvesters section (default wpt.harvester)")
     parser.add_argument("--out", type=Path, help="output folder (default outputs/applications/maps/<run>)")
     args = parser.parse_args(argv)
     from integrations.housionna import list_imports
@@ -212,7 +213,7 @@ def main(argv: list[str] | None = None) -> int:
     if not rows:
         print(f"No import found for {args.run}")
         return 2
-    config = load_config(args.config)
+    config = load_config(args.config, args.harvester)
     maps = load_map_channels(ROOT, rows[-1]["import_id"])
     names = args.tx
     if args.placement_k:
@@ -225,6 +226,8 @@ def main(argv: list[str] | None = None) -> int:
     maps = select_transmitters(maps, names)
     result = evaluate_maps(maps, config)
     tag = f"k{len(maps.tx_names)}" if (names and args.placement_k) else ("custom" if names else "all")
+    if args.harvester:
+        tag += f"_{args.harvester}"
     out = args.out or ROOT / "outputs" / "applications" / "maps" / maps.run_id.replace(".", "_")
     out.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(out / f"maps_{tag}.npz", centroids_m=maps.centroids_m, areas_m2=maps.areas_m2,

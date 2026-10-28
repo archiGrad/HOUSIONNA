@@ -1,41 +1,71 @@
-# Application profiles for the application engine (python run.py apps). They turn the propagation results of
-# imported HOUSIONNA runs into communication and wireless-power metrics (paper, Section "Application metrics").
+# Application profiles for the application engine (python run.py apps / placement / maps). They turn the
+# propagation results of imported HOUSIONNA runs into communication and wireless-power metrics (paper, Section
+# "Application metrics").
 #
-# Values marked EXAMPLE are typical or illustrative, not measured for a specific device. Replace them with the data
-# of the device being studied before drawing conclusions.
+# Values marked EXAMPLE are typical, not measured for a specific device. The WPT profile uses the measured
+# RF-powered plant sensor of Cappelle et al. 2025 (data/devices/cappelle2025/).
 
 communication:
-  # Margin M = P_r - S - L_impl - M_reserve (dB). P_r uses the incoherent (local-average) link gain sum |a|^2.
+  # Margin M = P_t + G - S - L_impl - M_reserve (dB), G = incoherent (local-average) link gain sum |a|^2.
+  # tx_power_dbm: the sender's power for this direction. Channels are reciprocal, so the uplink from a node uses the
+  # simulated gateway-to-node gain with the node's power. Without it, each run transmitter's own power is used.
   ble_1m:
-    label: BLE 1M PHY
+    label: BLE 1M PHY uplink (node at 0 dBm)
+    tx_power_dbm: 0.0             # Cappelle et al. 2025: BLE 1M PHY at 0 dBm
     sensitivity_dbm: -95.0        # EXAMPLE: datasheet class of current BLE SoCs
     implementation_loss_db: 0.0
     reserve_db: 10.0              # design reserve for fading, detuning and body or plant shadowing
   lora_sf7_125k:
-    label: LoRa SF7 / 125 kHz
+    label: LoRa SF7 / 125 kHz uplink
+    tx_power_dbm: 14.0            # EXAMPLE: EU 868 MHz end device
     sensitivity_dbm: -124.5       # EXAMPLE: datasheet class of current LoRa transceivers
     implementation_loss_db: 0.0
     reserve_db: 10.0
 
 wpt:
-  label: RF wireless power transfer
+  label: RF wireless power transfer to the plant sensor of Cappelle et al. 2025
   total_power_dbm: 30.0           # total conducted power of all transmitters together (1 W)
-  rx_antenna_gain_dbi: 0.0        # the simulations use isotropic antennas; add the harvester antenna gain here
-  quiescent_power_w: 1.0e-6       # EXAMPLE: storage leakage and always-on circuitry of the node
-  harvester:
-    label: EXAMPLE rectifier curve, not a measured device
-    frequency_hz: 915.0e6         # the curve applies near this frequency; runs far from it are flagged
-    # [incident RF power (dBm), RF-to-DC efficiency (0..1)]. Below the first point nothing is harvested.
-    efficiency_curve:
-      - [-25.0, 0.00]
-      - [-20.0, 0.05]
-      - [-15.0, 0.15]
-      - [-10.0, 0.30]
-      - [-5.0, 0.45]
-      - [0.0, 0.55]
-      - [5.0, 0.60]
-      - [10.0, 0.60]
-  # Energy per measurement-and-transmission cycle of the RF-powered plant movement sensor (Cappelle et al. 2025).
+  rx_antenna_gain_dbi: 0.0        # the simulations use isotropic antennas; the sensor uses a monopole
+  # Included in the measured charge times (conversion losses, leakage and quiescent currents while charging).
+  quiescent_power_w: 0.0
+  harvester: cappelle2025_chain     # entry of the harvesters section below; override with --harvester
+  # Energy per measurement-and-transmission cycle (Cappelle et al. 2025).
   cycles_j:
-    imu_ble_basic: 2.88e-3
-    imu_ble_full: 9.11e-3
+    case_I_imu_ble_basic: 2.88e-3
+    case_II_imu_ble_full: 9.11e-3
+
+# Harvester models for wpt.harvester. Each gives the usable DC power for an incident RF power.
+harvesters:
+  cappelle2025_chain:             # measured complete device: the realistic case
+    label: AEM30940 harvester chain, measured charge times (Cappelle et al. 2025, Fig. 4)
+    frequency_hz: 915.0e+6         # runs far from this frequency are flagged
+    charge_time_csv: data/devices/cappelle2025/fig4_charge_time.csv
+    start: successive             # steady operation; use "cold" for the first charge from an empty buffer
+    buffer:                       # measured capacitances and the buck converter thresholds
+      capacitors_f: {470uF: 490.0e-6, 1mF: 1.1e-3}
+      v_on_v: 4.5
+      v_off_v: 2.2
+  # Upper bounds: the AEM30940 kit rectifiers alone at their best load voltage (AMBIENT-6G dataset,
+  # data/devices/ambient6g/), i.e. an ideal charger without losses or quiescent current. The kit has a low-power
+  # (SMS7630005LF, inputs below -10 dBm) and a high-power (SMS7621005LF, above -10 dBm) input path; "best" takes the
+  # better of the two at each input power.
+  rectifier_bound_915:
+    label: AEM30940 kit high-power rectifier path at 915 MHz, as on the node of Cappelle et al. (upper bound)
+    efficiency_csv: data/devices/ambient6g/rectifier_envelope.csv
+    rectifier: SMS7621005LF
+    frequency_hz: 915.0e+6
+  rectifier_low_915:
+    label: AEM30940 kit low-power rectifier path at 915 MHz (design alternative, upper bound)
+    efficiency_csv: data/devices/ambient6g/rectifier_envelope.csv
+    rectifier: SMS7630005LF
+    frequency_hz: 915.0e+6
+  rectifier_bound_868:
+    label: The same 915 MHz rectifier used in the EU 868 MHz band (upper bound)
+    efficiency_csv: data/devices/ambient6g/rectifier_envelope.csv
+    rectifier: best
+    frequency_hz: 868.0e+6
+  rectifier_bound_2450:
+    label: AEM30940 C041 rectifier at 2.45 GHz, best load voltage (upper bound)
+    efficiency_csv: data/devices/ambient6g/rectifier_envelope.csv
+    rectifier: best
+    frequency_hz: 2450.0e+6
