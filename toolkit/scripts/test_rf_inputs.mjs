@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {orientationWithYaw,finiteRange} from '../../viewer/src/rf-inputs.js';
+const source=[.2,.3,.4];
+assert.deepEqual(orientationWithYaw(source,90),[Math.PI/2,.3,.4]);
+assert.deepEqual(source,[.2,.3,.4]);
+assert.throws(()=>orientationWithYaw(source,NaN));
+assert.deepEqual(finiteRange([null,-80,NaN,-30,Infinity]),{min:-80,max:-30,count:2});
+assert.deepEqual(finiteRange([null,NaN]),{min:0,max:0,count:0});
+const large=new Float64Array(2_000_000).fill(-80);large[100]=-10;
+assert.deepEqual(finiteRange(large),{min:-80,max:-10,count:2_000_000});
+console.log('6 frontend RF assertions passed, including 2 million cells and Sionna Z-axis yaw.');
