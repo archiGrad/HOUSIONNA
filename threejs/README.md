@@ -171,6 +171,20 @@ Detailed vertical-farm plants are instanced Three.js geometry only and remain ex
 
 `python run.py publish` writes the viewer and the current results to `outputs/site/` (ignored by git). Build the viewer first with `npm --prefix frontend run build`. The folder is a plain static site, with no Python server needed: upload its contents, including `.htaccess`, to any web host (one.com, GitHub Pages, a university server), at the root or in a subfolder. It is the same viewer, marked `data-site="static"`. It reads `data/viewer_scene.json` and one `data/runs/<import>.json` per HOUSIONNA run, shows a research-demo note, and hides the import, rerun, compare and simulation controls. `--batch <id>` (repeatable) publishes only those batches, and `--no-single-runs` leaves out runs that are not part of a batch. Numbers are written with six significant digits, which makes run files about a third smaller. Publishing refuses to write data that contains a local file path, and leaves out source maps. The `.htaccess` turns on compression on Apache hosts, so a 12 MB run downloads as about 1.5 MB. To update the site, publish again and re-upload the folder.
 
+**GitHub Pages.** The site is served from the `gh-pages` branch at https://archigrad.github.io/HOUSIONNA/ (Settings → Pages → Deploy from a branch → `gh-pages`, `/ (root)`; set once by a repository admin). The branch holds only the latest site, as a single commit, so its history does not grow. A `.nojekyll` file makes Pages serve the files as they are. Pages allows 1 GB per site and 100 MB per file; one batch with radio maps is about 350 MB, so publish one or two batches with `--no-single-runs`. To publish, from `threejs/`:
+
+```powershell
+python run.py publish --batch <batch id> --no-single-runs
+cd outputs/site
+git init -b gh-pages
+git add -A
+git commit -m "Publish viewer"
+git push --force https://github.com/archiGrad/HOUSIONNA.git gh-pages
+cd ../..
+```
+
+The next publish deletes the folder, including this temporary repository, and the force push replaces the previous site.
+
 ## Running on the DGX Spark
 
 The vertical-farm study runs on the lab's NVIDIA DGX Spark (GB10, ARM64, CUDA). The pinned `requirements.txt` installs there unchanged (sionna-rt 2.2.0, Mitsuba 3.9.1 and Dr.Jit 1.5.0 have ARM64 Linux wheels), and Mitsuba's `cuda_ad_*` variants are available. No LLVM setup is needed on Linux. Over SSH (VPN required), from a checkout of this repository:
@@ -234,6 +248,8 @@ The harvester is one of the named entries in the `harvesters` section; `apps` an
   - for RF wireless power transfer with a total power budget: the incident power for four strategies (best single TX; equal split without phase alignment; equal split in phase without channel knowledge; coherent maximum-ratio transmission), the harvested DC power and the shortest sustainable reporting interval.
 - `python run.py placement --run <run>` treats every transmitter of a run as a candidate position. For each number of transmitters k it finds the subset that is best for the worst receiver, exhaustively for up to 16 candidates and greedy beyond. Output goes to `outputs/placement/<run>/`.
 - `python run.py maps --run <run> [--placement-k K | --tx NAME ...]` computes the same metrics per triangle of the radio-map surface and reports the share of the area where a node can run. Maps carry no phase, so coherent MRT appears there as its local average P Σ g_i. Output goes to `outputs/applications/maps/<run>/`.
+- `python scripts/material_table.py` evaluates every material of `houdini_files/sionna/materials.json` with the exporter's own models at 868 MHz, 915 MHz, 2.437 GHz, 3.5 GHz and 5.18 GHz and writes the loss of one surface crossing to `outputs/validation/material_losses.csv`.
+- `python scripts/harvester_figure.py` plots the efficiency of the harvester models against incident power (`outputs/validation/harvester_models.pdf`).
 - `python scripts/reference_cases.py` compares Sionna RT against analytical cases and writes `outputs/validation/`:
   - free space;
   - a single slab (ITU-R P.2040);

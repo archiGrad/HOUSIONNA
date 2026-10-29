@@ -14,8 +14,10 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import shutil
+import stat
 import sys
 from pathlib import Path
 from typing import Any
@@ -99,7 +101,13 @@ def _clear(out: Path) -> None:
         return
     if any(out.iterdir()) and not (out / MARKER).is_file():
         raise ValueError(f"{out} is not empty and was not made by run.py publish; choose another --out folder")
-    shutil.rmtree(out)
+    shutil.rmtree(out, onexc=_make_writable)
+
+
+def _make_writable(function, path, _error) -> None:
+    """Git stores its objects read-only, which Windows refuses to delete (a deployment repo in the site folder)."""
+    os.chmod(path, stat.S_IWRITE)
+    function(path)
 
 
 def publish(project_root: Path = ROOT, out: Path | None = None, *,
@@ -136,6 +144,7 @@ def publish(project_root: Path = ROOT, out: Path | None = None, *,
             sizes[name] = _write_json(out / "data" / "runs" / row["import_id"] / f"{name}.json",
                                       _compact(housionna_viewer_payload(project_root, row["import_id"], name)))
     (out / ".htaccess").write_text(HTACCESS, encoding="utf-8")
+    (out / ".nojekyll").write_text("", encoding="utf-8")       # GitHub Pages: serve the files as they are
     (out / MARKER).write_text("Made by run.py publish; the next publish replaces this whole folder.\n", encoding="utf-8")
 
     total = sum(path.stat().st_size for path in out.rglob("*") if path.is_file())
