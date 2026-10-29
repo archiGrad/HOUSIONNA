@@ -1,0 +1,22 @@
+.venv/
+.runtime/
+__pycache__/
+*.py[cod]
+node_modules/
+dist/
+
+optix7cache.db
+# regenerable
+outputs/live/
+outputs/site/
+outputs/digital_twin/
+outputs/integrations/
+outputs/performance_refinement/
+outputs/applications/
+outputs/placement/
+outputs/validation/
+outputs/casestudy/
+# Third-party material, not ours to publish: paper source and Otii measurements of Cappelle et al. 2025.
+# The derived files used by the engine are in data/devices/cappelle2025/.
+data/IEEE_Sensors_2025___RF_Power_Plant_Sensor_GROWTH_1/
+data/meas RF powered/

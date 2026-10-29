@@ -1,1 +1,12 @@
 venv
+# Local copies of the paper; Overleaf holds the source until publication
+paper/
+# Operating system and editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+# Viewer (three.js): dependencies and build output
+viewer/node_modules/
+viewer/dist/
