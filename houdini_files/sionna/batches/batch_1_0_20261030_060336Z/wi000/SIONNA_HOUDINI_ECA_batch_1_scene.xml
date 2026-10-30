@@ -1,0 +1,108 @@
+<scene version="2.1.0">
+    <bsdf type="radio-material" id="polypropylene_t0p003_s0">
+        <float name="relative_permittivity" value="2.21433"/>
+        <float name="conductivity" value="0.00247438"/>
+        <float name="xpd_coefficient" value="0"/>
+        <float name="thickness" value="0.003"/>
+        <float name="scattering_coefficient" value="0"/>
+    </bsdf>
+    <bsdf type="radio-material" id="nutrient_solution_t0p05_s0">
+        <float name="relative_permittivity" value="73.3944"/>
+        <float name="conductivity" value="5.51927"/>
+        <float name="xpd_coefficient" value="0"/>
+        <float name="thickness" value="0.05"/>
+        <float name="scattering_coefficient" value="0"/>
+    </bsdf>
+    <bsdf type="radio-material" id="steel_t0p005_s0">
+        <float name="relative_permittivity" value="1"/>
+        <float name="conductivity" value="6.99e+06"/>
+        <float name="xpd_coefficient" value="0"/>
+        <float name="thickness" value="0.005"/>
+        <float name="scattering_coefficient" value="0"/>
+    </bsdf>
+    <bsdf type="radio-material" id="concrete_t0p2_s0">
+        <float name="relative_permittivity" value="5.24"/>
+        <float name="conductivity" value="0.167259"/>
+        <float name="xpd_coefficient" value="0"/>
+        <float name="thickness" value="0.2"/>
+        <float name="scattering_coefficient" value="0"/>
+    </bsdf>
+    <bsdf type="radio-material" id="glass_t0p004_s0">
+        <float name="relative_permittivity" value="6.31"/>
+        <float name="conductivity" value="0.0325894"/>
+        <float name="xpd_coefficient" value="0"/>
+        <float name="thickness" value="0.004"/>
+        <float name="scattering_coefficient" value="0"/>
+    </bsdf>
+    <bsdf type="radio-material" id="stainless_steel_t0p002_s0">
+        <float name="relative_permittivity" value="1"/>
+        <float name="conductivity" value="1.45e+06"/>
+        <float name="xpd_coefficient" value="0"/>
+        <float name="thickness" value="0.002"/>
+        <float name="scattering_coefficient" value="0"/>
+    </bsdf>
+    <bsdf type="radio-material" id="steel_t0p003_s0">
+        <float name="relative_permittivity" value="1"/>
+        <float name="conductivity" value="6.99e+06"/>
+        <float name="xpd_coefficient" value="0"/>
+        <float name="thickness" value="0.003"/>
+        <float name="scattering_coefficient" value="0"/>
+    </bsdf>
+    <bsdf type="radio-material" id="metal_t0p005_s0">
+        <float name="relative_permittivity" value="1"/>
+        <float name="conductivity" value="1e+07"/>
+        <float name="xpd_coefficient" value="0"/>
+        <float name="thickness" value="0.005"/>
+        <float name="scattering_coefficient" value="0"/>
+    </bsdf>
+    <shape type="ply" id="mesh-robot_cover">
+        <string name="filename" value="meshes/robot_cover.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="polypropylene_t0p003_s0" name="bsdf"/>
+    </shape>
+    <shape type="ply" id="mesh-people">
+        <string name="filename" value="meshes/people.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="nutrient_solution_t0p05_s0" name="bsdf"/>
+    </shape>
+    <shape type="ply" id="mesh-structural_frame">
+        <string name="filename" value="meshes/structural_frame.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="steel_t0p005_s0" name="bsdf"/>
+    </shape>
+    <shape type="ply" id="mesh-frame">
+        <string name="filename" value="meshes/frame.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="steel_t0p005_s0" name="bsdf"/>
+    </shape>
+    <shape type="ply" id="mesh-floor">
+        <string name="filename" value="meshes/floor.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="concrete_t0p2_s0" name="bsdf"/>
+    </shape>
+    <shape type="ply" id="mesh-windows">
+        <string name="filename" value="meshes/windows.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="glass_t0p004_s0" name="bsdf"/>
+    </shape>
+    <shape type="ply" id="mesh-sprayers">
+        <string name="filename" value="meshes/sprayers.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="stainless_steel_t0p002_s0" name="bsdf"/>
+    </shape>
+    <shape type="ply" id="mesh-frame_secondary">
+        <string name="filename" value="meshes/frame_secondary.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="steel_t0p003_s0" name="bsdf"/>
+    </shape>
+    <shape type="ply" id="mesh-trays">
+        <string name="filename" value="meshes/trays.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="polypropylene_t0p003_s0" name="bsdf"/>
+    </shape>
+    <shape type="ply" id="mesh-trays_legs">
+        <string name="filename" value="meshes/trays_legs.ply"/>
+        <boolean name="face_normals" value="true"/>
+        <ref id="metal_t0p005_s0" name="bsdf"/>
+    </shape>
+</scene>

@@ -1,0 +1,139 @@
+batch: 15 work items, pid 916911
+[1/15] wi000
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 4 tx, 1 rx (0.1 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 4 tx x 1 rx, 1e+06 samples per tx
+paths: 117 valid paths over 4 links (0.0 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (0.01 MB)
+radio map: skipped, no measurement surface
+[2/15] wi001
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 9 tx, 1 rx (0.0 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 9 tx x 1 rx, 1e+06 samples per tx
+paths: 235 valid paths over 9 links (0.1 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (0.02 MB)
+radio map: skipped, no measurement surface
+[3/15] wi002
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 17 tx, 1 rx (0.0 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 17 tx x 1 rx, 1e+06 samples per tx
+paths: 333 valid paths over 17 links (0.1 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (0.03 MB)
+radio map: skipped, no measurement surface
+[4/15] wi003
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 24 tx, 1 rx (0.0 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 24 tx x 1 rx, 1e+06 samples per tx
+paths: 375 valid paths over 24 links (0.1 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (0.03 MB)
+radio map: skipped, no measurement surface
+[5/15] wi004
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 31 tx, 1 rx (0.0 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 31 tx x 1 rx, 1e+06 samples per tx
+paths: 420 valid paths over 31 links (0.1 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (0.03 MB)
+radio map: skipped, no measurement surface
+[6/15] wi005
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 31 tx, 1 rx (0.0 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 31 tx x 1 rx, 1e+06 samples per tx
+paths: 249 valid paths over 31 links (0.1 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (0.02 MB)
+radio map: skipped, no measurement surface
+[7/15] wi006
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 97 tx, 1 rx (0.0 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 97 tx x 1 rx, 1e+06 samples per tx
+paths: 613 valid paths over 97 links (0.3 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (0.04 MB)
+radio map: skipped, no measurement surface
+[8/15] wi007
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 316 tx, 1 rx (0.0 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 316 tx x 1 rx, 1e+06 samples per tx
+paths: 781 valid paths over 316 links (1.0 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (0.06 MB)
+radio map: skipped, no measurement surface
+[9/15] wi008
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 445 tx, 1 rx (0.0 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 445 tx x 1 rx, 1e+06 samples per tx
+paths: 1171 valid paths over 445 links (1.8 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (0.08 MB)
+radio map: skipped, no measurement surface
+[10/15] wi009
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 575 tx, 1 rx (0.0 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 575 tx x 1 rx, 1e+06 samples per tx
+paths: 1208 valid paths over 575 links (3.1 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (0.09 MB)
+radio map: skipped, no measurement surface
+[11/15] wi010
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 81 tx, 2 rx (0.0 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 81 tx x 2 rx, 1e+06 samples per tx
+paths: 669 valid paths over 162 links (0.2 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (0.05 MB)
+radio map: skipped, no measurement surface
+[12/15] wi011
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 259 tx, 2 rx (0.0 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 259 tx x 2 rx, 1e+06 samples per tx
+paths: 1351 valid paths over 518 links (0.7 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (0.09 MB)
+radio map: skipped, no measurement surface
+[13/15] wi012
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 866 tx, 2 rx (0.0 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 866 tx x 2 rx, 1e+06 samples per tx
+paths: 2341 valid paths over 1732 links (2.8 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (0.16 MB)
+radio map: skipped, no measurement surface
+[14/15] wi013
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 1220 tx, 2 rx (0.0 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 1220 tx x 2 rx, 1e+06 samples per tx
+paths: 3304 valid paths over 2440 links (6.0 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (0.22 MB)
+radio map: skipped, no measurement surface
+[15/15] wi014
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 1575 tx, 2 rx (0.0 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 1575 tx x 2 rx, 1e+06 samples per tx
+paths: 4258 valid paths over 3150 links (7.6 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (0.28 MB)
+radio map: skipped, no measurement surface
+batch: finished, 15 solved, 0 skipped, 0 failed
+batch: 15 work items, pid 965327
+[1/15] wi000: already solved with these settings, skipped
+[2/15] wi001: already solved with these settings, skipped
+[3/15] wi002: already solved with these settings, skipped
+[4/15] wi003: already solved with these settings, skipped
+[5/15] wi004: already solved with these settings, skipped
+[6/15] wi005: already solved with these settings, skipped
+[7/15] wi006: already solved with these settings, skipped
+[8/15] wi007: already solved with these settings, skipped
+[9/15] wi008: already solved with these settings, skipped
+[10/15] wi009: already solved with these settings, skipped
+[11/15] wi010: already solved with these settings, skipped
+[12/15] wi011: already solved with these settings, skipped
+[13/15] wi012: already solved with these settings, skipped
+[14/15] wi013: already solved with these settings, skipped
+[15/15] wi014: already solved with these settings, skipped
+batch: finished, 0 solved, 15 skipped, 0 failed

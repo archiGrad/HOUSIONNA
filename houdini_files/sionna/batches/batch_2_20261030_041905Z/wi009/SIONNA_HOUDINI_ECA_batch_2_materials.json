@@ -1,0 +1,116 @@
+{
+  "frequency": 2437000000.0,
+  "objects": {
+    "robot_cover": {
+      "material": "polypropylene",
+      "thickness": 0.003000000026077032,
+      "scattering_coefficient": 0.0,
+      "relative_permittivity": 2.2185427318047166,
+      "conductivity": 0.001197140014211018,
+      "xpd_coefficient": 0.0,
+      "source": "Zhekov, Franek, Pedersen 2020, IEEE Antennas Propag. Mag. 62(1), Table II, Cole-Cole fit, air-dried lab samples, 0.2-67 GHz, row 'PP'",
+      "status": "confirmed"
+    },
+    "people": {
+      "material": "nutrient_solution",
+      "thickness": 0.05000000074505806,
+      "scattering_coefficient": 0.0,
+      "relative_permittivity": 77.15502854975998,
+      "conductivity": 1.480644960738694,
+      "xpd_coefficient": 0.0,
+      "source": "Liebe, Hufford, Manabe 1991 single Debye model; equations identical to ITU-R P.527-6 eqs 8, 9, 11, 12 (second relaxation negligible below 100 GHz); plus ionic conductivity for EC 2.5 mS/cm",
+      "status": "water model confirmed; ionic conductivity from an assumed EC of 2.5 mS/cm"
+    },
+    "structural_frame": {
+      "material": "steel",
+      "thickness": 0.004999999888241291,
+      "scattering_coefficient": 0.0,
+      "relative_permittivity": 1.0,
+      "conductivity": 6990000.0,
+      "xpd_coefficient": 0.0,
+      "source": "carbon steel 1010, resistivity 1.43e-7 ohm m; conductivity at 20 C from standard resistivity tables; frequency independent at radio frequencies",
+      "status": "confirmed"
+    },
+    "frame": {
+      "material": "steel",
+      "thickness": 0.004999999888241291,
+      "scattering_coefficient": 0.0,
+      "relative_permittivity": 1.0,
+      "conductivity": 6990000.0,
+      "xpd_coefficient": 0.0,
+      "source": "carbon steel 1010, resistivity 1.43e-7 ohm m; conductivity at 20 C from standard resistivity tables; frequency independent at radio frequencies",
+      "status": "confirmed"
+    },
+    "floor": {
+      "material": "concrete",
+      "thickness": 0.20000000298023224,
+      "scattering_coefficient": 0.0,
+      "relative_permittivity": 5.24,
+      "conductivity": 0.09273429411056684,
+      "xpd_coefficient": 0.0,
+      "source": "ITU-R P.2040-3 Table 3, coefficients as in Sionna RT 2.2.0 itu.py; in-situ building materials",
+      "status": "confirmed"
+    },
+    "windows": {
+      "material": "glass",
+      "thickness": 0.004000000189989805,
+      "scattering_coefficient": 0.0,
+      "relative_permittivity": 6.31,
+      "conductivity": 0.01187016611228561,
+      "xpd_coefficient": 0.0,
+      "source": "ITU-R P.2040-3 Table 3, coefficients as in Sionna RT 2.2.0 itu.py; in-situ building materials",
+      "status": "confirmed"
+    },
+    "sprayers": {
+      "material": "stainless_steel",
+      "thickness": 0.0020000000949949026,
+      "scattering_coefficient": 0.0,
+      "relative_permittivity": 1.0,
+      "conductivity": 1450000.0,
+      "xpd_coefficient": 0.0,
+      "source": "stainless steel; conductivity at 20 C from standard resistivity tables; frequency independent at radio frequencies",
+      "status": "confirmed"
+    },
+    "frame_secondary": {
+      "material": "steel",
+      "thickness": 0.003000000026077032,
+      "scattering_coefficient": 0.0,
+      "relative_permittivity": 1.0,
+      "conductivity": 6990000.0,
+      "xpd_coefficient": 0.0,
+      "source": "carbon steel 1010, resistivity 1.43e-7 ohm m; conductivity at 20 C from standard resistivity tables; frequency independent at radio frequencies",
+      "status": "confirmed"
+    },
+    "trays": {
+      "material": "polypropylene",
+      "thickness": 0.003000000026077032,
+      "scattering_coefficient": 0.0,
+      "relative_permittivity": 2.2185427318047166,
+      "conductivity": 0.001197140014211018,
+      "xpd_coefficient": 0.0,
+      "source": "Zhekov, Franek, Pedersen 2020, IEEE Antennas Propag. Mag. 62(1), Table II, Cole-Cole fit, air-dried lab samples, 0.2-67 GHz, row 'PP'",
+      "status": "confirmed"
+    },
+    "trays_legs": {
+      "material": "metal",
+      "thickness": 0.004999999888241291,
+      "scattering_coefficient": 0.0,
+      "relative_permittivity": 1.0,
+      "conductivity": 10000000.0,
+      "xpd_coefficient": 0.0,
+      "source": "ITU-R P.2040-3 Table 3 (relative permittivity 1, conductivity 1e7 S/m, constant over frequency)",
+      "status": "confirmed"
+    },
+    "leaves": {
+      "material": "leaf",
+      "thickness": 0.0003000000142492354,
+      "scattering_coefficient": 0.0,
+      "relative_permittivity": 34.65036027085618,
+      "conductivity": 1.2750419833044275,
+      "moisture": 80.0,
+      "xpd_coefficient": 0.0,
+      "source": "Ulaby and El-Rayes 1987, dual-dispersion model, 0.2 to 20 GHz",
+      "status": "model coefficients entered from memory, verify against the paper"
+    }
+  }
+}

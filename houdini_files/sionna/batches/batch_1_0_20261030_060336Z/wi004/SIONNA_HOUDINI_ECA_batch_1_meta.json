@@ -1,0 +1,21 @@
+{
+  "exported_utc": "20261030_060412Z",
+  "hip": "/home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/SIONNA_HOUDINI_ECA_batch_1.hipnc",
+  "houdini": "21.0.440",
+  "commit": "3d4fd0c181498cc5a3b508f5739ce45de765f429",
+  "dirty": true,
+  "work_item": {
+    "index": 4,
+    "id": 74,
+    "name": "output0_74"
+  },
+  "wedge": {
+    "runs": 0,
+    "wedgeindex": 4,
+    "wedgetotal": 5,
+    "wedgeattribs": "plant_id",
+    "wedgecount": 5,
+    "wedgenum": 4,
+    "plant_id": 4
+  }
+}

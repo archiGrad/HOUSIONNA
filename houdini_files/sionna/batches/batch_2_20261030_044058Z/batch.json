@@ -1,0 +1,164 @@
+{
+  "created_utc": "batch_2_20261030_044058Z",
+  "hip": "/home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/SIONNA_HOUDINI_ECA_batch_2.hipnc",
+  "top_node": "/obj/batch_run_1/topnet1/output0",
+  "range": [
+    0,
+    14
+  ],
+  "frequency": 2437000000.0,
+  "items": {
+    "wi000": {
+      "index": 0,
+      "id": 20,
+      "name": "output0_20",
+      "status": "exported",
+      "codes": [
+        "W005",
+        "W005"
+      ]
+    },
+    "wi001": {
+      "index": 1,
+      "id": 21,
+      "name": "output0_21",
+      "status": "exported",
+      "codes": [
+        "W005",
+        "W005"
+      ]
+    },
+    "wi002": {
+      "index": 2,
+      "id": 22,
+      "name": "output0_22",
+      "status": "exported",
+      "codes": [
+        "W005",
+        "W005"
+      ]
+    },
+    "wi003": {
+      "index": 3,
+      "id": 23,
+      "name": "output0_23",
+      "status": "exported",
+      "codes": [
+        "W005",
+        "W005"
+      ]
+    },
+    "wi004": {
+      "index": 4,
+      "id": 24,
+      "name": "output0_24",
+      "status": "exported",
+      "codes": [
+        "W005",
+        "W005"
+      ]
+    },
+    "wi005": {
+      "index": 5,
+      "id": 25,
+      "name": "output0_25",
+      "status": "exported",
+      "codes": [
+        "W005",
+        "W005"
+      ]
+    },
+    "wi006": {
+      "index": 6,
+      "id": 26,
+      "name": "output0_26",
+      "status": "exported",
+      "codes": [
+        "W005",
+        "W005"
+      ]
+    },
+    "wi007": {
+      "index": 7,
+      "id": 27,
+      "name": "output0_27",
+      "status": "exported",
+      "codes": [
+        "W005",
+        "W005"
+      ]
+    },
+    "wi008": {
+      "index": 8,
+      "id": 28,
+      "name": "output0_28",
+      "status": "exported",
+      "codes": [
+        "W005",
+        "W005"
+      ]
+    },
+    "wi009": {
+      "index": 9,
+      "id": 29,
+      "name": "output0_29",
+      "status": "exported",
+      "codes": [
+        "W005",
+        "W005"
+      ]
+    },
+    "wi010": {
+      "index": 10,
+      "id": 30,
+      "name": "output0_30",
+      "status": "exported",
+      "codes": [
+        "W005",
+        "W005"
+      ]
+    },
+    "wi011": {
+      "index": 11,
+      "id": 31,
+      "name": "output0_31",
+      "status": "exported",
+      "codes": [
+        "W005",
+        "W005"
+      ]
+    },
+    "wi012": {
+      "index": 12,
+      "id": 32,
+      "name": "output0_32",
+      "status": "exported",
+      "codes": [
+        "W005",
+        "W005"
+      ]
+    },
+    "wi013": {
+      "index": 13,
+      "id": 33,
+      "name": "output0_33",
+      "status": "exported",
+      "codes": [
+        "W005",
+        "W005"
+      ]
+    },
+    "wi014": {
+      "index": 14,
+      "id": 34,
+      "name": "output0_34",
+      "status": "exported",
+      "codes": [
+        "W005",
+        "W005"
+      ]
+    }
+  },
+  "commit": "3d4fd0c181498cc5a3b508f5739ce45de765f429",
+  "dirty": true
+}

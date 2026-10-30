@@ -1,0 +1,17 @@
+{
+  "pid": 690614,
+  "started": "2026-10-30 01:07:55",
+  "total": 4,
+  "done": [
+    "wi000",
+    "wi001",
+    "wi002",
+    "wi003"
+  ],
+  "skipped": [],
+  "failed": {},
+  "solve_seconds": 2.6914258003234863,
+  "current": null,
+  "finished": true,
+  "updated": "2026-10-30 01:07:58"
+}

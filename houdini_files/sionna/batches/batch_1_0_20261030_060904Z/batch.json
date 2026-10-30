@@ -1,0 +1,63 @@
+{
+  "created_utc": "batch_1_0_20261030_060904Z",
+  "hip": "/home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/SIONNA_HOUDINI_ECA_batch_1.hipnc",
+  "top_node": "/obj/batch_run_1/topnet1/output0",
+  "range": [
+    0,
+    4
+  ],
+  "frequency": 5180000000.0,
+  "items": {
+    "wi000": {
+      "index": 0,
+      "id": 7,
+      "name": "output0_7",
+      "status": "exported",
+      "codes": [
+        "W005"
+      ]
+    },
+    "wi001": {
+      "index": 1,
+      "id": 8,
+      "name": "output0_8",
+      "status": "exported",
+      "codes": [
+        "W005",
+        "W005"
+      ]
+    },
+    "wi002": {
+      "index": 2,
+      "id": 9,
+      "name": "output0_9",
+      "status": "exported",
+      "codes": [
+        "W005",
+        "W005"
+      ]
+    },
+    "wi003": {
+      "index": 3,
+      "id": 10,
+      "name": "output0_10",
+      "status": "exported",
+      "codes": [
+        "W005",
+        "W005"
+      ]
+    },
+    "wi004": {
+      "index": 4,
+      "id": 11,
+      "name": "output0_11",
+      "status": "exported",
+      "codes": [
+        "W005",
+        "W005"
+      ]
+    }
+  },
+  "commit": "3d4fd0c181498cc5a3b508f5739ce45de765f429",
+  "dirty": true
+}

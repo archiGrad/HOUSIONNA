@@ -1,0 +1,149 @@
+{
+  "created_utc": "batch_2_20261030_035524Z",
+  "hip": "/home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/SIONNA_HOUDINI_ECA_batch_2.hipnc",
+  "top_node": "/obj/batch_run_1/topnet1/output0",
+  "range": [
+    0,
+    14
+  ],
+  "frequency": 2437000000.0,
+  "items": {
+    "wi000": {
+      "index": 0,
+      "id": 55,
+      "name": "output0_55",
+      "status": "failed",
+      "codes": [
+        "B008"
+      ]
+    },
+    "wi001": {
+      "index": 1,
+      "id": 56,
+      "name": "output0_56",
+      "status": "failed",
+      "codes": [
+        "B008"
+      ]
+    },
+    "wi002": {
+      "index": 2,
+      "id": 57,
+      "name": "output0_57",
+      "status": "failed",
+      "codes": [
+        "B008"
+      ]
+    },
+    "wi003": {
+      "index": 3,
+      "id": 58,
+      "name": "output0_58",
+      "status": "failed",
+      "codes": [
+        "B008"
+      ]
+    },
+    "wi004": {
+      "index": 4,
+      "id": 59,
+      "name": "output0_59",
+      "status": "failed",
+      "codes": [
+        "B008"
+      ]
+    },
+    "wi005": {
+      "index": 5,
+      "id": 60,
+      "name": "output0_60",
+      "status": "failed",
+      "codes": [
+        "B008"
+      ]
+    },
+    "wi006": {
+      "index": 6,
+      "id": 61,
+      "name": "output0_61",
+      "status": "failed",
+      "codes": [
+        "B008"
+      ]
+    },
+    "wi007": {
+      "index": 7,
+      "id": 62,
+      "name": "output0_62",
+      "status": "failed",
+      "codes": [
+        "B008"
+      ]
+    },
+    "wi008": {
+      "index": 8,
+      "id": 63,
+      "name": "output0_63",
+      "status": "failed",
+      "codes": [
+        "B008"
+      ]
+    },
+    "wi009": {
+      "index": 9,
+      "id": 64,
+      "name": "output0_64",
+      "status": "failed",
+      "codes": [
+        "B008"
+      ]
+    },
+    "wi010": {
+      "index": 10,
+      "id": 65,
+      "name": "output0_65",
+      "status": "failed",
+      "codes": [
+        "B008"
+      ]
+    },
+    "wi011": {
+      "index": 11,
+      "id": 66,
+      "name": "output0_66",
+      "status": "failed",
+      "codes": [
+        "B008"
+      ]
+    },
+    "wi012": {
+      "index": 12,
+      "id": 67,
+      "name": "output0_67",
+      "status": "failed",
+      "codes": [
+        "B008"
+      ]
+    },
+    "wi013": {
+      "index": 13,
+      "id": 68,
+      "name": "output0_68",
+      "status": "failed",
+      "codes": [
+        "B008"
+      ]
+    },
+    "wi014": {
+      "index": 14,
+      "id": 69,
+      "name": "output0_69",
+      "status": "failed",
+      "codes": [
+        "B008"
+      ]
+    }
+  },
+  "commit": "3d4fd0c181498cc5a3b508f5739ce45de765f429",
+  "dirty": true
+}

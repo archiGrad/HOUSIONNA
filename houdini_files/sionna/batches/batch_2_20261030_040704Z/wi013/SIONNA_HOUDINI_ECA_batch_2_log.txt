@@ -1,0 +1,3 @@
+N001 scene size: x 11.90 m, y 22.85 m, z 6.15 m (sionna axes, z up)
+W005 material 'nutrient_solution' is not confirmed: water model confirmed; ionic conductivity from an assumed EC of 2.5 mS/cm
+N002 exported to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/batches/batch_2_20261030_040704Z/wi013

@@ -1,0 +1,7 @@
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 10 objects, 8 materials, 3487 tx, 3 rx (0.1 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 3487 tx x 3 rx, 1e+06 samples per tx
+paths: 58186 valid paths over 10461 links (13.1 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (3.26 MB)
+radio map: skipped, no measurement surface

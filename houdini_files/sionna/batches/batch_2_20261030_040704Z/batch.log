@@ -1,0 +1,110 @@
+batch: 15 work items, pid 900232
+[1/15] wi000
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 10 objects, 8 materials, 7 tx, 1 rx (0.1 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 7 tx x 1 rx, 1e+06 samples per tx
+paths: 310 valid paths over 7 links (0.6 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (0.02 MB)
+radio map: skipped, no measurement surface
+[2/15] wi001
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 10 objects, 8 materials, 19 tx, 1 rx (0.0 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 19 tx x 1 rx, 1e+06 samples per tx
+paths: 639 valid paths over 19 links (0.1 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (0.04 MB)
+radio map: skipped, no measurement surface
+[3/15] wi002
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 10 objects, 8 materials, 35 tx, 1 rx (0.0 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 35 tx x 1 rx, 1e+06 samples per tx
+paths: 762 valid paths over 35 links (0.2 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (0.05 MB)
+radio map: skipped, no measurement surface
+[4/15] wi003
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 10 objects, 8 materials, 48 tx, 1 rx (0.0 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 48 tx x 1 rx, 1e+06 samples per tx
+paths: 1078 valid paths over 48 links (0.2 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (0.06 MB)
+radio map: skipped, no measurement surface
+[5/15] wi004
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 10 objects, 8 materials, 62 tx, 1 rx (0.0 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 62 tx x 1 rx, 1e+06 samples per tx
+paths: 960 valid paths over 62 links (0.2 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (0.06 MB)
+radio map: skipped, no measurement surface
+[6/15] wi005
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 10 objects, 8 materials, 96 tx, 1 rx (0.0 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 96 tx x 1 rx, 1e+06 samples per tx
+paths: 3746 valid paths over 96 links (0.3 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (0.20 MB)
+radio map: skipped, no measurement surface
+[7/15] wi006
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 10 objects, 8 materials, 287 tx, 1 rx (0.0 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 287 tx x 1 rx, 1e+06 samples per tx
+paths: 5545 valid paths over 287 links (2.1 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (0.31 MB)
+radio map: skipped, no measurement surface
+[8/15] wi007
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 10 objects, 8 materials, 573 tx, 1 rx (0.0 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 573 tx x 1 rx, 1e+06 samples per tx
+paths: 7000 valid paths over 573 links (4.1 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (0.39 MB)
+radio map: skipped, no measurement surface
+[9/15] wi008
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 10 objects, 8 materials, 766 tx, 1 rx (0.0 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 766 tx x 1 rx, 1e+06 samples per tx
+paths: 7776 valid paths over 766 links (4.8 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (0.44 MB)
+radio map: skipped, no measurement surface
+[10/15] wi009
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 10 objects, 8 materials, 949 tx, 1 rx (0.0 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 949 tx x 1 rx, 1e+06 samples per tx
+paths: 7605 valid paths over 949 links (6.3 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (0.43 MB)
+radio map: skipped, no measurement surface
+[11/15] wi010
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 10 objects, 8 materials, 351 tx, 3 rx (0.0 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 351 tx x 3 rx, 1e+06 samples per tx
+paths: 35585 valid paths over 1053 links (2.4 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (1.87 MB)
+radio map: skipped, no measurement surface
+[12/15] wi011
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 10 objects, 8 materials, 1048 tx, 3 rx (0.0 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 1048 tx x 3 rx, 1e+06 samples per tx
+paths: 52345 valid paths over 3144 links (7.2 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (2.83 MB)
+radio map: skipped, no measurement surface
+[13/15] wi012
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 10 objects, 8 materials, 2094 tx, 3 rx (0.0 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 2094 tx x 3 rx, 1e+06 samples per tx
+paths: 61517 valid paths over 6282 links (15.6 s)
+wrote SIONNA_HOUDINI_ECA_batch_2_result.npz (3.37 MB)
+radio map: skipped, no measurement surface
+[14/15] wi013
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 10 objects, 8 materials, 2790 tx, 3 rx (0.0 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 2790 tx x 3 rx, 1e+06 samples per tx

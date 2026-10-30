@@ -1,0 +1,62 @@
+batch: 6 work items, pid 796444
+[1/6] wi000
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 16 tx, 1 rx (0.1 s)
+settings: 0.868 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 16 tx x 1 rx, 1e+06 samples per tx
+paths: 233 valid paths over 16 links (0.1 s)
+wrote SIONNA_HOUDINI_ECA_DEMO5_result.npz (0.02 MB)
+radio map 'measure_floor': 4609 cells, 1e+07 samples per tx
+radio map 'measure_floor': 4589 of 4609 cells reached (0.6 s)
+wrote SIONNA_HOUDINI_ECA_DEMO5_radiomap.npz (0.21 MB)
+[2/6] wi001
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 44 tx, 1 rx (0.0 s)
+settings: 0.868 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 44 tx x 1 rx, 1e+06 samples per tx
+paths: 237 valid paths over 44 links (0.2 s)
+wrote SIONNA_HOUDINI_ECA_DEMO5_result.npz (0.02 MB)
+radio map 'measure_floor': 4609 cells, 1e+07 samples per tx
+radio map 'measure_floor': 4589 of 4609 cells reached (0.8 s)
+wrote SIONNA_HOUDINI_ECA_DEMO5_radiomap.npz (0.28 MB)
+[3/6] wi002
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 78 tx, 1 rx (0.0 s)
+settings: 0.868 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 78 tx x 1 rx, 1e+06 samples per tx
+paths: 213 valid paths over 78 links (0.4 s)
+wrote SIONNA_HOUDINI_ECA_DEMO5_result.npz (0.02 MB)
+radio map 'measure_floor': 4609 cells, 1e+07 samples per tx
+radio map 'measure_floor': 4589 of 4609 cells reached (1.4 s)
+wrote SIONNA_HOUDINI_ECA_DEMO5_radiomap.npz (0.30 MB)
+[4/6] wi003
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 23 tx, 1 rx (0.0 s)
+settings: 0.868 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 23 tx x 1 rx, 1e+06 samples per tx
+paths: 232 valid paths over 23 links (0.1 s)
+wrote SIONNA_HOUDINI_ECA_DEMO5_result.npz (0.02 MB)
+radio map 'measure_floor': 7297 cells, 1e+07 samples per tx
+radio map 'measure_floor': 7277 of 7297 cells reached (0.7 s)
+wrote SIONNA_HOUDINI_ECA_DEMO5_radiomap.npz (0.38 MB)
+[5/6] wi004
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 86 tx, 1 rx (0.0 s)
+settings: 0.868 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 86 tx x 1 rx, 1e+06 samples per tx
+paths: 301 valid paths over 86 links (0.3 s)
+wrote SIONNA_HOUDINI_ECA_DEMO5_result.npz (0.03 MB)
+radio map 'measure_floor': 7297 cells, 1e+07 samples per tx
+radio map 'measure_floor': 7277 of 7297 cells reached (1.6 s)
+wrote SIONNA_HOUDINI_ECA_DEMO5_radiomap.npz (0.54 MB)
+[6/6] wi005
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 147 tx, 1 rx (0.0 s)
+settings: 0.868 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 147 tx x 1 rx, 1e+06 samples per tx
+paths: 287 valid paths over 147 links (1.3 s)
+wrote SIONNA_HOUDINI_ECA_DEMO5_result.npz (0.03 MB)
+radio map 'measure_floor': 7297 cells, 1e+07 samples per tx
+radio map 'measure_floor': 7277 of 7297 cells reached (3.3 s)
+wrote SIONNA_HOUDINI_ECA_DEMO5_radiomap.npz (0.70 MB)
+batch: finished, 6 solved, 0 skipped, 0 failed

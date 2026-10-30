@@ -1,0 +1,14 @@
+{
+  "frequency": 868000000.0,
+  "max_depth": 3,
+  "samples": 1000000,
+  "max_paths_per_tx": 100000,
+  "los": true,
+  "specular_reflection": true,
+  "diffuse_reflection": false,
+  "refraction": true,
+  "diffraction": false,
+  "bandwidth": 125000.0,
+  "cfr_points": 0,
+  "radiomap_samples": 10000000
+}

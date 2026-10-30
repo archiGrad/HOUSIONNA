@@ -1,0 +1,25 @@
+{
+  "exported_utc": "20261029_235551Z",
+  "hip": "/home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/SIONNA_HOUDINI_ECA_DEMO4.hipnc",
+  "houdini": "21.0.440",
+  "commit": "3d4fd0c181498cc5a3b508f5739ce45de765f429",
+  "dirty": true,
+  "work_item": {
+    "index": 0,
+    "id": 1007,
+    "name": "output0_1007"
+  },
+  "wedge": {
+    "runs": 0,
+    "wedgeindex": 0,
+    "wedgetotal": 675,
+    "wedgeattribs": "a",
+    "wedgecount": 1,
+    "wedgenum": 0,
+    "a": 1,
+    "b": 1,
+    "c": 1,
+    "d": 1,
+    "e": 1
+  }
+}
