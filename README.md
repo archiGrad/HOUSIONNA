@@ -105,7 +105,7 @@ In Houdini:
 exec(open(hou.expandString('$HIP/sionna/sionna_sop.py')).read()); on_validate()
 ```
 
-The code is read from `sionna/sionna_sop.py` on every press, so the file in git is the only copy.
+The code is read from `sionna/sionna_sop.py` on every press, so the file in git is the only copy. Every button first turns on the display flag of the Null if it is off (`display flag set on ...`).
 
 Start Houdini from a terminal. All feedback is printed there and appended to `sionna/log.txt`; there are no pop-ups.
 
@@ -120,7 +120,7 @@ A string parm `target` on the Null selects where the solver runs:
 
 To pick the target per machine, set the parm to `$SIONNA_TARGET` and define it in each machine's `houdini.env`, e.g. `SIONNA_TARGET = spark`.
 
-**The Spark is only reachable through the VPN.** Start it before check, previz or solve, and keep that terminal open:
+**When the Spark is not on your network, it is only reachable through the VPN.** Start it before check, previz or solve, and keep that terminal open:
 
 ```bash
 sudo openvpn --config <client>.ovpn
@@ -133,13 +133,13 @@ Remote setup, once per server:
 1. An alias in `~/.ssh/config`:
    ```
    Host spark
-       HostName 192.108.2.65
+       HostName 10.128.64.3
        User dramco_spark
        IdentityFile ~/.ssh/<your key>
    ```
 2. Key login, since Houdini cannot type a password: `ssh-copy-id -i ~/.ssh/<your key>.pub spark`. Never commit a private key.
 3. On the server, a venv at `<remote_root>/venv` with `requirements.txt` installed. Without it, every remote action fails with `T002`.
-4. `rsync` on both machines.
+4. `rsync` on both machines (on Windows: inside WSL, see Windows).
 
 Each remote run checks that the server and venv exist and reads the GPU status, mirrors the run folder (without `.bgeo.sc` files) to the server, runs the solver there, and copies the results back.
 
@@ -150,7 +150,7 @@ A Toggle parm `use_gpu` on the Null (default on) selects the device, on every ta
 - on: Sionna runs on the GPU (CUDA). Without a usable GPU, check, solve and batch solve stop with `T003`.
 - off: Sionna runs on the CPU (LLVM), locally or on the Spark. Same results, but much slower: use small tests (few TX, `samples` 1e5, `radiomap_samples` 1e6). Needs the LLVM library, version 17 or newer, on that machine; if check reports the CPU as not available (`T005`), install it (Ubuntu: `sudo apt install llvm`). Check shows the LLVM version and warns (`W013`) below 17.
 
-Check prints what the target has and what is selected:
+With a remote target, check first prints the transfer tool (`transfer: rsync`, or `transfer: wsl --exec rsync` on Windows). Then it prints what the target has and what is selected:
 
 ```
 [sionna check] target local: sionna 2.2.0
@@ -159,6 +159,22 @@ Check prints what the target has and what is selected:
 [sionna check]   selected: cpu (use_gpu off)
 [sionna check] N008 target 'local': sionna 2.2.0, runs on the cpu
 ```
+
+### Windows
+
+The OS is detected automatically; buttons, parms and folders are the same as on Linux.
+
+1. Python 3.11 or later from python.org. In the project folder: `py -3.12 -m venv venv`, then `venv\Scripts\pip install -r requirements.txt`.
+2. GPU (`use_gpu` on): only the NVIDIA driver.
+3. CPU (`use_gpu` off, e.g. on machines without NVIDIA GPU): install LLVM for Windows with the installer from the LLVM releases, in its default folder `C:\Program Files\LLVM`. The plugin points Sionna to `C:\Program Files\LLVM\bin\LLVM-C.dll` itself; for another folder, set the environment variable `DRJIT_LIBLLVM_PATH` to that DLL. Check shows whether the CPU backend loads and its LLVM version. Not every LLVM version works on Windows: 20.1.8 loads but every CPU solve aborts with `JIT session error: Failed to materialize symbols: __real@...`. A Dr.Jit issue reports 16.0.4 working on Windows and 17.0.6 failing. On Linux, 15 aborts with `Cannot select` and 20 works.
+4. Remote target: commands use the ssh of Windows, file transfers use rsync inside WSL:
+   1. `C:\Users\<you>\.ssh\config` with the `spark` alias and key as above. The key file must be readable by your user only, or Windows ssh refuses it.
+   2. In WSL: `sudo apt install rsync`, the same alias in WSL's `~/.ssh/config` with a copy of the key (`chmod 600`), and `ssh spark` once to accept the host key. Without that, transfers fail with `T004` and the ssh error.
+   3. Check prints `transfer: wsl --exec rsync`. Without rsync in WSL it stops with `T006`.
+   WSL reaches the Spark on the local network directly. Over the Windows VPN it needs mirrored networking on Windows 11: `networkingMode=mirrored` under `[wsl2]` in `%UserProfile%\.wslconfig`.
+5. Local batches are started detached and keep running when Houdini closes.
+
+Tested on Linux only, with Windows behaviour simulated (WSL rsync path and options); the Windows-only parts (process checks, detaching, LLVM lookup, CPU name) are untested.
 
 ## Batches
 
@@ -491,7 +507,8 @@ Codes starting with N are information, W warnings (do not block), all others are
 | T001 | target unreachable | VPN off, wrong SSH alias, or key not installed. The SSH reason is shown. |
 | T002 | no python on target | No venv at `<remote_root>/venv` |
 | T003 | no GPU on target | `use_gpu` is on but the target has no usable GPU. Switch `use_gpu` off to run on the CPU |
-| T005 | no CPU backend on target | `use_gpu` is off but the LLVM library is missing on the target; install it (Ubuntu: `sudo apt install llvm`) |
+| T005 | no CPU backend on target | `use_gpu` is off but the LLVM library is missing on the target; install it (Ubuntu: `sudo apt install llvm`; Windows: see Windows) |
+| T006 | no rsync on this machine | Needed for a remote target. Linux: `sudo apt install rsync`. Windows: install it in WSL, see Windows |
 | T004 | file transfer failed | rsync error; reason shown |
 | I001 | result file not found | Solve first |
 | I002 | result file unreadable | Damaged file; solve again. Runs solved before the switch to `.npz` give `I001`; solve them again. |
@@ -550,8 +567,9 @@ if (tx >= 0) {
 - **No volumetric media.** Materials live on surfaces, so canopies must be built from surfaces; see test F.
 - **Houdini is blocked while previz, solve or run is busy.** Batch solve runs in the background.
 - **Radio maps grow with cells × TX**: 4 bytes per value, so 100,000 cells and 100 TX is 40 MB before compression.
+- **GPU memory grows with TX × samples.** Every solve, and every work item of a batch, runs in its own process, so it starts with an empty GPU and a crash ends only that item. When a solve runs out of memory, the solver halves the number of TX per call and retries, down to 1 TX, for paths and radio maps separately (`out of memory, retrying with N tx per call`). When the GPU runs out of memory in a way Dr.Jit cannot recover from, the process ends; the solver restarts the work item with half the TX per call of the call that failed (`process ran out of memory with N tx per call, restarting with M`). A size found this way is passed to the next work items of a batch at 3/4, as safety margin. Dr.Jit's memory cache is cleared after every call. Paths come out identical to one call. Radio maps differ only by sampling noise (tested: the same spread as changing the random seed), because the rays are drawn per call. A work item fails only when 1 TX per call does not fit.
 - **Validation does not check** whether a device sits inside an object or below a floor.
-- **Remote targets need `ssh` and `rsync`** on your machine (standard on Linux and macOS, not on Windows).
+- **Remote targets need `ssh` and `rsync`** on your machine: standard on Linux; on Windows, rsync runs inside WSL (see Windows).
 - Developed against Sionna RT 2.2.0.
 
 ## Update #1 (21-10-2026)
@@ -565,41 +583,6 @@ Procedural greenhouse variations from a TOP network, exported, solved as one bat
 https://www.youtube.com/watch?v=GcwktsATHTg
 
 ### Presentation
-
-
-meeting notes
-
-
-meeting notes 21-10-2026 relevant for us
-
-
-T1
-add more detail, windows, glass, set correct material coefficient. add noise-> people, multiple scattereres, miultiple configurations, autonomous driving machines for plant watering and inspection , including humans too
-
-make application engine
-
-perhaps include a 'data framework'-> presentation to Satish
-
-a relationship between objects... seems cool but not really sure what that means. an ontology. 
-self optimizations of ontology?  the onltologyu defines the communicstion prtotocol hierarchy and oiperations relationship 
-
-issue #1
-what is the hihgest frequency sionna can go?
-does it pass through the leaves
-
-issue #2
-volumetric data not really supported in sionna
-
-gilles was maybe checing for other tool?
-
-cool term:
-[ontology] for fleet management 
-
-find common scenario for simualtions and measuremenfts
-
-
-same scanenario for optical domai should be supported in t he pipeline 
-mobnthly update meeting wher e we are 
 
 ![Slide 1](docs/presentation_21-10-2026/HyROPA_presentatie_1.png)
 ![Slide 2](docs/presentation_21-10-2026/HyROPA_presentatie_2.png)
