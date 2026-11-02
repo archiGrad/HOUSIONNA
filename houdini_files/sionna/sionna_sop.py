@@ -22,7 +22,8 @@ MEASURE = "measure"
 EPS0 = 8.8541878128e-12
 OUT = "$HIP/sionna"
 FREQUENCY = 3.5e9
-PYTHON_EXE = "$HIP/../venv/Scripts/python.exe" if os.name == "nt" else "$HIP/../venv/bin/python3"
+WINDOWS = os.name == "nt"
+PYTHON_EXE = "$HIP/../venv/Scripts/python.exe" if WINDOWS else "$HIP/../venv/bin/python3"
 REMOTE_ROOT = "~/Documents/HyROPA"
 TIMEOUT = 1800
 MAX_RAYS = 4294967295
@@ -137,6 +138,7 @@ CODES = {
     "T003": "no gpu on target '{target}': {err} (switch use_gpu off to run on the cpu)",
     "T004": "file transfer with '{target}' failed: {err}",
     "T005": "no cpu backend on target '{target}': {err} (is the LLVM library installed?)",
+    "T006": "no rsync on this machine, needed for target '{target}': {hint}",
     "I001": "result file not found '{path}'",
     "I002": "result file unreadable or wrong format",
     "I003": "result does not match current scene (device names differ)",
@@ -168,7 +170,7 @@ def say(phase, text):
         print(f"[sionna {phase}] {line}", flush=True)
     os.makedirs(os.path.dirname(LOG), exist_ok=True)
     stamp = time.strftime("%Y-%m-%d %H:%M:%S")
-    with open(LOG, "a") as fh:
+    with open(LOG, "a", encoding="utf-8") as fh:
         fh.write(f"{stamp} {phase} {text}\n")
 
 
@@ -551,7 +553,7 @@ def inventory(phase, geo, f, node):
 
 
 def on_validate():
-    node = hou.pwd()
+    node = active()
     geo, f = node.inputs()[0].geometry(), frequency(node)
     recs = validate(geo, f)
     inventory("validate", geo, f, node)
@@ -667,7 +669,7 @@ def build_devices(geo):
 
 
 def write(path, text):
-    with open(path, "w") as fh:
+    with open(path, "w", encoding="utf-8") as fh:
         fh.write(text)
 
 
@@ -727,7 +729,7 @@ def export_run(geo, f, folder, recs, extra):
 
 
 def on_export(checked=None):
-    node = hou.pwd()
+    node = active()
     if hou.hipFile.isNewFile():
         report("export", [("E003", {})])
         return False
@@ -790,13 +792,20 @@ def clean_env():
             env[k] = os.pathsep.join(
                 p for p in env[k].split(os.pathsep) if hfs not in p.replace(os.sep, "/").lower()
             )
+    if WINDOWS:
+        env["PYTHONUTF8"] = "1"
+        llvm = os.path.join(env.get("ProgramFiles", "C:\\Program Files"), "LLVM", "bin")
+        if "DRJIT_LIBLLVM_PATH" not in env and os.path.isfile(os.path.join(llvm, "LLVM-C.dll")):
+            env["DRJIT_LIBLLVM_PATH"] = os.path.join(llvm, "LLVM-C.dll")
+            env["PATH"] = llvm + os.pathsep + env.get("PATH", "")
     return env
 
 
 def call(args, timeout=60):
-    flags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
+    flags = subprocess.CREATE_NO_WINDOW if WINDOWS else 0
     return subprocess.run(
-        args, env=clean_env(), capture_output=True, text=True, timeout=timeout, creationflags=flags,
+        args, env=clean_env(), capture_output=True, text=True, encoding="utf-8", errors="replace",
+        timeout=timeout, creationflags=flags,
     )
 
 
@@ -813,6 +822,14 @@ def git_info():
         return {"commit": c.stdout.strip(), "dirty": bool(d.stdout.strip())}
     except (OSError, subprocess.TimeoutExpired):
         return {"commit": None, "dirty": None}
+
+
+def active():
+    node = hou.pwd()
+    if not node.isDisplayFlagSet():
+        node.setDisplayFlag(True)
+        say("node", f"display flag set on {node.path()}")
+    return node
 
 
 def parm_str(node, name, default):
@@ -848,10 +865,10 @@ def timeout(node):
 
 
 def stream(args, seconds, on_line):
-    flags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
+    flags = subprocess.CREATE_NO_WINDOW if WINDOWS else 0
     p = subprocess.Popen(
         args, env=clean_env(), stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-        text=True, bufsize=1, creationflags=flags,
+        text=True, encoding="utf-8", errors="replace", bufsize=1, creationflags=flags,
     )
     killed = []
     timer = threading.Timer(seconds, lambda: (killed.append(1), p.kill()))
@@ -884,11 +901,40 @@ def transfer(phase, src, dst, seconds, *extra):
         elif text:
             say(phase, f"    {text}")
 
-    args = ["rsync", "-a", *extra, "--out-format=%n %l", "-e", "ssh " + " ".join(SSH_OPTS),
-            "--exclude", "*.bgeo.sc", "--exclude", "solver.log", src, dst]
+    cmd = rsync()
+    if not cmd:
+        return 127, [RSYNC_HINT]
+    wsl = cmd[0] == "wsl"
+    args = [*cmd, "-rlt" if wsl else "-a", *extra, "--out-format=%n %l", "-e", "ssh " + " ".join(SSH_OPTS),
+            "--exclude", "*.bgeo.sc", "--exclude", "solver.log", *(wsl_path(x) if wsl else x for x in (src, dst))]
     code, lines = stream(args, seconds, line)
     say(phase, f"  {files} files, {size(total)} in {time.time() - t0:.1f} s")
     return code, lines
+
+
+RSYNC = None
+RSYNC_HINT = ("in WSL: wsl sudo apt install rsync, then add the ssh alias and key to WSL's ~/.ssh as well"
+              if WINDOWS else "install rsync, e.g. sudo apt install rsync")
+
+
+def rsync():
+    global RSYNC
+    if RSYNC is None:
+        RSYNC = []
+        if not WINDOWS:
+            RSYNC = ["rsync"] if shutil.which("rsync") else []
+        else:
+            try:
+                if call(["wsl", "--exec", "rsync", "--version"], 60).returncode == 0:
+                    RSYNC = ["wsl", "--exec", "rsync"]
+            except (OSError, subprocess.TimeoutExpired):
+                pass
+    return RSYNC
+
+
+def wsl_path(path):
+    m = re.match(r"([A-Za-z]):[/\\](.*)", path)
+    return f"/mnt/{m.group(1).lower()}/{m.group(2).replace(chr(92), '/')}" if m else path
 
 
 def ssh(host, cmd, seconds=60):
@@ -978,9 +1024,9 @@ def run_sionna(node, mode, folder, phase):
     write(folder + "/solver.log", "\n".join(lines) + "\n")
     say(phase, f"{mode} {'done' if code == 0 else 'failed'} after {time.time() - t0:.1f} s")
     recs = [] if host == "local" else recs
-    if code == 3:
+    if code == 13:
         return recs + [("T003", {"target": host, "err": lines[-1] if lines else ""})]
-    if code == 4:
+    if code == 14:
         return recs + [("T005", {"target": host, "err": lines[-1] if lines else ""})]
     if code:
         return recs + [("S003", {"code": code, "err": lines[-1] if lines else ""})]
@@ -993,8 +1039,13 @@ PROBE = """
 import json, os, platform
 out = {"threads": os.cpu_count(), "cpu": platform.machine()}
 try:
-    with open("/proc/cpuinfo") as fh:
-        out["cpu"] = next(l.split(":", 1)[1].strip() for l in fh if l.lower().startswith("model name")) or out["cpu"]
+    if os.name == "nt":
+        import winreg
+        key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "HARDWARE\\\\DESCRIPTION\\\\System\\\\CentralProcessor\\\\0")
+        out["cpu"] = winreg.QueryValueEx(key, "ProcessorNameString")[0].strip() or out["cpu"]
+    else:
+        with open("/proc/cpuinfo") as fh:
+            out["cpu"] = next(l.split(":", 1)[1].strip() for l in fh if l.lower().startswith("model name")) or out["cpu"]
 except (OSError, StopIteration):
     pass
 import mitsuba as mi, drjit as dr
@@ -1003,8 +1054,9 @@ for key, variant in (("gpu", "cuda_ad_mono_polarized"), ("cpu", "llvm_ad_mono_po
         mi.set_variant(variant)
         dr.eval(mi.Float(1.0) + 1.0)
         out[key + "_error"] = ""
-        if key == "cpu" and hasattr(dr.detail, "llvm_version"):
-            out["llvm"] = list(dr.detail.llvm_version())
+        version = getattr(getattr(dr, "detail", None), "llvm_version", None)
+        if key == "cpu" and version:
+            out["llvm"] = list(version())
     except Exception as e:
         out[key + "_error"] = (str(e).strip().splitlines() or [type(e).__name__])[-1].split(". ")[0][:200]
 import sionna.rt
@@ -1014,7 +1066,7 @@ print(json.dumps(out))
 
 
 def on_check():
-    node = hou.pwd()
+    node = active()
     host, gpu = target(node), use_gpu(node)
     try:
         if host == "local":
@@ -1031,9 +1083,12 @@ def on_check():
             r = call([exe, "-c", PROBE], 300)
         else:
             recs, info = preflight(node, False)
+            if not rsync():
+                recs.append(("T006", {"target": host, "hint": RSYNC_HINT}))
             if has_errors(recs):
                 report("check", recs)
                 return
+            say("check", f"transfer: {' '.join(rsync())}")
             py = shlex.quote(remote_root(node) + "/venv/bin/python3")
             r = ssh(host, f"{py} -c {shlex.quote(PROBE)}", 300)
     except subprocess.TimeoutExpired:
@@ -1098,7 +1153,7 @@ def load_result(node, name, path, offset, recs, **parms):
 
 
 def on_previz():
-    node = hou.pwd()
+    node = active()
     folder = latest_run()
     if not folder:
         report("previz", [("S006", {})])
@@ -1169,7 +1224,7 @@ def settings(node):
 
 
 def on_solve():
-    node = hou.pwd()
+    node = active()
     folder = latest_run()
     if not folder:
         report("solve", [("S006", {})])
@@ -1314,7 +1369,7 @@ def to_bgeo(folder):
 
 
 def on_import():
-    node = hou.pwd()
+    node = active()
     folder = latest_run()
     if not folder:
         report("import", [("S006", {})])
@@ -1448,7 +1503,7 @@ def remote_batch(node, folder):
 
 
 def on_batch_export():
-    node = hou.pwd()
+    node = active()
     if hou.hipFile.isNewFile():
         report("batch", [("E003", {})])
         return
@@ -1511,7 +1566,7 @@ def on_batch_export():
 
 
 def on_batch_solve():
-    node = hou.pwd()
+    node = active()
     folder, recs = batch_folder(node)
     if not folder:
         report("batch", recs)
@@ -1635,8 +1690,19 @@ def watch(folder, name, host, rdir, restart):
 
 
 def alive(pid):
-    if os.name == "nt":
-        return False
+    if WINDOWS:
+        import ctypes
+        k = ctypes.windll.kernel32
+        k.OpenProcess.restype = ctypes.c_void_p
+        k.GetExitCodeProcess.argtypes = (ctypes.c_void_p, ctypes.POINTER(ctypes.c_ulong))
+        k.CloseHandle.argtypes = (ctypes.c_void_p,)
+        h = k.OpenProcess(0x1000, False, pid)
+        if not h:
+            return False
+        code = ctypes.c_ulong()
+        ok = k.GetExitCodeProcess(h, ctypes.byref(code))
+        k.CloseHandle(h)
+        return bool(ok) and code.value == 259
     try:
         if os.waitpid(pid, os.WNOHANG)[0] == pid:
             return False
@@ -1673,11 +1739,17 @@ def start_local(node, folder, name, count):
         return [("S001", {"path": exe})]
     if os.path.isfile(folder + "/status.json"):
         os.remove(folder + "/status.json")
+    args = [exe, "-u", folder + "/sionna_run.py", "batch", folder, device(node)]
     with open(folder + "/batch.log", "a") as log:
-        p = subprocess.Popen(
-            [exe, "-u", folder + "/sionna_run.py", "batch", folder, device(node)], env=clean_env(), cwd=folder,
-            stdout=log, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, start_new_session=True,
-        )
+        kw = dict(env=clean_env(), cwd=folder, stdout=log, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL)
+        if not WINDOWS:
+            p = subprocess.Popen(args, start_new_session=True, **kw)
+        else:
+            flags = subprocess.DETACHED_PROCESS | subprocess.CREATE_NEW_PROCESS_GROUP
+            try:
+                p = subprocess.Popen(args, creationflags=flags | subprocess.CREATE_BREAKAWAY_FROM_JOB, **kw)
+            except OSError:
+                p = subprocess.Popen(args, creationflags=flags, **kw)
     write(folder + "/batch.pid", str(p.pid))
     return [("N010", {"name": name, "target": "local", "pid": p.pid, "count": count})]
 
@@ -1741,7 +1813,7 @@ def show_status(name, host, status, running, log):
 
 
 def on_batch_status():
-    node = hou.pwd()
+    node = active()
     folder, recs = batch_folder(node)
     if not folder:
         report("batch", recs)
@@ -1753,7 +1825,7 @@ def on_batch_status():
             pid = read_pid(folder + "/batch.pid")
             log = []
             if os.path.isfile(folder + "/batch.log"):
-                with open(folder + "/batch.log") as fh:
+                with open(folder + "/batch.log", encoding="utf-8", errors="replace") as fh:
                     log = fh.read().splitlines()[-5:]
             show_status(name, host, status, bool(pid) and alive(pid), log)
         else:
@@ -1783,7 +1855,7 @@ def stale_bgeo(item):
 
 
 def on_batch_fetch():
-    node = hou.pwd()
+    node = active()
     folder, recs = batch_folder(node)
     if not folder:
         report("batch", recs)
@@ -1832,7 +1904,7 @@ def preset_menu(kind):
 
 
 def on_preset(kind):
-    node = hou.pwd()
+    node = active()
     presets = PRESETS[kind]
     name = parm_str(node, kind, "")
     if name not in presets:
@@ -1921,6 +1993,7 @@ def run_clean(host, spec, delete=None):
     if host == "local":
         g = {}
         exec(CLEAN, g)
+        g["alive"] = alive
         return g["clean"](spec, delete), []
     payload = json.dumps({"spec": spec, "delete": delete})
     script = CLEAN + f"\nargs = json.loads({payload!r})\nprint(json.dumps(clean(args['spec'], args['delete'])))\n"
@@ -1937,7 +2010,7 @@ def run_clean(host, spec, delete=None):
 
 
 def on_clear(scope):
-    node = hou.pwd()
+    node = active()
     host, hip = target(node), hou.expandString("$HIPNAME")
     prefix, recs = batch_prefix(node)
     if recs:
