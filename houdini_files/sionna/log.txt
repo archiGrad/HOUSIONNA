@@ -48216,3 +48216,70 @@
 2026-11-02 12:00:06 batch converted in 0.4 s
 2026-11-02 12:00:06 batch N011 batch 'batch_2_20261102_105910Z': 1 solved, 0 failed, 0 without result
 2026-11-02 12:00:06 batch batch passed (0 errors, 0 warnings) after 0.4 s
+2026-11-02 12:12:31 node display flag set on /obj/batch_run_1/COMPUTE
+2026-11-02 12:12:32 batch batch batch_2_20261102_111232Z: 1 work item (1 to 1) from /obj/batch_run_1/topnet1/output0
+2026-11-02 12:12:36 batch   [1/1] wi001: exported, 148834 prims, W005 W010 W005 (4.7 s)
+2026-11-02 12:12:36 batch parm 'batch' set to batch_2_20261102_111232Z
+2026-11-02 12:12:36 batch N009 batch 'batch_2_20261102_111232Z': 1 exported, 0 failed, written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/batches/batch_2_20261102_111232Z
+2026-11-02 12:12:36 batch batch passed (0 errors, 0 warnings) after 4.9 s
+2026-11-02 12:12:41 batch batch batch_2_20261102_111241Z: 2 work items (1 to 2) from /obj/batch_run_1/topnet1/output0
+2026-11-02 12:12:44 batch   [1/2] wi001: exported, 148834 prims, W005 W010 W005 (3.0 s)
+2026-11-02 12:12:49 batch   [2/2] wi002: exported, 253941 prims, W005 W010 W005 (4.7 s)
+2026-11-02 12:12:49 batch parm 'batch' set to batch_2_20261102_111241Z
+2026-11-02 12:12:49 batch N009 batch 'batch_2_20261102_111241Z': 2 exported, 0 failed, written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/batches/batch_2_20261102_111241Z
+2026-11-02 12:12:49 batch batch passed (0 errors, 0 warnings) after 7.8 s
+2026-11-02 12:12:53 batch batch batch_2_20261102_111241Z: 2 work items queued, 2 of 2 exported
+2026-11-02 12:12:53 batch watching batch batch_2_20261102_111241Z on local every 15 s, a line follows each finished work item
+2026-11-02 12:12:53 batch N010 batch 'batch_2_20261102_111241Z' started on 'local' (pid 22564): 2 work items queued, finished ones are skipped
+2026-11-02 12:12:53 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-02 12:13:20 batch batch batch_2_20261102_111241Z: 2 work items queued, 2 of 2 exported
+2026-11-02 12:13:20 batch already watching batch batch_2_20261102_111241Z on local
+2026-11-02 12:13:20 batch B004 batch 'batch_2_20261102_111241Z' is already running on 'local' (pid 22564)
+2026-11-02 12:13:20 batch batch FAILED (1 error, 0 warnings) after 0.0 s
+2026-11-02 12:13:38 watch batch batch_2_20261102_111241Z on local: wi001 solved, 1 of 2 finished
+2026-11-02 12:14:53 watch batch batch_2_20261102_111241Z on local: wi002 solved, 2 of 2 finished
+2026-11-02 12:14:53 watch batch batch_2_20261102_111241Z on local: finished, 2 solved, 0 skipped, 0 failed (2.0 min), press batch fetch
+2026-11-02 12:15:16 batch batch batch_2_20261102_111241Z on local: finished, 2 of 2 done (0 skipped as already solved), 0 failed
+2026-11-02 12:15:16 batch   56.70 s per work item
+2026-11-02 12:15:16 batch   log | wrote SIONNA_HOUDINI_ECA_batch_testing_win_result.npz (0.02 MB)
+2026-11-02 12:15:16 batch   log | radio map 'measure_floor': 33445 cells, 1e+06 samples per tx
+2026-11-02 12:15:16 batch   log | radio map 'measure_floor': 33398 of 33445 cells reached (55.4 s)
+2026-11-02 12:15:16 batch   log | wrote SIONNA_HOUDINI_ECA_batch_testing_win_radiomap.npz (2.70 MB)
+2026-11-02 12:15:16 batch   log | batch: finished, 2 solved, 0 skipped, 0 failed
+2026-11-02 12:15:16 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-02 12:15:16 batch convert 2 work items to bgeo, the others are up to date or have no result
+2026-11-02 12:15:17 batch   [1/2] wi001 (0.6 s)
+2026-11-02 12:15:18 batch   [2/2] wi002 (0.6 s)
+2026-11-02 12:15:18 batch converted in 1.1 s
+2026-11-02 12:15:18 batch N011 batch 'batch_2_20261102_111241Z': 2 solved, 0 failed, 0 without result
+2026-11-02 12:15:18 batch batch passed (0 errors, 0 warnings) after 1.1 s
+2026-11-02 14:33:27 batch batch batch_2_20261102_133327Z: 3 work items (1 to 3) from /obj/batch_run_1/topnet1/output0
+2026-11-02 14:33:30 batch   [1/3] wi001: exported, 148834 prims, W005 W010 W005 (3.1 s)
+2026-11-02 14:33:35 batch   [2/3] wi002: exported, 253941 prims, W005 W010 W005 (4.6 s)
+2026-11-02 14:33:40 batch   [3/3] wi003: exported, 260555 prims, W005 W010 W005 (5.2 s)
+2026-11-02 14:33:40 batch parm 'batch' set to batch_2_20261102_133327Z
+2026-11-02 14:33:40 batch N009 batch 'batch_2_20261102_133327Z': 3 exported, 0 failed, written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/batches/batch_2_20261102_133327Z
+2026-11-02 14:33:40 batch batch passed (0 errors, 0 warnings) after 13.1 s
+2026-11-02 14:33:55 batch batch batch_2_20261102_133327Z: 3 work items queued, 3 of 3 exported
+2026-11-02 14:33:55 batch watching batch batch_2_20261102_133327Z on local every 15 s, a line follows each finished work item
+2026-11-02 14:33:55 batch N010 batch 'batch_2_20261102_133327Z' started on 'local' (pid 87638): 3 work items queued, finished ones are skipped
+2026-11-02 14:33:55 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-02 14:34:40 watch batch batch_2_20261102_133327Z on local: wi001 solved, 1 of 3 finished
+2026-11-02 14:35:40 watch batch batch_2_20261102_133327Z on local: wi002 solved, 2 of 3 finished
+2026-11-02 14:36:55 watch batch batch_2_20261102_133327Z on local: wi003 solved, 3 of 3 finished
+2026-11-02 14:36:55 watch batch batch_2_20261102_133327Z on local: finished, 3 solved, 0 skipped, 0 failed (3.0 min), press batch fetch
+2026-11-02 14:37:08 batch batch batch_2_20261102_133327Z on local: finished, 3 of 3 done (0 skipped as already solved), 0 failed
+2026-11-02 14:37:08 batch   58.91 s per work item
+2026-11-02 14:37:08 batch   log | wrote SIONNA_HOUDINI_ECA_batch_testing_win_normalize_radiomaps_over_range_result.npz (0.02 MB)
+2026-11-02 14:37:08 batch   log | radio map 'measure_floor': 33518 cells, 1e+06 samples per tx
+2026-11-02 14:37:08 batch   log | radio map 'measure_floor': 33456 of 33518 cells reached (55.0 s)
+2026-11-02 14:37:08 batch   log | wrote SIONNA_HOUDINI_ECA_batch_testing_win_normalize_radiomaps_over_range_radiomap.npz (3.06 MB)
+2026-11-02 14:37:08 batch   log | batch: finished, 3 solved, 0 skipped, 0 failed
+2026-11-02 14:37:08 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-02 14:37:09 batch convert 3 work items to bgeo, the others are up to date or have no result
+2026-11-02 14:37:10 batch   [1/3] wi001 (0.4 s)
+2026-11-02 14:37:10 batch   [2/3] wi002 (0.6 s)
+2026-11-02 14:37:11 batch   [3/3] wi003 (0.7 s)
+2026-11-02 14:37:11 batch converted in 1.7 s
+2026-11-02 14:37:11 batch N011 batch 'batch_2_20261102_133327Z': 3 solved, 0 failed, 0 without result
+2026-11-02 14:37:11 batch batch passed (0 errors, 0 warnings) after 1.7 s
