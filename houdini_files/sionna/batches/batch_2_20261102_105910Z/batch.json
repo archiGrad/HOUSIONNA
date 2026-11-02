@@ -1,0 +1,25 @@
+{
+  "created_utc": "batch_2_20261102_105910Z",
+  "hip": "/home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/SIONNA_HOUDINI_ECA_batch_testing_win.hipnc",
+  "top_node": "/obj/batch_run_1/topnet1/output0",
+  "range": [
+    1,
+    1
+  ],
+  "frequency": 868000000.0,
+  "items": {
+    "wi001": {
+      "index": 1,
+      "id": 21,
+      "name": "output0_21",
+      "status": "exported",
+      "codes": [
+        "W005",
+        "W010",
+        "W005"
+      ]
+    }
+  },
+  "commit": "0d27fc0db1d2b8c651d4ef8ca03695ccbb934e3a",
+  "dirty": true
+}

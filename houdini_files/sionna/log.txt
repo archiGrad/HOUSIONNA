@@ -48181,3 +48181,38 @@
 2026-10-30 07:10:04 batch batch passed (0 errors, 0 warnings) after 0.6 s
 2026-10-30 07:10:07 watch batch batch_1_0_20261030_060904Z on spark: wi000, wi001, wi002, wi003, wi004 solved, 5 of 5 finished
 2026-10-30 07:10:07 watch batch batch_1_0_20261030_060904Z on spark: finished, 5 solved, 0 skipped, 0 failed (0.3 min), press batch fetch
+2026-11-02 11:58:49 check target local: sionna 2.2.0
+2026-11-02 11:58:49 check   gpu: not available (jit_init_thread_state(): the CUDA backend hasn't been initialized)
+2026-11-02 11:58:49 check   cpu: Intel(R) Core(TM) i5-7200U CPU @ 2.50GHz, 4 threads, available, LLVM 20.1.8
+2026-11-02 11:58:49 check   selected: cpu (use_gpu off)
+2026-11-02 11:58:49 check N008 target 'local': sionna 2.2.0, runs on the cpu
+2026-11-02 11:58:49 check check passed (0 errors, 0 warnings) after 2.1 s
+2026-11-02 11:59:10 batch batch batch_2_20261102_105910Z: 1 work item (1 to 1) from /obj/batch_run_1/topnet1/output0
+2026-11-02 11:59:13 batch   [1/1] wi001: exported, 148834 prims, W005 W010 W005 (3.0 s)
+2026-11-02 11:59:13 batch parm 'batch' set to batch_2_20261102_105910Z
+2026-11-02 11:59:13 batch N009 batch 'batch_2_20261102_105910Z': 1 exported, 0 failed, written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/batches/batch_2_20261102_105910Z
+2026-11-02 11:59:13 batch batch passed (0 errors, 0 warnings) after 3.2 s
+2026-11-02 11:59:16 batch batch batch_2_20261102_105910Z: 1 work item queued, 1 of 1 exported
+2026-11-02 11:59:16 batch watching batch batch_2_20261102_105910Z on local every 15 s, a line follows each finished work item
+2026-11-02 11:59:16 batch N010 batch 'batch_2_20261102_105910Z' started on 'local' (pid 14256): 1 work items queued, finished ones are skipped
+2026-11-02 11:59:16 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-02 11:59:23 batch batch batch_2_20261102_105910Z on local: running, 0 of 1 done (0 skipped as already solved), 0 failed, now wi001
+2026-11-02 11:59:23 batch   log | [1/1] wi001
+2026-11-02 11:59:23 batch   log | sionna 2.2.0, llvm_ad_mono_polarized, on the cpu
+2026-11-02 11:59:23 batch   log | scene: 11 objects, 9 materials, 25 tx, 1 rx (0.2 s)
+2026-11-02 11:59:23 batch   log | settings: 0.868 GHz, max_depth 3, los, specular_reflection, refraction
+2026-11-02 11:59:23 batch   log | paths: 25 tx x 1 rx, 1e+05 samples per tx
+2026-11-02 11:59:23 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-02 11:59:29 batch convert 1 work item to bgeo, the others are up to date or have no result
+2026-11-02 11:59:29 batch   [1/1] wi001 (0.0 s)
+2026-11-02 11:59:29 batch converted in 0.0 s
+2026-11-02 11:59:29 batch N011 batch 'batch_2_20261102_105910Z': 0 solved, 0 failed, 1 without result
+2026-11-02 11:59:29 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-02 12:00:01 watch batch batch_2_20261102_105910Z on local: wi001 solved, 1 of 1 finished
+2026-11-02 12:00:01 watch batch batch_2_20261102_105910Z on local: finished, 1 solved, 0 skipped, 0 failed (0.8 min), press batch fetch
+2026-11-02 12:00:05 node display flag set on /obj/batch_run_1/COMPUTE
+2026-11-02 12:00:05 batch convert 1 work item to bgeo, the others are up to date or have no result
+2026-11-02 12:00:06 batch   [1/1] wi001 (0.4 s)
+2026-11-02 12:00:06 batch converted in 0.4 s
+2026-11-02 12:00:06 batch N011 batch 'batch_2_20261102_105910Z': 1 solved, 0 failed, 0 without result
+2026-11-02 12:00:06 batch batch passed (0 errors, 0 warnings) after 0.4 s
