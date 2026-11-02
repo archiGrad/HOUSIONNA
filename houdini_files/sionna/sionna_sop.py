@@ -19,6 +19,7 @@ ITU = {
 }
 MAT_ATTRS = ("material", "thickness", "scattering_coefficient")
 MEASURE = "measure"
+DISPLAY = "display"
 EPS0 = 8.8541878128e-12
 OUT = "$HIP/sionna"
 FREQUENCY = 3.5e9
@@ -100,7 +101,7 @@ CODES = {
     "W001": "scene diagonal is {diag:.3g} m (expected 1 m to 50 km): check units",
     "W002": "{name}: smaller than one wavelength ({lam:.3f} m)",
     "W003": "device '{name}': {dist:.3g} m away from the geometry",
-    "V001": "no primitives",
+    "V001": "no primitives to simulate",
     "V002": "missing prim attribute '{attr}'",
     "V003": "prim {prim}: not a triangle",
     "V004": "prim {prim}: zero area",
@@ -301,6 +302,11 @@ def resolve(entry, f, moisture=0.0):
         return a * (f / 1e9) ** b, c * (f / 1e9) ** d
     if kind == "conductor":
         return 1.0, entry["conductivity"]
+    if kind == "gabriel":
+        jw = 1j * 2 * math.pi * f
+        eps = entry["eps_inf"] + sum(d / (1 + (jw * t) ** (1 - a)) for d, t, a in entry["terms"])
+        eps += entry["sigma"] / (1j * w)
+        return eps.real, -eps.imag * w
     if kind == "cole_cole":
         ei, es = entry["eps_inf"], entry["eps_s"]
         eps = ei + (es - ei) / (1 + (1j * 2 * math.pi * f * entry["tau"]) ** (1 - entry["alpha"]))
@@ -416,11 +422,15 @@ def validate(geo, frequency=FREQUENCY):
     s = scan(geo)
     P, tri, ok, used = s["P"], s["tri"], s["ok"], s["used"]
     names = np.array(geo.primStringAttribValues("name"))
+    keep = np.array(geo.primStringAttribValues("material")) != DISPLAY
+    if not keep.any():
+        return [("V001", {})]
+    ok_all, ok = ok, ok & keep
     corner = P[np.where(ok[:, None], tri, 0)]
     area = 0.5 * np.linalg.norm(np.cross(corner[:, 1] - corner[:, 0], corner[:, 2] - corner[:, 0]), axis=1)
     uniq, inv = np.unique(names, return_inverse=True)
     valid = np.array([bool(re.fullmatch(r"[A-Za-z0-9_-]+", u)) for u in uniq.tolist()])[inv.ravel()]
-    recs += [("V003", {"prim": i}) for i in np.nonzero(~ok)[0].tolist()]
+    recs += [("V003", {"prim": i}) for i in np.nonzero(~ok_all & keep)[0].tolist()]
     recs += [("V004", {"prim": i}) for i in np.nonzero(ok & (area < 1e-12))[0].tolist()]
     recs += [("V010", {"prim": i}) for i in np.nonzero(ok & (names == ""))[0].tolist()]
     recs += [("V005", {"prim": i, "name": names[i]}) for i in np.nonzero(ok & (names != "") & ~valid)[0].tolist()]
@@ -442,11 +452,11 @@ def validate(geo, frequency=FREQUENCY):
     moist = np.array(prim_values(geo, "moisture"), dtype=float) if geo.findPrimAttrib("moisture") else None
     wet = {str(names[good[f]]): float(round(moist[good[f]])) if moist is not None else 0.0 for f in order}
     if moist is not None:
-        bad = (moist < 0) | (moist > 100)
+        bad = ((moist < 0) | (moist > 100)) & keep
         for n in dict.fromkeys(names[bad].tolist()):
             recs.append(("V012", {"name": n, "value": float(moist[names == n][0])}))
         mats = np.array(prim_values(geo, "material"))
-        for mat in sorted(set(mats[moist > 0].tolist()) - {MEASURE}):
+        for mat in sorted(set(mats[(moist > 0) & keep].tolist()) - {MEASURE}):
             if not uses_moisture(lib.get(mat, {})):
                 recs.append(("W011", {"material": mat, "count": int(((mats == mat) & (moist > 0)).sum())}))
 
@@ -478,7 +488,10 @@ def validate(geo, frequency=FREQUENCY):
         if not 0 <= v.get("scattering_coefficient", 0) <= 1:
             recs.append(("V009", {"name": name}))
 
-    lo, hi = P[used].min(axis=0), P[used].max(axis=0)
+    scene_pts = np.unique(tri[ok])
+    if not len(scene_pts):
+        return recs
+    lo, hi = P[scene_pts].min(axis=0), P[scene_pts].max(axis=0)
     size = (hi - lo).tolist()
     diag = float(np.linalg.norm(hi - lo))
     recs.insert(0, ("N001", {"x": size[0], "y": size[2], "z": size[1]}))
@@ -533,7 +546,7 @@ def inventory(phase, geo, f, node):
             tris[m] = tris.get(m, 0) + 1
             objs.setdefault(m, set()).add(n)
         lib = library()
-        scene = sorted(m for m in tris if m != MEASURE)
+        scene = sorted(m for m in tris if m not in (MEASURE, DISPLAY))
         say(phase, f"scene: {plural(sum(len(objs[m]) for m in scene), 'object')}, "
                    f"{plural(sum(tris[m] for m in scene), 'triangle')}, {plural(len(scene), 'material')}")
         for m in scene:
@@ -543,6 +556,8 @@ def inventory(phase, geo, f, node):
             say(phase, f"radio map surfaces: {short(sorted(objs[MEASURE]))} ({plural(tris[MEASURE], 'cell')})")
         else:
             say(phase, "radio map surfaces: none, solve computes paths only")
+        if DISPLAY in tris:
+            say(phase, f"display only: {plural(tris[DISPLAY], 'primitive')}, kept in scene.bgeo.sc, not sent to sionna")
     if geo.findPointAttrib("role") and geo.findPointAttrib("name"):
         roles = geo.pointStringAttribValues("role")
         names = geo.pointStringAttribValues("name")
@@ -566,10 +581,12 @@ def on_validate():
 def materials(geo):
     import numpy as np
     lib = library()
-    names = object_names(geo, lib=lib).tolist()
+    names = object_names(geo, lib=lib)
     cols = {a: prim_values(geo, a) for a in MAT_ATTRS + ("moisture",) if geo.findPrimAttrib(a)}
+    idx = np.nonzero(np.array(cols["material"]) != DISPLAY)[0]
+    names = names.tolist()
     out = {}
-    for i in sorted(np.unique(names, return_index=True)[1].tolist()):
+    for i in sorted(idx[np.unique(np.array(names, dtype=object)[idx].astype(str), return_index=True)[1]].tolist()):
         v = {a: c[i] for a, c in cols.items()}
         wet = float(round(v.get("moisture", 0.0))) if uses_moisture(lib.get(v["material"], {})) else 0.0
         out[names[i]] = (v["material"], v.get("thickness", 0.0), v.get("scattering_coefficient", 0.0), max(wet, 0.0))
@@ -676,9 +693,10 @@ def write(path, text):
 def write_meshes(geo, folder):
     import numpy as np
     s = scan(geo)
-    names, _, group = np.unique(object_names(geo), return_index=True, return_inverse=True)
+    keep = np.nonzero(np.array(geo.primStringAttribValues("material")) != DISPLAY)[0]
+    names, _, group = np.unique(object_names(geo)[keep], return_index=True, return_inverse=True)
     group = group.ravel()
-    prims = np.split(np.argsort(group, kind="stable"), np.cumsum(np.bincount(group))[:-1])
+    prims = np.split(keep[np.argsort(group, kind="stable")], np.cumsum(np.bincount(group))[:-1])
     for name, idx in zip(names.tolist(), prims):
         u, inv = np.unique(s["tri"][idx].ravel(), return_inverse=True)
         write_ply(f"{folder}/{name}.ply", sionna_axes(s["P"][u]), inv.reshape(-1, 3)[:, ::-1])

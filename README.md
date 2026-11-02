@@ -184,7 +184,7 @@ For many scene variations from a TOP network (e.g. a Wedge TOP), next to the Nul
 2. **batch_export**: for each work item in the range, selects it in the TOP network, so the SOP network cooks that variation, then validates and exports it to `batches/<batch_name>_<stamp>/wi<index>/` (see Batch names). The wedge attributes of the work item are stored in its `<hip>_meta.json`. A work item that fails validation or does not cook is recorded in `batch.json` and skipped; the others continue. The selection is restored afterwards.
 3. **batch_solve**: writes the current settings into every exported work item, sends the batch folder and starts one solver process on the target, which solves all work items one after the other in one Sionna session. The button returns at once; Houdini stays usable and the job keeps running if Houdini or the laptop is closed. Houdini then checks the batch every 15 s in the background and prints a `[sionna watch]` line when work items are solved or fail, and one when the batch is finished or has stopped. It only prints; fetch is up to you. Watching ends with the batch, after 4 failed checks in a row (e.g. VPN down), or when Houdini closes; the job itself is not affected.
 4. **batch_status**: prints progress while it runs.
-5. **batch_fetch**: copies the results back, converts every new or changed result to `.bgeo.sc` in its `wi<index>` folder, and creates four File SOPs next to the Null: `sionna_batch_scene` (the geometry as exported for that work item), `sionna_batch_paths`, `sionna_batch_links`, `sionna_batch_radiomap`. Can be pressed while the batch is still running; press it again later for the rest.
+5. **batch_fetch**: copies the results back, converts every new or changed result to `.bgeo.sc` in its `wi<index>` folder, and creates four File SOPs next to the Null: `sionna_batch_scene` (the geometry as exported for that work item, including display-only geometry), `sionna_batch_paths`, `sionna_batch_links`, `sionna_batch_radiomap`. Can be pressed while the batch is still running; press it again later for the rest.
 6. Click a work item in the TOP network: the SOP network cooks that variation and the `sionna_batch_*` File SOPs load its exported geometry and results. `sionna_batch_scene` is what was simulated, also after the network has been changed since the export. Their file path is
 
    ```
@@ -225,7 +225,7 @@ Everything Sionna receives comes from the attributes below. Any other attribute 
 | Attribute | Type | Required | Meaning |
 |---|---|---|---|
 | `name` | string | yes | Object name. One mesh and one Sionna object per value. Letters, digits, `_` and `-` only. |
-| `material` | string | yes | An ITU material, a name from `materials.json`, or `measure` for a radio map surface |
+| `material` | string | yes | An ITU material, a name from `materials.json`, `measure` for a radio map surface, or `display` for display-only geometry |
 | `thickness` | float | no | Slab thickness in metres used for reflection and transmission. 0 or absent: library default, else 0.1. Not the mesh thickness. |
 | `scattering_coefficient` | float | no | 0 to 1. Share of reflected energy that is scattered diffusely. Only has an effect with `diffuse_reflection` on. 0 or absent: library default, else 0. |
 | `moisture` | float | no | Percent water, only for vegetation materials (`leaf`, `stem`: % of fresh mass, living leaves 70 to 90) and soil materials (`soil_*`: % of volume, 0 to 50). 0 or absent: library default. Ignored on other materials (`W011`); outside 0 to 100 is an error (`V012`). |
@@ -242,6 +242,10 @@ All primitives with the same `name` must have the same material attributes (`V00
 | `orientation` | vector | no | Yaw, pitch, roll in radians, Sionna convention. No effect with the current isotropic antennas. |
 | `velocity` | vector | no | m/s. Exported, but not yet passed to Sionna: no effect. |
 | `power_dbm` | float | no | TX power. Passed to Sionna, but no current output depends on it: all results are path gain. |
+
+### Display-only geometry
+
+Primitives with `material = "display"` are kept for viewing but never sent to Sionna: validate skips them entirely (any primitive type, polygons of any size, curves, no `name` needed, not counted in the scene size) and export leaves them out of the meshes and the scene XML. They are saved with everything else in `scene.bgeo.sc` of the run or work item folder, so after a batch fetch `sionna_batch_scene` shows them unchanged. On a remote target, `scene.bgeo.sc` stays on this machine, as always. Only primitives can be marked: loose points are read as devices (`V106` without a valid `role`).
 
 ### Measurement surfaces (radio maps)
 
@@ -268,6 +272,7 @@ Every material name is looked up in `sionna/materials.json`. Values are computed
 | `fixed` | `relative_permittivity` plus one of `conductivity`, `loss_tangent`, `loss_factor` | constant permittivity; loss converted at the run frequency |
 | `water` | `temperature_c`, `ionic_conductivity` | Debye model (Liebe, Hufford, Manabe 1991, same equations as ITU-R P.527-6) plus ionic conductivity |
 | `vegetation` | `moisture` (% of fresh mass) | dual-dispersion model (Ulaby and El-Rayes 1987) |
+| `gabriel` | `eps_inf`, `terms` (`[delta, tau in s, alpha]` per dispersion), `sigma` | multi-pole Cole-Cole model for body tissue (Gabriel, Lau, Gabriel 1996) |
 
 ### Entries
 
@@ -301,6 +306,8 @@ Every material name is looked up in `sionna/materials.json`. Values are computed
 | `polycarbonate` | fixed | `W005`: permittivity from datasheets at 1 MHz only |
 | `polyethylene_film`, `pvc` | fixed | `W005`: permittivity confirmed, loss assumed zero |
 | `rockwool_wet` | fixed | `W005`: placeholder, must be measured |
+
+**People (kind `gabriel`, confirmed):** `human`, dry skin from Gabriel, Lau, Gabriel 1996 (Phys. Med. Biol. 41, Table 1), the outer layer a signal meets first. er / sigma: 41.6 / 0.86 S/m at 868 MHz, 38.0 / 1.46 at 2.45 GHz (the published values for dry skin), 35.1 / 3.72 at 5.8 GHz. Default thickness 0.15 m: a body blocks nearly everything that passes through it. Real signals also bend around a person; that needs `diffraction` on, otherwise the shadow behind a person is too deep.
 
 ### In situ versus lab values
 
@@ -472,7 +479,7 @@ Codes starting with N are information, W warnings (do not block), all others are
 | W008 | node exists but is not a File SOP | A node next to the Null already has the name `sionna_previz`, `sionna_paths`, `sionna_links`, `sionna_radiomap` or `sionna_batch_scene`, `_paths`, `_links`, `_radiomap`. The result file is written but not loaded; rename that node. |
 | W014 | running batch not cleared | Clear again after it finished, or stop it first |
 | W009 | no `batch` parm on the Null | Add a string parm `batch`; the `sionna_batch_*` File SOPs read the batch name from it |
-| V001 | no primitives | Nothing to export; add geometry or a measurement surface |
+| V001 | no primitives to simulate | Nothing to export: no primitives, or only `display` primitives; add geometry or a measurement surface |
 | V002 | missing prim attribute | Add `name` and `material` |
 | V003 | not a triangle | Triangulate (Divide SOP) |
 | V004 | zero area | Remove degenerate triangles (Clean SOP) |

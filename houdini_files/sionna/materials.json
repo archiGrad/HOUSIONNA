@@ -856,5 +856,29 @@
     "thickness": 0.075,
     "source": "none for permittivity; conductivity from pore-water EC 4 dS/m (sensor documentation)",
     "status": "placeholder, must be measured"
+  },
+  "human": {
+    "kind": "gabriel",
+    "eps_inf": 4.0,
+    "terms": [
+      [
+        32.0,
+        7.23e-12,
+        0.0
+      ],
+      [
+        1100.0,
+        3.248e-08,
+        0.2
+      ]
+    ],
+    "sigma": 0.0002,
+    "range_ghz": [
+      1e-08,
+      20
+    ],
+    "thickness": 0.15,
+    "source": "Gabriel, Lau, Gabriel 1996, Phys. Med. Biol. 41, 2271-2293, Table 1, four-Cole-Cole model, row 'Skin (Dry)'; its third and fourth dispersions are zero",
+    "status": "confirmed"
   }
 }
