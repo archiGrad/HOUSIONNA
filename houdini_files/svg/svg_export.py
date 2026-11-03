@@ -26,7 +26,7 @@ def export_svg():
     print("Current node:", node.path())
 
     geo = node.geometry()
-    prims = [p for p in geo.prims() if p.numVertices()]
+    prims = [p for p in geo.prims() if p.numVertices() > 1]
     print("Found %d primitives" % len(prims))
     if not prims:
         raise hou.Error("%s: no primitives to export" % node.path())
@@ -36,9 +36,12 @@ def export_svg():
     if cd_level:
         cd = (np.clip(cd[:, :3], 0, 1) * 255).astype(int)
     w_level, w = _attrib(geo, "width", ("point", "prim"))
+    a_level, a = _attrib(geo, "Alpha", ("vertex", "point", "prim"))
+    if a_level:
+        a = np.clip(a[:, 0], 0, 1)
     label_attrib = geo.findPrimAttrib("label")
     labels = geo.primStringAttribValues("label") if label_attrib and label_attrib.dataType() == hou.attribData.String else None
-    print("Attributes found - Color: %s, Width: %s, Label: %s" % (cd_level, w_level, labels is not None))
+    print("Attributes found - Color: %s, Width: %s, Alpha: %s, Label: %s" % (cd_level, w_level, a_level, labels is not None))
 
     widths = [w[_index(w_level, p), 0] * SCALE if w_level else 1.0 for p in prims]
     pad = max(widths) / 2 or 0.5
@@ -53,8 +56,9 @@ def export_svg():
         pts = P[[p.number() for p in prim.points()]]
         data = " ".join(map(str, pts.ravel().tolist()))
         stroke = "rgb(%d,%d,%d)" % tuple(cd[_index(cd_level, prim)]) if cd_level else "black"
+        opacity = " stroke-opacity='%s'" % a[_index(a_level, prim)] if a_level else ""
         tag = "polygon" if isinstance(prim, hou.Face) and prim.isClosed() else "polyline"
-        lines.append("\t<%s points='%s' fill='none' stroke='%s' stroke-width='%s'/>" % (tag, data, stroke, sw))
+        lines.append("\t<%s points='%s' fill='none' stroke='%s' stroke-width='%s'%s/>" % (tag, data, stroke, sw, opacity))
 
         if labels and labels[prim.number()]:
             x, y = pts[0]
