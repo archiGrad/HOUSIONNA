@@ -48409,3 +48409,38 @@
 2026-11-02 23:40:58 clear   /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/batches/batch_2_20261102_205758Z  9.2 MB
 2026-11-02 23:41:00 clear N012 cleared 4 folders (85.2 MB) on 'local'
 2026-11-02 23:41:00 clear clear passed (0 errors, 0 warnings) after 1.6 s
+2026-11-03 01:21:22 batch batch batch_2_20261103_002122Z: 1 work item (1 to 1) from /obj/batch_run_1/topnet1/output0
+2026-11-03 01:21:24 batch   [1/1] wi001: exported, 148903 prims, W010 W005 (1.7 s)
+2026-11-03 01:21:24 batch parm 'batch' set to batch_2_20261103_002122Z
+2026-11-03 01:21:24 batch N009 batch 'batch_2_20261103_002122Z': 1 exported, 0 failed, written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/batches/batch_2_20261103_002122Z
+2026-11-03 01:21:24 batch batch passed (0 errors, 0 warnings) after 1.8 s
+2026-11-03 01:21:30 batch batch batch_2_20261103_002122Z: 1 work item queued, 1 of 1 exported
+2026-11-03 01:21:30 batch watching batch batch_2_20261103_002122Z on local every 15 s, a line follows each finished work item
+2026-11-03 01:21:30 batch N010 batch 'batch_2_20261103_002122Z' started on 'local' (pid 46503): 1 work items queued, finished ones are skipped
+2026-11-03 01:21:30 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-03 01:22:00 batch batch batch_2_20261103_002122Z: 1 work item queued, 1 of 1 exported
+2026-11-03 01:22:00 batch already watching batch batch_2_20261103_002122Z on local
+2026-11-03 01:22:00 batch B004 batch 'batch_2_20261103_002122Z' is already running on 'local' (pid 46503)
+2026-11-03 01:22:00 batch batch FAILED (1 error, 0 warnings) after 0.0 s
+2026-11-03 01:22:08 batch batch batch_2_20261103_002122Z on local: running, 0 of 1 done (0 skipped as already solved), 0 failed, now wi001
+2026-11-03 01:22:08 batch   log | settings: 0.868 GHz, max_depth 5, los, specular_reflection, refraction
+2026-11-03 01:22:08 batch   log | paths: 25 tx x 1 rx, 1e+05 samples per tx
+2026-11-03 01:22:08 batch   log | paths: 196 valid paths over 25 links (13.6 s)
+2026-11-03 01:22:08 batch   log | wrote SIONNA_HOUDINI_clean_result.npz (0.02 MB)
+2026-11-03 01:22:08 batch   log | radio map 'measure_floor': 30559 cells, 1e+06 samples per tx
+2026-11-03 01:22:08 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-03 01:22:23 batch batch batch_2_20261103_002122Z: 1 work item queued, 1 of 1 exported
+2026-11-03 01:22:23 batch already watching batch batch_2_20261103_002122Z on local
+2026-11-03 01:22:23 batch B004 batch 'batch_2_20261103_002122Z' is already running on 'local' (pid 46503)
+2026-11-03 01:22:23 batch batch FAILED (1 error, 0 warnings) after 0.0 s
+2026-11-03 01:22:26 batch batch batch_2_20261103_002122Z: 1 work item queued, 1 of 1 exported
+2026-11-03 01:22:26 batch already watching batch batch_2_20261103_002122Z on local
+2026-11-03 01:22:26 batch B004 batch 'batch_2_20261103_002122Z' is already running on 'local' (pid 46503)
+2026-11-03 01:22:26 batch batch FAILED (1 error, 0 warnings) after 0.0 s
+2026-11-03 01:22:30 watch batch batch_2_20261103_002122Z on local: wi001 solved, 1 of 1 finished
+2026-11-03 01:22:30 watch batch batch_2_20261103_002122Z on local: finished, 1 solved, 0 skipped, 0 failed (1.0 min), press batch fetch
+2026-11-03 01:22:37 batch convert 1 work item to bgeo, the others are up to date or have no result
+2026-11-03 01:22:38 batch   [1/1] wi001 (0.5 s)
+2026-11-03 01:22:38 batch converted in 0.5 s
+2026-11-03 01:22:38 batch N011 batch 'batch_2_20261103_002122Z': 1 solved, 0 failed, 0 without result
+2026-11-03 01:22:38 batch batch passed (0 errors, 0 warnings) after 0.5 s
