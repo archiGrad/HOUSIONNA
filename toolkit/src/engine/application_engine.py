@@ -121,6 +121,35 @@ def load_channels(project_root: Path, import_id: str) -> RunChannels:
     return channels_from_payload(housionna_viewer_payload(Path(project_root), import_id))
 
 
+def orient(run: RunChannels, infrastructure: str | None = None, sensors: str | None = None) -> RunChannels:
+    """Infrastructure as transmitters and sensors as receivers, chosen by name prefix.
+
+    Channels are reciprocal, so a run in which the sensors transmit to an access point gives the same gains as the
+    access point transmitting to the sensors: when the infrastructure prefix matches receivers, the matrices are
+    transposed. The infrastructure transmit power is not used (wpt.total_power_dbm is), so it is set to 0 dBm there.
+    """
+    if not infrastructure and not sensors:
+        return run
+    if infrastructure and not any(name.startswith(infrastructure) for name in run.tx_names) \
+            and any(name.startswith(infrastructure) for name in run.rx_names):
+        run = RunChannels(
+            import_id=run.import_id, run_id=run.run_id, frequency_hz=run.frequency_hz,
+            tx_names=list(run.rx_names), tx_power_dbm=np.zeros(len(run.rx_names)),
+            rx_names=list(run.tx_names), rx_positions_m=run.tx_positions_m,
+            h=run.h.T, gain_incoherent=run.gain_incoherent.T, path_counts=run.path_counts.T,
+            parameters=run.parameters, batch_id=run.batch_id, tx_positions_m=run.rx_positions_m)
+    tx = [i for i, name in enumerate(run.tx_names) if not infrastructure or name.startswith(infrastructure)]
+    rx = [j for j, name in enumerate(run.rx_names) if not sensors or name.startswith(sensors)]
+    pick = np.ix_(tx, rx)
+    return RunChannels(
+        import_id=run.import_id, run_id=run.run_id, frequency_hz=run.frequency_hz,
+        tx_names=[run.tx_names[i] for i in tx], tx_power_dbm=run.tx_power_dbm[tx],
+        rx_names=[run.rx_names[j] for j in rx], rx_positions_m=run.rx_positions_m[rx],
+        h=run.h[pick], gain_incoherent=run.gain_incoherent[pick], path_counts=run.path_counts[pick],
+        parameters=run.parameters, batch_id=run.batch_id,
+        tx_positions_m=run.tx_positions_m[tx] if len(run.tx_positions_m) else run.tx_positions_m)
+
+
 def db(value: np.ndarray | float) -> np.ndarray:
     with np.errstate(divide="ignore"):
         return 10.0 * np.log10(np.asarray(value, dtype=float))
@@ -200,12 +229,30 @@ def net_power_curve(harvester: dict[str, Any], project_root: Path = ROOT) -> lis
     return sorted((p_in, float(np.mean(values))) for p_in, values in rows.items())
 
 
+def quadratic_power_w(p_rf_w: np.ndarray, harvester: dict[str, Any]) -> np.ndarray:
+    """P_DC = a P^2 + b P + c with P_RF and P_DC in uW (harvester.quadratic_uw), fitted on the relative error.
+
+    The fit holds inside harvester.input_range_dbm: below it nothing is harvested (no data, the device does not
+    start), above it the efficiency at the upper end is kept, and the output is never negative.
+    """
+    a, b, c = (float(value) for value in harvester["quadratic_uw"])
+    low, high = (float(value) for value in harvester["input_range_dbm"])
+    fit = lambda p_uw: a * p_uw ** 2 + b * p_uw + c  # noqa: E731
+    p_rf = np.asarray(p_rf_w, dtype=float)
+    p_dbm = db(p_rf) + 30.0
+    top_uw = 10 ** (high / 10) * 1e3
+    p_dc_uw = np.where(p_dbm > high, p_rf * 1e6 * fit(top_uw) / top_uw, fit(p_rf * 1e6))
+    return np.where(p_dbm < low, 0.0, np.maximum(p_dc_uw, 0.0) * 1e-6)
+
+
 def harvest_w(p_rf_w: np.ndarray, harvester: dict[str, Any], project_root: Path = ROOT) -> np.ndarray:
-    """Usable DC power for an incident RF power, from measured charge times or from an efficiency curve.
+    """Usable DC power for an incident RF power: a quadratic fit, measured charge times or an efficiency curve.
 
     Measured points are interpolated in log power over dBm. Below the first point nothing is harvested (the device
     does not start); above the last point the last efficiency is kept.
     """
+    if "quadratic_uw" in harvester:
+        return quadratic_power_w(p_rf_w, harvester)
     if "charge_time_csv" not in harvester:
         return harvested_power_w(p_rf_w, efficiency_curve(harvester, project_root))
     points = np.array(net_power_curve(harvester, project_root))
@@ -218,6 +265,8 @@ def harvest_w(p_rf_w: np.ndarray, harvester: dict[str, Any], project_root: Path 
 
 
 def harvester_threshold_dbm(harvester: dict[str, Any], project_root: Path = ROOT) -> float:
+    if "quadratic_uw" in harvester:
+        return float(harvester["input_range_dbm"][0])
     if "charge_time_csv" in harvester:
         return float(net_power_curve(harvester, project_root)[0][0])
     return float(min(point[0] for point in efficiency_curve(harvester, project_root)))
@@ -403,6 +452,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--config", type=Path, help="application profiles (default config/applications.yaml)")
     parser.add_argument("--harvester", help="harvester from the config's harvesters section (default wpt.harvester)")
     parser.add_argument("--out", type=Path, help="output folder (default outputs/applications/<scope>)")
+    parser.add_argument("--infrastructure", help="name prefix of the infrastructure devices, e.g. ap_ (default: "
+                        "all transmitters); receivers with this prefix are used as transmitters by reciprocity")
+    parser.add_argument("--sensors", help="name prefix of the sensor devices, e.g. plant_sensor_ (default: all "
+                        "receivers)")
     args = parser.parse_args(argv)
     config = load_config(args.config, args.harvester)
     ids = _imports_in_scope(ROOT, args.batch, args.imports)
@@ -411,8 +464,14 @@ def main(argv: list[str] | None = None) -> int:
         return 2
     results = []
     for import_id in ids:
-        run = load_channels(ROOT, import_id)
+        run = orient(load_channels(ROOT, import_id), args.infrastructure, args.sensors)
+        if not run.tx_names or not run.rx_names:
+            print(f"skipped {run.run_id}: no {'infrastructure' if not run.tx_names else 'sensors'} in this run")
+            continue
         results.append((run, evaluate_run(run, config)))
+    if not results:
+        print("No run has both infrastructure and sensors.")
+        return 2
     scope = "_".join(args.batch) if args.batch else ("selected" if args.imports else "all")
     if args.harvester:
         scope += f"_{args.harvester}"

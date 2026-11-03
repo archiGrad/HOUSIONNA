@@ -11,8 +11,9 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from engine.application_engine import (  # noqa: E402
-    RunChannels, channels_from_payload, communication_summary, evaluate_run, harvested_power_w, link_margins_db,
-    load_config, reporting_interval_s, write_outputs, wpt_received_power_w,
+    RunChannels, channels_from_payload, communication_summary, evaluate_run, harvest_w, harvested_power_w,
+    harvester_threshold_dbm, link_margins_db, load_config, orient, reporting_interval_s, write_outputs,
+    wpt_received_power_w,
 )
 from server.digital_twin_data import housionna_viewer_payload  # noqa: E402
 from housionna.importer import import_run  # noqa: E402
@@ -42,6 +43,28 @@ class CommunicationTests(unittest.TestCase):
         self.assertEqual(link_margins_db(toy_run([[0.0]]), profile)[0, 0], -np.inf)  # no path, no link
 
 
+class OrientTests(unittest.TestCase):
+    def test_sensors_transmitting_to_an_access_point_are_transposed(self):
+        # Sensors and a robot transmit to one access point, as in the HOUSIONNA batches.
+        h = np.array([[1e-3], [2e-3j], [3e-3]])
+        run = toy_run(h)
+        run.tx_names = ["plant_sensor_0", "robot_sensor_0", "plant_sensor_1"]
+        run.rx_names = ["ap_0"]
+        run.tx_positions_m = np.arange(9.0).reshape(3, 3)
+        run.rx_positions_m = np.full((1, 3), 7.0)
+        out = orient(run, "ap_", "plant_sensor_")
+        self.assertEqual(out.tx_names, ["ap_0"])
+        self.assertEqual(out.rx_names, ["plant_sensor_0", "plant_sensor_1"])
+        np.testing.assert_allclose(out.h, [[1e-3, 3e-3]])                    # reciprocity: same channels
+        np.testing.assert_allclose(out.rx_positions_m, [[0, 1, 2], [6, 7, 8]])
+        np.testing.assert_allclose(out.tx_positions_m, [[7, 7, 7]])
+
+    def test_without_roles_the_run_is_unchanged(self):
+        run = toy_run([[1e-3, 2e-3]])
+        self.assertIs(orient(run), run)
+        self.assertEqual(orient(run, "tx_", "rx_1").rx_names, ["rx_1"])
+
+
 class WptTests(unittest.TestCase):
     def test_strategies_follow_their_definitions(self):
         h = np.array([[1e-3, 2e-3j], [1e-3, -2e-3j]])  # two TX: in phase at rx_0, opposite at rx_1
@@ -56,6 +79,19 @@ class WptTests(unittest.TestCase):
             w = rng.normal(size=2) + 1j * rng.normal(size=2)
             w /= np.linalg.norm(w)
             self.assertLessEqual(abs(h[:, 1] @ w) ** 2, p["coherent_mrt"][1] * (1 + 1e-12))
+
+    def test_quadratic_harvester_inside_its_range(self):
+        harvester = {"quadratic_uw": [-1e-5, 0.3, -5.0], "input_range_dbm": [-20.0, 0.0]}
+        p_dbm = np.array([-25.0, -20.0, -10.0, 0.0, 6.0])
+        p_uw = 10 ** (p_dbm / 10) * 1e3
+        p_dc_uw = harvest_w(p_uw * 1e-6, harvester) * 1e6
+        self.assertEqual(p_dc_uw[0], 0.0)                                   # below the range: nothing
+        self.assertEqual(p_dc_uw[1], 0.0)                                   # 0.3*10 - 5 < 0: clamped at zero
+        np.testing.assert_allclose(p_dc_uw[2:4], -1e-5 * p_uw[2:4] ** 2 + 0.3 * p_uw[2:4] - 5.0)
+        np.testing.assert_allclose(p_dc_uw[4] / p_uw[4], p_dc_uw[3] / p_uw[3])  # above: efficiency at the top
+        self.assertEqual(harvester_threshold_dbm(harvester), -20.0)
+        for name in ("aem40940_921_fit", "p1110b_915_fit"):                 # the paper's harvesters load
+            self.assertIn("quadratic_uw", load_config(harvester=name)["wpt"]["harvester"])
 
     def test_harvester_threshold_and_interval(self):
         curve = [[-20.0, 0.1], [0.0, 0.5]]

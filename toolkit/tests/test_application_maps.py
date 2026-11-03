@@ -11,7 +11,9 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from engine.application_engine import load_config  # noqa: E402
-from engine.application_maps import MapChannels, evaluate_maps, map_channels_from_payload, select_transmitters  # noqa: E402
+from engine.application_maps import (  # noqa: E402
+    MapChannels, combine_configurations, evaluate_maps, map_channels_from_payload, select_prefix, select_transmitters,
+)
 from server.digital_twin_data import housionna_viewer_payload  # noqa: E402
 from housionna.importer import import_run  # noqa: E402
 
@@ -24,6 +26,30 @@ def square_maps(gain: list[list[float]]) -> MapChannels:
     gain = np.asarray(gain, dtype=float)
     return MapChannels("toy", "toy", 915e6, [f"tx_{i}" for i in range(gain.shape[0])], np.full(gain.shape[0], 30.0),
                        np.zeros((gain.shape[0], 3)), vertices, np.array([[0, 1, 2], [0, 2, 3]]), gain, "floor")
+
+
+class BatchMapTests(unittest.TestCase):
+    def test_worst_case_per_cell_over_crop_configurations(self):
+        config = load_config()
+        sparse = square_maps([[1e-5, 1e-9]])           # second triangle shadowed in this configuration
+        dense = square_maps([[1e-9, 1e-5]])            # first triangle shadowed in this one
+        worst = combine_configurations([(sparse, evaluate_maps(sparse, config)), (dense, evaluate_maps(dense, config))])
+        ble = config["communication"]["ble_1m"]
+        expected = ble["tx_power_dbm"] - 90 - ble["sensitivity_dbm"] - ble["reserve_db"]
+        np.testing.assert_allclose(worst["communication"]["ble_1m"]["margin_db"], [expected, expected])
+        self.assertEqual(worst["communication"]["ble_1m"]["coverage_area_share"], 0.0)
+        self.assertEqual(worst["wpt"]["single_best"]["feasible_area_share"], 0.0)
+        moved = square_maps([[1e-5, 1e-9]])
+        moved.vertices_m = moved.vertices_m * 2       # another measurement surface: no worst case per cell
+        self.assertIsNone(combine_configurations([(sparse, evaluate_maps(sparse, config)),
+                                                  (moved, evaluate_maps(moved, config))]))
+
+    def test_infrastructure_by_prefix(self):
+        maps = square_maps([[1e-3, 1e-3], [1e-5, 1e-5]])
+        maps.tx_names = ["ap_0", "plant_sensor_0"]
+        self.assertEqual(select_prefix(maps, "ap_").tx_names, ["ap_0"])
+        self.assertIs(select_prefix(maps, None), maps)
+        self.assertIsNone(select_prefix(maps, "gateway_"))  # simulated as a receiver: no map
 
 
 class MapTests(unittest.TestCase):

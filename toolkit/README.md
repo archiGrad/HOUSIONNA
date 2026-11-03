@@ -187,18 +187,13 @@ Detailed vertical-farm plants are instanced Three.js geometry only and remain ex
 
 `python run.py publish` writes the viewer and the current results to `outputs/site/` (ignored by git). Build the viewer first with `npm --prefix ../viewer run build`. The folder is a plain static site, with no Python server needed: upload its contents, including `.htaccess`, to any web host (one.com, GitHub Pages, a university server), at the root or in a subfolder. It is the same viewer, marked `data-site="static"`. It reads `data/viewer_scene.json` and one `data/runs/<import>.json` per HOUSIONNA run, shows a research-demo note, and hides the import, rerun, compare and simulation controls. `--batch <id>` (repeatable) publishes only those batches, and `--no-single-runs` leaves out runs that are not part of a batch. Numbers are written with six significant digits, which makes run files about a third smaller. Publishing refuses to write data that contains a local file path, and leaves out source maps. The `.htaccess` turns on compression on Apache hosts, so a 12 MB run downloads as about 1.5 MB. To update the site, publish again and re-upload the folder.
 
-**GitHub Pages.** The site is served from the `gh-pages` branch at https://archigrad.io/HOUSIONNA/ (Settings → Pages → Deploy from a branch → `gh-pages`, `/ (root)`; set once by a repository admin). The branch holds only the latest site, as a single commit, so its history does not grow. A `.nojekyll` file makes Pages serve the files as they are. Pages allows 1 GB per site and 100 MB per file; one batch with radio maps is about 350 MB, so publish one or two batches with `--no-single-runs`. To publish, from `toolkit/` (wait for "Published … to …" before the second step):
+**GitHub Pages.** The site is served from the `gh-pages` branch at https://archigrad.io/HOUSIONNA/ (Settings → Pages → Deploy from a branch → `gh-pages`, `/ (root)`; set once by a repository admin). The branch holds only the latest site, as a single commit, so its history does not grow. A `.nojekyll` file makes Pages serve the files as they are. Pages allows 1 GB per site and 100 MB per file; one batch with radio maps is about 350 MB, so publish one or two batches with `--no-single-runs`. To update the site, from `toolkit/`:
 
 ```powershell
-.\.venv\Scripts\python.exe run.py publish --batch <batch id> --no-single-runs
-Set-Location outputs\site
-if (Test-Path .housionna-site) { git init -b gh-pages; git add -A; git commit -m "Publish viewer"; git push --force https://github.com/archiGrad/HOUSIONNA.git gh-pages } else { "Not in the site folder: nothing done" }
-Set-Location ..\..
+.\.venv\Scripts\python.exe run.py publish --batch <batch id> --no-single-runs --deploy
 ```
 
-The `Test-Path` check matters: if the publish failed and `outputs\site` does not exist, `git add -A` would otherwise run in the main repository.
-
-The next publish deletes the folder, including this temporary repository, and the force push replaces the previous site.
+`--deploy` rebuilds the viewer, publishes into `outputs/site/`, commits that folder as a temporary repository of its own, and force-pushes it to `gh-pages` of the repository's origin; the site updates about a minute later. It pushes only a folder that `publish` made, refuses sites over 1 GB, and leaves the main repository untouched. The site does not update by itself: the run data stays on the computer that imported the runs, so publishing is done there after new runs are imported or the viewer changes.
 
 ## Running on the DGX Spark
 
@@ -261,8 +256,10 @@ The harvester is one of the named entries in the `harvesters` section; `apps` an
 - `python run.py apps --batch <batch>` (or `--import <id>`, or no option for every run) computes the following and writes them to `outputs/applications/<scope>/`:
   - received power, link margin, best server, coverage and the worst case over a batch;
   - for RF wireless power transfer with a total power budget: the incident power for four strategies (best single TX; equal split without phase alignment; equal split in phase without channel knowledge; coherent maximum-ratio transmission), the harvested DC power and the shortest sustainable reporting interval.
+  - `--infrastructure <prefix>` and `--sensors <prefix>` pick the devices by name, e.g. `--infrastructure ap_ --sensors plant_sensor_`. When the infrastructure was simulated as a receiver (the sensors transmit to the access point), the channels are turned around by reciprocity. `run.py casestudy` passes both options on.
 - `python run.py placement --run <run>` treats every transmitter of a run as a candidate position. For each number of transmitters k it finds the subset that is best for the worst receiver, exhaustively for up to 16 candidates and greedy beyond. Output goes to `outputs/placement/<run>/`.
 - `python run.py maps --run <run> [--placement-k K | --tx NAME ...]` computes the same metrics per triangle of the radio-map surface and reports the share of the area where a node can run. Maps carry no phase, so coherent MRT appears there as its local average P Σ g_i. Output goes to `outputs/applications/maps/<run>/`.
+- `python run.py maps --batch <batch> [--infrastructure ap_]` evaluates the maps of every run of a batch (one crop configuration each), reports the covered area per configuration, and takes the worst case per triangle over all of them (the lowest margin and the longest reporting interval) when they share the measurement surface. It writes `maps_batch_<tag>.json` and the worst-case margin map `map_coverage_<tag>.pdf` to `outputs/applications/maps/<batch>/`. A radio map holds the gain from one transmitter, so the access points must be transmitters in the run: unlike point links, a map cannot be turned around by reciprocity.
 - `python scripts/material_table.py` evaluates every material of `houdini_files/sionna/materials.json` with the exporter's own models at 868 MHz, 915 MHz, 2.437 GHz, 3.5 GHz and 5.18 GHz and writes the loss of one surface crossing to `outputs/validation/material_losses.csv`.
 - `python scripts/harvester_figure.py` plots the efficiency of the harvester models against incident power (`outputs/validation/harvester_models.pdf`).
 - `python scripts/reference_cases.py` compares Sionna RT against analytical cases and writes `outputs/validation/`:
