@@ -4,6 +4,10 @@
     python run.py publish --batch 20261020_095105Z # only this batch (repeatable)
     python run.py publish --no-single-runs         # batches only
     python run.py publish --out D:/site            # somewhere else
+    python run.py publish --batch <id> --no-single-runs --deploy   # build the viewer, publish, push to GitHub Pages
+
+With --deploy, the viewer is rebuilt first and the site is pushed as a single commit to the gh-pages branch of the
+repository's origin (https://archigrad.io/HOUSIONNA/), replacing the previous site.
 
 Upload the contents of the output folder to any static web host (one.com, GitHub Pages, a university server).
 The site needs no Python server: the viewer reads data/viewer_scene.json and one data/runs/<import>.json per
@@ -18,6 +22,7 @@ import os
 import re
 import shutil
 import stat
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any
@@ -151,20 +156,62 @@ def publish(project_root: Path = ROOT, out: Path | None = None, *,
     return {"out": out, "runs": len(import_ids), "total_bytes": total, "scene_bytes": sizes["scene"]}
 
 
+PAGES_BRANCH = "gh-pages"
+PAGES_LIMIT_BYTES = 1e9          # GitHub Pages: 1 GB per site
+
+
+def build_viewer(project_root: Path = ROOT) -> None:
+    viewer = project_root.parent / "viewer"
+    npm = "npm.cmd" if os.name == "nt" else "npm"
+    subprocess.run([npm, "run", "build"], cwd=viewer, check=True)
+
+
+def deploy(out: Path, project_root: Path = ROOT, message: str = "Publish viewer") -> str:
+    """Push the published folder as one commit to the gh-pages branch of the repository's origin."""
+    if not (out / MARKER).is_file():
+        raise ValueError(f"{out} was not made by run.py publish; nothing pushed")
+    remote = subprocess.run(["git", "-C", str(project_root), "remote", "get-url", "origin"],
+                            check=True, capture_output=True, text=True).stdout.strip()
+    git = ["git", "-C", str(out)]
+    if not (out / ".git").is_dir():                            # publish removed the previous deployment repository
+        subprocess.run([*git, "init", "-q", "-b", PAGES_BRANCH], check=True)
+    subprocess.run([*git, "add", "-A"], check=True)
+    subprocess.run([*git, "commit", "-q", "-m", message], check=True)
+    subprocess.run([*git, "push", "--force", remote, PAGES_BRANCH], check=True)
+    return remote
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="run.py publish", description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--out", type=Path, help="output folder (default: outputs/site)")
     parser.add_argument("--batch", action="append", metavar="ID", help="publish only this batch (repeatable)")
     parser.add_argument("--no-single-runs", action="store_true", help="leave out runs that are not in a batch")
+    parser.add_argument("--deploy", action="store_true",
+                        help="rebuild the viewer first and push the site to the gh-pages branch (GitHub Pages)")
     args = parser.parse_args(argv)
     try:
+        if args.deploy:
+            build_viewer(ROOT)
         result = publish(ROOT, args.out, batches=args.batch, single_runs=not args.no_single_runs)
-    except (ValueError, FileNotFoundError) as error:
+    except (ValueError, FileNotFoundError, subprocess.CalledProcessError) as error:
         print(f"Publish failed: {error}", file=sys.stderr)
         return 2
     print(f"Published {result['runs']} HOUSIONNA run(s) and the built-in farm to {result['out']}")
-    print(f"Total {result['total_bytes']/1e6:.1f} MB. Upload the folder's contents (including .htaccess) to your web host.")
+    print(f"Total {result['total_bytes']/1e6:.1f} MB.")
     if result["total_bytes"] > 300e6:
-        print("That is a large upload; --batch publishes only the batches you name.")
+        print("That is a large site; --batch publishes only the batches you name.")
+    if not args.deploy:
+        print("Upload the folder's contents (including .htaccess) to your web host, or add --deploy for GitHub Pages.")
+        return 0
+    if result["total_bytes"] > PAGES_LIMIT_BYTES:
+        print("Not pushed: GitHub Pages allows 1 GB per site. Publish fewer batches.", file=sys.stderr)
+        return 2
+    batches = ", ".join(args.batch) if args.batch else "all runs"
+    try:
+        remote = deploy(result["out"], ROOT, f"Publish viewer: {batches}")
+    except (ValueError, subprocess.CalledProcessError) as error:
+        print(f"Deploy failed: {error}", file=sys.stderr)
+        return 2
+    print(f"Pushed to {PAGES_BRANCH} of {remote}; the site updates within a minute: https://archigrad.io/HOUSIONNA/")
     return 0

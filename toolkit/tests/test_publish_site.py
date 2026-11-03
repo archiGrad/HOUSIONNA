@@ -1,13 +1,20 @@
 """run.py publish: which runs go on the public site, and how their numbers are compacted."""
 from __future__ import annotations
 
+import os
 from pathlib import Path
+import shutil
+import subprocess
 import sys
+import tempfile
 import unittest
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from server.publish_site import LOCAL_PATH, _compact, _select  # noqa: E402
+from server.publish_site import (  # noqa: E402
+    LOCAL_PATH, MARKER, PAGES_BRANCH, _compact, _make_writable, _select, deploy,
+)
 
 
 def _run(name: str, batch: str | None) -> dict:
@@ -48,6 +55,50 @@ class PublishSelectionTests(unittest.TestCase):
         for leak in ("/home/joris/Documents/x.hipnc", "C:\\\\Users\\\\beauf\\\\x", "C:/Users/beauf/x"):
             self.assertIsNotNone(LOCAL_PATH.search(leak), leak)
         self.assertIsNone(LOCAL_PATH.search("SIONNA_HOUDINI_pipeline_5.hipnc /obj/procedural_demo/topnet1/output0"))
+
+
+class DeployTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, self.tmp, onexc=_make_writable)
+        self.remote = self.tmp / "remote.git"
+        self.project = self.tmp / "toolkit"
+        self.site = self.tmp / "site"
+        for folder in (self.project, self.site):
+            folder.mkdir()
+        git = lambda *args: subprocess.run(["git", *args], check=True, capture_output=True)  # noqa: E731
+        git("init", "-q", "--bare", str(self.remote))
+        git("-C", str(self.project), "init", "-q")
+        git("-C", str(self.project), "remote", "add", "origin", str(self.remote))
+        identity = patch.dict(os.environ, GIT_AUTHOR_NAME="test", GIT_AUTHOR_EMAIL="t@t", GIT_COMMITTER_NAME="test",
+                              GIT_COMMITTER_EMAIL="t@t")
+        identity.start()
+        self.addCleanup(identity.stop)
+
+    def published_files(self) -> list[str]:
+        listing = subprocess.run(["git", "-C", str(self.remote), "ls-tree", "-r", "--name-only", PAGES_BRANCH],
+                                 check=True, capture_output=True, text=True).stdout
+        return sorted(listing.split())
+
+    def test_pushes_the_site_as_one_commit_and_replaces_it(self):
+        (self.site / MARKER).write_text("x")
+        (self.site / "index.html").write_text("first")
+        deploy(self.site, self.project, "first")
+        self.assertEqual(self.published_files(), [MARKER, "index.html"])
+        shutil.rmtree(self.site / ".git", onexc=_make_writable)          # as the next publish does
+        (self.site / "index.html").unlink()
+        (self.site / "new.html").write_text("second")
+        deploy(self.site, self.project, "second")
+        self.assertEqual(self.published_files(), [MARKER, "new.html"])
+        count = subprocess.run(["git", "-C", str(self.remote), "rev-list", "--count", PAGES_BRANCH],
+                               check=True, capture_output=True, text=True).stdout.strip()
+        self.assertEqual(count, "1")
+
+    def test_refuses_a_folder_not_made_by_publish(self):
+        (self.site / "index.html").write_text("x")
+        with self.assertRaises(ValueError):
+            deploy(self.site, self.project)
+        self.assertFalse((self.site / ".git").exists())
 
 
 if __name__ == "__main__":

@@ -22,10 +22,13 @@ from engine.application_engine import ROOT, WPT_STRATEGIES, _jsonable, load_conf
 from engine.application_maps import MAP_STRATEGIES, main as maps_main
 from engine.placement import main as placement_main
 
-HARVESTERS = ("cappelle2025_chain", "rectifier_bound_915", "rectifier_low_915")
-HARVESTER_LABELS = {"cappelle2025_chain": "Sensor (measured)", "rectifier_bound_915": "Rectifier, high-power path",
-                    "rectifier_low_915": "Rectifier, low-power path"}
-HARVESTER_COLUMNS = {"cappelle2025_chain": "Sensor", "rectifier_bound_915": "High path", "rectifier_low_915": "Low path"}
+HARVESTERS = ("aem40940_921_fit", "p1110b_915_fit")
+HARVESTER_LABELS = {"aem40940_921_fit": "AEM40940", "p1110b_915_fit": "P1110B",
+                    "aem40940_921": "AEM40940 (datasheet)", "sms7621_915_t2000": "SMS7621005LF rectifier",
+                    "sms7630_915_t2000": "SMS7630005LF rectifier", "cappelle2025_chain": "Sensor (measured)",
+                    "rectifier_bound_915": "Rectifier, high-power path", "rectifier_low_915": "Rectifier, low-power path"}
+HARVESTER_COLUMNS = {"aem40940_921_fit": "AEM40940", "p1110b_915_fit": "P1110B", "aem40940_921": "AEM40940", "sms7621_915_t2000": "SMS7621", "sms7630_915_t2000": "SMS7630",
+                     "cappelle2025_chain": "Sensor", "rectifier_bound_915": "High path", "rectifier_low_915": "Low path"}
 PLACEMENT_ROWS = (1, 2, 3, 5, 10)          # plus the full set of candidates
 STRATEGY_LABELS = {"single_best": "Best single transmitter", "equal_incoherent": "Equal split, incoherent",
                    "equal_in_phase": "Equal split, in phase", "coherent_mrt": "Coherent MRT",
@@ -123,7 +126,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--k", type=int, default=3, help="number of transmitters for the best-k map (default 3)")
     parser.add_argument("--harvester", action="append", help=f"harvester (repeatable; default {', '.join(HARVESTERS)})")
     parser.add_argument("--cycle", default="case_I_imu_ble_basic", help="energy cycle from wpt.cycles_j")
+    parser.add_argument("--infrastructure", help="name prefix of the infrastructure devices (see run.py apps)")
+    parser.add_argument("--sensors", help="name prefix of the sensor devices (see run.py apps)")
     args = parser.parse_args(argv)
+    roles = [*(["--infrastructure", args.infrastructure] if args.infrastructure else []),
+             *(["--sensors", args.sensors] if args.sensors else [])]
     harvesters = args.harvester or list(HARVESTERS)
     config = load_config()
     out = ROOT / "outputs" / "casestudy" / args.batch
@@ -135,7 +142,7 @@ def main(argv: list[str] | None = None) -> int:
                                "total_power_dbm": config["wpt"]["total_power_dbm"], "receivers_by_harvester": {}}
     for harvester in harvesters:
         print(f"== apps, {harvester}")
-        if apps_main(["--batch", args.batch, "--harvester", harvester]):
+        if apps_main(["--batch", args.batch, "--harvester", harvester, *roles]):
             return 2
         folder = ROOT / "outputs" / "applications" / f"{args.batch}_{harvester}"
         numbers["receivers_by_harvester"][harvester] = receiver_stats(folder / "per_receiver.csv", args.cycle)
@@ -179,8 +186,9 @@ def main(argv: list[str] | None = None) -> int:
     (out / "casestudy_tables.tex").write_text(latex_tables(numbers), encoding="utf-8")
     (out / "figures.txt").write_text("\n".join(str(p.relative_to(ROOT)) for p in figures if p.is_file()) + "\n",
                                      encoding="utf-8")
-    print(f"\nBLE worst margin {numbers['communication_worst_margin_db']['ble_1m']:.1f} dB, "
-          f"LoRa {numbers['communication_worst_margin_db']['lora_sf7_125k']:.1f} dB over {numbers['runs']} runs "
+    worst = {name: "no path" if value is None else f"{value:.1f} dB"     # None: a sensor without any path
+             for name, value in numbers["communication_worst_margin_db"].items()}
+    print(f"\nBLE worst margin {worst['ble_1m']}, LoRa {worst['lora_sf7_125k']} over {numbers['runs']} runs "
           f"at {', '.join(f'{f / 1e9:g} GHz' for f in numbers['frequency_hz'])}")
     for harvester in harvesters:
         mrt = numbers["receivers_by_harvester"][harvester]["coherent_mrt"]

@@ -16,6 +16,7 @@ outputs/applications/
 outputs/placement/
 outputs/validation/
 outputs/casestudy/
+outputs/reruns/
 # Third-party material, not ours to publish: paper source and Otii measurements of Cappelle et al. 2025.
 # The derived files used by the engine are in data/devices/cappelle2025/.
 data/IEEE_Sensors_2025___RF_Power_Plant_Sensor_GROWTH_1/

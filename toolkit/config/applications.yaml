@@ -59,6 +59,34 @@ harvesters:
     efficiency_csv: data/devices/ambient6g/rectifier_envelope.csv
     rectifier: SMS7630005LF
     frequency_hz: 915.0e+6
+  # The harvesters of the paper's use case: quadratic fits from the AMBIENT-6G webtool on the squared relative error
+  # (P_RF and P_DC in uW), valid inside the datasheet range; below it nothing is harvested and P_DC >= 0.
+  aem40940_921_fit:
+    label: e-peas AEM40940 at 921 MHz, quadratic fit to the datasheet (AMBIENT-6G)
+    quadratic_uw: [-0.00002043340174881458, 0.26847335241786985, -2.188889194604883]
+    input_range_dbm: [-20.02, 8.96]
+    frequency_hz: 921.0e+6
+  p1110b_915_fit:
+    label: Powercast P1110B at 915 MHz, quadratic fit to the datasheet (AMBIENT-6G)
+    quadratic_uw: [-0.0000018052933812276328, 0.7006734533499676, -189.4751611944157]
+    input_range_dbm: [-4.96, 20.0]
+    frequency_hz: 915.0e+6
+  # The data points of the webtool series (scripts/import_ambient6g_webtool.py), for comparison with the fits.
+  aem40940_921:
+    label: e-peas AEM40940 at 921 MHz (datasheet, AMBIENT-6G)
+    efficiency_csv: data/devices/ambient6g/webtool_harvesters.csv
+    rectifier: AEM40940
+    frequency_hz: 921.0e+6
+  sms7621_915_t2000:
+    label: SMS7621005LF rectifier at 912.5 MHz, 2000 mV target voltage (measured, AMBIENT-6G)
+    efficiency_csv: data/devices/ambient6g/webtool_harvesters.csv
+    rectifier: SMS7621005LF
+    frequency_hz: 912.5e+6
+  sms7630_915_t2000:
+    label: SMS7630005LF rectifier at 912.5 MHz, 2000 mV target voltage (measured, AMBIENT-6G)
+    efficiency_csv: data/devices/ambient6g/webtool_harvesters.csv
+    rectifier: SMS7630005LF
+    frequency_hz: 912.5e+6
   rectifier_bound_868:
     label: The same 915 MHz rectifier used in the EU 868 MHz band (upper bound)
     efficiency_csv: data/devices/ambient6g/rectifier_envelope.csv

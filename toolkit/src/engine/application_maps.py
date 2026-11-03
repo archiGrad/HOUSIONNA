@@ -3,6 +3,7 @@
     python run.py maps --run 20261020_183214Z                   # all transmitters of the run
     python run.py maps --run 20261020_183214Z --placement-k 3   # the best 3 from run.py placement
     python run.py maps --run 20261020_183214Z --tx tx_4 --tx tx_7
+    python run.py maps --batch <batch> --infrastructure ap_    # every crop configuration and the worst case per cell
 
 Radio maps hold the local-average path gain g_i of each transmitter per surface triangle, without phase. The maps
 therefore show local averages:
@@ -17,7 +18,7 @@ Area shares are weighted by triangle area.
 from __future__ import annotations
 
 import argparse
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import json
 from pathlib import Path
 from typing import Any
@@ -47,6 +48,7 @@ class MapChannels:
     faces: np.ndarray             # (F, 3) vertex indices
     gain: np.ndarray              # (n_tx, F) linear local-average path gain; 0 where the map has no value
     surface: str
+    parameters: dict[str, Any] = field(default_factory=dict)   # work-item parameters, e.g. the crop configuration
 
     @property
     def areas_m2(self) -> np.ndarray:
@@ -86,6 +88,7 @@ def map_channels_from_payload(payload: dict[str, Any]) -> MapChannels:
         tx_positions_m=np.array([scenario["transmitter"]["position_m"] for scenario in scenarios], dtype=float),
         vertices_m=np.asarray(mesh["vertices_m"], dtype=float), faces=faces, gain=gain,
         surface=str(surfaces[0].get("name") or "surface"),
+        parameters=dict(meta.get("parameters") or {}),
     )
 
 
@@ -103,7 +106,135 @@ def select_transmitters(maps: MapChannels, names: list[str] | None) -> MapChanne
     index = [maps.tx_names.index(name) for name in names]
     return MapChannels(maps.import_id, maps.run_id, maps.frequency_hz, [maps.tx_names[i] for i in index],
                        maps.tx_power_dbm[index], maps.tx_positions_m[index], maps.vertices_m, maps.faces,
-                       maps.gain[index], maps.surface)
+                       maps.gain[index], maps.surface, maps.parameters)
+
+
+def select_prefix(maps: MapChannels, prefix: str | None) -> MapChannels | None:
+    """The transmitters whose name starts with prefix (e.g. ap_ for the access points); None if there are none.
+
+    A radio map holds the gain from one transmitter to every cell, so infrastructure that was simulated as a
+    receiver has no map: unlike the point links, a map cannot be turned around by reciprocity.
+    """
+    if not prefix:
+        return maps
+    names = [name for name in maps.tx_names if name.startswith(prefix)]
+    return select_transmitters(maps, names) if names else None
+
+
+def same_surface(a: MapChannels, b: MapChannels) -> bool:
+    return (a.faces.shape == b.faces.shape and a.vertices_m.shape == b.vertices_m.shape
+            and np.array_equal(a.faces, b.faces) and np.allclose(a.vertices_m, b.vertices_m, atol=1e-4))
+
+
+def combine_configurations(evaluated: list[tuple[MapChannels, dict[str, Any]]]) -> dict[str, Any] | None:
+    """Worst case per cell over crop configurations: min_s of the margin and max_s of the reporting interval.
+
+    Needs the same measurement surface in every configuration; None otherwise.
+    """
+    first = evaluated[0][0]
+    if not all(same_surface(first, maps) for maps, _ in evaluated[1:]):
+        return None
+    areas = first.areas_m2
+    share = lambda mask: float(areas[mask].sum() / areas.sum())  # noqa: E731
+    out: dict[str, Any] = {"communication": {}, "wpt": {}}
+    for name in evaluated[0][1]["communication"]:
+        margin = np.min([result["communication"][name]["margin_db"] for _, result in evaluated], axis=0)
+        out["communication"][name] = {"margin_db": margin, "coverage_area_share": share(margin >= 0),
+                                      "worst_margin_db": float(margin.min())}
+    for strategy in evaluated[0][1]["wpt"]:
+        interval = np.max([result["wpt"][strategy]["interval_s"] for _, result in evaluated], axis=0)
+        out["wpt"][strategy] = {"interval_s": interval, "feasible_area_share": share(np.isfinite(interval)),
+                                "area_share_within_s": {f"{limit:g}": share(interval <= limit) for limit in INTERVALS_S}}
+    return out
+
+
+def coverage_figure(maps: MapChannels, margins: dict[str, np.ndarray], config: dict[str, Any], out: Path,
+                    tag: str) -> list[Path]:
+    """Worst-case link margin per triangle for each communication profile (white: no value)."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from matplotlib.tri import Triangulation
+    extent = np.ptp(maps.vertices_m, axis=0)
+    axes2 = np.sort(np.argsort(extent)[-2:])
+    triangulation = Triangulation(maps.vertices_m[:, axes2[0]], maps.vertices_m[:, axes2[1]], maps.faces)
+    finite = np.concatenate([values[np.isfinite(values)] for values in margins.values()])
+    limit = max(abs(finite).max(), 1.0) if finite.size else 1.0
+    fig, axes = plt.subplots(1, len(margins), figsize=(3.6 * len(margins), 3.0), squeeze=False, layout="constrained")
+    for ax, (name, values) in zip(axes[0], margins.items()):
+        image = ax.tripcolor(triangulation, facecolors=np.ma.masked_invalid(np.where(np.isfinite(values), values, np.nan)),
+                             cmap="RdBu", vmin=-limit, vmax=limit, edgecolors="none")
+        ax.scatter(maps.tx_positions_m[:, axes2[0]], maps.tx_positions_m[:, axes2[1]], marker="^", s=28,
+                   color="black", edgecolors="white", linewidths=0.5)
+        ax.set_title(config["communication"][name].get("label", name), fontsize=7)
+        ax.set_aspect("equal")
+        ax.set_xlabel(f"{'xyz'[axes2[0]]} (m)", fontsize=7)
+        ax.set_ylabel(f"{'xyz'[axes2[1]]} (m)", fontsize=7)
+        ax.tick_params(labelsize=6)
+        bar = fig.colorbar(image, ax=ax, shrink=0.85, pad=0.02)
+        bar.set_label("Worst-case margin (dB)", fontsize=7)
+        bar.ax.tick_params(labelsize=6)
+    written = []
+    for suffix in ("pdf", "png"):
+        fig.savefig(out / f"map_coverage_{tag}.{suffix}", dpi=200, bbox_inches="tight")
+        written.append(out / f"map_coverage_{tag}.{suffix}")
+    plt.close(fig)
+    return written
+
+
+def batch_main(args: argparse.Namespace, config: dict[str, Any]) -> int:
+    """Maps of every run of a batch (one crop configuration each) and their worst case per cell."""
+    from engine.application_engine import _imports_in_scope
+    ids = _imports_in_scope(ROOT, [args.batch], None)
+    if not ids:
+        print(f"No imported runs of batch {args.batch}")
+        return 2
+    evaluated, skipped = [], []
+    for import_id in ids:
+        maps = select_prefix(load_map_channels(ROOT, import_id), args.infrastructure)
+        if maps is None:
+            skipped.append(import_id)
+            continue
+        evaluated.append((maps, evaluate_maps(maps, config)))
+    for import_id in skipped:
+        print(f"skipped {import_id}: no transmitter named {args.infrastructure}*; infrastructure simulated as a "
+              "receiver has no radio map, so rerun it as a transmitter")
+    if not evaluated:
+        return 2
+    tag = (args.infrastructure.rstrip("_") if args.infrastructure else "all") + (f"_{args.harvester}" if args.harvester else "")
+    out = args.out or ROOT / "outputs" / "applications" / "maps" / args.batch
+    out.mkdir(parents=True, exist_ok=True)
+    per_run = [{"run_id": maps.run_id, "import_id": maps.import_id, "parameters": maps.parameters,
+                "transmitters": maps.tx_names,
+                "communication": {name: {key: value for key, value in item.items() if key != "margin_db"}
+                                  for name, item in result["communication"].items()},
+                "wpt": {strategy: {key: value for key, value in item.items() if key not in ("p_rf_dbm", "p_dc_w", "interval_s")}
+                        for strategy, item in result["wpt"].items()}}
+               for maps, result in evaluated]
+    worst = combine_configurations(evaluated)
+    summary = {"batch": args.batch, "frequency_hz": evaluated[0][0].frequency_hz, "surface": evaluated[0][0].surface,
+               "area_m2": evaluated[0][1]["area_m2"], "runs": per_run, "skipped": skipped,
+               "worst_case": None if worst is None else {
+                   "communication": {name: {key: value for key, value in item.items() if key != "margin_db"}
+                                     for name, item in worst["communication"].items()},
+                   "wpt": {strategy: {key: value for key, value in item.items() if key != "interval_s"}
+                           for strategy, item in worst["wpt"].items()}}}
+    (out / f"maps_batch_{tag}.json").write_text(json.dumps(_jsonable(summary), indent=2), encoding="utf-8")
+    written = [out / f"maps_batch_{tag}.json"]
+    for row in per_run:
+        cover = ", ".join(f"{name} {item['coverage_area_share']*100:.0f}%" for name, item in row["communication"].items())
+        print(f"{row['run_id']} {row['parameters']}: coverage {cover}")
+    if worst is None:
+        print("The runs use different measurement surfaces; no worst case per cell")
+    else:
+        maps = evaluated[0][0]
+        written += coverage_figure(maps, {name: item["margin_db"] for name, item in worst["communication"].items()},
+                                   config, out, tag)
+        cover = ", ".join(f"{name} {item['coverage_area_share']*100:.0f}% (worst {item['worst_margin_db']:.1f} dB)"
+                          for name, item in worst["communication"].items())
+        print(f"worst case over {len(evaluated)} configurations: coverage {cover}")
+    print("written:", ", ".join(str(path.relative_to(ROOT)) for path in written))
+    return 0
 
 
 def evaluate_maps(maps: MapChannels, config: dict[str, Any]) -> dict[str, Any]:
@@ -200,13 +331,20 @@ def figures(maps: MapChannels, result: dict[str, Any], config: dict[str, Any], o
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="run.py maps", description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--run", required=True, help="run id (newest import of it) or import id")
+    scope = parser.add_mutually_exclusive_group(required=True)
+    scope.add_argument("--run", help="run id (newest import of it) or import id")
+    scope.add_argument("--batch", help="every run of this batch (one crop configuration each) and the worst case "
+                       "per cell over them")
+    parser.add_argument("--infrastructure", help="with --batch: name prefix of the access points, e.g. ap_ "
+                        "(default: all transmitters)")
     parser.add_argument("--tx", action="append", help="use only these transmitters (repeatable)")
     parser.add_argument("--placement-k", type=int, help="use the best k coherent transmitters from run.py placement")
     parser.add_argument("--config", type=Path, help="application profiles (default config/applications.yaml)")
     parser.add_argument("--harvester", help="harvester from the config's harvesters section (default wpt.harvester)")
     parser.add_argument("--out", type=Path, help="output folder (default outputs/applications/maps/<run>)")
     args = parser.parse_args(argv)
+    if args.batch:
+        return batch_main(args, load_config(args.config, args.harvester))
     from housionna.importer import list_imports
     rows = sorted((row for row in list_imports(ROOT) if args.run in (row["run_id"], row["import_id"])),
                   key=lambda row: row.get("imported_at_utc") or "")
