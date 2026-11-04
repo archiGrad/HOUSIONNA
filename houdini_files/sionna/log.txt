@@ -48748,3 +48748,1114 @@
 2026-11-04 15:00:35 clear looking for runs or batches of SIONNA_HOUDINI_clean_update_new_parms on spark
 2026-11-04 15:00:36 clear N013 nothing to clear on 'spark': no runs or batches of SIONNA_HOUDINI_clean_update_new_parms
 2026-11-04 15:00:36 clear clear passed (0 errors, 0 warnings) after 0.5 s
+2026-11-04 16:04:21 batch batch test_20261104_150421Z: 3 work items (1 to 3) from /obj/batch_run_1/topnet1/output0
+2026-11-04 16:04:23 batch   [1/3] wi001: exported, 0.915 GHz, 146857 prims, W010 W005 (1.7 s)
+2026-11-04 16:04:25 batch   [2/3] wi002: exported, 0.915 GHz, 146857 prims, W010 W005 (1.5 s)
+2026-11-04 16:04:26 batch   [3/3] wi003: exported, 0.915 GHz, 146857 prims, W010 W005 (1.5 s)
+2026-11-04 16:04:26 batch parm 'batch' set to test_20261104_150421Z
+2026-11-04 16:04:26 batch N009 batch 'test_20261104_150421Z': 3 exported, 0 failed, written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/batches/test_20261104_150421Z
+2026-11-04 16:04:26 batch batch passed (0 errors, 0 warnings) after 4.8 s
+2026-11-04 16:04:29 batch batch test_20261104_150421Z: 3 work items queued, 3 of 3 exported, at 0.915 GHz (frequency as exported per work item)
+2026-11-04 16:04:29 batch target spark: checking
+2026-11-04 16:04:30 batch target spark: gpu NVIDIA GB10, load 0%, runs on the gpu
+2026-11-04 16:04:30 batch send to spark:Documents/HyROPA/batches/SIONNA_HOUDINI_clean_update_new_parms/test_20261104_150421Z
+2026-11-04 16:04:31 batch     batch.json  993 B
+2026-11-04 16:04:31 batch     queue.json  27 B
+2026-11-04 16:04:31 batch     sionna_run.py  16.5 kB
+2026-11-04 16:04:31 batch     wi001/SIONNA_HOUDINI_clean_update_new_parms_log.txt  402 B
+2026-11-04 16:04:31 batch     wi001/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 16:04:31 batch     wi001/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 16:04:31 batch     wi001/SIONNA_HOUDINI_clean_update_new_parms_meta.json  720 B
+2026-11-04 16:04:31 batch     wi001/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 16:04:31 batch     wi001/SIONNA_HOUDINI_clean_update_new_parms_settings.json  459 B
+2026-11-04 16:04:31 batch     wi001/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.7 kB
+2026-11-04 16:04:31 batch     wi001/meshes/floor.ply  1.2 kB
+2026-11-04 16:04:31 batch     wi001/meshes/frame.ply  56.6 kB
+2026-11-04 16:04:31 batch     wi001/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 16:04:31 batch     wi001/meshes/leaves.ply  1.8 MB
+2026-11-04 16:04:31 batch     wi001/meshes/measure_floor.ply  582.1 kB
+2026-11-04 16:04:31 batch     wi001/meshes/person.ply  315.6 kB
+2026-11-04 16:04:31 batch     wi001/meshes/robot_cover.ply  52.9 kB
+2026-11-04 16:04:31 batch     wi001/meshes/sprayers.ply  33.6 kB
+2026-11-04 16:04:31 batch     wi001/meshes/structural_frame.ply  3.6 kB
+2026-11-04 16:04:31 batch     wi001/meshes/trays.ply  727 B
+2026-11-04 16:04:31 batch     wi001/meshes/trays_legs.ply  1.2 kB
+2026-11-04 16:04:31 batch     wi001/meshes/windows.ply  7.0 kB
+2026-11-04 16:04:31 batch     wi002/SIONNA_HOUDINI_clean_update_new_parms_log.txt  402 B
+2026-11-04 16:04:31 batch     wi002/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 16:04:31 batch     wi002/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 16:04:31 batch     wi002/SIONNA_HOUDINI_clean_update_new_parms_meta.json  733 B
+2026-11-04 16:04:31 batch     wi002/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 16:04:31 batch     wi002/SIONNA_HOUDINI_clean_update_new_parms_settings.json  459 B
+2026-11-04 16:04:31 batch     wi002/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.7 kB
+2026-11-04 16:04:31 batch     wi002/meshes/floor.ply  1.2 kB
+2026-11-04 16:04:31 batch     wi002/meshes/frame.ply  56.6 kB
+2026-11-04 16:04:31 batch     wi002/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 16:04:31 batch     wi002/meshes/leaves.ply  1.8 MB
+2026-11-04 16:04:31 batch     wi002/meshes/measure_floor.ply  582.1 kB
+2026-11-04 16:04:31 batch     wi002/meshes/person.ply  315.6 kB
+2026-11-04 16:04:31 batch     wi002/meshes/robot_cover.ply  52.9 kB
+2026-11-04 16:04:31 batch     wi002/meshes/sprayers.ply  33.6 kB
+2026-11-04 16:04:31 batch     wi002/meshes/structural_frame.ply  3.6 kB
+2026-11-04 16:04:31 batch     wi002/meshes/trays.ply  727 B
+2026-11-04 16:04:31 batch     wi002/meshes/trays_legs.ply  1.2 kB
+2026-11-04 16:04:31 batch     wi002/meshes/windows.ply  7.0 kB
+2026-11-04 16:04:31 batch     wi003/SIONNA_HOUDINI_clean_update_new_parms_log.txt  402 B
+2026-11-04 16:04:31 batch     wi003/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 16:04:31 batch     wi003/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 16:04:31 batch     wi003/SIONNA_HOUDINI_clean_update_new_parms_meta.json  720 B
+2026-11-04 16:04:31 batch     wi003/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 16:04:31 batch     wi003/SIONNA_HOUDINI_clean_update_new_parms_settings.json  459 B
+2026-11-04 16:04:31 batch     wi003/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.7 kB
+2026-11-04 16:04:31 batch     wi003/meshes/floor.ply  1.2 kB
+2026-11-04 16:04:31 batch     wi003/meshes/frame.ply  56.6 kB
+2026-11-04 16:04:31 batch     wi003/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 16:04:31 batch     wi003/meshes/leaves.ply  1.8 MB
+2026-11-04 16:04:31 batch     wi003/meshes/measure_floor.ply  582.1 kB
+2026-11-04 16:04:31 batch     wi003/meshes/person.ply  315.6 kB
+2026-11-04 16:04:31 batch     wi003/meshes/robot_cover.ply  52.9 kB
+2026-11-04 16:04:31 batch     wi003/meshes/sprayers.ply  33.6 kB
+2026-11-04 16:04:31 batch     wi003/meshes/structural_frame.ply  3.6 kB
+2026-11-04 16:04:31 batch     wi003/meshes/trays.ply  727 B
+2026-11-04 16:04:31 batch     wi003/meshes/trays_legs.ply  1.2 kB
+2026-11-04 16:04:31 batch     wi003/meshes/windows.ply  7.0 kB
+2026-11-04 16:04:31 batch   60 files, 8.8 MB in 0.5 s
+2026-11-04 16:04:31 batch watching batch test_20261104_150421Z on spark every 15 s, a line follows each finished work item
+2026-11-04 16:04:31 batch N010 batch 'test_20261104_150421Z' started on 'spark' (pid 3045357): 3 work items queued, finished ones are skipped
+2026-11-04 16:04:31 batch batch passed (0 errors, 0 warnings) after 1.7 s
+2026-11-04 16:04:41 batch batch test_20261104_150421Z on spark: finished, 3 of 3 done (0 skipped as already solved), 0 failed
+2026-11-04 16:04:41 batch   3.36 s per work item
+2026-11-04 16:04:41 batch   log | wrote SIONNA_HOUDINI_clean_update_new_parms_result.npz (0.05 MB)
+2026-11-04 16:04:41 batch   log | radio map 'measure_floor': 30617 cells, 2e+07 samples per tx
+2026-11-04 16:04:41 batch   log | radio map 'measure_floor': 30613 of 30617 cells reached (1.9 s)
+2026-11-04 16:04:41 batch   log | wrote SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz (2.54 MB)
+2026-11-04 16:04:41 batch   log | batch: finished, 3 solved, 0 skipped, 0 failed
+2026-11-04 16:04:41 batch batch passed (0 errors, 0 warnings) after 0.3 s
+2026-11-04 16:04:45 batch receive from spark:Documents/HyROPA/batches/SIONNA_HOUDINI_clean_update_new_parms/test_20261104_150421Z
+2026-11-04 16:04:45 batch     batch.log  1.7 kB
+2026-11-04 16:04:45 batch     status.json  272 B
+2026-11-04 16:04:45 batch     wi001/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.5 MB
+2026-11-04 16:04:45 batch     wi001/SIONNA_HOUDINI_clean_update_new_parms_result.npz  51.4 kB
+2026-11-04 16:04:45 batch     wi001/done.json  459 B
+2026-11-04 16:04:45 batch     wi002/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.5 MB
+2026-11-04 16:04:45 batch     wi002/SIONNA_HOUDINI_clean_update_new_parms_result.npz  51.3 kB
+2026-11-04 16:04:45 batch     wi002/done.json  459 B
+2026-11-04 16:04:45 batch     wi003/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.5 MB
+2026-11-04 16:04:45 batch     wi003/SIONNA_HOUDINI_clean_update_new_parms_result.npz  51.4 kB
+2026-11-04 16:04:45 batch     wi003/done.json  459 B
+2026-11-04 16:04:46 batch   11 files, 7.8 MB in 0.4 s
+2026-11-04 16:04:46 batch convert 3 work items to bgeo, the others are up to date or have no result
+2026-11-04 16:04:46 batch   [1/3] wi001 (0.5 s)
+2026-11-04 16:04:47 batch   [2/3] wi002 (0.5 s)
+2026-11-04 16:04:47 watch batch test_20261104_150421Z on spark: wi001, wi002, wi003 solved, 3 of 3 finished
+2026-11-04 16:04:47 watch batch test_20261104_150421Z on spark: finished, 3 solved, 0 skipped, 0 failed (0.3 min), press batch fetch
+2026-11-04 16:04:47 batch   [3/3] wi003 (0.5 s)
+2026-11-04 16:04:47 batch converted in 1.5 s
+2026-11-04 16:04:47 batch N011 batch 'test_20261104_150421Z': 3 solved, 0 failed, 0 without result
+2026-11-04 16:04:47 batch batch passed (0 errors, 0 warnings) after 1.9 s
+2026-11-04 16:57:03 batch batch test_20261104_155703Z: 20 work items (0 to 19) from /obj/BATCH_1/topnet1/output0
+2026-11-04 16:57:03 batch   [1/20] wi000: exported, 0.915 GHz, 61537 prims, W010 W005 (0.6 s)
+2026-11-04 16:57:04 batch   [2/20] wi001: exported, 0.915 GHz, 70609 prims, W010 W005 (0.8 s)
+2026-11-04 16:57:05 batch   [3/20] wi002: exported, 0.915 GHz, 88429 prims, W010 W005 (1.0 s)
+2026-11-04 16:57:05 batch   [4/20] wi003: failed, 0.915 GHz, 0 prims, B008 (0.0 s)
+2026-11-04 16:57:05 batch     B008 input did not cook: no geometry
+2026-11-04 16:57:05 batch   [5/20] wi004: failed, 0.915 GHz, 0 prims, B008 (0.0 s)
+2026-11-04 16:57:05 batch     B008 input did not cook: no geometry
+2026-11-04 16:57:05 batch   [6/20] wi005: failed, 0.915 GHz, 0 prims, B008 (0.0 s)
+2026-11-04 16:57:05 batch     B008 input did not cook: no geometry
+2026-11-04 16:57:05 batch   [7/20] wi006: failed, 0.915 GHz, 0 prims, B008 (0.0 s)
+2026-11-04 16:57:05 batch     B008 input did not cook: no geometry
+2026-11-04 16:57:05 batch   [8/20] wi007: failed, 0.915 GHz, 0 prims, B008 (0.0 s)
+2026-11-04 16:57:05 batch     B008 input did not cook: no geometry
+2026-11-04 16:57:05 batch   [9/20] wi008: failed, 0.915 GHz, 0 prims, B008 (0.0 s)
+2026-11-04 16:57:05 batch     B008 input did not cook: no geometry
+2026-11-04 16:57:05 batch   [10/20] wi009: failed, 0.915 GHz, 0 prims, B008 (0.0 s)
+2026-11-04 16:57:05 batch     B008 input did not cook: no geometry
+2026-11-04 16:57:05 batch   [11/20] wi010: failed, 0.915 GHz, 0 prims, B008 (0.0 s)
+2026-11-04 16:57:05 batch     B008 input did not cook: no geometry
+2026-11-04 16:57:05 batch   [12/20] wi011: failed, 0.915 GHz, 0 prims, B008 (0.0 s)
+2026-11-04 16:57:05 batch     B008 input did not cook: no geometry
+2026-11-04 16:57:05 batch   [13/20] wi012: failed, 0.915 GHz, 0 prims, B008 (0.0 s)
+2026-11-04 16:57:05 batch     B008 input did not cook: no geometry
+2026-11-04 16:57:05 batch   [14/20] wi013: failed, 0.915 GHz, 0 prims, B008 (0.0 s)
+2026-11-04 16:57:05 batch     B008 input did not cook: no geometry
+2026-11-04 16:57:05 batch   [15/20] wi014: failed, 0.915 GHz, 0 prims, B008 (0.0 s)
+2026-11-04 16:57:05 batch     B008 input did not cook: no geometry
+2026-11-04 16:57:05 batch   [16/20] wi015: failed, 0.915 GHz, 0 prims, B008 (0.0 s)
+2026-11-04 16:57:05 batch     B008 input did not cook: no geometry
+2026-11-04 16:57:05 batch   [17/20] wi016: failed, 0.915 GHz, 0 prims, B008 (0.0 s)
+2026-11-04 16:57:05 batch     B008 input did not cook: no geometry
+2026-11-04 16:57:05 batch   [18/20] wi017: failed, 0.915 GHz, 0 prims, B008 (0.0 s)
+2026-11-04 16:57:05 batch     B008 input did not cook: no geometry
+2026-11-04 16:57:05 batch   [19/20] wi018: failed, 0.915 GHz, 0 prims, B008 (0.0 s)
+2026-11-04 16:57:05 batch     B008 input did not cook: no geometry
+2026-11-04 16:57:05 batch   [20/20] wi019: failed, 0.915 GHz, 0 prims, B008 (0.0 s)
+2026-11-04 16:57:05 batch     B008 input did not cook: no geometry
+2026-11-04 16:57:05 batch parm 'batch' set to test_20261104_155703Z
+2026-11-04 16:57:05 batch N009 batch 'test_20261104_155703Z': 3 exported, 17 failed, written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/batches/test_20261104_155703Z
+2026-11-04 16:57:05 batch batch passed (0 errors, 0 warnings) after 2.5 s
+2026-11-04 16:57:33 clear looking for runs or batches of SIONNA_HOUDINI_clean_update_new_parms on spark
+2026-11-04 16:57:33 clear   Documents/HyROPA/batches/SIONNA_HOUDINI_clean_update_new_parms/test_20261104_150421Z  16.5 MB
+2026-11-04 16:57:34 clear N012 cleared 1 folder (16.5 MB) on 'spark'
+2026-11-04 16:57:34 clear clear passed (0 errors, 0 warnings) after 1.8 s
+2026-11-04 16:57:35 clear looking for batches of SIONNA_HOUDINI_clean_update_new_parms in session 'batch_1' on spark
+2026-11-04 16:57:36 clear N013 nothing to clear on 'spark': no batches of SIONNA_HOUDINI_clean_update_new_parms in session 'batch_1'
+2026-11-04 16:57:36 clear clear passed (0 errors, 0 warnings) after 0.3 s
+2026-11-04 16:57:39 batch batch batch_1_20261104_155739Z: 20 work items (0 to 19) from /obj/BATCH_1/topnet1/output0
+2026-11-04 16:57:40 batch   [1/20] wi000: exported, 0.915 GHz, 61537 prims, W010 W005 (0.6 s)
+2026-11-04 16:57:41 batch   [2/20] wi001: exported, 0.915 GHz, 70609 prims, W010 W005 (0.8 s)
+2026-11-04 16:57:42 batch   [3/20] wi002: exported, 0.915 GHz, 88429 prims, W010 W005 (1.0 s)
+2026-11-04 16:57:43 batch   [4/20] wi003: exported, 0.915 GHz, 131197 prims, W010 W005 (1.6 s)
+2026-11-04 16:57:46 batch   [5/20] wi004: exported, 0.915 GHz, 202477 prims, W010 W005 (2.6 s)
+2026-11-04 16:57:46 batch   [6/20] wi005: exported, 0.915 GHz, 58729 prims, W010 W005 (0.6 s)
+2026-11-04 16:57:47 batch   [7/20] wi006: exported, 0.915 GHz, 62617 prims, W010 W005 (0.7 s)
+2026-11-04 16:57:48 batch   [8/20] wi007: exported, 0.915 GHz, 79465 prims, W010 W005 (0.9 s)
+2026-11-04 16:57:50 batch   [9/20] wi008: exported, 0.915 GHz, 140377 prims, W010 W005 (2.1 s)
+2026-11-04 16:57:52 batch   [10/20] wi009: exported, 0.915 GHz, 168889 prims, W010 W005 (2.1 s)
+2026-11-04 16:57:53 batch   [11/20] wi010: exported, 0.915 GHz, 57865 prims, W010 W005 (0.6 s)
+2026-11-04 16:57:53 batch   [12/20] wi011: exported, 0.915 GHz, 60169 prims, W010 W005 (0.6 s)
+2026-11-04 16:57:54 batch   [13/20] wi012: exported, 0.915 GHz, 63625 prims, W010 W005 (0.7 s)
+2026-11-04 16:57:55 batch   [14/20] wi013: exported, 0.915 GHz, 68809 prims, W010 W005 (0.8 s)
+2026-11-04 16:57:56 batch   [15/20] wi014: exported, 0.915 GHz, 83785 prims, W010 W005 (1.0 s)
+2026-11-04 16:57:56 batch   [16/20] wi015: exported, 0.915 GHz, 58729 prims, W010 W005 (0.6 s)
+2026-11-04 16:57:57 batch   [17/20] wi016: exported, 0.915 GHz, 86989 prims, W010 W005 (1.0 s)
+2026-11-04 16:57:59 batch   [18/20] wi017: exported, 0.915 GHz, 142105 prims, W010 W005 (1.8 s)
+2026-11-04 16:58:03 batch   [19/20] wi018: exported, 0.915 GHz, 295501 prims, W010 W005 (4.1 s)
+2026-11-04 16:58:12 batch   [20/20] wi019: exported, 0.915 GHz, 571027 prims, W010 W005 (8.5 s)
+2026-11-04 16:58:12 batch parm 'batch' set to batch_1_20261104_155739Z
+2026-11-04 16:58:12 batch N009 batch 'batch_1_20261104_155739Z': 20 exported, 0 failed, written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/batches/batch_1_20261104_155739Z
+2026-11-04 16:58:12 batch batch passed (0 errors, 0 warnings) after 32.7 s
+2026-11-04 16:58:21 batch batch batch_1_20261104_155739Z: 20 work items queued, 20 of 20 exported, at 0.915 GHz (frequency as exported per work item)
+2026-11-04 16:58:21 batch target spark: checking
+2026-11-04 16:58:21 batch target spark: gpu NVIDIA GB10, load 0%, runs on the gpu
+2026-11-04 16:58:21 batch send to spark:Documents/HyROPA/batches/SIONNA_HOUDINI_clean_update_new_parms/batch_1_20261104_155739Z
+2026-11-04 16:58:22 batch     batch.json  4.7 kB
+2026-11-04 16:58:22 batch     queue.json  180 B
+2026-11-04 16:58:22 batch     sionna_run.py  16.5 kB
+2026-11-04 16:58:22 batch     wi000/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 16:58:22 batch     wi000/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 16:58:22 batch     wi000/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 16:58:22 batch     wi000/SIONNA_HOUDINI_clean_update_new_parms_meta.json  575 B
+2026-11-04 16:58:22 batch     wi000/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 16:58:22 batch     wi000/SIONNA_HOUDINI_clean_update_new_parms_settings.json  459 B
+2026-11-04 16:58:22 batch     wi000/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 16:58:22 batch     wi000/meshes/floor.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi000/meshes/frame.ply  56.6 kB
+2026-11-04 16:58:22 batch     wi000/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 16:58:22 batch     wi000/meshes/leaves.ply  114.3 kB
+2026-11-04 16:58:22 batch     wi000/meshes/measure_floor.ply  582.1 kB
+2026-11-04 16:58:22 batch     wi000/meshes/person.ply  315.6 kB
+2026-11-04 16:58:22 batch     wi000/meshes/robot_cover.ply  52.9 kB
+2026-11-04 16:58:22 batch     wi000/meshes/sprayers.ply  33.6 kB
+2026-11-04 16:58:22 batch     wi000/meshes/structural_frame.ply  3.6 kB
+2026-11-04 16:58:22 batch     wi000/meshes/trays.ply  727 B
+2026-11-04 16:58:22 batch     wi000/meshes/trays_legs.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi000/meshes/windows.ply  7.0 kB
+2026-11-04 16:58:22 batch     wi001/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 16:58:22 batch     wi001/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 16:58:22 batch     wi001/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 16:58:22 batch     wi001/SIONNA_HOUDINI_clean_update_new_parms_meta.json  575 B
+2026-11-04 16:58:22 batch     wi001/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 16:58:22 batch     wi001/SIONNA_HOUDINI_clean_update_new_parms_settings.json  459 B
+2026-11-04 16:58:22 batch     wi001/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 16:58:22 batch     wi001/meshes/floor.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi001/meshes/frame.ply  56.6 kB
+2026-11-04 16:58:22 batch     wi001/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 16:58:22 batch     wi001/meshes/leaves.ply  310.5 kB
+2026-11-04 16:58:22 batch     wi001/meshes/measure_floor.ply  582.1 kB
+2026-11-04 16:58:22 batch     wi001/meshes/person.ply  315.6 kB
+2026-11-04 16:58:22 batch     wi001/meshes/robot_cover.ply  52.9 kB
+2026-11-04 16:58:22 batch     wi001/meshes/sprayers.ply  33.6 kB
+2026-11-04 16:58:22 batch     wi001/meshes/structural_frame.ply  3.6 kB
+2026-11-04 16:58:22 batch     wi001/meshes/trays.ply  727 B
+2026-11-04 16:58:22 batch     wi001/meshes/trays_legs.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi001/meshes/windows.ply  7.0 kB
+2026-11-04 16:58:22 batch     wi002/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 16:58:22 batch     wi002/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 16:58:22 batch     wi002/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 16:58:22 batch     wi002/SIONNA_HOUDINI_clean_update_new_parms_meta.json  575 B
+2026-11-04 16:58:22 batch     wi002/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 16:58:22 batch     wi002/SIONNA_HOUDINI_clean_update_new_parms_settings.json  459 B
+2026-11-04 16:58:22 batch     wi002/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 16:58:22 batch     wi002/meshes/floor.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi002/meshes/frame.ply  56.6 kB
+2026-11-04 16:58:22 batch     wi002/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 16:58:22 batch     wi002/meshes/leaves.ply  677.2 kB
+2026-11-04 16:58:22 batch     wi002/meshes/measure_floor.ply  582.1 kB
+2026-11-04 16:58:22 batch     wi002/meshes/person.ply  315.6 kB
+2026-11-04 16:58:22 batch     wi002/meshes/robot_cover.ply  52.9 kB
+2026-11-04 16:58:22 batch     wi002/meshes/sprayers.ply  33.6 kB
+2026-11-04 16:58:22 batch     wi002/meshes/structural_frame.ply  3.6 kB
+2026-11-04 16:58:22 batch     wi002/meshes/trays.ply  727 B
+2026-11-04 16:58:22 batch     wi002/meshes/trays_legs.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi002/meshes/windows.ply  7.0 kB
+2026-11-04 16:58:22 batch     wi003/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 16:58:22 batch     wi003/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 16:58:22 batch     wi003/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 16:58:22 batch     wi003/SIONNA_HOUDINI_clean_update_new_parms_meta.json  575 B
+2026-11-04 16:58:22 batch     wi003/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 16:58:22 batch     wi003/SIONNA_HOUDINI_clean_update_new_parms_settings.json  459 B
+2026-11-04 16:58:22 batch     wi003/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 16:58:22 batch     wi003/meshes/floor.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi003/meshes/frame.ply  56.6 kB
+2026-11-04 16:58:22 batch     wi003/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 16:58:22 batch     wi003/meshes/leaves.ply  1.5 MB
+2026-11-04 16:58:22 batch     wi003/meshes/measure_floor.ply  582.1 kB
+2026-11-04 16:58:22 batch     wi003/meshes/person.ply  315.6 kB
+2026-11-04 16:58:22 batch     wi003/meshes/robot_cover.ply  52.9 kB
+2026-11-04 16:58:22 batch     wi003/meshes/sprayers.ply  33.6 kB
+2026-11-04 16:58:22 batch     wi003/meshes/structural_frame.ply  3.6 kB
+2026-11-04 16:58:22 batch     wi003/meshes/trays.ply  727 B
+2026-11-04 16:58:22 batch     wi003/meshes/trays_legs.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi003/meshes/windows.ply  7.0 kB
+2026-11-04 16:58:22 batch     wi004/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 16:58:22 batch     wi004/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 16:58:22 batch     wi004/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 16:58:22 batch     wi004/SIONNA_HOUDINI_clean_update_new_parms_meta.json  575 B
+2026-11-04 16:58:22 batch     wi004/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 16:58:22 batch     wi004/SIONNA_HOUDINI_clean_update_new_parms_settings.json  459 B
+2026-11-04 16:58:22 batch     wi004/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 16:58:22 batch     wi004/meshes/floor.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi004/meshes/frame.ply  56.6 kB
+2026-11-04 16:58:22 batch     wi004/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 16:58:22 batch     wi004/meshes/leaves.ply  3.0 MB
+2026-11-04 16:58:22 batch     wi004/meshes/measure_floor.ply  582.1 kB
+2026-11-04 16:58:22 batch     wi004/meshes/person.ply  315.6 kB
+2026-11-04 16:58:22 batch     wi004/meshes/robot_cover.ply  52.9 kB
+2026-11-04 16:58:22 batch     wi004/meshes/sprayers.ply  33.6 kB
+2026-11-04 16:58:22 batch     wi004/meshes/structural_frame.ply  3.6 kB
+2026-11-04 16:58:22 batch     wi004/meshes/trays.ply  727 B
+2026-11-04 16:58:22 batch     wi004/meshes/trays_legs.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi004/meshes/windows.ply  7.0 kB
+2026-11-04 16:58:22 batch     wi005/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 16:58:22 batch     wi005/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 16:58:22 batch     wi005/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 16:58:22 batch     wi005/SIONNA_HOUDINI_clean_update_new_parms_meta.json  575 B
+2026-11-04 16:58:22 batch     wi005/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 16:58:22 batch     wi005/SIONNA_HOUDINI_clean_update_new_parms_settings.json  459 B
+2026-11-04 16:58:22 batch     wi005/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.3 kB
+2026-11-04 16:58:22 batch     wi005/meshes/floor.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi005/meshes/frame.ply  56.6 kB
+2026-11-04 16:58:22 batch     wi005/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 16:58:22 batch     wi005/meshes/leaves.ply  56.7 kB
+2026-11-04 16:58:22 batch     wi005/meshes/measure_floor.ply  582.1 kB
+2026-11-04 16:58:22 batch     wi005/meshes/person.ply  315.6 kB
+2026-11-04 16:58:22 batch     wi005/meshes/robot_cover.ply  52.9 kB
+2026-11-04 16:58:22 batch     wi005/meshes/sprayers.ply  33.6 kB
+2026-11-04 16:58:22 batch     wi005/meshes/structural_frame.ply  3.6 kB
+2026-11-04 16:58:22 batch     wi005/meshes/trays.ply  727 B
+2026-11-04 16:58:22 batch     wi005/meshes/trays_legs.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi005/meshes/windows.ply  7.0 kB
+2026-11-04 16:58:22 batch     wi006/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 16:58:22 batch     wi006/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 16:58:22 batch     wi006/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 16:58:22 batch     wi006/SIONNA_HOUDINI_clean_update_new_parms_meta.json  575 B
+2026-11-04 16:58:22 batch     wi006/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 16:58:22 batch     wi006/SIONNA_HOUDINI_clean_update_new_parms_settings.json  459 B
+2026-11-04 16:58:22 batch     wi006/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 16:58:22 batch     wi006/meshes/floor.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi006/meshes/frame.ply  56.6 kB
+2026-11-04 16:58:22 batch     wi006/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 16:58:22 batch     wi006/meshes/leaves.ply  141.5 kB
+2026-11-04 16:58:22 batch     wi006/meshes/measure_floor.ply  582.1 kB
+2026-11-04 16:58:22 batch     wi006/meshes/person.ply  315.6 kB
+2026-11-04 16:58:22 batch     wi006/meshes/robot_cover.ply  52.9 kB
+2026-11-04 16:58:22 batch     wi006/meshes/sprayers.ply  33.6 kB
+2026-11-04 16:58:22 batch     wi006/meshes/structural_frame.ply  3.6 kB
+2026-11-04 16:58:22 batch     wi006/meshes/trays.ply  727 B
+2026-11-04 16:58:22 batch     wi006/meshes/trays_legs.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi006/meshes/windows.ply  7.0 kB
+2026-11-04 16:58:22 batch     wi007/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 16:58:22 batch     wi007/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 16:58:22 batch     wi007/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 16:58:22 batch     wi007/SIONNA_HOUDINI_clean_update_new_parms_meta.json  575 B
+2026-11-04 16:58:22 batch     wi007/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 16:58:22 batch     wi007/SIONNA_HOUDINI_clean_update_new_parms_settings.json  459 B
+2026-11-04 16:58:22 batch     wi007/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 16:58:22 batch     wi007/meshes/floor.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi007/meshes/frame.ply  56.6 kB
+2026-11-04 16:58:22 batch     wi007/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 16:58:22 batch     wi007/meshes/leaves.ply  509.0 kB
+2026-11-04 16:58:22 batch     wi007/meshes/measure_floor.ply  582.1 kB
+2026-11-04 16:58:22 batch     wi007/meshes/person.ply  315.6 kB
+2026-11-04 16:58:22 batch     wi007/meshes/robot_cover.ply  52.9 kB
+2026-11-04 16:58:22 batch     wi007/meshes/sprayers.ply  33.6 kB
+2026-11-04 16:58:22 batch     wi007/meshes/structural_frame.ply  3.6 kB
+2026-11-04 16:58:22 batch     wi007/meshes/trays.ply  727 B
+2026-11-04 16:58:22 batch     wi007/meshes/trays_legs.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi007/meshes/windows.ply  7.0 kB
+2026-11-04 16:58:22 batch     wi008/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 16:58:22 batch     wi008/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 16:58:22 batch     wi008/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 16:58:22 batch     wi008/SIONNA_HOUDINI_clean_update_new_parms_meta.json  575 B
+2026-11-04 16:58:22 batch     wi008/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 16:58:22 batch     wi008/SIONNA_HOUDINI_clean_update_new_parms_settings.json  459 B
+2026-11-04 16:58:22 batch     wi008/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 16:58:22 batch     wi008/meshes/floor.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi008/meshes/frame.ply  56.6 kB
+2026-11-04 16:58:22 batch     wi008/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 16:58:22 batch     wi008/meshes/leaves.ply  1.8 MB
+2026-11-04 16:58:22 batch     wi008/meshes/measure_floor.ply  582.1 kB
+2026-11-04 16:58:22 batch     wi008/meshes/person.ply  315.6 kB
+2026-11-04 16:58:22 batch     wi008/meshes/robot_cover.ply  52.9 kB
+2026-11-04 16:58:22 batch     wi008/meshes/sprayers.ply  33.6 kB
+2026-11-04 16:58:22 batch     wi008/meshes/structural_frame.ply  3.6 kB
+2026-11-04 16:58:22 batch     wi008/meshes/trays.ply  727 B
+2026-11-04 16:58:22 batch     wi008/meshes/trays_legs.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi008/meshes/windows.ply  7.0 kB
+2026-11-04 16:58:22 batch     wi009/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 16:58:22 batch     wi009/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 16:58:22 batch     wi009/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 16:58:22 batch     wi009/SIONNA_HOUDINI_clean_update_new_parms_meta.json  577 B
+2026-11-04 16:58:22 batch     wi009/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 16:58:22 batch     wi009/SIONNA_HOUDINI_clean_update_new_parms_settings.json  459 B
+2026-11-04 16:58:22 batch     wi009/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 16:58:22 batch     wi009/meshes/floor.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi009/meshes/frame.ply  56.6 kB
+2026-11-04 16:58:22 batch     wi009/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 16:58:22 batch     wi009/meshes/leaves.ply  2.4 MB
+2026-11-04 16:58:22 batch     wi009/meshes/measure_floor.ply  582.1 kB
+2026-11-04 16:58:22 batch     wi009/meshes/person.ply  315.6 kB
+2026-11-04 16:58:22 batch     wi009/meshes/robot_cover.ply  52.9 kB
+2026-11-04 16:58:22 batch     wi009/meshes/sprayers.ply  33.6 kB
+2026-11-04 16:58:22 batch     wi009/meshes/structural_frame.ply  3.6 kB
+2026-11-04 16:58:22 batch     wi009/meshes/trays.ply  727 B
+2026-11-04 16:58:22 batch     wi009/meshes/trays_legs.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi009/meshes/windows.ply  7.0 kB
+2026-11-04 16:58:22 batch     wi010/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 16:58:22 batch     wi010/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 16:58:22 batch     wi010/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 16:58:22 batch     wi010/SIONNA_HOUDINI_clean_update_new_parms_meta.json  579 B
+2026-11-04 16:58:22 batch     wi010/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 16:58:22 batch     wi010/SIONNA_HOUDINI_clean_update_new_parms_settings.json  459 B
+2026-11-04 16:58:22 batch     wi010/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 16:58:22 batch     wi010/meshes/floor.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi010/meshes/frame.ply  56.6 kB
+2026-11-04 16:58:22 batch     wi010/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 16:58:22 batch     wi010/meshes/leaves.ply  37.9 kB
+2026-11-04 16:58:22 batch     wi010/meshes/measure_floor.ply  582.1 kB
+2026-11-04 16:58:22 batch     wi010/meshes/person.ply  315.6 kB
+2026-11-04 16:58:22 batch     wi010/meshes/robot_cover.ply  52.9 kB
+2026-11-04 16:58:22 batch     wi010/meshes/sprayers.ply  33.6 kB
+2026-11-04 16:58:22 batch     wi010/meshes/structural_frame.ply  3.6 kB
+2026-11-04 16:58:22 batch     wi010/meshes/trays.ply  727 B
+2026-11-04 16:58:22 batch     wi010/meshes/trays_legs.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi010/meshes/windows.ply  7.0 kB
+2026-11-04 16:58:22 batch     wi011/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 16:58:22 batch     wi011/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 16:58:22 batch     wi011/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 16:58:22 batch     wi011/SIONNA_HOUDINI_clean_update_new_parms_meta.json  579 B
+2026-11-04 16:58:22 batch     wi011/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 16:58:22 batch     wi011/SIONNA_HOUDINI_clean_update_new_parms_settings.json  459 B
+2026-11-04 16:58:22 batch     wi011/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 16:58:22 batch     wi011/meshes/floor.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi011/meshes/frame.ply  56.6 kB
+2026-11-04 16:58:22 batch     wi011/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 16:58:22 batch     wi011/meshes/leaves.ply  88.3 kB
+2026-11-04 16:58:22 batch     wi011/meshes/measure_floor.ply  582.1 kB
+2026-11-04 16:58:22 batch     wi011/meshes/person.ply  315.6 kB
+2026-11-04 16:58:22 batch     wi011/meshes/robot_cover.ply  52.9 kB
+2026-11-04 16:58:22 batch     wi011/meshes/sprayers.ply  33.6 kB
+2026-11-04 16:58:22 batch     wi011/meshes/structural_frame.ply  3.6 kB
+2026-11-04 16:58:22 batch     wi011/meshes/trays.ply  727 B
+2026-11-04 16:58:22 batch     wi011/meshes/trays_legs.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi011/meshes/windows.ply  7.0 kB
+2026-11-04 16:58:22 batch     wi012/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 16:58:22 batch     wi012/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 16:58:22 batch     wi012/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 16:58:22 batch     wi012/SIONNA_HOUDINI_clean_update_new_parms_meta.json  579 B
+2026-11-04 16:58:22 batch     wi012/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 16:58:22 batch     wi012/SIONNA_HOUDINI_clean_update_new_parms_settings.json  459 B
+2026-11-04 16:58:22 batch     wi012/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 16:58:22 batch     wi012/meshes/floor.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi012/meshes/frame.ply  56.6 kB
+2026-11-04 16:58:22 batch     wi012/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 16:58:22 batch     wi012/meshes/leaves.ply  163.8 kB
+2026-11-04 16:58:22 batch     wi012/meshes/measure_floor.ply  582.1 kB
+2026-11-04 16:58:22 batch     wi012/meshes/person.ply  315.6 kB
+2026-11-04 16:58:22 batch     wi012/meshes/robot_cover.ply  52.9 kB
+2026-11-04 16:58:22 batch     wi012/meshes/sprayers.ply  33.6 kB
+2026-11-04 16:58:22 batch     wi012/meshes/structural_frame.ply  3.6 kB
+2026-11-04 16:58:22 batch     wi012/meshes/trays.ply  727 B
+2026-11-04 16:58:22 batch     wi012/meshes/trays_legs.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi012/meshes/windows.ply  7.0 kB
+2026-11-04 16:58:22 batch     wi013/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 16:58:22 batch     wi013/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 16:58:22 batch     wi013/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 16:58:22 batch     wi013/SIONNA_HOUDINI_clean_update_new_parms_meta.json  579 B
+2026-11-04 16:58:22 batch     wi013/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 16:58:22 batch     wi013/SIONNA_HOUDINI_clean_update_new_parms_settings.json  459 B
+2026-11-04 16:58:22 batch     wi013/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 16:58:22 batch     wi013/meshes/floor.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi013/meshes/frame.ply  56.6 kB
+2026-11-04 16:58:22 batch     wi013/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 16:58:22 batch     wi013/meshes/leaves.ply  277.1 kB
+2026-11-04 16:58:22 batch     wi013/meshes/measure_floor.ply  582.1 kB
+2026-11-04 16:58:22 batch     wi013/meshes/person.ply  315.6 kB
+2026-11-04 16:58:22 batch     wi013/meshes/robot_cover.ply  52.9 kB
+2026-11-04 16:58:22 batch     wi013/meshes/sprayers.ply  33.6 kB
+2026-11-04 16:58:22 batch     wi013/meshes/structural_frame.ply  3.6 kB
+2026-11-04 16:58:22 batch     wi013/meshes/trays.ply  727 B
+2026-11-04 16:58:22 batch     wi013/meshes/trays_legs.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi013/meshes/windows.ply  7.0 kB
+2026-11-04 16:58:22 batch     wi014/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 16:58:22 batch     wi014/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 16:58:22 batch     wi014/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 16:58:22 batch     wi014/SIONNA_HOUDINI_clean_update_new_parms_meta.json  579 B
+2026-11-04 16:58:22 batch     wi014/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 16:58:22 batch     wi014/SIONNA_HOUDINI_clean_update_new_parms_settings.json  459 B
+2026-11-04 16:58:22 batch     wi014/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 16:58:22 batch     wi014/meshes/floor.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi014/meshes/frame.ply  56.6 kB
+2026-11-04 16:58:22 batch     wi014/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 16:58:22 batch     wi014/meshes/leaves.ply  604.3 kB
+2026-11-04 16:58:22 batch     wi014/meshes/measure_floor.ply  582.1 kB
+2026-11-04 16:58:22 batch     wi014/meshes/person.ply  315.6 kB
+2026-11-04 16:58:22 batch     wi014/meshes/robot_cover.ply  52.9 kB
+2026-11-04 16:58:22 batch     wi014/meshes/sprayers.ply  33.6 kB
+2026-11-04 16:58:22 batch     wi014/meshes/structural_frame.ply  3.6 kB
+2026-11-04 16:58:22 batch     wi014/meshes/trays.ply  727 B
+2026-11-04 16:58:22 batch     wi014/meshes/trays_legs.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi014/meshes/windows.ply  7.0 kB
+2026-11-04 16:58:22 batch     wi015/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 16:58:22 batch     wi015/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 16:58:22 batch     wi015/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 16:58:22 batch     wi015/SIONNA_HOUDINI_clean_update_new_parms_meta.json  579 B
+2026-11-04 16:58:22 batch     wi015/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 16:58:22 batch     wi015/SIONNA_HOUDINI_clean_update_new_parms_settings.json  459 B
+2026-11-04 16:58:22 batch     wi015/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 16:58:22 batch     wi015/meshes/floor.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi015/meshes/frame.ply  56.6 kB
+2026-11-04 16:58:22 batch     wi015/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 16:58:22 batch     wi015/meshes/leaves.ply  58.4 kB
+2026-11-04 16:58:22 batch     wi015/meshes/measure_floor.ply  582.1 kB
+2026-11-04 16:58:22 batch     wi015/meshes/person.ply  315.6 kB
+2026-11-04 16:58:22 batch     wi015/meshes/robot_cover.ply  52.9 kB
+2026-11-04 16:58:22 batch     wi015/meshes/sprayers.ply  33.6 kB
+2026-11-04 16:58:22 batch     wi015/meshes/structural_frame.ply  3.6 kB
+2026-11-04 16:58:22 batch     wi015/meshes/trays.ply  727 B
+2026-11-04 16:58:22 batch     wi015/meshes/trays_legs.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi015/meshes/windows.ply  7.0 kB
+2026-11-04 16:58:22 batch     wi016/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 16:58:22 batch     wi016/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 16:58:22 batch     wi016/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 16:58:22 batch     wi016/SIONNA_HOUDINI_clean_update_new_parms_meta.json  579 B
+2026-11-04 16:58:22 batch     wi016/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 16:58:22 batch     wi016/SIONNA_HOUDINI_clean_update_new_parms_settings.json  459 B
+2026-11-04 16:58:22 batch     wi016/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 16:58:22 batch     wi016/meshes/floor.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi016/meshes/frame.ply  56.6 kB
+2026-11-04 16:58:22 batch     wi016/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 16:58:22 batch     wi016/meshes/leaves.ply  685.9 kB
+2026-11-04 16:58:22 batch     wi016/meshes/measure_floor.ply  582.1 kB
+2026-11-04 16:58:22 batch     wi016/meshes/person.ply  315.6 kB
+2026-11-04 16:58:22 batch     wi016/meshes/robot_cover.ply  52.9 kB
+2026-11-04 16:58:22 batch     wi016/meshes/sprayers.ply  33.6 kB
+2026-11-04 16:58:22 batch     wi016/meshes/structural_frame.ply  3.6 kB
+2026-11-04 16:58:22 batch     wi016/meshes/trays.ply  727 B
+2026-11-04 16:58:22 batch     wi016/meshes/trays_legs.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi016/meshes/windows.ply  7.0 kB
+2026-11-04 16:58:22 batch     wi017/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 16:58:22 batch     wi017/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 16:58:22 batch     wi017/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 16:58:22 batch     wi017/SIONNA_HOUDINI_clean_update_new_parms_meta.json  579 B
+2026-11-04 16:58:22 batch     wi017/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 16:58:22 batch     wi017/SIONNA_HOUDINI_clean_update_new_parms_settings.json  459 B
+2026-11-04 16:58:22 batch     wi017/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 16:58:22 batch     wi017/meshes/floor.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi017/meshes/frame.ply  56.6 kB
+2026-11-04 16:58:22 batch     wi017/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 16:58:22 batch     wi017/meshes/leaves.ply  1.8 MB
+2026-11-04 16:58:22 batch     wi017/meshes/measure_floor.ply  582.1 kB
+2026-11-04 16:58:22 batch     wi017/meshes/person.ply  315.6 kB
+2026-11-04 16:58:22 batch     wi017/meshes/robot_cover.ply  52.9 kB
+2026-11-04 16:58:22 batch     wi017/meshes/sprayers.ply  33.6 kB
+2026-11-04 16:58:22 batch     wi017/meshes/structural_frame.ply  3.6 kB
+2026-11-04 16:58:22 batch     wi017/meshes/trays.ply  727 B
+2026-11-04 16:58:22 batch     wi017/meshes/trays_legs.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi017/meshes/windows.ply  7.0 kB
+2026-11-04 16:58:22 batch     wi018/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 16:58:22 batch     wi018/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 16:58:22 batch     wi018/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 16:58:22 batch     wi018/SIONNA_HOUDINI_clean_update_new_parms_meta.json  579 B
+2026-11-04 16:58:22 batch     wi018/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 16:58:22 batch     wi018/SIONNA_HOUDINI_clean_update_new_parms_settings.json  459 B
+2026-11-04 16:58:22 batch     wi018/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 16:58:22 batch     wi018/meshes/floor.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi018/meshes/frame.ply  56.6 kB
+2026-11-04 16:58:22 batch     wi018/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 16:58:22 batch     wi018/meshes/leaves.ply  5.0 MB
+2026-11-04 16:58:22 batch     wi018/meshes/measure_floor.ply  582.1 kB
+2026-11-04 16:58:22 batch     wi018/meshes/person.ply  315.6 kB
+2026-11-04 16:58:22 batch     wi018/meshes/robot_cover.ply  52.9 kB
+2026-11-04 16:58:22 batch     wi018/meshes/sprayers.ply  33.6 kB
+2026-11-04 16:58:22 batch     wi018/meshes/structural_frame.ply  3.6 kB
+2026-11-04 16:58:22 batch     wi018/meshes/trays.ply  727 B
+2026-11-04 16:58:22 batch     wi018/meshes/trays_legs.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi018/meshes/windows.ply  7.0 kB
+2026-11-04 16:58:22 batch     wi019/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 16:58:22 batch     wi019/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 16:58:22 batch     wi019/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 16:58:22 batch     wi019/SIONNA_HOUDINI_clean_update_new_parms_meta.json  579 B
+2026-11-04 16:58:22 batch     wi019/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 16:58:22 batch     wi019/SIONNA_HOUDINI_clean_update_new_parms_settings.json  459 B
+2026-11-04 16:58:22 batch     wi019/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 16:58:22 batch     wi019/meshes/floor.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi019/meshes/frame.ply  56.6 kB
+2026-11-04 16:58:22 batch     wi019/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 16:58:22 batch     wi019/meshes/leaves.ply  10.9 MB
+2026-11-04 16:58:22 batch     wi019/meshes/measure_floor.ply  582.1 kB
+2026-11-04 16:58:22 batch     wi019/meshes/person.ply  315.6 kB
+2026-11-04 16:58:22 batch     wi019/meshes/robot_cover.ply  52.9 kB
+2026-11-04 16:58:22 batch     wi019/meshes/sprayers.ply  33.6 kB
+2026-11-04 16:58:22 batch     wi019/meshes/structural_frame.ply  3.6 kB
+2026-11-04 16:58:22 batch     wi019/meshes/trays.ply  727 B
+2026-11-04 16:58:22 batch     wi019/meshes/trays_legs.ply  1.2 kB
+2026-11-04 16:58:22 batch     wi019/meshes/windows.ply  7.0 kB
+2026-11-04 16:58:22 batch   383 files, 51.3 MB in 0.9 s
+2026-11-04 16:58:22 batch watching batch batch_1_20261104_155739Z on spark every 15 s, a line follows each finished work item
+2026-11-04 16:58:22 batch N010 batch 'batch_1_20261104_155739Z' started on 'spark' (pid 3094709): 20 work items queued, finished ones are skipped
+2026-11-04 16:58:22 batch batch passed (0 errors, 0 warnings) after 1.9 s
+2026-11-04 16:58:36 batch batch batch_1_20261104_155739Z on spark: running, 3 of 20 done (0 skipped as already solved), 0 failed, now wi003
+2026-11-04 16:58:36 batch   4.00 s per work item, about 1 min left
+2026-11-04 16:58:36 batch   log | settings: 0.915 GHz, max_depth 5, los, specular_reflection, refraction, antenna iso V, seed 0
+2026-11-04 16:58:36 batch   log | paths: 25 tx x 1 rx, 1e+06 samples per tx
+2026-11-04 16:58:36 batch   log | paths: 456 valid paths over 25 links (0.3 s)
+2026-11-04 16:58:36 batch   log | wrote SIONNA_HOUDINI_clean_update_new_parms_result.npz (0.04 MB)
+2026-11-04 16:58:36 batch   log | radio map 'measure_floor': 30617 cells, 2e+07 samples per tx
+2026-11-04 16:58:36 batch batch passed (0 errors, 0 warnings) after 0.5 s
+2026-11-04 16:58:38 watch batch batch_1_20261104_155739Z on spark: wi000, wi001, wi002 solved, 3 of 20 finished
+2026-11-04 16:58:53 watch batch batch_1_20261104_155739Z on spark: wi003, wi004, wi005, wi006, wi007 solved, 8 of 20 finished
+2026-11-04 16:59:09 watch batch batch_1_20261104_155739Z on spark: wi008, wi009, wi010, wi011 solved, 12 of 20 finished
+2026-11-04 16:59:24 watch batch batch_1_20261104_155739Z on spark: wi012, wi013, wi014, wi015 solved, 16 of 20 finished
+2026-11-04 16:59:39 watch batch batch_1_20261104_155739Z on spark: wi016, wi017, wi018, wi019 solved, 20 of 20 finished
+2026-11-04 16:59:39 watch batch batch_1_20261104_155739Z on spark: finished, 20 solved, 0 skipped, 0 failed (1.3 min), press batch fetch
+2026-11-04 16:59:45 batch batch batch_1_20261104_155739Z on spark: finished, 20 of 20 done (0 skipped as already solved), 0 failed
+2026-11-04 16:59:45 batch   3.71 s per work item
+2026-11-04 16:59:45 batch   log | wrote SIONNA_HOUDINI_clean_update_new_parms_result.npz (0.02 MB)
+2026-11-04 16:59:45 batch   log | radio map 'measure_floor': 30617 cells, 2e+07 samples per tx
+2026-11-04 16:59:45 batch   log | radio map 'measure_floor': 30613 of 30617 cells reached (1.8 s)
+2026-11-04 16:59:45 batch   log | wrote SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz (1.96 MB)
+2026-11-04 16:59:45 batch   log | batch: finished, 20 solved, 0 skipped, 0 failed
+2026-11-04 16:59:45 batch batch passed (0 errors, 0 warnings) after 0.3 s
+2026-11-04 16:59:51 batch receive from spark:Documents/HyROPA/batches/SIONNA_HOUDINI_clean_update_new_parms/batch_1_20261104_155739Z
+2026-11-04 16:59:52 batch     batch.log  10.9 kB
+2026-11-04 16:59:52 batch     status.json  492 B
+2026-11-04 16:59:52 batch     wi000/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.6 MB
+2026-11-04 16:59:52 batch     wi000/SIONNA_HOUDINI_clean_update_new_parms_result.npz  91.7 kB
+2026-11-04 16:59:52 batch     wi000/done.json  459 B
+2026-11-04 16:59:52 batch     wi001/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.6 MB
+2026-11-04 16:59:52 batch     wi001/SIONNA_HOUDINI_clean_update_new_parms_result.npz  80.9 kB
+2026-11-04 16:59:52 batch     wi001/done.json  459 B
+2026-11-04 16:59:52 batch     wi002/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.7 MB
+2026-11-04 16:59:52 batch     wi002/SIONNA_HOUDINI_clean_update_new_parms_result.npz  69.7 kB
+2026-11-04 16:59:52 batch     wi002/done.json  459 B
+2026-11-04 16:59:52 batch     wi003/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.6 MB
+2026-11-04 16:59:52 batch     wi003/SIONNA_HOUDINI_clean_update_new_parms_result.npz  41.4 kB
+2026-11-04 16:59:52 batch     wi003/done.json  459 B
+2026-11-04 16:59:52 batch     wi004/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.3 MB
+2026-11-04 16:59:52 batch     wi004/SIONNA_HOUDINI_clean_update_new_parms_result.npz  33.5 kB
+2026-11-04 16:59:52 batch     wi004/done.json  459 B
+2026-11-04 16:59:52 batch     wi005/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.6 MB
+2026-11-04 16:59:52 batch     wi005/SIONNA_HOUDINI_clean_update_new_parms_result.npz  88.1 kB
+2026-11-04 16:59:52 batch     wi005/done.json  459 B
+2026-11-04 16:59:52 batch     wi006/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.6 MB
+2026-11-04 16:59:52 batch     wi006/SIONNA_HOUDINI_clean_update_new_parms_result.npz  85.7 kB
+2026-11-04 16:59:52 batch     wi006/done.json  459 B
+2026-11-04 16:59:52 batch     wi007/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.7 MB
+2026-11-04 16:59:52 batch     wi007/SIONNA_HOUDINI_clean_update_new_parms_result.npz  57.4 kB
+2026-11-04 16:59:52 batch     wi007/done.json  459 B
+2026-11-04 16:59:52 batch     wi008/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.5 MB
+2026-11-04 16:59:52 batch     wi008/SIONNA_HOUDINI_clean_update_new_parms_result.npz  37.9 kB
+2026-11-04 16:59:52 batch     wi008/done.json  459 B
+2026-11-04 16:59:52 batch     wi009/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.4 MB
+2026-11-04 16:59:52 batch     wi009/SIONNA_HOUDINI_clean_update_new_parms_result.npz  38.2 kB
+2026-11-04 16:59:52 batch     wi009/done.json  459 B
+2026-11-04 16:59:52 batch     wi010/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.6 MB
+2026-11-04 16:59:52 batch     wi010/SIONNA_HOUDINI_clean_update_new_parms_result.npz  89.1 kB
+2026-11-04 16:59:52 batch     wi010/done.json  459 B
+2026-11-04 16:59:52 batch     wi011/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.6 MB
+2026-11-04 16:59:52 batch     wi011/SIONNA_HOUDINI_clean_update_new_parms_result.npz  89.9 kB
+2026-11-04 16:59:52 batch     wi011/done.json  459 B
+2026-11-04 16:59:52 batch     wi012/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.6 MB
+2026-11-04 16:59:52 batch     wi012/SIONNA_HOUDINI_clean_update_new_parms_result.npz  101.4 kB
+2026-11-04 16:59:52 batch     wi012/done.json  459 B
+2026-11-04 16:59:52 batch     wi013/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.6 MB
+2026-11-04 16:59:52 batch     wi013/SIONNA_HOUDINI_clean_update_new_parms_result.npz  79.6 kB
+2026-11-04 16:59:52 batch     wi013/done.json  459 B
+2026-11-04 16:59:52 batch     wi014/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.7 MB
+2026-11-04 16:59:52 batch     wi014/SIONNA_HOUDINI_clean_update_new_parms_result.npz  76.7 kB
+2026-11-04 16:59:52 batch     wi014/done.json  459 B
+2026-11-04 16:59:52 batch     wi015/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.6 MB
+2026-11-04 16:59:52 batch     wi015/SIONNA_HOUDINI_clean_update_new_parms_result.npz  89.2 kB
+2026-11-04 16:59:52 batch     wi015/done.json  459 B
+2026-11-04 16:59:52 batch     wi016/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.6 MB
+2026-11-04 16:59:52 batch     wi016/SIONNA_HOUDINI_clean_update_new_parms_result.npz  78.1 kB
+2026-11-04 16:59:52 batch     wi016/done.json  459 B
+2026-11-04 16:59:52 batch     wi017/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.7 MB
+2026-11-04 16:59:52 batch     wi017/SIONNA_HOUDINI_clean_update_new_parms_result.npz  48.7 kB
+2026-11-04 16:59:52 batch     wi017/done.json  459 B
+2026-11-04 16:59:52 batch     wi018/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.3 MB
+2026-11-04 16:59:52 batch     wi018/SIONNA_HOUDINI_clean_update_new_parms_result.npz  32.4 kB
+2026-11-04 16:59:52 batch     wi018/done.json  459 B
+2026-11-04 16:59:52 batch     wi019/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.0 MB
+2026-11-04 16:59:52 batch     wi019/SIONNA_HOUDINI_clean_update_new_parms_result.npz  23.4 kB
+2026-11-04 16:59:52 batch     wi019/done.json  459 B
+2026-11-04 16:59:52 batch   62 files, 52.6 MB in 0.9 s
+2026-11-04 16:59:52 batch convert 20 work items to bgeo, the others are up to date or have no result
+2026-11-04 16:59:53 batch   [1/20] wi000 (0.5 s)
+2026-11-04 16:59:53 batch   [2/20] wi001 (0.5 s)
+2026-11-04 16:59:54 batch   [3/20] wi002 (0.5 s)
+2026-11-04 16:59:54 batch   [4/20] wi003 (0.4 s)
+2026-11-04 16:59:55 batch   [5/20] wi004 (0.4 s)
+2026-11-04 16:59:55 batch   [6/20] wi005 (0.5 s)
+2026-11-04 16:59:56 batch   [7/20] wi006 (0.5 s)
+2026-11-04 16:59:56 batch   [8/20] wi007 (0.4 s)
+2026-11-04 16:59:57 batch   [9/20] wi008 (0.5 s)
+2026-11-04 16:59:57 batch   [10/20] wi009 (0.4 s)
+2026-11-04 16:59:58 batch   [11/20] wi010 (0.5 s)
+2026-11-04 16:59:58 batch   [12/20] wi011 (0.5 s)
+2026-11-04 16:59:59 batch   [13/20] wi012 (0.5 s)
+2026-11-04 16:59:59 batch   [14/20] wi013 (0.5 s)
+2026-11-04 16:59:59 batch   [15/20] wi014 (0.4 s)
+2026-11-04 17:00:00 batch   [16/20] wi015 (0.5 s)
+2026-11-04 17:00:00 batch   [17/20] wi016 (0.4 s)
+2026-11-04 17:00:01 batch   [18/20] wi017 (0.4 s)
+2026-11-04 17:00:01 batch   [19/20] wi018 (0.5 s)
+2026-11-04 17:00:02 batch   [20/20] wi019 (0.4 s)
+2026-11-04 17:00:02 batch converted in 9.4 s
+2026-11-04 17:00:02 batch N011 batch 'batch_1_20261104_155739Z': 20 solved, 0 failed, 0 without result
+2026-11-04 17:00:02 batch batch passed (0 errors, 0 warnings) after 10.4 s
+2026-11-04 17:13:05 preset   seed                 0 -> 42
+2026-11-04 17:13:05 preset   max_depth            5 -> 8
+2026-11-04 17:13:05 preset   samples              1000000 -> 3000000
+2026-11-04 17:13:05 preset   max_paths_per_tx     100000 -> 200000
+2026-11-04 17:13:05 preset   radiomap_samples     20000000 -> 30000000
+2026-11-04 17:13:05 preset   cfr_points           10 -> 64
+2026-11-04 17:13:05 preset   timeout              1800 -> 3600
+2026-11-04 17:13:05 preset quality preset dense_canopy applied, 7 parms already had the preset value
+2026-11-04 17:13:05 preset preset passed (0 errors, 0 warnings) after 0.0 s
+2026-11-04 17:13:10 clear looking for runs or batches of SIONNA_HOUDINI_clean_update_new_parms on spark
+2026-11-04 17:13:11 clear   Documents/HyROPA/batches/SIONNA_HOUDINI_clean_update_new_parms/batch_1_20261104_155739Z  103.9 MB
+2026-11-04 17:13:13 clear N012 cleared 1 folder (103.9 MB) on 'spark'
+2026-11-04 17:13:13 clear clear passed (0 errors, 0 warnings) after 2.2 s
+2026-11-04 17:13:13 clear looking for batches of SIONNA_HOUDINI_clean_update_new_parms in session 'batch_1' on spark
+2026-11-04 17:13:14 clear N013 nothing to clear on 'spark': no batches of SIONNA_HOUDINI_clean_update_new_parms in session 'batch_1'
+2026-11-04 17:13:14 clear clear passed (0 errors, 0 warnings) after 0.3 s
+2026-11-04 17:13:45 batch batch batch_1_20261104_161345Z: 20 work items (0 to 19) from /obj/BATCH_1/topnet1/output0
+2026-11-04 17:13:46 batch   [1/20] wi000: exported, 0.915 GHz, 61537 prims, W010 W005 (0.7 s)
+2026-11-04 17:13:47 batch   [2/20] wi001: exported, 0.915 GHz, 70609 prims, W010 W005 (0.8 s)
+2026-11-04 17:13:48 batch   [3/20] wi002: exported, 0.915 GHz, 88429 prims, W010 W005 (1.0 s)
+2026-11-04 17:13:49 batch   [4/20] wi003: exported, 0.915 GHz, 131197 prims, W010 W005 (1.7 s)
+2026-11-04 17:13:52 batch   [5/20] wi004: exported, 0.915 GHz, 202477 prims, W010 W005 (2.7 s)
+2026-11-04 17:13:53 batch   [6/20] wi005: exported, 0.915 GHz, 58729 prims, W010 W005 (0.7 s)
+2026-11-04 17:13:53 batch   [7/20] wi006: exported, 0.915 GHz, 62617 prims, W010 W005 (0.7 s)
+2026-11-04 17:13:54 batch   [8/20] wi007: exported, 0.915 GHz, 79465 prims, W010 W005 (0.9 s)
+2026-11-04 17:13:56 batch   [9/20] wi008: exported, 0.915 GHz, 140377 prims, W010 W005 (1.8 s)
+2026-11-04 17:13:58 batch   [10/20] wi009: exported, 0.915 GHz, 168889 prims, W010 W005 (2.2 s)
+2026-11-04 17:13:59 batch   [11/20] wi010: exported, 0.915 GHz, 57865 prims, W010 W005 (0.7 s)
+2026-11-04 17:14:00 batch   [12/20] wi011: exported, 0.915 GHz, 60169 prims, W010 W005 (0.7 s)
+2026-11-04 17:14:00 batch   [13/20] wi012: exported, 0.915 GHz, 63625 prims, W010 W005 (0.7 s)
+2026-11-04 17:14:01 batch   [14/20] wi013: exported, 0.915 GHz, 68809 prims, W010 W005 (0.8 s)
+2026-11-04 17:14:02 batch   [15/20] wi014: exported, 0.915 GHz, 83785 prims, W010 W005 (1.0 s)
+2026-11-04 17:14:03 batch   [16/20] wi015: exported, 0.915 GHz, 58729 prims, W010 W005 (0.6 s)
+2026-11-04 17:14:04 batch   [17/20] wi016: exported, 0.915 GHz, 86989 prims, W010 W005 (1.0 s)
+2026-11-04 17:14:06 batch   [18/20] wi017: exported, 0.915 GHz, 142105 prims, W010 W005 (1.8 s)
+2026-11-04 17:14:10 batch   [19/20] wi018: exported, 0.915 GHz, 295501 prims, W010 W005 (4.1 s)
+2026-11-04 17:14:18 batch   [20/20] wi019: exported, 0.915 GHz, 571027 prims, W010 W005 (8.3 s)
+2026-11-04 17:14:18 batch parm 'batch' set to batch_1_20261104_161345Z
+2026-11-04 17:14:18 batch N009 batch 'batch_1_20261104_161345Z': 20 exported, 0 failed, written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/batches/batch_1_20261104_161345Z
+2026-11-04 17:14:18 batch batch passed (0 errors, 0 warnings) after 32.9 s
+2026-11-04 17:14:34 batch batch batch_1_20261104_161345Z: 20 work items queued, 20 of 20 exported, at 0.915 GHz (frequency as exported per work item)
+2026-11-04 17:14:34 batch target spark: checking
+2026-11-04 17:14:34 batch target spark: gpu NVIDIA GB10, load 0%, runs on the gpu
+2026-11-04 17:14:35 batch send to spark:Documents/HyROPA/batches/SIONNA_HOUDINI_clean_update_new_parms/batch_1_20261104_161345Z
+2026-11-04 17:14:35 batch     batch.json  4.7 kB
+2026-11-04 17:14:35 batch     queue.json  180 B
+2026-11-04 17:14:35 batch     sionna_run.py  16.5 kB
+2026-11-04 17:14:35 batch     wi000/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 17:14:35 batch     wi000/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 17:14:35 batch     wi000/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 17:14:35 batch     wi000/SIONNA_HOUDINI_clean_update_new_parms_meta.json  575 B
+2026-11-04 17:14:35 batch     wi000/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 17:14:35 batch     wi000/SIONNA_HOUDINI_clean_update_new_parms_settings.json  460 B
+2026-11-04 17:14:35 batch     wi000/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 17:14:35 batch     wi000/meshes/floor.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi000/meshes/frame.ply  56.6 kB
+2026-11-04 17:14:35 batch     wi000/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 17:14:35 batch     wi000/meshes/leaves.ply  114.3 kB
+2026-11-04 17:14:35 batch     wi000/meshes/measure_floor.ply  582.1 kB
+2026-11-04 17:14:35 batch     wi000/meshes/person.ply  315.6 kB
+2026-11-04 17:14:35 batch     wi000/meshes/robot_cover.ply  52.9 kB
+2026-11-04 17:14:35 batch     wi000/meshes/sprayers.ply  33.6 kB
+2026-11-04 17:14:35 batch     wi000/meshes/structural_frame.ply  3.6 kB
+2026-11-04 17:14:35 batch     wi000/meshes/trays.ply  727 B
+2026-11-04 17:14:35 batch     wi000/meshes/trays_legs.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi000/meshes/windows.ply  7.0 kB
+2026-11-04 17:14:35 batch     wi001/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 17:14:35 batch     wi001/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 17:14:35 batch     wi001/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 17:14:35 batch     wi001/SIONNA_HOUDINI_clean_update_new_parms_meta.json  575 B
+2026-11-04 17:14:35 batch     wi001/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 17:14:35 batch     wi001/SIONNA_HOUDINI_clean_update_new_parms_settings.json  460 B
+2026-11-04 17:14:35 batch     wi001/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 17:14:35 batch     wi001/meshes/floor.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi001/meshes/frame.ply  56.6 kB
+2026-11-04 17:14:35 batch     wi001/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 17:14:35 batch     wi001/meshes/leaves.ply  310.5 kB
+2026-11-04 17:14:35 batch     wi001/meshes/measure_floor.ply  582.1 kB
+2026-11-04 17:14:35 batch     wi001/meshes/person.ply  315.6 kB
+2026-11-04 17:14:35 batch     wi001/meshes/robot_cover.ply  52.9 kB
+2026-11-04 17:14:35 batch     wi001/meshes/sprayers.ply  33.6 kB
+2026-11-04 17:14:35 batch     wi001/meshes/structural_frame.ply  3.6 kB
+2026-11-04 17:14:35 batch     wi001/meshes/trays.ply  727 B
+2026-11-04 17:14:35 batch     wi001/meshes/trays_legs.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi001/meshes/windows.ply  7.0 kB
+2026-11-04 17:14:35 batch     wi002/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 17:14:35 batch     wi002/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 17:14:35 batch     wi002/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 17:14:35 batch     wi002/SIONNA_HOUDINI_clean_update_new_parms_meta.json  575 B
+2026-11-04 17:14:35 batch     wi002/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 17:14:35 batch     wi002/SIONNA_HOUDINI_clean_update_new_parms_settings.json  460 B
+2026-11-04 17:14:35 batch     wi002/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 17:14:35 batch     wi002/meshes/floor.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi002/meshes/frame.ply  56.6 kB
+2026-11-04 17:14:35 batch     wi002/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 17:14:35 batch     wi002/meshes/leaves.ply  677.2 kB
+2026-11-04 17:14:35 batch     wi002/meshes/measure_floor.ply  582.1 kB
+2026-11-04 17:14:35 batch     wi002/meshes/person.ply  315.6 kB
+2026-11-04 17:14:35 batch     wi002/meshes/robot_cover.ply  52.9 kB
+2026-11-04 17:14:35 batch     wi002/meshes/sprayers.ply  33.6 kB
+2026-11-04 17:14:35 batch     wi002/meshes/structural_frame.ply  3.6 kB
+2026-11-04 17:14:35 batch     wi002/meshes/trays.ply  727 B
+2026-11-04 17:14:35 batch     wi002/meshes/trays_legs.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi002/meshes/windows.ply  7.0 kB
+2026-11-04 17:14:35 batch     wi003/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 17:14:35 batch     wi003/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 17:14:35 batch     wi003/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 17:14:35 batch     wi003/SIONNA_HOUDINI_clean_update_new_parms_meta.json  575 B
+2026-11-04 17:14:35 batch     wi003/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 17:14:35 batch     wi003/SIONNA_HOUDINI_clean_update_new_parms_settings.json  460 B
+2026-11-04 17:14:35 batch     wi003/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 17:14:35 batch     wi003/meshes/floor.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi003/meshes/frame.ply  56.6 kB
+2026-11-04 17:14:35 batch     wi003/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 17:14:35 batch     wi003/meshes/leaves.ply  1.5 MB
+2026-11-04 17:14:35 batch     wi003/meshes/measure_floor.ply  582.1 kB
+2026-11-04 17:14:35 batch     wi003/meshes/person.ply  315.6 kB
+2026-11-04 17:14:35 batch     wi003/meshes/robot_cover.ply  52.9 kB
+2026-11-04 17:14:35 batch     wi003/meshes/sprayers.ply  33.6 kB
+2026-11-04 17:14:35 batch     wi003/meshes/structural_frame.ply  3.6 kB
+2026-11-04 17:14:35 batch     wi003/meshes/trays.ply  727 B
+2026-11-04 17:14:35 batch     wi003/meshes/trays_legs.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi003/meshes/windows.ply  7.0 kB
+2026-11-04 17:14:35 batch     wi004/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 17:14:35 batch     wi004/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 17:14:35 batch     wi004/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 17:14:35 batch     wi004/SIONNA_HOUDINI_clean_update_new_parms_meta.json  575 B
+2026-11-04 17:14:35 batch     wi004/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 17:14:35 batch     wi004/SIONNA_HOUDINI_clean_update_new_parms_settings.json  460 B
+2026-11-04 17:14:35 batch     wi004/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 17:14:35 batch     wi004/meshes/floor.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi004/meshes/frame.ply  56.6 kB
+2026-11-04 17:14:35 batch     wi004/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 17:14:35 batch     wi004/meshes/leaves.ply  3.0 MB
+2026-11-04 17:14:35 batch     wi004/meshes/measure_floor.ply  582.1 kB
+2026-11-04 17:14:35 batch     wi004/meshes/person.ply  315.6 kB
+2026-11-04 17:14:35 batch     wi004/meshes/robot_cover.ply  52.9 kB
+2026-11-04 17:14:35 batch     wi004/meshes/sprayers.ply  33.6 kB
+2026-11-04 17:14:35 batch     wi004/meshes/structural_frame.ply  3.6 kB
+2026-11-04 17:14:35 batch     wi004/meshes/trays.ply  727 B
+2026-11-04 17:14:35 batch     wi004/meshes/trays_legs.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi004/meshes/windows.ply  7.0 kB
+2026-11-04 17:14:35 batch     wi005/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 17:14:35 batch     wi005/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 17:14:35 batch     wi005/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 17:14:35 batch     wi005/SIONNA_HOUDINI_clean_update_new_parms_meta.json  575 B
+2026-11-04 17:14:35 batch     wi005/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 17:14:35 batch     wi005/SIONNA_HOUDINI_clean_update_new_parms_settings.json  460 B
+2026-11-04 17:14:35 batch     wi005/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.3 kB
+2026-11-04 17:14:35 batch     wi005/meshes/floor.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi005/meshes/frame.ply  56.6 kB
+2026-11-04 17:14:35 batch     wi005/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 17:14:35 batch     wi005/meshes/leaves.ply  56.7 kB
+2026-11-04 17:14:35 batch     wi005/meshes/measure_floor.ply  582.1 kB
+2026-11-04 17:14:35 batch     wi005/meshes/person.ply  315.6 kB
+2026-11-04 17:14:35 batch     wi005/meshes/robot_cover.ply  52.9 kB
+2026-11-04 17:14:35 batch     wi005/meshes/sprayers.ply  33.6 kB
+2026-11-04 17:14:35 batch     wi005/meshes/structural_frame.ply  3.6 kB
+2026-11-04 17:14:35 batch     wi005/meshes/trays.ply  727 B
+2026-11-04 17:14:35 batch     wi005/meshes/trays_legs.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi005/meshes/windows.ply  7.0 kB
+2026-11-04 17:14:35 batch     wi006/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 17:14:35 batch     wi006/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 17:14:35 batch     wi006/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 17:14:35 batch     wi006/SIONNA_HOUDINI_clean_update_new_parms_meta.json  575 B
+2026-11-04 17:14:35 batch     wi006/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 17:14:35 batch     wi006/SIONNA_HOUDINI_clean_update_new_parms_settings.json  460 B
+2026-11-04 17:14:35 batch     wi006/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 17:14:35 batch     wi006/meshes/floor.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi006/meshes/frame.ply  56.6 kB
+2026-11-04 17:14:35 batch     wi006/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 17:14:35 batch     wi006/meshes/leaves.ply  141.5 kB
+2026-11-04 17:14:35 batch     wi006/meshes/measure_floor.ply  582.1 kB
+2026-11-04 17:14:35 batch     wi006/meshes/person.ply  315.6 kB
+2026-11-04 17:14:35 batch     wi006/meshes/robot_cover.ply  52.9 kB
+2026-11-04 17:14:35 batch     wi006/meshes/sprayers.ply  33.6 kB
+2026-11-04 17:14:35 batch     wi006/meshes/structural_frame.ply  3.6 kB
+2026-11-04 17:14:35 batch     wi006/meshes/trays.ply  727 B
+2026-11-04 17:14:35 batch     wi006/meshes/trays_legs.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi006/meshes/windows.ply  7.0 kB
+2026-11-04 17:14:35 batch     wi007/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 17:14:35 batch     wi007/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 17:14:35 batch     wi007/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 17:14:35 batch     wi007/SIONNA_HOUDINI_clean_update_new_parms_meta.json  575 B
+2026-11-04 17:14:35 batch     wi007/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 17:14:35 batch     wi007/SIONNA_HOUDINI_clean_update_new_parms_settings.json  460 B
+2026-11-04 17:14:35 batch     wi007/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 17:14:35 batch     wi007/meshes/floor.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi007/meshes/frame.ply  56.6 kB
+2026-11-04 17:14:35 batch     wi007/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 17:14:35 batch     wi007/meshes/leaves.ply  509.0 kB
+2026-11-04 17:14:35 batch     wi007/meshes/measure_floor.ply  582.1 kB
+2026-11-04 17:14:35 batch     wi007/meshes/person.ply  315.6 kB
+2026-11-04 17:14:35 batch     wi007/meshes/robot_cover.ply  52.9 kB
+2026-11-04 17:14:35 batch     wi007/meshes/sprayers.ply  33.6 kB
+2026-11-04 17:14:35 batch     wi007/meshes/structural_frame.ply  3.6 kB
+2026-11-04 17:14:35 batch     wi007/meshes/trays.ply  727 B
+2026-11-04 17:14:35 batch     wi007/meshes/trays_legs.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi007/meshes/windows.ply  7.0 kB
+2026-11-04 17:14:35 batch     wi008/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 17:14:35 batch     wi008/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 17:14:35 batch     wi008/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 17:14:35 batch     wi008/SIONNA_HOUDINI_clean_update_new_parms_meta.json  575 B
+2026-11-04 17:14:35 batch     wi008/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 17:14:35 batch     wi008/SIONNA_HOUDINI_clean_update_new_parms_settings.json  460 B
+2026-11-04 17:14:35 batch     wi008/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 17:14:35 batch     wi008/meshes/floor.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi008/meshes/frame.ply  56.6 kB
+2026-11-04 17:14:35 batch     wi008/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 17:14:35 batch     wi008/meshes/leaves.ply  1.8 MB
+2026-11-04 17:14:35 batch     wi008/meshes/measure_floor.ply  582.1 kB
+2026-11-04 17:14:35 batch     wi008/meshes/person.ply  315.6 kB
+2026-11-04 17:14:35 batch     wi008/meshes/robot_cover.ply  52.9 kB
+2026-11-04 17:14:35 batch     wi008/meshes/sprayers.ply  33.6 kB
+2026-11-04 17:14:35 batch     wi008/meshes/structural_frame.ply  3.6 kB
+2026-11-04 17:14:35 batch     wi008/meshes/trays.ply  727 B
+2026-11-04 17:14:35 batch     wi008/meshes/trays_legs.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi008/meshes/windows.ply  7.0 kB
+2026-11-04 17:14:35 batch     wi009/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 17:14:35 batch     wi009/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 17:14:35 batch     wi009/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 17:14:35 batch     wi009/SIONNA_HOUDINI_clean_update_new_parms_meta.json  575 B
+2026-11-04 17:14:35 batch     wi009/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 17:14:35 batch     wi009/SIONNA_HOUDINI_clean_update_new_parms_settings.json  460 B
+2026-11-04 17:14:35 batch     wi009/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 17:14:35 batch     wi009/meshes/floor.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi009/meshes/frame.ply  56.6 kB
+2026-11-04 17:14:35 batch     wi009/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 17:14:35 batch     wi009/meshes/leaves.ply  2.4 MB
+2026-11-04 17:14:35 batch     wi009/meshes/measure_floor.ply  582.1 kB
+2026-11-04 17:14:35 batch     wi009/meshes/person.ply  315.6 kB
+2026-11-04 17:14:35 batch     wi009/meshes/robot_cover.ply  52.9 kB
+2026-11-04 17:14:35 batch     wi009/meshes/sprayers.ply  33.6 kB
+2026-11-04 17:14:35 batch     wi009/meshes/structural_frame.ply  3.6 kB
+2026-11-04 17:14:35 batch     wi009/meshes/trays.ply  727 B
+2026-11-04 17:14:35 batch     wi009/meshes/trays_legs.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi009/meshes/windows.ply  7.0 kB
+2026-11-04 17:14:35 batch     wi010/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 17:14:35 batch     wi010/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 17:14:35 batch     wi010/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 17:14:35 batch     wi010/SIONNA_HOUDINI_clean_update_new_parms_meta.json  577 B
+2026-11-04 17:14:35 batch     wi010/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 17:14:35 batch     wi010/SIONNA_HOUDINI_clean_update_new_parms_settings.json  460 B
+2026-11-04 17:14:35 batch     wi010/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 17:14:35 batch     wi010/meshes/floor.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi010/meshes/frame.ply  56.6 kB
+2026-11-04 17:14:35 batch     wi010/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 17:14:35 batch     wi010/meshes/leaves.ply  37.9 kB
+2026-11-04 17:14:35 batch     wi010/meshes/measure_floor.ply  582.1 kB
+2026-11-04 17:14:35 batch     wi010/meshes/person.ply  315.6 kB
+2026-11-04 17:14:35 batch     wi010/meshes/robot_cover.ply  52.9 kB
+2026-11-04 17:14:35 batch     wi010/meshes/sprayers.ply  33.6 kB
+2026-11-04 17:14:35 batch     wi010/meshes/structural_frame.ply  3.6 kB
+2026-11-04 17:14:35 batch     wi010/meshes/trays.ply  727 B
+2026-11-04 17:14:35 batch     wi010/meshes/trays_legs.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi010/meshes/windows.ply  7.0 kB
+2026-11-04 17:14:35 batch     wi011/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 17:14:35 batch     wi011/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 17:14:35 batch     wi011/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 17:14:35 batch     wi011/SIONNA_HOUDINI_clean_update_new_parms_meta.json  577 B
+2026-11-04 17:14:35 batch     wi011/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 17:14:35 batch     wi011/SIONNA_HOUDINI_clean_update_new_parms_settings.json  460 B
+2026-11-04 17:14:35 batch     wi011/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 17:14:35 batch     wi011/meshes/floor.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi011/meshes/frame.ply  56.6 kB
+2026-11-04 17:14:35 batch     wi011/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 17:14:35 batch     wi011/meshes/leaves.ply  88.3 kB
+2026-11-04 17:14:35 batch     wi011/meshes/measure_floor.ply  582.1 kB
+2026-11-04 17:14:35 batch     wi011/meshes/person.ply  315.6 kB
+2026-11-04 17:14:35 batch     wi011/meshes/robot_cover.ply  52.9 kB
+2026-11-04 17:14:35 batch     wi011/meshes/sprayers.ply  33.6 kB
+2026-11-04 17:14:35 batch     wi011/meshes/structural_frame.ply  3.6 kB
+2026-11-04 17:14:35 batch     wi011/meshes/trays.ply  727 B
+2026-11-04 17:14:35 batch     wi011/meshes/trays_legs.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi011/meshes/windows.ply  7.0 kB
+2026-11-04 17:14:35 batch     wi012/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 17:14:35 batch     wi012/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 17:14:35 batch     wi012/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 17:14:35 batch     wi012/SIONNA_HOUDINI_clean_update_new_parms_meta.json  577 B
+2026-11-04 17:14:35 batch     wi012/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 17:14:35 batch     wi012/SIONNA_HOUDINI_clean_update_new_parms_settings.json  460 B
+2026-11-04 17:14:35 batch     wi012/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 17:14:35 batch     wi012/meshes/floor.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi012/meshes/frame.ply  56.6 kB
+2026-11-04 17:14:35 batch     wi012/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 17:14:35 batch     wi012/meshes/leaves.ply  163.8 kB
+2026-11-04 17:14:35 batch     wi012/meshes/measure_floor.ply  582.1 kB
+2026-11-04 17:14:35 batch     wi012/meshes/person.ply  315.6 kB
+2026-11-04 17:14:35 batch     wi012/meshes/robot_cover.ply  52.9 kB
+2026-11-04 17:14:35 batch     wi012/meshes/sprayers.ply  33.6 kB
+2026-11-04 17:14:35 batch     wi012/meshes/structural_frame.ply  3.6 kB
+2026-11-04 17:14:35 batch     wi012/meshes/trays.ply  727 B
+2026-11-04 17:14:35 batch     wi012/meshes/trays_legs.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi012/meshes/windows.ply  7.0 kB
+2026-11-04 17:14:35 batch     wi013/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 17:14:35 batch     wi013/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 17:14:35 batch     wi013/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 17:14:35 batch     wi013/SIONNA_HOUDINI_clean_update_new_parms_meta.json  577 B
+2026-11-04 17:14:35 batch     wi013/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 17:14:35 batch     wi013/SIONNA_HOUDINI_clean_update_new_parms_settings.json  460 B
+2026-11-04 17:14:35 batch     wi013/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 17:14:35 batch     wi013/meshes/floor.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi013/meshes/frame.ply  56.6 kB
+2026-11-04 17:14:35 batch     wi013/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 17:14:35 batch     wi013/meshes/leaves.ply  277.1 kB
+2026-11-04 17:14:35 batch     wi013/meshes/measure_floor.ply  582.1 kB
+2026-11-04 17:14:35 batch     wi013/meshes/person.ply  315.6 kB
+2026-11-04 17:14:35 batch     wi013/meshes/robot_cover.ply  52.9 kB
+2026-11-04 17:14:35 batch     wi013/meshes/sprayers.ply  33.6 kB
+2026-11-04 17:14:35 batch     wi013/meshes/structural_frame.ply  3.6 kB
+2026-11-04 17:14:35 batch     wi013/meshes/trays.ply  727 B
+2026-11-04 17:14:35 batch     wi013/meshes/trays_legs.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi013/meshes/windows.ply  7.0 kB
+2026-11-04 17:14:35 batch     wi014/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 17:14:35 batch     wi014/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 17:14:35 batch     wi014/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 17:14:35 batch     wi014/SIONNA_HOUDINI_clean_update_new_parms_meta.json  577 B
+2026-11-04 17:14:35 batch     wi014/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 17:14:35 batch     wi014/SIONNA_HOUDINI_clean_update_new_parms_settings.json  460 B
+2026-11-04 17:14:35 batch     wi014/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 17:14:35 batch     wi014/meshes/floor.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi014/meshes/frame.ply  56.6 kB
+2026-11-04 17:14:35 batch     wi014/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 17:14:35 batch     wi014/meshes/leaves.ply  604.3 kB
+2026-11-04 17:14:35 batch     wi014/meshes/measure_floor.ply  582.1 kB
+2026-11-04 17:14:35 batch     wi014/meshes/person.ply  315.6 kB
+2026-11-04 17:14:35 batch     wi014/meshes/robot_cover.ply  52.9 kB
+2026-11-04 17:14:35 batch     wi014/meshes/sprayers.ply  33.6 kB
+2026-11-04 17:14:35 batch     wi014/meshes/structural_frame.ply  3.6 kB
+2026-11-04 17:14:35 batch     wi014/meshes/trays.ply  727 B
+2026-11-04 17:14:35 batch     wi014/meshes/trays_legs.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi014/meshes/windows.ply  7.0 kB
+2026-11-04 17:14:35 batch     wi015/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 17:14:35 batch     wi015/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 17:14:35 batch     wi015/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 17:14:35 batch     wi015/SIONNA_HOUDINI_clean_update_new_parms_meta.json  577 B
+2026-11-04 17:14:35 batch     wi015/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 17:14:35 batch     wi015/SIONNA_HOUDINI_clean_update_new_parms_settings.json  460 B
+2026-11-04 17:14:35 batch     wi015/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 17:14:35 batch     wi015/meshes/floor.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi015/meshes/frame.ply  56.6 kB
+2026-11-04 17:14:35 batch     wi015/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 17:14:35 batch     wi015/meshes/leaves.ply  58.4 kB
+2026-11-04 17:14:35 batch     wi015/meshes/measure_floor.ply  582.1 kB
+2026-11-04 17:14:35 batch     wi015/meshes/person.ply  315.6 kB
+2026-11-04 17:14:35 batch     wi015/meshes/robot_cover.ply  52.9 kB
+2026-11-04 17:14:35 batch     wi015/meshes/sprayers.ply  33.6 kB
+2026-11-04 17:14:35 batch     wi015/meshes/structural_frame.ply  3.6 kB
+2026-11-04 17:14:35 batch     wi015/meshes/trays.ply  727 B
+2026-11-04 17:14:35 batch     wi015/meshes/trays_legs.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi015/meshes/windows.ply  7.0 kB
+2026-11-04 17:14:35 batch     wi016/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 17:14:35 batch     wi016/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 17:14:35 batch     wi016/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 17:14:35 batch     wi016/SIONNA_HOUDINI_clean_update_new_parms_meta.json  577 B
+2026-11-04 17:14:35 batch     wi016/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 17:14:35 batch     wi016/SIONNA_HOUDINI_clean_update_new_parms_settings.json  460 B
+2026-11-04 17:14:35 batch     wi016/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 17:14:35 batch     wi016/meshes/floor.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi016/meshes/frame.ply  56.6 kB
+2026-11-04 17:14:35 batch     wi016/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 17:14:35 batch     wi016/meshes/leaves.ply  685.9 kB
+2026-11-04 17:14:35 batch     wi016/meshes/measure_floor.ply  582.1 kB
+2026-11-04 17:14:35 batch     wi016/meshes/person.ply  315.6 kB
+2026-11-04 17:14:35 batch     wi016/meshes/robot_cover.ply  52.9 kB
+2026-11-04 17:14:35 batch     wi016/meshes/sprayers.ply  33.6 kB
+2026-11-04 17:14:35 batch     wi016/meshes/structural_frame.ply  3.6 kB
+2026-11-04 17:14:35 batch     wi016/meshes/trays.ply  727 B
+2026-11-04 17:14:35 batch     wi016/meshes/trays_legs.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi016/meshes/windows.ply  7.0 kB
+2026-11-04 17:14:35 batch     wi017/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 17:14:35 batch     wi017/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 17:14:35 batch     wi017/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 17:14:35 batch     wi017/SIONNA_HOUDINI_clean_update_new_parms_meta.json  577 B
+2026-11-04 17:14:35 batch     wi017/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 17:14:35 batch     wi017/SIONNA_HOUDINI_clean_update_new_parms_settings.json  460 B
+2026-11-04 17:14:35 batch     wi017/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 17:14:35 batch     wi017/meshes/floor.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi017/meshes/frame.ply  56.6 kB
+2026-11-04 17:14:35 batch     wi017/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 17:14:35 batch     wi017/meshes/leaves.ply  1.8 MB
+2026-11-04 17:14:35 batch     wi017/meshes/measure_floor.ply  582.1 kB
+2026-11-04 17:14:35 batch     wi017/meshes/person.ply  315.6 kB
+2026-11-04 17:14:35 batch     wi017/meshes/robot_cover.ply  52.9 kB
+2026-11-04 17:14:35 batch     wi017/meshes/sprayers.ply  33.6 kB
+2026-11-04 17:14:35 batch     wi017/meshes/structural_frame.ply  3.6 kB
+2026-11-04 17:14:35 batch     wi017/meshes/trays.ply  727 B
+2026-11-04 17:14:35 batch     wi017/meshes/trays_legs.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi017/meshes/windows.ply  7.0 kB
+2026-11-04 17:14:35 batch     wi018/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 17:14:35 batch     wi018/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 17:14:35 batch     wi018/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 17:14:35 batch     wi018/SIONNA_HOUDINI_clean_update_new_parms_meta.json  577 B
+2026-11-04 17:14:35 batch     wi018/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 17:14:35 batch     wi018/SIONNA_HOUDINI_clean_update_new_parms_settings.json  460 B
+2026-11-04 17:14:35 batch     wi018/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 17:14:35 batch     wi018/meshes/floor.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi018/meshes/frame.ply  56.6 kB
+2026-11-04 17:14:35 batch     wi018/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 17:14:35 batch     wi018/meshes/leaves.ply  5.0 MB
+2026-11-04 17:14:35 batch     wi018/meshes/measure_floor.ply  582.1 kB
+2026-11-04 17:14:35 batch     wi018/meshes/person.ply  315.6 kB
+2026-11-04 17:14:35 batch     wi018/meshes/robot_cover.ply  52.9 kB
+2026-11-04 17:14:35 batch     wi018/meshes/sprayers.ply  33.6 kB
+2026-11-04 17:14:35 batch     wi018/meshes/structural_frame.ply  3.6 kB
+2026-11-04 17:14:35 batch     wi018/meshes/trays.ply  727 B
+2026-11-04 17:14:35 batch     wi018/meshes/trays_legs.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi018/meshes/windows.ply  7.0 kB
+2026-11-04 17:14:35 batch     wi019/SIONNA_HOUDINI_clean_update_new_parms_log.txt  405 B
+2026-11-04 17:14:35 batch     wi019/SIONNA_HOUDINI_clean_update_new_parms_materials.json  4.5 kB
+2026-11-04 17:14:35 batch     wi019/SIONNA_HOUDINI_clean_update_new_parms_measure.json  17 B
+2026-11-04 17:14:35 batch     wi019/SIONNA_HOUDINI_clean_update_new_parms_meta.json  577 B
+2026-11-04 17:14:35 batch     wi019/SIONNA_HOUDINI_clean_update_new_parms_scene.xml  5.4 kB
+2026-11-04 17:14:35 batch     wi019/SIONNA_HOUDINI_clean_update_new_parms_settings.json  460 B
+2026-11-04 17:14:35 batch     wi019/SIONNA_HOUDINI_clean_update_new_parms_txrx.json  7.4 kB
+2026-11-04 17:14:35 batch     wi019/meshes/floor.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi019/meshes/frame.ply  56.6 kB
+2026-11-04 17:14:35 batch     wi019/meshes/frame_secondary.ply  15.7 kB
+2026-11-04 17:14:35 batch     wi019/meshes/leaves.ply  10.9 MB
+2026-11-04 17:14:35 batch     wi019/meshes/measure_floor.ply  582.1 kB
+2026-11-04 17:14:35 batch     wi019/meshes/person.ply  315.6 kB
+2026-11-04 17:14:35 batch     wi019/meshes/robot_cover.ply  52.9 kB
+2026-11-04 17:14:35 batch     wi019/meshes/sprayers.ply  33.6 kB
+2026-11-04 17:14:35 batch     wi019/meshes/structural_frame.ply  3.6 kB
+2026-11-04 17:14:35 batch     wi019/meshes/trays.ply  727 B
+2026-11-04 17:14:35 batch     wi019/meshes/trays_legs.ply  1.2 kB
+2026-11-04 17:14:35 batch     wi019/meshes/windows.ply  7.0 kB
+2026-11-04 17:14:35 batch   383 files, 51.3 MB in 1.0 s
+2026-11-04 17:14:36 batch watching batch batch_1_20261104_161345Z on spark every 15 s, a line follows each finished work item
+2026-11-04 17:14:36 batch N010 batch 'batch_1_20261104_161345Z' started on 'spark' (pid 3098670): 20 work items queued, finished ones are skipped
+2026-11-04 17:14:36 batch batch passed (0 errors, 0 warnings) after 2.0 s
+2026-11-04 17:14:51 watch batch batch_1_20261104_161345Z on spark: wi000, wi001 solved, 2 of 20 finished
+2026-11-04 17:15:07 watch batch batch_1_20261104_161345Z on spark: wi002, wi003 solved, 4 of 20 finished

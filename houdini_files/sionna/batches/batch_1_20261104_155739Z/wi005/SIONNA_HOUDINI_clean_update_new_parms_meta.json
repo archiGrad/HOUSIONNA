@@ -1,0 +1,24 @@
+{
+  "exported_utc": "20261104_155746Z",
+  "hip": "/home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/SIONNA_HOUDINI_clean_update_new_parms.hipnc",
+  "houdini": "21.0.440",
+  "commit": "68eb05549f0bffab84544a993d22965a1c69712a",
+  "dirty": true,
+  "work_item": {
+    "index": 5,
+    "id": 96,
+    "name": "output0_96",
+    "frequency": 915000000.0,
+    "settings": {}
+  },
+  "wedge": {
+    "runs": 0,
+    "wedgeindex": 5,
+    "wedgetotal": 20,
+    "wedgeattribs": "plant_species",
+    "wedgecount": 5,
+    "wedgenum": 0,
+    "plant_species": 1,
+    "plant_stage": 0
+  }
+}

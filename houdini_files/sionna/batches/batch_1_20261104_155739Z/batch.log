@@ -1,0 +1,202 @@
+batch: 20 work items, pid 3094709
+[1/20] wi000
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 25 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 5, los, specular_reflection, refraction, antenna iso V, seed 0
+paths: 25 tx x 1 rx, 1e+06 samples per tx
+paths: 1288 valid paths over 25 links (0.8 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_result.npz (0.09 MB)
+radio map 'measure_floor': 30617 cells, 2e+07 samples per tx
+radio map 'measure_floor': 30613 of 30617 cells reached (2.2 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz (2.65 MB)
+[2/20] wi001
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 25 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 5, los, specular_reflection, refraction, antenna iso V, seed 0
+paths: 25 tx x 1 rx, 1e+06 samples per tx
+paths: 1054 valid paths over 25 links (0.4 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_result.npz (0.08 MB)
+radio map 'measure_floor': 30617 cells, 2e+07 samples per tx
+radio map 'measure_floor': 30613 of 30617 cells reached (2.3 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz (2.65 MB)
+[3/20] wi002
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 25 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 5, los, specular_reflection, refraction, antenna iso V, seed 0
+paths: 25 tx x 1 rx, 1e+06 samples per tx
+paths: 854 valid paths over 25 links (0.4 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_result.npz (0.07 MB)
+radio map 'measure_floor': 30617 cells, 2e+07 samples per tx
+radio map 'measure_floor': 30613 of 30617 cells reached (2.4 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz (2.65 MB)
+[4/20] wi003
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 25 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 5, los, specular_reflection, refraction, antenna iso V, seed 0
+paths: 25 tx x 1 rx, 1e+06 samples per tx
+paths: 456 valid paths over 25 links (0.3 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_result.npz (0.04 MB)
+radio map 'measure_floor': 30617 cells, 2e+07 samples per tx
+radio map 'measure_floor': 30613 of 30617 cells reached (2.1 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz (2.61 MB)
+[5/20] wi004
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 25 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 5, los, specular_reflection, refraction, antenna iso V, seed 0
+paths: 25 tx x 1 rx, 1e+06 samples per tx
+paths: 354 valid paths over 25 links (0.4 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_result.npz (0.03 MB)
+radio map 'measure_floor': 30617 cells, 2e+07 samples per tx
+radio map 'measure_floor': 30613 of 30617 cells reached (1.9 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz (2.32 MB)
+[6/20] wi005
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 25 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 5, los, specular_reflection, refraction, antenna iso V, seed 0
+paths: 25 tx x 1 rx, 1e+06 samples per tx
+paths: 1216 valid paths over 25 links (0.3 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_result.npz (0.09 MB)
+radio map 'measure_floor': 30617 cells, 2e+07 samples per tx
+radio map 'measure_floor': 30613 of 30617 cells reached (2.2 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz (2.65 MB)
+[7/20] wi006
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 25 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 5, los, specular_reflection, refraction, antenna iso V, seed 0
+paths: 25 tx x 1 rx, 1e+06 samples per tx
+paths: 1105 valid paths over 25 links (0.4 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_result.npz (0.08 MB)
+radio map 'measure_floor': 30617 cells, 2e+07 samples per tx
+radio map 'measure_floor': 30613 of 30617 cells reached (2.3 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz (2.65 MB)
+[8/20] wi007
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 25 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 5, los, specular_reflection, refraction, antenna iso V, seed 0
+paths: 25 tx x 1 rx, 1e+06 samples per tx
+paths: 659 valid paths over 25 links (0.4 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_result.npz (0.06 MB)
+radio map 'measure_floor': 30617 cells, 2e+07 samples per tx
+radio map 'measure_floor': 30613 of 30617 cells reached (2.3 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz (2.66 MB)
+[9/20] wi008
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 25 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 5, los, specular_reflection, refraction, antenna iso V, seed 0
+paths: 25 tx x 1 rx, 1e+06 samples per tx
+paths: 415 valid paths over 25 links (0.4 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_result.npz (0.04 MB)
+radio map 'measure_floor': 30617 cells, 2e+07 samples per tx
+radio map 'measure_floor': 30613 of 30617 cells reached (2.0 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz (2.51 MB)
+[10/20] wi009
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 25 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 5, los, specular_reflection, refraction, antenna iso V, seed 0
+paths: 25 tx x 1 rx, 1e+06 samples per tx
+paths: 416 valid paths over 25 links (0.3 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_result.npz (0.04 MB)
+radio map 'measure_floor': 30617 cells, 2e+07 samples per tx
+radio map 'measure_floor': 30613 of 30617 cells reached (1.9 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz (2.40 MB)
+[11/20] wi010
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 25 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 5, los, specular_reflection, refraction, antenna iso V, seed 0
+paths: 25 tx x 1 rx, 1e+06 samples per tx
+paths: 1235 valid paths over 25 links (0.4 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_result.npz (0.09 MB)
+radio map 'measure_floor': 30617 cells, 2e+07 samples per tx
+radio map 'measure_floor': 30613 of 30617 cells reached (2.3 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz (2.65 MB)
+[12/20] wi011
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 25 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 5, los, specular_reflection, refraction, antenna iso V, seed 0
+paths: 25 tx x 1 rx, 1e+06 samples per tx
+paths: 1186 valid paths over 25 links (0.3 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_result.npz (0.09 MB)
+radio map 'measure_floor': 30617 cells, 2e+07 samples per tx
+radio map 'measure_floor': 30613 of 30617 cells reached (2.3 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz (2.65 MB)
+[13/20] wi012
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 25 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 5, los, specular_reflection, refraction, antenna iso V, seed 0
+paths: 25 tx x 1 rx, 1e+06 samples per tx
+paths: 1332 valid paths over 25 links (0.3 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_result.npz (0.10 MB)
+radio map 'measure_floor': 30617 cells, 2e+07 samples per tx
+radio map 'measure_floor': 30613 of 30617 cells reached (2.2 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz (2.65 MB)
+[14/20] wi013
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 25 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 5, los, specular_reflection, refraction, antenna iso V, seed 0
+paths: 25 tx x 1 rx, 1e+06 samples per tx
+paths: 1048 valid paths over 25 links (0.4 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_result.npz (0.08 MB)
+radio map 'measure_floor': 30617 cells, 2e+07 samples per tx
+radio map 'measure_floor': 30613 of 30617 cells reached (2.2 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz (2.65 MB)
+[15/20] wi014
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 25 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 5, los, specular_reflection, refraction, antenna iso V, seed 0
+paths: 25 tx x 1 rx, 1e+06 samples per tx
+paths: 1023 valid paths over 25 links (0.3 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_result.npz (0.07 MB)
+radio map 'measure_floor': 30617 cells, 2e+07 samples per tx
+radio map 'measure_floor': 30613 of 30617 cells reached (2.1 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz (2.65 MB)
+[16/20] wi015
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 25 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 5, los, specular_reflection, refraction, antenna iso V, seed 0
+paths: 25 tx x 1 rx, 1e+06 samples per tx
+paths: 1257 valid paths over 25 links (0.4 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_result.npz (0.09 MB)
+radio map 'measure_floor': 30617 cells, 2e+07 samples per tx
+radio map 'measure_floor': 30613 of 30617 cells reached (2.2 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz (2.65 MB)
+[17/20] wi016
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 25 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 5, los, specular_reflection, refraction, antenna iso V, seed 0
+paths: 25 tx x 1 rx, 1e+06 samples per tx
+paths: 1004 valid paths over 25 links (0.4 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_result.npz (0.08 MB)
+radio map 'measure_floor': 30617 cells, 2e+07 samples per tx
+radio map 'measure_floor': 30613 of 30617 cells reached (2.4 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz (2.65 MB)
+[18/20] wi017
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 25 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 5, los, specular_reflection, refraction, antenna iso V, seed 0
+paths: 25 tx x 1 rx, 1e+06 samples per tx
+paths: 554 valid paths over 25 links (0.4 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_result.npz (0.05 MB)
+radio map 'measure_floor': 30617 cells, 2e+07 samples per tx
+radio map 'measure_floor': 30613 of 30617 cells reached (2.3 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz (2.66 MB)
+[19/20] wi018
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 25 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 5, los, specular_reflection, refraction, antenna iso V, seed 0
+paths: 25 tx x 1 rx, 1e+06 samples per tx
+paths: 341 valid paths over 25 links (0.3 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_result.npz (0.03 MB)
+radio map 'measure_floor': 30617 cells, 2e+07 samples per tx
+radio map 'measure_floor': 30613 of 30617 cells reached (1.9 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz (2.34 MB)
+[20/20] wi019
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 25 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 5, los, specular_reflection, refraction, antenna iso V, seed 0
+paths: 25 tx x 1 rx, 1e+06 samples per tx
+paths: 224 valid paths over 25 links (0.4 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_result.npz (0.02 MB)
+radio map 'measure_floor': 30617 cells, 2e+07 samples per tx
+radio map 'measure_floor': 30613 of 30617 cells reached (1.8 s)
+wrote SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz (1.96 MB)
+batch: finished, 20 solved, 0 skipped, 0 failed
