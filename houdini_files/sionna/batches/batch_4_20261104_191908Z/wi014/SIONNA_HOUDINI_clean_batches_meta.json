@@ -1,0 +1,24 @@
+{
+  "exported_utc": "20261104_191924Z",
+  "hip": "C:/Users/CreativeMakers/Downloads/HOUSIONNA/houdini_files/SIONNA_HOUDINI_clean_batches.hipnc",
+  "houdini": "22.0.459",
+  "commit": "205cd57deccaf3fb92539f22db97ef606481a390",
+  "dirty": true,
+  "work_item": {
+    "index": 14,
+    "id": 449,
+    "name": "output0_449",
+    "frequency": 915000000.0,
+    "settings": {}
+  },
+  "wedge": {
+    "runs": 0,
+    "wedgeindex": 14,
+    "wedgetotal": 20,
+    "wedgeattribs": "moisture",
+    "wedgecount": 4,
+    "wedgenum": 2,
+    "plant_stage": 3,
+    "moisture": 70
+  }
+}
