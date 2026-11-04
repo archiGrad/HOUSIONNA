@@ -49859,3 +49859,115 @@
 2026-11-04 17:14:36 batch batch passed (0 errors, 0 warnings) after 2.0 s
 2026-11-04 17:14:51 watch batch batch_1_20261104_161345Z on spark: wi000, wi001 solved, 2 of 20 finished
 2026-11-04 17:15:07 watch batch batch_1_20261104_161345Z on spark: wi002, wi003 solved, 4 of 20 finished
+2026-11-04 17:15:22 watch batch batch_1_20261104_161345Z on spark: wi004, wi005 solved, 6 of 20 finished
+2026-11-04 17:15:37 watch batch batch_1_20261104_161345Z on spark: wi006, wi007, wi008 solved, 9 of 20 finished
+2026-11-04 17:15:53 watch batch batch_1_20261104_161345Z on spark: wi009, wi010 solved, 11 of 20 finished
+2026-11-04 17:16:08 watch batch batch_1_20261104_161345Z on spark: wi011, wi012 solved, 13 of 20 finished
+2026-11-04 17:16:23 watch batch batch_1_20261104_161345Z on spark: wi013, wi014, wi015 solved, 16 of 20 finished
+2026-11-04 17:16:39 watch batch batch_1_20261104_161345Z on spark: wi016, wi017 solved, 18 of 20 finished
+2026-11-04 17:16:54 watch batch batch_1_20261104_161345Z on spark: wi018, wi019 solved, 20 of 20 finished
+2026-11-04 17:16:54 watch batch batch_1_20261104_161345Z on spark: finished, 20 solved, 0 skipped, 0 failed (2.3 min), press batch fetch
+2026-11-04 17:19:34 batch batch batch_1_20261104_161345Z on spark: finished, 20 of 20 done (0 skipped as already solved), 0 failed
+2026-11-04 17:19:34 batch   6.64 s per work item
+2026-11-04 17:19:34 batch   log | wrote SIONNA_HOUDINI_clean_update_new_parms_result.npz (0.04 MB)
+2026-11-04 17:19:34 batch   log | radio map 'measure_floor': 30617 cells, 3e+07 samples per tx
+2026-11-04 17:19:34 batch   log | radio map 'measure_floor': 30613 of 30617 cells reached (4.0 s)
+2026-11-04 17:19:34 batch   log | wrote SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz (2.45 MB)
+2026-11-04 17:19:34 batch   log | batch: finished, 20 solved, 0 skipped, 0 failed
+2026-11-04 17:19:34 batch batch passed (0 errors, 0 warnings) after 0.4 s
+2026-11-04 17:19:35 batch batch batch_1_20261104_161345Z on spark: finished, 20 of 20 done (0 skipped as already solved), 0 failed
+2026-11-04 17:19:35 batch   6.64 s per work item
+2026-11-04 17:19:35 batch   log | wrote SIONNA_HOUDINI_clean_update_new_parms_result.npz (0.04 MB)
+2026-11-04 17:19:35 batch   log | radio map 'measure_floor': 30617 cells, 3e+07 samples per tx
+2026-11-04 17:19:35 batch   log | radio map 'measure_floor': 30613 of 30617 cells reached (4.0 s)
+2026-11-04 17:19:35 batch   log | wrote SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz (2.45 MB)
+2026-11-04 17:19:35 batch   log | batch: finished, 20 solved, 0 skipped, 0 failed
+2026-11-04 17:19:35 batch batch passed (0 errors, 0 warnings) after 0.3 s
+2026-11-04 17:19:36 batch receive from spark:Documents/HyROPA/batches/SIONNA_HOUDINI_clean_update_new_parms/batch_1_20261104_161345Z
+2026-11-04 17:19:36 batch     batch.log  10.9 kB
+2026-11-04 17:19:36 batch     status.json  494 B
+2026-11-04 17:19:36 batch     wi000/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.6 MB
+2026-11-04 17:19:36 batch     wi000/SIONNA_HOUDINI_clean_update_new_parms_result.npz  148.1 kB
+2026-11-04 17:19:36 batch     wi000/done.json  460 B
+2026-11-04 17:19:36 batch     wi001/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.6 MB
+2026-11-04 17:19:36 batch     wi001/SIONNA_HOUDINI_clean_update_new_parms_result.npz  131.0 kB
+2026-11-04 17:19:36 batch     wi001/done.json  460 B
+2026-11-04 17:19:36 batch     wi002/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.6 MB
+2026-11-04 17:19:36 batch     wi002/SIONNA_HOUDINI_clean_update_new_parms_result.npz  115.6 kB
+2026-11-04 17:19:36 batch     wi002/done.json  460 B
+2026-11-04 17:19:36 batch     wi003/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.7 MB
+2026-11-04 17:19:36 batch     wi003/SIONNA_HOUDINI_clean_update_new_parms_result.npz  93.2 kB
+2026-11-04 17:19:36 batch     wi003/done.json  460 B
+2026-11-04 17:19:36 batch     wi004/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.6 MB
+2026-11-04 17:19:36 batch     wi004/SIONNA_HOUDINI_clean_update_new_parms_result.npz  67.6 kB
+2026-11-04 17:19:36 batch     wi004/done.json  460 B
+2026-11-04 17:19:36 batch     wi005/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.6 MB
+2026-11-04 17:19:36 batch     wi005/SIONNA_HOUDINI_clean_update_new_parms_result.npz  148.5 kB
+2026-11-04 17:19:36 batch     wi005/done.json  460 B
+2026-11-04 17:19:36 batch     wi006/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.6 MB
+2026-11-04 17:19:36 batch     wi006/SIONNA_HOUDINI_clean_update_new_parms_result.npz  144.2 kB
+2026-11-04 17:19:36 batch     wi006/done.json  460 B
+2026-11-04 17:19:36 batch     wi007/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.6 MB
+2026-11-04 17:19:36 batch     wi007/SIONNA_HOUDINI_clean_update_new_parms_result.npz  131.3 kB
+2026-11-04 17:19:36 batch     wi007/done.json  460 B
+2026-11-04 17:19:36 batch     wi008/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.7 MB
+2026-11-04 17:19:37 batch     wi008/SIONNA_HOUDINI_clean_update_new_parms_result.npz  79.9 kB
+2026-11-04 17:19:37 batch     wi008/done.json  460 B
+2026-11-04 17:19:37 batch     wi009/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.6 MB
+2026-11-04 17:19:37 batch     wi009/SIONNA_HOUDINI_clean_update_new_parms_result.npz  81.4 kB
+2026-11-04 17:19:37 batch     wi009/done.json  460 B
+2026-11-04 17:19:37 batch     wi010/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.6 MB
+2026-11-04 17:19:37 batch     wi010/SIONNA_HOUDINI_clean_update_new_parms_result.npz  149.6 kB
+2026-11-04 17:19:37 batch     wi010/done.json  460 B
+2026-11-04 17:19:37 batch     wi011/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.6 MB
+2026-11-04 17:19:37 batch     wi011/SIONNA_HOUDINI_clean_update_new_parms_result.npz  158.1 kB
+2026-11-04 17:19:37 batch     wi011/done.json  460 B
+2026-11-04 17:19:37 batch     wi012/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.6 MB
+2026-11-04 17:19:37 batch     wi012/SIONNA_HOUDINI_clean_update_new_parms_result.npz  167.3 kB
+2026-11-04 17:19:37 batch     wi012/done.json  460 B
+2026-11-04 17:19:37 batch     wi013/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.6 MB
+2026-11-04 17:19:37 batch     wi013/SIONNA_HOUDINI_clean_update_new_parms_result.npz  130.6 kB
+2026-11-04 17:19:37 batch     wi013/done.json  460 B
+2026-11-04 17:19:37 batch     wi014/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.6 MB
+2026-11-04 17:19:37 batch     wi014/SIONNA_HOUDINI_clean_update_new_parms_result.npz  118.1 kB
+2026-11-04 17:19:37 batch     wi014/done.json  460 B
+2026-11-04 17:19:37 batch     wi015/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.6 MB
+2026-11-04 17:19:37 batch     wi015/SIONNA_HOUDINI_clean_update_new_parms_result.npz  146.6 kB
+2026-11-04 17:19:37 batch     wi015/done.json  460 B
+2026-11-04 17:19:37 batch     wi016/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.6 MB
+2026-11-04 17:19:37 batch     wi016/SIONNA_HOUDINI_clean_update_new_parms_result.npz  115.4 kB
+2026-11-04 17:19:37 batch     wi016/done.json  460 B
+2026-11-04 17:19:37 batch     wi017/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.6 MB
+2026-11-04 17:19:37 batch     wi017/SIONNA_HOUDINI_clean_update_new_parms_result.npz  86.6 kB
+2026-11-04 17:19:37 batch     wi017/done.json  460 B
+2026-11-04 17:19:37 batch     wi018/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.6 MB
+2026-11-04 17:19:37 batch     wi018/SIONNA_HOUDINI_clean_update_new_parms_result.npz  57.9 kB
+2026-11-04 17:19:37 batch     wi018/done.json  460 B
+2026-11-04 17:19:37 batch     wi019/SIONNA_HOUDINI_clean_update_new_parms_radiomap.npz  2.4 MB
+2026-11-04 17:19:37 batch     wi019/SIONNA_HOUDINI_clean_update_new_parms_result.npz  44.5 kB
+2026-11-04 17:19:37 batch     wi019/done.json  460 B
+2026-11-04 17:19:37 batch   62 files, 55.0 MB in 0.9 s
+2026-11-04 17:19:37 batch convert 20 work items to bgeo, the others are up to date or have no result
+2026-11-04 17:19:37 batch   [1/20] wi000 (0.5 s)
+2026-11-04 17:19:38 batch   [2/20] wi001 (0.5 s)
+2026-11-04 17:19:38 batch   [3/20] wi002 (0.5 s)
+2026-11-04 17:19:39 batch   [4/20] wi003 (0.4 s)
+2026-11-04 17:19:39 batch   [5/20] wi004 (0.4 s)
+2026-11-04 17:19:40 batch   [6/20] wi005 (0.5 s)
+2026-11-04 17:19:40 batch   [7/20] wi006 (0.5 s)
+2026-11-04 17:19:41 batch   [8/20] wi007 (0.5 s)
+2026-11-04 17:19:41 batch   [9/20] wi008 (0.5 s)
+2026-11-04 17:19:42 batch   [10/20] wi009 (0.4 s)
+2026-11-04 17:19:42 batch   [11/20] wi010 (0.5 s)
+2026-11-04 17:19:43 batch   [12/20] wi011 (0.4 s)
+2026-11-04 17:19:43 batch   [13/20] wi012 (0.5 s)
+2026-11-04 17:19:44 batch   [14/20] wi013 (0.5 s)
+2026-11-04 17:19:44 batch   [15/20] wi014 (0.5 s)
+2026-11-04 17:19:45 batch   [16/20] wi015 (0.5 s)
+2026-11-04 17:19:45 batch   [17/20] wi016 (0.5 s)
+2026-11-04 17:19:46 batch   [18/20] wi017 (0.5 s)
+2026-11-04 17:19:46 batch   [19/20] wi018 (0.5 s)
+2026-11-04 17:19:47 batch   [20/20] wi019 (0.4 s)
+2026-11-04 17:19:47 batch converted in 9.7 s
+2026-11-04 17:19:47 batch N011 batch 'batch_1_20261104_161345Z': 20 solved, 0 failed, 0 without result
+2026-11-04 17:19:47 batch batch passed (0 errors, 0 warnings) after 10.6 s
