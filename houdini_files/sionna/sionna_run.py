@@ -164,14 +164,18 @@ def configure(folder):
         s = json.load(fh)
     scene, devs = load(folder)
     scene.frequency = s["frequency"]
-    pattern, pol = s.get("antenna_pattern", "iso"), s.get("polarization", "V")
-    scene.tx_array = PlanarArray(num_rows=1, num_cols=1, pattern=pattern, polarization=pol)
-    scene.rx_array = PlanarArray(num_rows=1, num_cols=1, pattern=pattern, polarization=pol)
+    ant = {}
+    for role in ("tx", "rx"):
+        own = devs.get("antenna", {}).get(role, {})
+        ant[role] = (own.get("antenna_pattern") or s.get(f"base_{role}_antenna_pattern", "iso"),
+                     own.get("polarization") or s.get(f"base_{role}_polarization", "V"))
+    scene.tx_array = PlanarArray(num_rows=1, num_cols=1, pattern=ant["tx"][0], polarization=ant["tx"][1])
+    scene.rx_array = PlanarArray(num_rows=1, num_cols=1, pattern=ant["rx"][0], polarization=ant["rx"][1])
     common = {k: s[k] for k in ("max_depth", "los", "specular_reflection", "diffuse_reflection", "refraction", "diffraction")}
     common["seed"] = s.get("seed", 42)
     on = [k for k in ("los", "specular_reflection", "diffuse_reflection", "refraction", "diffraction") if s[k]]
     log(f"settings: {s['frequency'] / 1e9:g} GHz, max_depth {s['max_depth']}, {', '.join(on)}, "
-        f"antenna {pattern} {pol}, seed {common['seed']}")
+        f"antenna tx {' '.join(ant['tx'])}, rx {' '.join(ant['rx'])}, seed {common['seed']}")
     return scene, devs, s, common
 
 
