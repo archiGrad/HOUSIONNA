@@ -48,22 +48,29 @@ SETTINGS = {
     "bandwidth": 100e6,
     "cfr_points": 256,
     "radiomap_samples": 10000000,
+    "seed": 42,
+    "base_tx_antenna_pattern": "iso",
+    "base_tx_polarization": "V",
+    "base_rx_antenna_pattern": "iso",
+    "base_rx_polarization": "V",
 }
+PATTERNS = ("iso", "dipole", "hw_dipole", "tr38901")
+POLARIZATIONS = ("V", "H")
 
-INTERACTIONS = {"los": 1, "specular_reflection": 1, "refraction": 1, "diffuse_reflection": 0, "diffraction": 0}
+QUALITY_BASE = {"los": 1, "specular_reflection": 1, "refraction": 1, "diffuse_reflection": 0, "diffraction": 0, "seed": 42}
 PRESETS = {
     "quality": {
-        "laptop_test": dict(INTERACTIONS, target="local", use_gpu=0, max_depth=3, samples=100000, max_paths_per_tx=10000,
+        "laptop_test": dict(QUALITY_BASE, target="local", use_gpu=0, max_depth=3, samples=100000, max_paths_per_tx=10000,
                             radiomap_samples=1000000, cfr_points=0, timeout=1800),
-        "spark_quick": dict(INTERACTIONS, target="spark", use_gpu=1, max_depth=3, samples=1000000, max_paths_per_tx=100000,
+        "spark_quick": dict(QUALITY_BASE, target="spark", use_gpu=1, max_depth=3, samples=1000000, max_paths_per_tx=100000,
                             radiomap_samples=10000000, cfr_points=0, timeout=1800),
-        "spark_standard": dict(INTERACTIONS, target="spark", use_gpu=1, max_depth=5, samples=1000000,
+        "spark_standard": dict(QUALITY_BASE, target="spark", use_gpu=1, max_depth=5, samples=1000000,
                                max_paths_per_tx=100000, radiomap_samples=20000000, cfr_points=64, timeout=1800),
-        "dense_canopy": dict(INTERACTIONS, target="spark", use_gpu=1, max_depth=8, samples=3000000, max_paths_per_tx=200000,
+        "dense_canopy": dict(QUALITY_BASE, target="spark", use_gpu=1, max_depth=8, samples=3000000, max_paths_per_tx=200000,
                              radiomap_samples=30000000, cfr_points=64, timeout=3600),
-        "batch": dict(INTERACTIONS, target="spark", use_gpu=1, max_depth=5, samples=1000000, max_paths_per_tx=100000,
+        "batch": dict(QUALITY_BASE, target="spark", use_gpu=1, max_depth=5, samples=1000000, max_paths_per_tx=100000,
                       radiomap_samples=10000000, cfr_points=0, timeout=1800),
-        "final": dict(INTERACTIONS, target="spark", use_gpu=1, max_depth=8, samples=10000000, max_paths_per_tx=200000,
+        "final": dict(QUALITY_BASE, target="spark", use_gpu=1, max_depth=8, samples=10000000, max_paths_per_tx=200000,
                       radiomap_samples=100000000, cfr_points=64, diffraction=1, timeout=7200),
     },
     "band": {
@@ -71,6 +78,18 @@ PRESETS = {
         "lora_915": {"frequency": 915e6, "bandwidth": 125e3},
         "wifi_2g4": {"frequency": 2.437e9, "bandwidth": 20e6},
         "wifi_5g": {"frequency": 5.18e9, "bandwidth": 20e6},
+    },
+    "antenna": {
+        "iso_reference": {"base_tx_antenna_pattern": "iso", "base_tx_polarization": "V",
+                          "base_rx_antenna_pattern": "iso", "base_rx_polarization": "V"},
+        "dipole_link": {"base_tx_antenna_pattern": "dipole", "base_tx_polarization": "V",
+                        "base_rx_antenna_pattern": "dipole", "base_rx_polarization": "V"},
+        "sensor_dipole_panel": {"base_tx_antenna_pattern": "dipole", "base_tx_polarization": "V",
+                                "base_rx_antenna_pattern": "tr38901", "base_rx_polarization": "V"},
+        "half_wave_link": {"base_tx_antenna_pattern": "hw_dipole", "base_tx_polarization": "V",
+                           "base_rx_antenna_pattern": "hw_dipole", "base_rx_polarization": "V"},
+        "cross_pol": {"base_tx_antenna_pattern": "dipole", "base_tx_polarization": "V",
+                      "base_rx_antenna_pattern": "dipole", "base_rx_polarization": "H"},
     },
 }
 
@@ -93,6 +112,7 @@ CODES = {
     "W006": "gpu on '{target}' in use by other processes: {apps}",
     "W008": "node '{name}' exists but is not a File SOP: result saved to {path} but not loaded; rename that node",
     "W013": "target '{target}': LLVM {version} is older than {minimum}, cpu solves can abort with 'LLVM ERROR: Cannot select'; install libllvm{minimum} or newer",
+    "W015": "{kind} preset '{name}': parms with an expression, left unchanged: {parms}",
     "W014": "running batches on '{target}' not cleared: {names}",
     "W012": "{kind} preset '{name}': parms not on this node, left unchanged: {parms}",
     "W010": "material '{material}' at {f:g} GHz is outside its measured range ({ranges} GHz): values extrapolated",
@@ -113,6 +133,7 @@ CODES = {
     "V010": "prim {prim}: empty name",
     "V011": "{name}: material '{material}' resolves to invalid permittivity or conductivity",
     "V012": "{name}: moisture {value:g} % outside 0 to 100",
+    "V013": "frequency {f:g} Hz is not valid: set the frequency parm above 0 (a wedge attribute such as @frequency needs a selected work item)",
     "V101": "missing point attribute '{attr}'",
     "V102": "no {role} point",
     "V103": "device with empty name",
@@ -120,6 +141,11 @@ CODES = {
     "V105": "tx '{tx}' and rx '{rx}' at same position",
     "V106": "point {pt}: loose point with missing or invalid role '{role}'",
     "V107": "nothing to compute: no rx point and no measurement surface (material 'measure')",
+    "V108": "tx points use different antennas: {found}; Sionna uses one antenna for all tx points",
+    "V109": "rx points use different antennas: {found}; Sionna uses one antenna for all rx points",
+    "V110": "{role} {attr} '{value}' on {count} points ({names}) is not valid: use one of {allowed}",
+    "V111": "point attribute '{attr}' must be a string attribute",
+    "V112": "parm '{parm}' is empty: set it to one of {allowed}, or use the antenna preset",
     "E001": "cannot create output directory '{path}'",
     "E002": "cannot write file '{path}'",
     "E003": "hip file is not saved",
@@ -132,6 +158,7 @@ CODES = {
     "S008": "frequency changed since export ({exported:g} Hz exported, {current:g} Hz now): export again",
     "S009": "program not found: '{path}'",
     "S011": "python on target '{target}' failed: {err}",
+    "S012": "setting '{key}' = '{value}' is not valid: {rule}",
     "S010": "radio map needs {rays:.3g} rays ({samples:.3g} samples x {tx} tx), more than sionna's limit of "
             "4.29e9 per radio map: set radiomap_samples to {max} or lower",
     "T001": "target '{target}' unreachable (vpn, ssh alias or key): {err}",
@@ -411,8 +438,53 @@ def sionna_axes(v):
     return v[:, [0, 2, 1]] * (1.0, -1.0, 1.0)
 
 
-def validate(geo, frequency=FREQUENCY):
+ANTENNA_ATTRS = (("antenna_pattern", PATTERNS), ("polarization", POLARIZATIONS))
+
+
+def base_antennas(s):
+    return {r: (s.get(f"base_{r}_antenna_pattern", "iso"), s.get(f"base_{r}_polarization", "V")) for r in ("tx", "rx")}
+
+
+def antennas(geo, base):
     import numpy as np
+    roles = np.array(geo.pointStringAttribValues("role"))
+    names = np.array(geo.pointStringAttribValues("name"))
+    recs, out, own = [], {}, {}
+    cols = {}
+    for attr, _ in ANTENNA_ATTRS:
+        a = geo.findPointAttrib(attr)
+        if a is not None and a.dataType() != hou.attribData.String:
+            recs.append(("V111", {"attr": attr}))
+            a = None
+        cols[attr] = np.array(geo.pointStringAttribValues(attr)) if a is not None else np.full(len(roles), "")
+    for role in ("tx", "rx"):
+        sel = roles == role
+        eff, own[role] = [], {}
+        for j, (attr, allowed) in enumerate(ANTENNA_ATTRS):
+            vals = cols[attr][sel]
+            given = sorted(set(vals.tolist()) - {""})
+            if given:
+                own[role][attr] = given[0]
+            if base[role][j] == "":
+                recs.append(("V112", {"parm": f"base_{role}_{attr}", "allowed": ", ".join(allowed)}))
+            v = np.where(vals == "", base[role][j], vals)
+            for bad in sorted(set(v.tolist()) - set(allowed) - {""}):
+                hit = names[sel][v == bad]
+                recs.append(("V110", {"role": role, "attr": attr, "value": bad, "count": len(hit),
+                                      "names": short(hit.tolist()), "allowed": ", ".join(allowed)}))
+            eff.append(v)
+        pairs = [f"{p} {q}" for p, q in zip(*eff)]
+        out[role] = {k: pairs.count(k) for k in sorted(set(pairs))}
+        if len(out[role]) > 1:
+            found = ", ".join(f"{k} ({plural(n, 'point')})" for k, n in out[role].items())
+            recs.append(("V108" if role == "tx" else "V109", {"found": found}))
+    return recs, out, own
+
+
+def validate(geo, frequency=FREQUENCY, base=None):
+    import numpy as np
+    if not frequency > 0:
+        return [("V013", {"f": frequency})]
     if not geo.intrinsicValue("primitivecount"):
         return [("V001", {})]
     recs = [("V002", {"attr": a}) for a in ("name", "material") if geo.findPrimAttrib(a) is None]
@@ -529,12 +601,18 @@ def validate(geo, frequency=FREQUENCY):
     recs += [("V105", {"tx": str(pnames[tx][i]), "rx": str(pnames[rx][j])}) for i, j in zip(*np.nonzero(close))]
     dist = np.linalg.norm(P[dev] - np.clip(P[dev], lo, hi), axis=1)
     recs += [("W003", {"name": str(n), "dist": float(d)}) for n, d in zip(pnames[dev], dist) if d > diag]
+    recs += antennas(geo, base or base_antennas({}))[0]
     return recs
 
 
 def frequency(node):
     parm = node.parm("frequency")
-    return parm.eval() if parm else FREQUENCY
+    if not parm:
+        return FREQUENCY
+    try:
+        return parm.eval()
+    except hou.OperationFailed:
+        return 0.0
 
 
 def inventory(phase, geo, f, node):
@@ -564,13 +642,20 @@ def inventory(phase, geo, f, node):
         tx = [n for r, n in zip(roles, names) if r == "tx"]
         rx = [n for r, n in zip(roles, names) if r == "rx"]
         say(phase, f"devices: {len(tx)} tx ({short(tx)}), {len(rx)} rx ({short(rx)})")
-    say(phase, f"frequency {f / 1e9:g} GHz (wavelength {299792458 / f * 100:.1f} cm), target {target(node)}")
+        _, ant, own = antennas(geo, base_antennas(settings(node)))
+        for role in ("tx", "rx"):
+            if ant[role]:
+                src = "point attributes" if own[role] else "base parms"
+                say(phase, f"  {role} antenna: " + ", ".join(f"{k} ({plural(n, 'point')})" for k, n in ant[role].items())
+                    + f", from {src}")
+    wave = f"wavelength {299792458 / f * 100:.1f} cm" if f > 0 else "not valid"
+    say(phase, f"frequency {f / 1e9:g} GHz ({wave}), target {target(node)}")
 
 
 def on_validate():
     node = active()
     geo, f = node.inputs()[0].geometry(), frequency(node)
-    recs = validate(geo, f)
+    recs = validate(geo, f, base_antennas(settings(node)))
     inventory("validate", geo, f, node)
     report("validate", recs)
     return recs
@@ -674,9 +759,9 @@ def build_devices(geo):
     pos = sionna_axes(vec("P"))
     ori, vel = vec("orientation"), sionna_axes(vec("velocity"))
     power = geo.pointFloatAttribValues("power_dbm") if geo.findPointAttrib("power_dbm") else None
-    out = {"tx": [], "rx": []}
+    out = {"tx": [], "rx": [], "antenna": antennas(geo, base_antennas({}))[2]}
     for i, role in enumerate(roles):
-        if role not in out:
+        if role not in ("tx", "rx"):
             continue
         d = {"name": names[i], "position": rnd(pos[i]), "orientation": rnd(ori[i]), "velocity": rnd(vel[i])}
         if role == "tx" and power is not None:
@@ -752,7 +837,7 @@ def on_export(checked=None):
         report("export", [("E003", {})])
         return False
     geo, f = node.inputs()[0].geometry(), frequency(node)
-    recs = validate(geo, f) if checked is None else list(checked)
+    recs = validate(geo, f, base_antennas(settings(node))) if checked is None else list(checked)
     shown = 0 if checked is None else len(recs)
     if not has_errors(recs):
         folder = hou.expandString(f"{OUT}/data/{time.strftime('%Y%m%d_%H%M%SZ', time.gmtime())}")
@@ -1233,12 +1318,56 @@ def build_previz(path):
 
 # --- solve ---
 
+def read_setting(parm, default):
+    try:
+        value = parm.evalAsString() if isinstance(default, str) else parm.eval()
+        return type(default)(value)
+    except (hou.OperationFailed, ValueError, TypeError):
+        return default
+
+
 def settings(node):
     out = {}
     for k, v in SETTINGS.items():
         parm = node.parm(k)
-        out[k] = type(v)(parm.eval()) if parm else v
+        out[k] = float(frequency(node)) if k == "frequency" else read_setting(parm, v) if parm else v
     return out
+
+
+def has_expression(parm):
+    if parm.keyframes():
+        return True
+    try:
+        raw = parm.unexpandedString()
+    except hou.OperationFailed:
+        return False
+    return "@" in raw or "`" in raw
+
+
+def item_settings(node):
+    out = {}
+    for k, v in SETTINGS.items():
+        parm = node.parm(k)
+        if k != "frequency" and parm and has_expression(parm):
+            out[k] = read_setting(parm, v)
+    return out
+
+
+def check_settings(s):
+    rules = [
+        ("max_depth", lambda v: v >= 0, "must be 0 or more"),
+        ("samples", lambda v: v >= 1, "must be 1 or more"),
+        ("max_paths_per_tx", lambda v: v >= 1, "must be 1 or more"),
+        ("radiomap_samples", lambda v: v >= 1, "must be 1 or more"),
+        ("cfr_points", lambda v: v >= 0, "must be 0 or more"),
+        ("bandwidth", lambda v: v > 0 or s.get("cfr_points", 0) == 0, "must be above 0 when cfr_points is above 0"),
+        ("seed", lambda v: v >= 0, "must be 0 or more"),
+        ("base_tx_antenna_pattern", lambda v: v in PATTERNS, "empty or unknown, use one of " + ", ".join(PATTERNS)),
+        ("base_tx_polarization", lambda v: v in POLARIZATIONS, "empty or unknown, use one of " + ", ".join(POLARIZATIONS)),
+        ("base_rx_antenna_pattern", lambda v: v in PATTERNS, "empty or unknown, use one of " + ", ".join(PATTERNS)),
+        ("base_rx_polarization", lambda v: v in POLARIZATIONS, "empty or unknown, use one of " + ", ".join(POLARIZATIONS)),
+    ]
+    return [("S012", {"key": k, "value": s[k], "rule": rule}) for k, ok, rule in rules if k in s and not ok(s[k])]
 
 
 def on_solve():
@@ -1255,7 +1384,7 @@ def on_solve():
     s = settings(node)
     write(scene.replace("_scene.xml", "_settings.json"), json.dumps(s, indent=2))
     say("solve", f"run folder {folder}")
-    recs = stale(scene, s) or ray_limit(scene, s) or run_sionna(node, "solve", folder, "solve")
+    recs = check_settings(s) or stale(scene, s) or ray_limit(scene, s) or run_sionna(node, "solve", folder, "solve")
     if not has_errors(recs):
         result = scene.replace("_scene.xml", "_result.npz")
         rmap = scene.replace("_scene.xml", "_radiomap.npz")
@@ -1541,9 +1670,8 @@ def on_batch_export():
     stamp = time.strftime("%Y%m%d_%H%M%SZ", time.gmtime())
     stamp = f"{prefix}_{stamp}" if prefix else stamp
     folder = hou.expandString(f"{OUT}/batches/{stamp}")
-    f, git = frequency(node), git_info()
-    batch = {"created_utc": stamp, "hip": hou.hipFile.path(), "top_node": top.path(), "range": [lo, hi],
-             "frequency": f, "items": {}}
+    git = git_info()
+    batch = {"created_utc": stamp, "hip": hou.hipFile.path(), "top_node": top.path(), "range": [lo, hi], "items": {}}
     batch.update(git)
     say("batch", f"batch {stamp}: {plural(len(items), 'work item')} ({items[0].index} to {items[-1].index}) "
                  f"from {top.path()}")
@@ -1552,19 +1680,22 @@ def on_batch_export():
         for n, wi in enumerate(items, 1):
             t1, name = time.time(), item_name(wi.index)
             top.setSelectedWorkItem(wi.id)
+            f, own = frequency(node), item_settings(node)
             try:
                 geo = node.inputs()[0].geometry()
-                recs = validate(geo, f) if geo else [("B008", {"err": "no geometry"})]
+                recs = validate(geo, f, base_antennas(settings(node))) if geo else [("B008", {"err": "no geometry"})]
             except hou.Error as e:
                 geo, recs = None, [("B008", {"err": e.instanceMessage()})]
-            entry = {"index": wi.index, "id": wi.id, "name": wi.name}
+            recs += check_settings(own)
+            entry = {"index": wi.index, "id": wi.id, "name": wi.name, "frequency": f, "settings": own}
             if not has_errors(recs):
                 export_run(geo, f, f"{folder}/{name}", recs, dict(git, work_item=entry, wedge=wedge(wi)))
             entry["status"] = "failed" if has_errors(recs) else "exported"
             entry["codes"] = [r[0] for r in recs if r[0][0] != "N"]
             batch["items"][name] = entry
             codes = f", {' '.join(entry['codes'])}" if entry["codes"] else ""
-            say("batch", f"  [{n}/{len(items)}] {name}: {entry['status']}, "
+            own_text = "".join(f", {k} {v}" for k, v in own.items())
+            say("batch", f"  [{n}/{len(items)}] {name}: {entry['status']}, {f / 1e9:g} GHz{own_text}, "
                          f"{plural(geo.intrinsicValue('primitivecount') if geo else 0, 'prim')}{codes} ({time.time() - t1:.1f} s)")
             for r in recs:
                 if r[0][0] not in "WN":
@@ -1592,17 +1723,21 @@ def on_batch_solve():
     name, s = os.path.basename(folder), settings(node)
     with open(folder + "/batch.json") as fh:
         items = json.load(fh)["items"]
-    queue = []
+    queue, freqs, varied = [], set(), {}
     for item, entry in sorted(items.items(), key=lambda kv: kv[1]["index"]):
         if entry["status"] != "exported":
             continue
         scene = glob.glob(f"{folder}/{item}/*_scene.xml")[0]
-        bad = stale(scene, s) or ray_limit(scene, s)
+        with open(scene.replace("_scene.xml", "_materials.json")) as fh:
+            si = dict(s, **entry.get("settings", {}), frequency=json.load(fh)["frequency"])
+        varied.update(entry.get("settings", {}))
+        bad = check_settings(si) or ray_limit(scene, si)
         for r in bad:
             say("batch", f"  {item}: {fmt(r)}")
         if not bad:
-            write(scene.replace("_scene.xml", "_settings.json"), json.dumps(s, indent=2))
+            write(scene.replace("_scene.xml", "_settings.json"), json.dumps(si, indent=2))
             queue.append(item)
+            freqs.add(si["frequency"])
     if not queue:
         report("batch", [("B007", {"name": name})])
         return
@@ -1613,7 +1748,10 @@ def on_batch_solve():
         return
     shutil.copy2(script, folder + "/sionna_run.py")
     exported = sum(1 for e in items.values() if e["status"] == "exported")
-    say("batch", f"batch {name}: {plural(len(queue), 'work item')} queued, {exported} of {len(items)} exported")
+    say("batch", f"batch {name}: {plural(len(queue), 'work item')} queued, {exported} of {len(items)} exported, "
+                 f"at {', '.join(f'{x / 1e9:g}' for x in sorted(freqs))} GHz (frequency as exported per work item)")
+    if varied:
+        say("batch", f"  set per work item at export: {', '.join(sorted(varied))}; the other settings from the Null")
     host, seconds = target(node), timeout(node)
     try:
         if host == "local":
@@ -1928,11 +2066,14 @@ def on_preset(kind):
     if name not in presets:
         report("preset", [("P001", {"kind": kind, "name": name, "names": ", ".join(presets)})])
         return
-    missing, same = [], 0
+    missing, same, kept = [], 0, []
     for key, value in presets[name].items():
         parm = node.parm(key)
         if parm is None:
             missing.append(key)
+            continue
+        if has_expression(parm):
+            kept.append(key)
             continue
         old = parm.eval()
         if old == value:
@@ -1941,7 +2082,9 @@ def on_preset(kind):
         parm.set(value)
         say("preset", f"  {key:<20} {old} -> {value}")
     say("preset", f"{kind} preset {name} applied, {same} parms already had the preset value")
-    report("preset", [("W012", {"kind": kind, "name": name, "parms": ", ".join(missing)})] if missing else [])
+    recs = [("W012", {"kind": kind, "name": name, "parms": ", ".join(missing)})] if missing else []
+    recs += [("W015", {"kind": kind, "name": name, "parms": ", ".join(kept)})] if kept else []
+    report("preset", recs)
 
 
 # --- clear ---

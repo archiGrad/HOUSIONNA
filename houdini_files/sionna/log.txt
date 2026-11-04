@@ -48444,3 +48444,307 @@
 2026-11-03 01:22:38 batch converted in 0.5 s
 2026-11-03 01:22:38 batch N011 batch 'batch_2_20261103_002122Z': 1 solved, 0 failed, 0 without result
 2026-11-03 01:22:38 batch batch passed (0 errors, 0 warnings) after 0.5 s
+2026-11-03 09:32:48 node display flag set on /obj/batch_run_1/COMPUTE
+2026-11-03 09:32:48 clear looking for runs or batches of SIONNA_HOUDINI_clean on local
+2026-11-03 09:32:48 clear   /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/batches/batch_2_20261103_002122Z  9.2 MB
+2026-11-03 09:32:56 clear N012 cleared 1 folder (9.2 MB) on 'local'
+2026-11-03 09:32:56 clear clear passed (0 errors, 0 warnings) after 8.0 s
+2026-11-03 09:33:25 check transfer: rsync
+2026-11-03 09:33:26 check target spark: sionna 2.2.0
+2026-11-03 09:33:26 check   gpu: NVIDIA GB10, load 0%
+2026-11-03 09:33:26 check   cpu: aarch64, 20 threads, available, LLVM 20.1.2
+2026-11-03 09:33:26 check   selected: gpu (use_gpu on)
+2026-11-03 09:33:26 check N008 target 'spark': sionna 2.2.0, runs on the gpu
+2026-11-03 09:33:26 check check passed (0 errors, 0 warnings) after 1.7 s
+2026-11-03 09:33:46 batch batch test_20261103_083346Z: 3 work items (1 to 3) from /obj/batch_run_1/topnet1/output0
+2026-11-03 09:33:48 batch   [1/3] wi001: exported, 148903 prims, W010 W005 (1.6 s)
+2026-11-03 09:33:49 batch   [2/3] wi002: exported, 148903 prims, W010 W005 (1.6 s)
+2026-11-03 09:33:51 batch   [3/3] wi003: exported, 148903 prims, W010 W005 (1.6 s)
+2026-11-03 09:33:51 batch parm 'batch' set to test_20261103_083346Z
+2026-11-03 09:33:51 batch N009 batch 'test_20261103_083346Z': 3 exported, 0 failed, written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/batches/test_20261103_083346Z
+2026-11-03 09:33:51 batch batch passed (0 errors, 0 warnings) after 4.9 s
+2026-11-03 09:33:57 batch batch test_20261103_083346Z: 3 work items queued, 3 of 3 exported
+2026-11-03 09:33:57 batch target spark: checking
+2026-11-03 09:33:57 batch target spark: gpu NVIDIA GB10, load 0%, runs on the gpu
+2026-11-03 09:33:57 batch send to spark:Documents/HyROPA/batches/SIONNA_HOUDINI_clean/test_20261103_083346Z
+2026-11-03 09:33:58 batch     batch.json  842 B
+2026-11-03 09:33:58 batch     queue.json  27 B
+2026-11-03 09:33:58 batch     sionna_run.py  16.2 kB
+2026-11-03 09:33:58 batch     wi001/SIONNA_HOUDINI_clean_log.txt  402 B
+2026-11-03 09:33:58 batch     wi001/SIONNA_HOUDINI_clean_materials.json  4.5 kB
+2026-11-03 09:33:58 batch     wi001/SIONNA_HOUDINI_clean_measure.json  17 B
+2026-11-03 09:33:58 batch     wi001/SIONNA_HOUDINI_clean_meta.json  653 B
+2026-11-03 09:33:58 batch     wi001/SIONNA_HOUDINI_clean_scene.xml  5.4 kB
+2026-11-03 09:33:58 batch     wi001/SIONNA_HOUDINI_clean_settings.json  296 B
+2026-11-03 09:33:58 batch     wi001/SIONNA_HOUDINI_clean_txrx.json  7.3 kB
+2026-11-03 09:33:58 batch     wi001/meshes/floor.ply  975 B
+2026-11-03 09:33:58 batch     wi001/meshes/frame.ply  38.8 kB
+2026-11-03 09:33:58 batch     wi001/meshes/frame_secondary.ply  4.7 kB
+2026-11-03 09:33:58 batch     wi001/meshes/leaves.ply  2.0 MB
+2026-11-03 09:33:58 batch     wi001/meshes/measure_floor.ply  579.3 kB
+2026-11-03 09:33:58 batch     wi001/meshes/person.ply  315.6 kB
+2026-11-03 09:33:58 batch     wi001/meshes/robot_cover.ply  52.9 kB
+2026-11-03 09:33:58 batch     wi001/meshes/sprayers.ply  1.6 kB
+2026-11-03 09:33:58 batch     wi001/meshes/structural_frame.ply  2.9 kB
+2026-11-03 09:33:58 batch     wi001/meshes/trays.ply  727 B
+2026-11-03 09:33:58 batch     wi001/meshes/trays_legs.ply  1.2 kB
+2026-11-03 09:33:58 batch     wi001/meshes/windows.ply  4.8 kB
+2026-11-03 09:33:58 batch     wi002/SIONNA_HOUDINI_clean_log.txt  402 B
+2026-11-03 09:33:58 batch     wi002/SIONNA_HOUDINI_clean_materials.json  4.5 kB
+2026-11-03 09:33:58 batch     wi002/SIONNA_HOUDINI_clean_measure.json  17 B
+2026-11-03 09:33:58 batch     wi002/SIONNA_HOUDINI_clean_meta.json  666 B
+2026-11-03 09:33:58 batch     wi002/SIONNA_HOUDINI_clean_scene.xml  5.4 kB
+2026-11-03 09:33:58 batch     wi002/SIONNA_HOUDINI_clean_settings.json  296 B
+2026-11-03 09:33:58 batch     wi002/SIONNA_HOUDINI_clean_txrx.json  7.3 kB
+2026-11-03 09:33:58 batch     wi002/meshes/floor.ply  975 B
+2026-11-03 09:33:58 batch     wi002/meshes/frame.ply  38.8 kB
+2026-11-03 09:33:58 batch     wi002/meshes/frame_secondary.ply  4.7 kB
+2026-11-03 09:33:58 batch     wi002/meshes/leaves.ply  2.0 MB
+2026-11-03 09:33:58 batch     wi002/meshes/measure_floor.ply  579.3 kB
+2026-11-03 09:33:58 batch     wi002/meshes/person.ply  315.6 kB
+2026-11-03 09:33:58 batch     wi002/meshes/robot_cover.ply  52.9 kB
+2026-11-03 09:33:58 batch     wi002/meshes/sprayers.ply  1.6 kB
+2026-11-03 09:33:58 batch     wi002/meshes/structural_frame.ply  2.9 kB
+2026-11-03 09:33:58 batch     wi002/meshes/trays.ply  727 B
+2026-11-03 09:33:58 batch     wi002/meshes/trays_legs.ply  1.2 kB
+2026-11-03 09:33:58 batch     wi002/meshes/windows.ply  4.8 kB
+2026-11-03 09:33:58 batch     wi003/SIONNA_HOUDINI_clean_log.txt  402 B
+2026-11-03 09:33:58 batch     wi003/SIONNA_HOUDINI_clean_materials.json  4.5 kB
+2026-11-03 09:33:58 batch     wi003/SIONNA_HOUDINI_clean_measure.json  17 B
+2026-11-03 09:33:58 batch     wi003/SIONNA_HOUDINI_clean_meta.json  653 B
+2026-11-03 09:33:58 batch     wi003/SIONNA_HOUDINI_clean_scene.xml  5.4 kB
+2026-11-03 09:33:58 batch     wi003/SIONNA_HOUDINI_clean_settings.json  296 B
+2026-11-03 09:33:58 batch     wi003/SIONNA_HOUDINI_clean_txrx.json  7.3 kB
+2026-11-03 09:33:58 batch     wi003/meshes/floor.ply  975 B
+2026-11-03 09:33:58 batch     wi003/meshes/frame.ply  38.8 kB
+2026-11-03 09:33:58 batch     wi003/meshes/frame_secondary.ply  4.7 kB
+2026-11-03 09:33:58 batch     wi003/meshes/leaves.ply  2.0 MB
+2026-11-03 09:33:58 batch     wi003/meshes/measure_floor.ply  579.3 kB
+2026-11-03 09:33:58 batch     wi003/meshes/person.ply  315.6 kB
+2026-11-03 09:33:58 batch     wi003/meshes/robot_cover.ply  52.9 kB
+2026-11-03 09:33:58 batch     wi003/meshes/sprayers.ply  1.6 kB
+2026-11-03 09:33:58 batch     wi003/meshes/structural_frame.ply  2.9 kB
+2026-11-03 09:33:58 batch     wi003/meshes/trays.ply  727 B
+2026-11-03 09:33:58 batch     wi003/meshes/trays_legs.ply  1.2 kB
+2026-11-03 09:33:58 batch     wi003/meshes/windows.ply  4.8 kB
+2026-11-03 09:33:58 batch   60 files, 8.9 MB in 0.5 s
+2026-11-03 09:33:58 batch watching batch test_20261103_083346Z on spark every 15 s, a line follows each finished work item
+2026-11-03 09:33:58 batch N010 batch 'test_20261103_083346Z' started on 'spark' (pid 1549353): 3 work items queued, finished ones are skipped
+2026-11-03 09:33:58 batch batch passed (0 errors, 0 warnings) after 1.4 s
+2026-11-03 09:34:01 batch batch test_20261103_083346Z on spark: running, 1 of 3 done (0 skipped as already solved), 0 failed, now wi002
+2026-11-03 09:34:01 batch   2.46 s per work item, about 0 min left
+2026-11-03 09:34:01 batch   log | wrote SIONNA_HOUDINI_clean_result.npz (0.02 MB)
+2026-11-03 09:34:01 batch   log | radio map 'measure_floor': 30559 cells, 1e+06 samples per tx
+2026-11-03 09:34:01 batch   log | radio map 'measure_floor': 30556 of 30559 cells reached (0.5 s)
+2026-11-03 09:34:01 batch   log | wrote SIONNA_HOUDINI_clean_radiomap.npz (2.18 MB)
+2026-11-03 09:34:01 batch   log | [2/3] wi002
+2026-11-03 09:34:01 batch batch passed (0 errors, 0 warnings) after 0.3 s
+2026-11-03 09:34:03 batch receive from spark:Documents/HyROPA/batches/SIONNA_HOUDINI_clean/test_20261103_083346Z
+2026-11-03 09:34:04 batch     batch.log  1.5 kB
+2026-11-03 09:34:04 batch     status.json  263 B
+2026-11-03 09:34:04 batch     wi001/SIONNA_HOUDINI_clean_radiomap.npz  2.2 MB
+2026-11-03 09:34:04 batch     wi001/SIONNA_HOUDINI_clean_result.npz  19.5 kB
+2026-11-03 09:34:04 batch     wi001/done.json  296 B
+2026-11-03 09:34:04 batch     wi002/SIONNA_HOUDINI_clean_radiomap.npz  2.2 MB
+2026-11-03 09:34:04 batch     wi002/SIONNA_HOUDINI_clean_result.npz  19.5 kB
+2026-11-03 09:34:04 batch     wi002/done.json  296 B
+2026-11-03 09:34:04 batch     wi003/SIONNA_HOUDINI_clean_radiomap.npz  2.2 MB
+2026-11-03 09:34:04 batch     wi003/SIONNA_HOUDINI_clean_result.npz  19.4 kB
+2026-11-03 09:34:04 batch     wi003/progress.json  49 B
+2026-11-03 09:34:04 batch   11 files, 6.6 MB in 0.4 s
+2026-11-03 09:34:04 batch convert 3 work items to bgeo, the others are up to date or have no result
+2026-11-03 09:34:04 batch   [1/3] wi001 (0.5 s)
+2026-11-03 09:34:05 batch   [2/3] wi002 (0.4 s)
+2026-11-03 09:34:05 batch   [3/3] wi003 (0.4 s)
+2026-11-03 09:34:05 batch converted in 1.3 s
+2026-11-03 09:34:05 batch N011 batch 'test_20261103_083346Z': 2 solved, 0 failed, 1 without result
+2026-11-03 09:34:05 batch batch passed (0 errors, 0 warnings) after 1.7 s
+2026-11-03 09:34:14 watch batch test_20261103_083346Z on spark: wi001, wi002, wi003 solved, 3 of 3 finished
+2026-11-03 09:34:14 watch batch test_20261103_083346Z on spark: finished, 3 solved, 0 skipped, 0 failed (0.3 min), press batch fetch
+2026-11-03 09:40:58 node display flag set on /obj/batch_run_1/COMPUTE
+2026-11-03 09:40:58 preset   samples              100000 -> 1000000
+2026-11-03 09:40:58 preset   max_paths_per_tx     10000 -> 100000
+2026-11-03 09:40:58 preset   radiomap_samples     1000000 -> 20000000
+2026-11-03 09:40:58 preset   cfr_points           0 -> 64
+2026-11-03 09:40:58 preset quality preset spark_standard applied, 9 parms already had the preset value
+2026-11-03 09:40:58 preset preset passed (0 errors, 0 warnings) after 0.0 s
+2026-11-03 09:41:14 preset   frequency            868000000.0 -> 915000000.0
+2026-11-03 09:41:14 preset band preset lora_915 applied, 1 parms already had the preset value
+2026-11-03 09:41:14 preset preset passed (0 errors, 0 warnings) after 0.0 s
+2026-11-03 10:00:30 preset   diffraction          0 -> 1
+2026-11-03 10:00:30 preset   max_depth            5 -> 8
+2026-11-03 10:00:30 preset   samples              1000000 -> 10000000
+2026-11-03 10:00:30 preset   max_paths_per_tx     100000 -> 200000
+2026-11-03 10:00:30 preset   radiomap_samples     20000000 -> 100000000
+2026-11-03 10:00:30 preset   timeout              1800 -> 7200
+2026-11-03 10:00:30 preset quality preset final applied, 7 parms already had the preset value
+2026-11-03 10:00:30 preset preset passed (0 errors, 0 warnings) after 0.0 s
+2026-11-03 10:04:15 preset   diffuse_reflection   1 -> 0
+2026-11-03 10:04:15 preset   diffraction          1 -> 0
+2026-11-03 10:04:15 preset   max_depth            8 -> 5
+2026-11-03 10:04:15 preset   samples              10000000 -> 1000000
+2026-11-03 10:04:15 preset   max_paths_per_tx     200000 -> 100000
+2026-11-03 10:04:15 preset   radiomap_samples     100000000 -> 20000000
+2026-11-03 10:04:15 preset   timeout              7200 -> 1800
+2026-11-03 10:04:15 preset quality preset spark_standard applied, 6 parms already had the preset value
+2026-11-03 10:04:15 preset preset passed (0 errors, 0 warnings) after 0.0 s
+2026-11-04 09:24:47 validate scene: 11 objects, 121512 triangles, 8 materials
+2026-11-04 09:24:47 validate   concrete               itu          1 object     48 triangles
+2026-11-04 09:24:47 validate   glass                  itu          1 object    188 triangles
+2026-11-04 09:24:47 validate   human                  gabriel      1 object  16726 triangles
+2026-11-04 09:24:47 validate   leaf                   vegetation     1 object  96012 triangles
+2026-11-04 09:24:47 validate   metal                  conductor     1 object     48 triangles
+2026-11-04 09:24:47 validate   polypropylene          cole_cole    2 objects   2854 triangles
+2026-11-04 09:24:47 validate   stainless_steel        conductor     1 object   1632 triangles
+2026-11-04 09:24:47 validate   steel                  conductor    3 objects   4004 triangles
+2026-11-04 09:24:47 validate radio map surfaces: measure_floor (30617 cells)
+2026-11-04 09:24:47 validate display only: 20 primitives, kept in scene.bgeo.sc, not sent to sionna
+2026-11-04 09:24:47 validate devices: 25 tx (robot_sensor_0, robot_sensor_1, robot_sensor_2, ... plant_sensor_17), 2 rx (ap_0, ap_1)
+2026-11-04 09:24:47 validate frequency 0.915 GHz (wavelength 32.8 cm), target spark
+2026-11-04 09:24:47 validate N001 scene size: x 5.15 m, y 5.15 m, z 4.03 m (sionna axes, z up)
+2026-11-04 09:24:47 validate W010 material 'concrete' at 0.915 GHz is outside its measured range (1 to 100, 110 to 330 GHz): values extrapolated
+2026-11-04 09:24:47 validate W005 material 'leaf' is not confirmed: model coefficients entered from memory, verify against the paper
+2026-11-04 09:24:47 validate validate passed (0 errors, 2 warnings) after 0.8 s
+2026-11-04 09:24:48 export run folder /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261104_082447Z
+2026-11-04 09:24:48 export   meshes/  12 files, 3.0 MB (11 scene objects, 1 radio map surface)
+2026-11-04 09:24:48 export   SIONNA_HOUDINI_clean_log.txt  388 B
+2026-11-04 09:24:48 export   SIONNA_HOUDINI_clean_materials.json  4.5 kB
+2026-11-04 09:24:48 export   SIONNA_HOUDINI_clean_measure.json  17 B
+2026-11-04 09:24:48 export   SIONNA_HOUDINI_clean_meta.json  233 B
+2026-11-04 09:24:48 export   SIONNA_HOUDINI_clean_scene.xml  5.4 kB
+2026-11-04 09:24:48 export   SIONNA_HOUDINI_clean_txrx.json  7.6 kB
+2026-11-04 09:24:48 export   scene.bgeo.sc  1.1 MB
+2026-11-04 09:24:48 export materials at 0.915 GHz:
+2026-11-04 09:24:48 export   polypropylene          er    2.22  sigma 0.0004615 S/m  thickness 0.003 m  [confirmed]
+2026-11-04 09:24:48 export   human                  er   41.33  sigma   0.8717 S/m  thickness 0.05 m  [confirmed]
+2026-11-04 09:24:48 export   concrete               er    5.24  sigma   0.0431 S/m  thickness 0.2 m  [confirmed]
+2026-11-04 09:24:48 export   glass                  er    6.31  sigma 0.003196 S/m  thickness 0.004 m  [confirmed]
+2026-11-04 09:24:48 export   stainless_steel        er    1.00  sigma 1.45e+06 S/m  thickness 0.002 m  [confirmed]
+2026-11-04 09:24:48 export   steel                  er    1.00  sigma 6.99e+06 S/m  thickness 0.003 m  [confirmed]
+2026-11-04 09:24:48 export   metal                  er    1.00  sigma    1e+07 S/m  thickness 0.005 m  [confirmed]
+2026-11-04 09:24:48 export   leaf                   er   37.77  sigma    0.677 S/m  thickness 0.0003 m  moisture 80 %  [model coefficients entered from memory, verify against the paper]
+2026-11-04 09:24:48 export code version: git 14fc247d, with uncommitted changes
+2026-11-04 09:24:48 export N002 exported to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261104_082447Z
+2026-11-04 09:24:48 export export passed (0 errors, 0 warnings) after 1.6 s
+2026-11-04 09:24:48 solve run folder /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261104_082447Z
+2026-11-04 09:24:48 solve target spark: checking
+2026-11-04 09:24:49 solve target spark: gpu NVIDIA GB10, load 0%, other compute processes: none, runs on the gpu
+2026-11-04 09:24:49 solve send to spark:Documents/HyROPA/runs/SIONNA_HOUDINI_clean/20261104_082447Z
+2026-11-04 09:24:49 solve     SIONNA_HOUDINI_clean_log.txt  388 B
+2026-11-04 09:24:49 solve     SIONNA_HOUDINI_clean_materials.json  4.5 kB
+2026-11-04 09:24:49 solve     SIONNA_HOUDINI_clean_measure.json  17 B
+2026-11-04 09:24:49 solve     SIONNA_HOUDINI_clean_meta.json  233 B
+2026-11-04 09:24:49 solve     SIONNA_HOUDINI_clean_scene.xml  5.4 kB
+2026-11-04 09:24:49 solve     SIONNA_HOUDINI_clean_settings.json  300 B
+2026-11-04 09:24:49 solve     SIONNA_HOUDINI_clean_txrx.json  7.6 kB
+2026-11-04 09:24:49 solve     sionna_run.py  16.2 kB
+2026-11-04 09:24:49 solve     meshes/floor.ply  1.2 kB
+2026-11-04 09:24:49 solve     meshes/frame.ply  56.6 kB
+2026-11-04 09:24:49 solve     meshes/frame_secondary.ply  15.7 kB
+2026-11-04 09:24:49 solve     meshes/leaves.ply  2.0 MB
+2026-11-04 09:24:49 solve     meshes/measure_floor.ply  582.1 kB
+2026-11-04 09:24:49 solve     meshes/person.ply  315.6 kB
+2026-11-04 09:24:49 solve     meshes/robot_cover.ply  52.9 kB
+2026-11-04 09:24:49 solve     meshes/sprayers.ply  33.6 kB
+2026-11-04 09:24:49 solve     meshes/structural_frame.ply  3.6 kB
+2026-11-04 09:24:49 solve     meshes/trays.ply  727 B
+2026-11-04 09:24:49 solve     meshes/trays_legs.ply  1.2 kB
+2026-11-04 09:24:49 solve     meshes/windows.ply  7.0 kB
+2026-11-04 09:24:49 solve   20 files, 3.0 MB in 0.4 s
+2026-11-04 09:24:49 solve run solve on spark
+2026-11-04 09:24:50 solve   spark | sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+2026-11-04 09:24:51 solve   spark | scene: 11 objects, 9 materials, 25 tx, 2 rx (0.1 s)
+2026-11-04 09:24:51 solve   spark | settings: 0.915 GHz, max_depth 5, los, specular_reflection, refraction
+2026-11-04 09:24:51 solve   spark | paths: 25 tx x 2 rx, 1e+06 samples per tx
+2026-11-04 09:24:52 solve   spark | paths: 650 valid paths over 50 links (1.0 s)
+2026-11-04 09:24:52 solve   spark | wrote SIONNA_HOUDINI_clean_result.npz (0.05 MB)
+2026-11-04 09:24:52 solve   spark | radio map 'measure_floor': 30617 cells, 2e+07 samples per tx
+2026-11-04 09:24:54 solve   spark | radio map 'measure_floor': 30613 of 30617 cells reached (2.2 s)
+2026-11-04 09:24:54 solve   spark | wrote SIONNA_HOUDINI_clean_radiomap.npz (2.44 MB)
+2026-11-04 09:24:54 solve receive from spark:Documents/HyROPA/runs/SIONNA_HOUDINI_clean/20261104_082447Z
+2026-11-04 09:24:54 solve     SIONNA_HOUDINI_clean_radiomap.npz  2.4 MB
+2026-11-04 09:24:54 solve     SIONNA_HOUDINI_clean_result.npz  54.8 kB
+2026-11-04 09:24:54 solve   2 files, 2.5 MB in 0.4 s
+2026-11-04 09:24:54 solve solve done after 6.2 s
+2026-11-04 09:24:54 solve N004 650 paths, result written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261104_082447Z/SIONNA_HOUDINI_clean_result.npz
+2026-11-04 09:24:54 solve N006 radio map: 30617 cells on 1 surfaces, 25 transmitters
+2026-11-04 09:24:54 solve solve passed (0 errors, 0 warnings) after 7.8 s
+2026-11-04 09:24:54 import run folder /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/data/20261104_082447Z
+2026-11-04 09:24:55 import paths: gain -125.7 to -36.6 dB, 13 line of sight
+2026-11-04 09:24:55 import radio map: strongest tx per cell -53.3 to -4.2 dB, 4 cells without signal
+2026-11-04 09:24:55 import results written for sionna_paths, sionna_links, sionna_radiomap (0.5 s)
+2026-11-04 09:24:55 import N005 imported 650 paths, 50 links
+2026-11-04 09:24:55 import N006 radio map: 30617 cells on 1 surfaces, 25 transmitters
+2026-11-04 09:24:55 import import passed (0 errors, 0 warnings) after 8.3 s
+2026-11-04 09:24:55 run run done after 8.3 s
+2026-11-04 09:24:59 batch   wi001: S008 frequency changed since export (8.68e+08 Hz exported, 9.15e+08 Hz now): export again
+2026-11-04 09:24:59 batch   wi002: S008 frequency changed since export (8.68e+08 Hz exported, 9.15e+08 Hz now): export again
+2026-11-04 09:24:59 batch   wi003: S008 frequency changed since export (8.68e+08 Hz exported, 9.15e+08 Hz now): export again
+2026-11-04 09:24:59 batch B007 nothing to solve in batch 'test_20261103_083346Z'
+2026-11-04 09:24:59 batch batch FAILED (1 error, 0 warnings) after 0.0 s
+2026-11-04 09:25:22 batch batch test_20261103_083346Z on spark: finished, 3 of 3 done (0 skipped as already solved), 0 failed
+2026-11-04 09:25:22 batch   1.85 s per work item
+2026-11-04 09:25:22 batch   log | wrote SIONNA_HOUDINI_clean_result.npz (0.02 MB)
+2026-11-04 09:25:22 batch   log | radio map 'measure_floor': 30559 cells, 1e+06 samples per tx
+2026-11-04 09:25:22 batch   log | radio map 'measure_floor': 30556 of 30559 cells reached (0.2 s)
+2026-11-04 09:25:22 batch   log | wrote SIONNA_HOUDINI_clean_radiomap.npz (2.18 MB)
+2026-11-04 09:25:22 batch   log | batch: finished, 3 solved, 0 skipped, 0 failed
+2026-11-04 09:25:22 batch batch passed (0 errors, 0 warnings) after 0.3 s
+2026-11-04 09:25:22 batch receive from spark:Documents/HyROPA/batches/SIONNA_HOUDINI_clean/test_20261103_083346Z
+2026-11-04 09:25:22 batch     batch.log  1.5 kB
+2026-11-04 09:25:22 batch     deleting wi003/progress.json
+2026-11-04 09:25:22 batch     status.json  271 B
+2026-11-04 09:25:22 batch     wi003/done.json  296 B
+2026-11-04 09:25:22 batch   3 files, 2.1 kB in 0.3 s
+2026-11-04 09:25:22 batch convert 0 work items to bgeo, the others are up to date or have no result
+2026-11-04 09:25:22 batch N011 batch 'test_20261103_083346Z': 3 solved, 0 failed, 0 without result
+2026-11-04 09:25:22 batch batch passed (0 errors, 0 warnings) after 0.3 s
+2026-11-04 11:23:11 batch batch test_20261104_102311Z: 3 work items (1 to 3) from /obj/batch_run_1/topnet1/output0
+2026-11-04 11:23:12 batch   [1/3] wi001: exported, 0.915 GHz, 152149 prims, W010 W005 (1.7 s)
+2026-11-04 11:23:14 batch   [2/3] wi002: exported, 0.915 GHz, 152149 prims, W010 W005 (1.6 s)
+2026-11-04 11:23:15 batch   [3/3] wi003: exported, 0.915 GHz, 152149 prims, W010 W005 (1.6 s)
+2026-11-04 11:23:15 batch parm 'batch' set to test_20261104_102311Z
+2026-11-04 11:23:15 batch N009 batch 'test_20261104_102311Z': 3 exported, 0 failed, written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/batches/test_20261104_102311Z
+2026-11-04 11:23:15 batch batch passed (0 errors, 0 warnings) after 5.0 s
+2026-11-04 11:23:24 batch   wi001: S012 setting 'antenna_pattern' =  is not valid: use one of iso, dipole, hw_dipole, tr38901
+2026-11-04 11:23:24 batch   wi002: S012 setting 'antenna_pattern' =  is not valid: use one of iso, dipole, hw_dipole, tr38901
+2026-11-04 11:23:24 batch   wi003: S012 setting 'antenna_pattern' =  is not valid: use one of iso, dipole, hw_dipole, tr38901
+2026-11-04 11:23:24 batch B007 nothing to solve in batch 'test_20261104_102311Z'
+2026-11-04 11:23:24 batch batch FAILED (1 error, 0 warnings) after 0.0 s
+2026-11-04 13:14:19 preset   base_tx_antenna_pattern iso -> dipole
+2026-11-04 13:14:19 preset   base_rx_antenna_pattern 0 -> dipole
+2026-11-04 13:14:19 preset antenna preset dipole_link applied, 0 parms already had the preset value
+2026-11-04 13:14:19 preset W012 antenna preset 'dipole_link': parms not on this node, left unchanged: base_tx_polarization, base_rx_polarization
+2026-11-04 13:14:19 preset preset passed (0 errors, 1 warning) after 0.0 s
+2026-11-04 13:14:23 preset antenna preset cross_pol applied, 2 parms already had the preset value
+2026-11-04 13:14:23 preset W012 antenna preset 'cross_pol': parms not on this node, left unchanged: base_tx_polarization, base_rx_polarization
+2026-11-04 13:14:23 preset preset passed (0 errors, 1 warning) after 0.0 s
+2026-11-04 13:14:25 preset   base_rx_antenna_pattern dipole -> tr38901
+2026-11-04 13:14:25 preset antenna preset sensor_dipole_panel applied, 1 parms already had the preset value
+2026-11-04 13:14:25 preset W012 antenna preset 'sensor_dipole_panel': parms not on this node, left unchanged: base_tx_polarization, base_rx_polarization
+2026-11-04 13:14:25 preset preset passed (0 errors, 1 warning) after 0.0 s
+2026-11-04 13:14:27 preset   base_tx_antenna_pattern dipole -> iso
+2026-11-04 13:14:27 preset   base_rx_antenna_pattern tr38901 -> iso
+2026-11-04 13:14:27 preset antenna preset iso_reference applied, 0 parms already had the preset value
+2026-11-04 13:14:27 preset W012 antenna preset 'iso_reference': parms not on this node, left unchanged: base_tx_polarization, base_rx_polarization
+2026-11-04 13:14:27 preset preset passed (0 errors, 1 warning) after 0.0 s
+2026-11-04 13:14:30 preset   base_tx_antenna_pattern iso -> dipole
+2026-11-04 13:14:30 preset   base_rx_antenna_pattern iso -> dipole
+2026-11-04 13:14:30 preset antenna preset dipole_link applied, 0 parms already had the preset value
+2026-11-04 13:14:30 preset W012 antenna preset 'dipole_link': parms not on this node, left unchanged: base_tx_polarization, base_rx_polarization
+2026-11-04 13:14:30 preset preset passed (0 errors, 1 warning) after 0.0 s
+2026-11-04 13:14:32 preset   base_tx_antenna_pattern dipole -> hw_dipole
+2026-11-04 13:14:32 preset   base_rx_antenna_pattern dipole -> hw_dipole
+2026-11-04 13:14:32 preset antenna preset half_wave_link applied, 0 parms already had the preset value
+2026-11-04 13:14:32 preset W012 antenna preset 'half_wave_link': parms not on this node, left unchanged: base_tx_polarization, base_rx_polarization
+2026-11-04 13:14:32 preset preset passed (0 errors, 1 warning) after 0.0 s
+2026-11-04 13:14:38 preset   frequency            915000000.0 -> 868000000.0
+2026-11-04 13:14:38 preset band preset lora_868 applied, 1 parms already had the preset value
+2026-11-04 13:14:38 preset preset passed (0 errors, 0 warnings) after 0.0 s
+2026-11-04 13:14:39 preset   frequency            868000000.0 -> 915000000.0
+2026-11-04 13:14:39 preset band preset lora_915 applied, 1 parms already had the preset value
+2026-11-04 13:14:39 preset preset passed (0 errors, 0 warnings) after 0.0 s
+2026-11-04 15:00:35 node display flag set on /obj/batch_run_1/COMPUTE
+2026-11-04 15:00:35 clear looking for runs or batches of SIONNA_HOUDINI_clean_update_new_parms on spark
+2026-11-04 15:00:36 clear N013 nothing to clear on 'spark': no runs or batches of SIONNA_HOUDINI_clean_update_new_parms
+2026-11-04 15:00:36 clear clear passed (0 errors, 0 warnings) after 0.5 s

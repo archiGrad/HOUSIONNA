@@ -80,24 +80,25 @@ def out_of_memory(e):
     return False
 
 
-def note(kind, size):
+def note(kind, size, per_tx):
     if PROGRESS:
         with open(PROGRESS, "w") as fh:
-            json.dump({"stage": kind, "size": size, "reduced": REDUCED}, fh)
+            json.dump({"stage": kind, "size": size, "per_tx": per_tx, "reduced": REDUCED}, fh)
 
 
-def chunked(kind, scene, devs, run):
-    size = min(CHUNK.get(kind, len(devs)), len(devs))
+def chunked(kind, scene, devs, run, per_tx):
+    size = max(1, min(len(devs), CHUNK.get(kind, len(devs) * per_tx) // per_tx))
     parts, i = [], 0
     while i < len(devs):
         set_tx(scene, devs[i:i + size])
-        note(kind, size)
+        note(kind, size, per_tx)
         try:
             parts.append(run(i))
         except RuntimeError as e:
             if size == 1 or not out_of_memory(e):
                 raise
-            size = CHUNK[kind] = REDUCED[kind] = max(1, size // 2)
+            size = max(1, size // 2)
+            CHUNK[kind] = REDUCED[kind] = size * per_tx
             gc.collect()
             dr.flush_malloc_cache()
             log(f"{kind}: out of memory, retrying with {size} tx per call")
@@ -163,11 +164,14 @@ def configure(folder):
         s = json.load(fh)
     scene, devs = load(folder)
     scene.frequency = s["frequency"]
-    scene.tx_array = PlanarArray(num_rows=1, num_cols=1, pattern="iso", polarization="V")
-    scene.rx_array = PlanarArray(num_rows=1, num_cols=1, pattern="iso", polarization="V")
+    pattern, pol = s.get("antenna_pattern", "iso"), s.get("polarization", "V")
+    scene.tx_array = PlanarArray(num_rows=1, num_cols=1, pattern=pattern, polarization=pol)
+    scene.rx_array = PlanarArray(num_rows=1, num_cols=1, pattern=pattern, polarization=pol)
     common = {k: s[k] for k in ("max_depth", "los", "specular_reflection", "diffuse_reflection", "refraction", "diffraction")}
+    common["seed"] = s.get("seed", 42)
     on = [k for k in ("los", "specular_reflection", "diffuse_reflection", "refraction", "diffraction") if s[k]]
-    log(f"settings: {s['frequency'] / 1e9:g} GHz, max_depth {s['max_depth']}, {', '.join(on)}")
+    log(f"settings: {s['frequency'] / 1e9:g} GHz, max_depth {s['max_depth']}, {', '.join(on)}, "
+        f"antenna {pattern} {pol}, seed {common['seed']}")
     return scene, devs, s, common
 
 
@@ -187,7 +191,7 @@ def radiomap(folder, scene, devs, s, common, names):
             rm = RadioMapSolver()(scene, measurement_surface=mesh, samples_per_tx=s["radiomap_samples"], **common)
             return db(rm.path_gain.numpy(), 10)
 
-        gain_db = np.concatenate(chunked("radio map", scene, devs["tx"], run), axis=0)
+        gain_db = np.concatenate(chunked("radio map", scene, devs["tx"], run, s["radiomap_samples"]), axis=0)
         params = mi.traverse(mesh)
         v = np.array(params["vertex_positions"]).reshape(-1, 3)
         f = np.array(params["faces"]).reshape(-1, 3)
@@ -247,7 +251,7 @@ def trace(folder, scene, devs, s, common):
         )
         return extract(paths, offset, ids, fc, freqs)
 
-    parts = chunked("paths", scene, devs["tx"], run)
+    parts = chunked("paths", scene, devs["tx"], run, s["samples"])
     out = {k: np.concatenate([p[0][k] for p in parts]) for k in parts[0][0]}
     order = np.lexsort((out["path_tx"], out["path_rx"]))
     out = {k: v[order] for k, v in out.items()}
@@ -345,13 +349,13 @@ def supervise(folder, limit):
                 state = json.load(fh)
             os.remove(progress)
         if code == 0:
-            for kind, size in state.get("reduced", {}).items():
-                limit[kind] = max(1, size * 3 // 4)
+            for kind, rays in state.get("reduced", {}).items():
+                limit[kind] = max(1, rays * 3 // 4)
             return 0, ""
-        stage, size = state.get("stage"), state.get("size", 0)
+        stage, size, per_tx = state.get("stage"), state.get("size", 0), state.get("per_tx", 1)
         if stage and size > 1 and any("out of memory" in line.lower() for line in tail):
-            limit[stage] = max(1, size // 2)
-            log(f"{stage}: process ran out of memory with {size} tx per call, restarting with {limit[stage]}")
+            limit[stage] = max(1, size // 2) * per_tx
+            log(f"{stage}: process ran out of memory with {size} tx per call, restarting with {max(1, size // 2)}")
             continue
         return code, next((line for line in reversed(tail) if line.strip()), f"exit code {code}")
 

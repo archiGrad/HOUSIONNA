@@ -207,6 +207,18 @@ To stop a running batch: `ssh spark`, then `kill <pid>` with the pid printed by 
 
 A string parm `batch_name` on the Null groups batches into sessions, e.g. `plants_on` and `plants_off`. Batch export names the folder `<batch_name>_<YYYYMMDD_HHMMSSZ>`, or only the timestamp when `batch_name` is empty. Letters, digits, `_` and `-` only (`B009`).
 
+### Settings per work item
+
+Any solver setting can follow the work item. Give the wedge an attribute and put an expression on the Null's parm, e.g. `@frequency`, `@samples`, `@max_depth`; in a string parm, type the attribute reference as text, e.g. `@tx_pattern` in `base_tx_antenna_pattern` (a string parm counts as per work item when its text contains `@` or a backtick). A parm with an expression is evaluated for every work item at batch export, after selecting it, and stored with that work item; a parm with a plain value is read at batch solve, as before, so it can still be changed and solved again without exporting. The export line shows the values per work item (`wi003: exported, 5.18 GHz, samples 100000, ...`), batch solve lists which settings came from the work items.
+
+This applies to `frequency`, `max_depth`, `samples`, `max_paths_per_tx`, `los`, `specular_reflection`, `refraction`, `diffuse_reflection`, `diffraction`, `radiomap_samples`, `bandwidth`, `cfr_points`, `seed` and the four `base_*` antenna parms. Antennas set as point attributes follow the work item through the SOP network anyway. `target`, `use_gpu` and `timeout` belong to the whole batch.
+
+- `frequency` is always taken at export, also as a plain value, because the materials are computed for it. Batch solve uses the frequency each work item was exported with; to solve at another frequency, export again.
+- Values are checked at export and at solve (`S012`); a work item with an invalid value is not exported or not queued.
+- With an expression and no work item selected, the parm has no value: validate, export and single solves stop with `V013` for `frequency`; other settings fall back to their default.
+- Presets leave parms with an expression unchanged (`W015`).
+- Changing the value of an expression parm needs a new batch export.
+
 ### Clearing
 
 Both buttons work on the selected `target` only: local deletes folders on this machine, a remote target deletes them on that machine, never both. When the remote target is not reachable they stop with `T001`.
@@ -239,7 +251,9 @@ All primitives with the same `name` must have the same material attributes (`V00
 | `P` | vector | yes | Position |
 | `role` | string | yes | `tx` or `rx` |
 | `name` | string | yes | Unique name, carried through to all results |
-| `orientation` | vector | no | Yaw, pitch, roll in radians, Sionna convention. No effect with the current isotropic antennas. |
+| `orientation` | vector | no | Yaw, pitch, roll in radians, Sionna convention (not converted from Houdini axes). Sets the antenna direction; only has an effect with an antenna other than `iso`. At (0, 0, 0) a `tr38901` panel looks along Sionna +x. |
+| `antenna_pattern` | string | no | `iso`, `dipole`, `hw_dipole` or `tr38901`. Empty or absent: `base_tx_antenna_pattern` or `base_rx_antenna_pattern`. All TX points must end up with the same antenna, and all RX points (`V108`, `V109`): Sionna uses one antenna per role. |
+| `polarization` | string | no | `V` or `H`. Empty or absent: the base parm of its role. Same rule per role. |
 | `velocity` | vector | no | m/s. Exported, but not yet passed to Sionna: no effect. |
 | `power_dbm` | float | no | TX power. Passed to Sionna, but no current output depends on it: all results are path gain. |
 
@@ -348,10 +362,13 @@ Defaults, each overridable by a parm of the same name on the Null:
 | `bandwidth` | 100e6 | Width in Hz of the per-link frequency response `cfr_db`, centred on `frequency` |
 | `cfr_points` | 256 | Number of frequencies in `cfr_db`. 0 skips the frequency response; it is the largest part of the paths result. |
 | `radiomap_samples` | 10000000 | Rays per TX for the radio map. More rays give less noise per cell. `radiomap_samples` × number of TX must stay below 4.29e9 (Sionna limit), otherwise solve stops with `S010`. |
+| `seed` | 42 | Random seed of the path solver and the radio map (Sionna's default). The same seed gives the same result; other seeds show the sampling noise. Stored with every run. |
+| `base_tx_antenna_pattern`, `base_rx_antenna_pattern` | iso | Antenna of the TX and of the RX points: `iso`, `dipole`, `hw_dipole` (half-wave dipole) or `tr38901` (3GPP panel element). Used for every point of that role without its own `antenna_pattern` attribute. With a pattern other than `iso`, the device `orientation` matters. Radio maps apply the TX antenna only. |
+| `base_tx_polarization`, `base_rx_polarization` | V | `V` or `H`, for every point of that role without its own `polarization` attribute. |
 | `target` | local | Where the solver runs: `local` or an SSH alias |
 | `remote_root` | ~/Documents/HyROPA | Folder on the remote target that holds `venv/` and `runs/` |
 | `timeout` | 1800 | Seconds before a previz or solve is aborted |
-| `quality`, `band` | none | Menus that set a group of parms at once, see Presets |
+| `quality`, `band`, `antenna` | none | Menus that set a group of parms at once, see Presets |
 | `use_gpu` | on | Toggle. On: run on the GPU (CUDA). Off: run on the CPU (LLVM), locally or on the Spark |
 | `python_exe` | `$HIP/../venv/bin/python3` | Python for the local target |
 | `batch_start`, `batch_end` | all | Range of work item indices for batch export |
@@ -361,12 +378,13 @@ Defaults, each overridable by a parm of the same name on the Null:
 
 ### Presets
 
-`PRESETS` at the top of `sionna_sop.py` holds two independent sets of named parm values, each with its own menu on the Null:
+`PRESETS` at the top of `sionna_sop.py` holds three independent sets of named parm values, each with its own menu on the Null (every quality preset also sets `seed` to 42):
 
 - `quality`: target, `use_gpu`, ray and depth settings, interaction toggles, `timeout`.
 - `band`: `frequency` and `bandwidth`.
+- `antenna`: the four `base_*` antenna parms.
 
-Neither sets the other's parms, so any quality can be combined with any band. Parms that are not on the Null are listed (`W012`) and left alone. Edit the dict to change or add presets; the menus follow it.
+None sets another's parms, so any quality, band and antenna can be combined. Parms that are not on the Null are listed (`W012`) and left alone. Edit the dict to change or add presets; the menus follow it.
 
 | Quality | For |
 |---|---|
@@ -398,7 +416,15 @@ and as callback script (Python), so a choice is applied immediately:
 exec(open(hou.expandString('$HIP/sionna/sionna_sop.py')).read()); on_preset("quality")
 ```
 
-For `band`, replace `"quality"` with `"band"` in both.
+For `band` and `antenna`, replace `"quality"` with `"band"` or `"antenna"` in both.
+
+| Antenna | TX (sensors) | RX (gateway) | For |
+|---|---|---|---|
+| `iso_reference` | iso V | iso V | propagation only, no antenna effects |
+| `dipole_link` | dipole V | dipole V | simple sensors and gateway |
+| `sensor_dipole_panel` | dipole V | tr38901 V | dipole sensors, panel gateway (WPT reader); aim the panel with `orientation` |
+| `half_wave_link` | hw_dipole V | hw_dipole V | half-wave dipoles on both sides |
+| `cross_pol` | dipole V | dipole H | polarisation mismatch |
 
 ## Terminal output
 
@@ -477,8 +503,10 @@ Codes starting with N are information, W warnings (do not block), all others are
 | W010 | material outside its measured range | The run frequency lies outside the range the material was measured for; values are extrapolated. Below 1 GHz this applies to most ITU materials; see Materials |
 | W011 | moisture set on a material that does not use it | `moisture` only affects vegetation and soil materials |
 | W008 | node exists but is not a File SOP | A node next to the Null already has the name `sionna_previz`, `sionna_paths`, `sionna_links`, `sionna_radiomap` or `sionna_batch_scene`, `_paths`, `_links`, `_radiomap`. The result file is written but not loaded; rename that node. |
+| W015 | preset parm has an expression | The preset did not overwrite it, e.g. `frequency` driven by `@frequency`; set the value by hand or remove the expression |
 | W014 | running batch not cleared | Clear again after it finished, or stop it first |
 | W009 | no `batch` parm on the Null | Add a string parm `batch`; the `sionna_batch_*` File SOPs read the batch name from it |
+| V013 | frequency not valid | The `frequency` parm is 0 or below, or an expression such as `@frequency` has no selected work item |
 | V001 | no primitives to simulate | Nothing to export: no primitives, or only `display` primitives; add geometry or a measurement surface |
 | V002 | missing prim attribute | Add `name` and `material` |
 | V003 | not a triangle | Triangulate (Divide SOP) |
@@ -497,6 +525,11 @@ Codes starting with N are information, W warnings (do not block), all others are
 | V104 | duplicate device name | Device names must be unique |
 | V105 | tx and rx at same position | Zero distance is undefined |
 | V106 | loose point without valid role | A point that is not a device; remove it or set `role` |
+| V108 | TX points with different antennas | Give all TX points the same `antenna_pattern` and `polarization`, or leave the attributes empty to use the base parms |
+| V109 | RX points with different antennas | Same for the RX points |
+| V110 | unknown antenna value | Use `iso`, `dipole`, `hw_dipole`, `tr38901` for `antenna_pattern`, `V` or `H` for `polarization` |
+| V112 | base antenna parm empty | A `base_*` antenna parm on the Null is empty; set it, or pick an antenna preset. An empty base parm is an error, not a silent default (at solve: `S012`) |
+| V111 | antenna attribute not a string | Create `antenna_pattern` and `polarization` as string point attributes |
 | V107 | nothing to compute | Add an RX or a measurement surface |
 | E001 | cannot create output directory | Check permissions and disk space |
 | E002 | cannot write file | Check permissions and disk space |
@@ -504,6 +537,7 @@ Codes starting with N are information, W warnings (do not block), all others are
 | S001 | python executable not found | Local venv missing; check `python_exe` |
 | S002 | solver script not found | `sionna/sionna_run.py` missing |
 | S003 | solver exited with an error | Last line of the solver output; full output in `solver.log`. A missing Sionna installation in the venv also ends here (`No module named 'sionna'`). |
+| S012 | setting not valid | A solver setting is out of range, e.g. `samples` 0 or an unknown `antenna_pattern`; for a work item with expression parms, check the wedge values |
 | S011 | python on target failed | Check could not import Sionna; the last lines of the error are printed above it. On Python 3.10: `cannot import name 'Self'`, use Python 3.11 or later |
 | S004 | solver timed out | Increase `timeout` or reduce the job |
 | S005 | solver produced no result file | Solver ended without writing results |
@@ -574,8 +608,10 @@ if (tx >= 0) {
 - **No volumetric media.** Materials live on surfaces, so canopies must be built from surfaces; see test F.
 - **Houdini is blocked while previz, solve or run is busy.** Batch solve runs in the background.
 - **Radio maps grow with cells × TX**: 4 bytes per value, so 100,000 cells and 100 TX is 40 MB before compression.
-- **GPU memory grows with TX × samples.** Every solve, and every work item of a batch, runs in its own process, so it starts with an empty GPU and a crash ends only that item. When a solve runs out of memory, the solver halves the number of TX per call and retries, down to 1 TX, for paths and radio maps separately (`out of memory, retrying with N tx per call`). When the GPU runs out of memory in a way Dr.Jit cannot recover from, the process ends; the solver restarts the work item with half the TX per call of the call that failed (`process ran out of memory with N tx per call, restarting with M`). A size found this way is passed to the next work items of a batch at 3/4, as safety margin. Dr.Jit's memory cache is cleared after every call. Paths come out identical to one call. Radio maps differ only by sampling noise (tested: the same spread as changing the random seed), because the rays are drawn per call. A work item fails only when 1 TX per call does not fit.
+- **GPU memory grows with TX × samples.** Every solve, and every work item of a batch, runs in its own process, so it starts with an empty GPU and a crash ends only that item. When a solve runs out of memory, the solver halves the number of TX per call and retries, down to 1 TX, for paths and radio maps separately (`out of memory, retrying with N tx per call`). When the GPU runs out of memory in a way Dr.Jit cannot recover from, the process ends; the solver restarts the work item with half the TX per call of the call that failed (`process ran out of memory with N tx per call, restarting with M`). A size found this way is passed to the next work items of a batch at 3/4, as safety margin, as rays per call (TX × samples), so it also fits work items with other `samples`. Dr.Jit's memory cache is cleared after every call. Paths come out identical to one call. Radio maps differ only by sampling noise (tested: the same spread as changing the random seed), because the rays are drawn per call. A work item fails only when 1 TX per call does not fit.
 - **Validation does not check** whether a device sits inside an object or below a floor.
+- **One antenna per role.** All TX share one antenna and all RX share one, as in Sionna. Several antenna types within one role would need a solve per antenna group; not implemented.
+- **Aiming antennas** works only through `orientation` angles in Sionna's convention. A `look_at` point attribute (aim a device at a position, e.g. a panel gateway at the canopy centre) is planned. Dual polarisation (`VH`, `cross`) is not supported.
 - **Remote targets need `ssh` and `rsync`** on your machine: standard on Linux; on Windows, rsync runs inside WSL (see Windows).
 - Developed against Sionna RT 2.2.0.
 
@@ -660,42 +696,3 @@ Radio map under four racks
 ![Screenshot 2026-10-21-102633](docs/presentation_21-10-2026/2026-10-21-102633_1920x1060_scrot.png)
 ![Screenshot 2026-10-21-102655](docs/presentation_21-10-2026/2026-10-21-102655_1920x1028_scrot.png)
 ![Screenshot 2026-10-21-102800](docs/presentation_21-10-2026/2026-10-21-102800_1917x1033_scrot.png)
-
-
-
-
-## Update #2 (02-11-2026)
-
-### Screenshots
-
-![Screenshot 2026-11-02-120135](docs/updates%2002-11-2026/2026-11-02-120135_818x941_scrot.png)
-![Screenshot 2026-11-02-174129](docs/updates%2002-11-2026/2026-11-02-174129_1301x945_scrot.png)
-![Screenshot 2026-11-02-180535](docs/updates%2002-11-2026/2026-11-02-180535_1299x941_scrot.png)
-![Screenshot 2026-11-02-180606](docs/updates%2002-11-2026/2026-11-02-180606_1301x942_scrot.png)
-![Screenshot 2026-11-02-184107](docs/updates%2002-11-2026/2026-11-02-184107_781x745_scrot.png)
-![Screenshot 2026-11-02-185055](docs/updates%2002-11-2026/2026-11-02-185055_813x634_scrot.png)
-![Screenshot 2026-11-02-185103](docs/updates%2002-11-2026/2026-11-02-185103_796x668_scrot.png)
-![Screenshot 2026-11-02-185349](docs/updates%2002-11-2026/2026-11-02-185349_898x912_scrot.png)
-![Screenshot 2026-11-02-185404](docs/updates%2002-11-2026/2026-11-02-185404_900x934_scrot.png)
-![Screenshot 2026-11-02-185413](docs/updates%2002-11-2026/2026-11-02-185413_899x898_scrot.png)
-![Screenshot 2026-11-02-185436](docs/updates%2002-11-2026/2026-11-02-185436_901x890_scrot.png)
-![Screenshot 2026-11-02-194041](docs/updates%2002-11-2026/2026-11-02-194041_1101x988_scrot.png)
-![Screenshot 2026-11-02-194218](docs/updates%2002-11-2026/2026-11-02-194218_1107x1017_scrot.png)
-![Screenshot 2026-11-02-194547](docs/updates%2002-11-2026/2026-11-02-194547_1109x1028_scrot.png)
-![Screenshot 2026-11-02-194802](docs/updates%2002-11-2026/2026-11-02-194802_1107x971_scrot.png)
-![Screenshot 2026-11-02-194837](docs/updates%2002-11-2026/2026-11-02-194837_1108x966_scrot.png)
-![Screenshot 2026-11-02-214855](docs/updates%2002-11-2026/2026-11-02-214855_1197x839_scrot.png)
-![Screenshot 2026-11-02-220348](docs/updates%2002-11-2026/2026-11-02-220348_1920x1029_scrot.png)
-![Screenshot 2026-11-02-220507](docs/updates%2002-11-2026/2026-11-02-220507_1275x1007_scrot.png)
-
-
-
-
-
-
-
-
-
-
-
-

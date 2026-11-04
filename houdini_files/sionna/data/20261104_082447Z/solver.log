@@ -1,0 +1,9 @@
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 25 tx, 2 rx (0.1 s)
+settings: 0.915 GHz, max_depth 5, los, specular_reflection, refraction
+paths: 25 tx x 2 rx, 1e+06 samples per tx
+paths: 650 valid paths over 50 links (1.0 s)
+wrote SIONNA_HOUDINI_clean_result.npz (0.05 MB)
+radio map 'measure_floor': 30617 cells, 2e+07 samples per tx
+radio map 'measure_floor': 30613 of 30617 cells reached (2.2 s)
+wrote SIONNA_HOUDINI_clean_radiomap.npz (2.44 MB)
