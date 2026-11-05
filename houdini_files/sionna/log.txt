@@ -51059,3 +51059,88 @@
 2026-11-04 21:19:53 batch batch passed (0 errors, 0 warnings) after 0.0 s
 2026-11-04 21:21:07 watch batch batch_5_20261104_193842Z on local: stopped, process not running, see batch status
 2026-11-04 21:21:11 watch batch batch_5_20261104_195947Z on local: stopped, process not running, see batch status
+2026-11-05 13:35:56 node display flag set on /obj/BATCH_1/COMPUTE
+2026-11-05 13:35:56 batch convert 0 work items to bgeo, the others are up to date or have no result
+2026-11-05 13:35:56 batch N011 batch 'batch_1_20261104_184512Z': 20 solved, 0 failed, 0 without result
+2026-11-05 13:35:56 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-05 15:27:55 batch batch batch_1_20261105_142754Z: 2 work items (0 to 1) from /obj/BATCH_1/topnet1/output0
+2026-11-05 15:27:55 batch   [1/2] wi000: exported, 0.915 GHz, 41985 prims, W010 W005 (0.4 s)
+2026-11-05 15:27:56 batch   [2/2] wi001: exported, 0.915 GHz, 51057 prims, W010 W005 (0.5 s)
+2026-11-05 15:27:56 batch parm 'batch' set to batch_1_20261105_142754Z
+2026-11-05 15:27:56 batch N009 batch 'batch_1_20261105_142754Z': 2 exported, 0 failed, written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/batches/batch_1_20261105_142754Z
+2026-11-05 15:27:56 batch batch passed (0 errors, 0 warnings) after 1.6 s
+2026-11-05 15:27:58 batch batch batch_1_20261105_142754Z: 2 work items queued, 2 of 2 exported, at 0.915 GHz (frequency as exported per work item)
+2026-11-05 15:27:58 batch watching batch batch_1_20261105_142754Z on local every 15 s, a line follows each finished work item
+2026-11-05 15:27:58 batch N010 batch 'batch_1_20261105_142754Z' started on 'local' (pid 11729): 2 work items queued, finished ones are skipped
+2026-11-05 15:27:58 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-05 15:28:07 batch batch batch_1_20261105_142754Z: 2 work items queued, 2 of 2 exported, at 0.915 GHz (frequency as exported per work item)
+2026-11-05 15:28:07 batch watching batch batch_1_20261105_142754Z on local every 15 s, a line follows each finished work item
+2026-11-05 15:28:07 batch N010 batch 'batch_1_20261105_142754Z' started on 'local' (pid 11747): 2 work items queued, finished ones are skipped
+2026-11-05 15:28:07 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-05 15:28:15 batch batch batch_1_20261105_142754Z on local: running, 0 of 2 done (0 skipped as already solved), 0 failed, now wi000
+2026-11-05 15:28:15 batch   log | [1/2] wi000
+2026-11-05 15:28:15 batch   log | sionna 2.2.0, llvm_ad_mono_polarized, on the cpu
+2026-11-05 15:28:15 batch   log | scene: 9 objects, 8 materials, 18 tx, 1 rx (0.1 s)
+2026-11-05 15:28:15 batch   log | settings: 0.915 GHz, max_depth 5, los, specular_reflection, refraction, antenna tx hw_dipole V, rx tr38901 V, seed 42
+2026-11-05 15:28:15 batch   log | paths: 18 tx x 1 rx, 1e+06 samples per tx
+2026-11-05 15:28:15 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-05 15:28:16 batch work items 0 to 0: 1 work item
+2026-11-05 15:28:16 batch convert 0 work items to bgeo, the others are up to date or have no result
+2026-11-05 15:28:16 batch N011 batch 'batch_1_20261105_142754Z, work items 0 to 0': 0 solved, 0 failed, 1 without result
+2026-11-05 15:28:16 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-05 15:29:16 batch work items 0 to 1: 2 work items
+2026-11-05 15:29:16 batch convert 1 work item to bgeo, the others are up to date or have no result
+2026-11-05 15:29:16 batch   [1/1] wi000 (0.1 s)
+2026-11-05 15:29:16 batch converted in 0.1 s
+2026-11-05 15:29:16 batch N011 batch 'batch_1_20261105_142754Z, work items 0 to 1': 0 solved, 1 failed, 1 without result
+2026-11-05 15:29:16 batch batch passed (0 errors, 0 warnings) after 0.1 s
+2026-11-05 15:30:30 batch batch batch_1_20261105_143030Z: 3 work items (0 to 2) from /obj/BATCH_1/topnet1/output0
+2026-11-05 15:30:31 batch   [1/3] wi000: exported, 0.915 GHz, 41985 prims, W010 W005 (1.1 s)
+2026-11-05 15:30:32 batch   [2/3] wi001: exported, 0.915 GHz, 51057 prims, W010 W005 (1.8 s)
+2026-11-05 15:30:34 batch   [3/3] wi002: exported, 0.915 GHz, 68877 prims, W010 W005 (1.7 s)
+2026-11-05 15:30:34 batch parm 'batch' set to batch_1_20261105_143030Z
+2026-11-05 15:30:34 batch N009 batch 'batch_1_20261105_143030Z': 3 exported, 0 failed, written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/batches/batch_1_20261105_143030Z
+2026-11-05 15:30:34 batch batch passed (0 errors, 0 warnings) after 4.6 s
+2026-11-05 15:30:42 batch batch batch_1_20261105_143030Z: 3 work items queued, 3 of 3 exported, at 0.915 GHz (frequency as exported per work item)
+2026-11-05 15:30:42 batch watching batch batch_1_20261105_143030Z on local every 15 s, a line follows each finished work item
+2026-11-05 15:30:42 batch N010 batch 'batch_1_20261105_143030Z' started on 'local' (pid 11814): 3 work items queued, finished ones are skipped
+2026-11-05 15:30:42 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-05 15:30:55 check target local: sionna 2.2.0
+2026-11-05 15:30:55 check   gpu: not available (jit_init_thread_state(): the CUDA backend hasn't been initialized)
+2026-11-05 15:30:55 check   cpu: Intel(R) Core(TM) i5-7200U CPU @ 2.50GHz, 4 threads, available, LLVM 20.1.8
+2026-11-05 15:30:55 check   selected: cpu (use_gpu off)
+2026-11-05 15:30:55 check N008 target 'local': sionna 2.2.0, runs on the cpu
+2026-11-05 15:30:55 check check passed (0 errors, 0 warnings) after 5.8 s
+2026-11-05 15:31:04 batch batch batch_1_20261105_143030Z: 3 work items queued, 3 of 3 exported, at 0.915 GHz (frequency as exported per work item)
+2026-11-05 15:31:04 batch already watching batch batch_1_20261105_143030Z on local
+2026-11-05 15:31:04 batch B004 batch 'batch_1_20261105_143030Z' is already running on 'local' (pid 11814)
+2026-11-05 15:31:04 batch batch FAILED (1 error, 0 warnings) after 0.0 s
+2026-11-05 15:32:53 clear looking for batches of SIONNA_HOUDINI_clean_update_new_parms_new_fetch_selection in session 'test' on local
+2026-11-05 15:32:53 clear N013 nothing to clear on 'local': no batches of SIONNA_HOUDINI_clean_update_new_parms_new_fetch_selection in session 'test'
+2026-11-05 15:32:53 clear clear passed (0 errors, 0 warnings) after 0.0 s
+2026-11-05 15:33:02 batch batch test_20261105_143302Z: 1 work item (0 to 0) from /obj/BATCH_1/topnet1/output0
+2026-11-05 15:33:04 batch   [1/1] wi000: exported, 0.915 GHz, 41985 prims, W010 W005 (1.9 s)
+2026-11-05 15:33:04 batch parm 'batch' set to test_20261105_143302Z
+2026-11-05 15:33:04 batch N009 batch 'test_20261105_143302Z': 1 exported, 0 failed, written to /home/joris/Documents/archiGrad/HOUSIONNA/houdini_files/sionna/batches/test_20261105_143302Z
+2026-11-05 15:33:04 batch batch passed (0 errors, 0 warnings) after 2.1 s
+2026-11-05 15:33:07 watch batch batch_1_20261105_142754Z on local: wi000 solved, 1 of 2 finished
+2026-11-05 15:35:09 batch batch test_20261105_143302Z on local: not started
+2026-11-05 15:35:09 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-05 15:36:38 batch batch test_20261105_143302Z on local: not started
+2026-11-05 15:36:38 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-05 15:38:27 watch batch batch_1_20261105_143030Z on local: wi000 solved, 1 of 3 finished
+2026-11-05 15:41:52 watch batch batch_1_20261105_142754Z on local: wi001 solved, 2 of 2 finished
+2026-11-05 15:41:52 watch batch batch_1_20261105_142754Z on local: finished, 2 solved, 0 skipped, 0 failed (13.8 min), press batch fetch
+2026-11-05 15:42:37 batch work items 0 to 2: 3 work items
+2026-11-05 15:42:37 batch convert 2 work items to bgeo, the others are up to date or have no result
+2026-11-05 15:42:39 batch   [1/2] wi000 (1.5 s)
+2026-11-05 15:42:39 batch   [2/2] wi001 (0.1 s)
+2026-11-05 15:42:39 batch converted in 1.6 s
+2026-11-05 15:42:39 batch N011 batch 'batch_1_20261105_143030Z, work items 0 to 2': 1 solved, 0 failed, 2 without result
+2026-11-05 15:42:39 batch batch passed (0 errors, 0 warnings) after 1.6 s
+2026-11-05 15:42:59 node display flag set on /obj/BATCH_1/COMPUTE
+2026-11-05 15:42:59 batch work items 0 to 1: 2 work items
+2026-11-05 15:42:59 batch convert 0 work items to bgeo, the others are up to date or have no result
+2026-11-05 15:42:59 batch N011 batch 'batch_1_20261105_143030Z, work items 0 to 1': 1 solved, 0 failed, 1 without result
+2026-11-05 15:42:59 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-05 15:44:57 watch batch batch_1_20261105_143030Z on local: wi001 solved, 2 of 3 finished

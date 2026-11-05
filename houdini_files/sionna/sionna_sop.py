@@ -178,6 +178,7 @@ CODES = {
     "B007": "nothing to solve in batch '{name}'",
     "B008": "input did not cook: {err}",
     "B009": "batch_name '{name}' may only contain letters, digits, _ and -",
+    "B010": "no exported work items with index {start} to {end} in batch '{name}' (fetch_start, fetch_end)",
     "C001": "clear on '{target}' failed: {err}",
 }
 
@@ -1008,8 +1009,8 @@ def transfer(phase, src, dst, seconds, *extra):
     if not cmd:
         return 127, [RSYNC_HINT]
     wsl = cmd[0] == "wsl"
-    args = [*cmd, "-rlt" if wsl else "-a", *extra, "--out-format=%n %l", "-e", "ssh " + " ".join(SSH_OPTS),
-            "--exclude", "*.bgeo.sc", "--exclude", "solver.log", *(wsl_path(x) if wsl else x for x in (src, dst))]
+    args = [*cmd, "-rlt" if wsl else "-a", "--out-format=%n %l", "-e", "ssh " + " ".join(SSH_OPTS),
+            "--exclude", "*.bgeo.sc", "--exclude", "solver.log", *extra, *(wsl_path(x) if wsl else x for x in (src, dst))]
     code, lines = stream(args, seconds, line)
     say(phase, f"  {files} files, {size(total)} in {time.time() - t0:.1f} s")
     return code, lines
@@ -1638,6 +1639,25 @@ def batch_folder(node):
     return None, [("B003", {"name": f" named '{name}'" if parm_str(node, "batch", "") else ""})]
 
 
+def batch_menu():
+    root, hip = hou.expandString(OUT + "/batches"), hou.expandString("$HIPNAME")
+    rows = []
+    for d in os.listdir(root) if os.path.isdir(root) else []:
+        try:
+            with open(f"{root}/{d}/batch.json") as fh:
+                meta = json.load(fh)
+        except (OSError, ValueError):
+            continue
+        if os.path.splitext(os.path.basename(meta.get("hip", "")))[0] != hip:
+            continue
+        items = [k for k, e in meta.get("items", {}).items() if e.get("status") == "exported"]
+        solved = sum(os.path.isfile(f"{root}/{d}/{i}/done.json") for i in items)
+        fetched = sum(any(os.path.isfile(f"{root}/{d}/{i}/{k}.bgeo.sc") for k in KINDS) for i in items)
+        rows.append((d[-16:], d, f"{d}   {len(items)} items, {solved} solved, {fetched} fetched, "
+                                 f"{meta.get('solved_on', 'not solved')}"))
+    return [x for _, d, label in sorted(rows, reverse=True) for x in (d, label)]
+
+
 def batch_prefix(node):
     name = parm_str(node, "batch_name", "")
     if not re.fullmatch(r"[A-Za-z0-9_-]*", name):
@@ -1763,6 +1783,11 @@ def on_batch_solve():
     except FileNotFoundError as e:
         recs = [("S009", {"path": e.filename})]
     started = any(r[0] == "N010" for r in recs)
+    if started:
+        with open(folder + "/batch.json") as fh:
+            meta = json.load(fh)
+        meta["solved_on"] = host
+        write(folder + "/batch.json", json.dumps(meta, indent=2))
     if started or any(r[0] == "B004" for r in recs):
         watch(folder, name, host, remote_batch(node, folder) if host != "local" else None, started)
     report("batch", recs)
@@ -1938,9 +1963,18 @@ def start_remote(node, folder, name, count, seconds):
     return recs + [("N010", {"name": name, "target": host, "pid": r.stdout.strip(), "count": count})]
 
 
-def batch_counts(folder):
+def batch_host(node, folder):
+    try:
+        with open(folder + "/batch.json") as fh:
+            return json.load(fh).get("solved_on") or target(node)
+    except (OSError, ValueError):
+        return target(node)
+
+
+def batch_counts(folder, lo=0, hi=-1):
     with open(folder + "/batch.json") as fh:
-        items = sorted(k for k, e in json.load(fh)["items"].items() if e["status"] == "exported")
+        items = sorted(k for k, e in json.load(fh)["items"].items()
+                       if e["status"] == "exported" and e["index"] >= lo and (hi < 0 or e["index"] <= hi))
     solved = [i for i in items if os.path.isfile(f"{folder}/{i}/done.json")]
     failed = [i for i in items if os.path.isfile(f"{folder}/{i}/failed.json")]
     return items, solved, failed
@@ -1974,7 +2008,7 @@ def on_batch_status():
     if not folder:
         report("batch", recs)
         return
-    name, host = os.path.basename(folder), target(node)
+    name, host = os.path.basename(folder), batch_host(node, folder)
     try:
         if host == "local":
             status = read_status(folder)
@@ -2016,18 +2050,28 @@ def on_batch_fetch():
     if not folder:
         report("batch", recs)
         return
-    name, host = os.path.basename(folder), target(node)
+    name, host = os.path.basename(folder), batch_host(node, folder)
+    lo, hi = parm_int(node, "fetch_start", 0), parm_int(node, "fetch_end", -1)
+    whole = lo <= 0 and hi < 0
+    items, _, _ = batch_counts(folder, lo, hi)
+    if not items:
+        report("batch", [("B010", {"start": lo, "end": hi if hi >= 0 else "last", "name": name})])
+        return
+    if not whole:
+        say("batch", f"work items {lo} to {hi if hi >= 0 else 'last'}: {plural(len(items), 'work item')}")
     try:
         if host != "local":
             rdir = remote_batch(node, folder)
             say("batch", f"receive from {host}:{rdir}")
-            c, out = transfer("batch", f"{host}:{rdir}/", folder + "/", timeout(node),
-                              "--delete", "--exclude", "batch.pid")
+            extra = ["--delete", "--exclude", "batch.pid", "--exclude", "batch.json"]
+            if not whole:
+                extra += [a for i in items for a in ("--include", f"/{i}/***")] + ["--exclude", "/wi*"]
+            c, out = transfer("batch", f"{host}:{rdir}/", folder + "/", timeout(node), *extra)
             if c:
                 recs.append(("T004", {"target": host, "err": tail("\n".join(out), 300)}))
     except subprocess.TimeoutExpired:
         recs.append(("S004", {"seconds": timeout(node)}))
-    items, solved, failed = batch_counts(folder)
+    items, solved, failed = batch_counts(folder, lo, hi)
     todo = [i for i in items if stale_bgeo(f"{folder}/{i}")]
     say("batch", f"convert {plural(len(todo), 'work item')} to bgeo, the others are up to date or have no result")
     t0, bad = time.time(), 0
@@ -2048,8 +2092,8 @@ def on_batch_fetch():
         load_result(node, f"sionna_batch_{kind}", path, (6, -i), recs, missingframe="empty")
     if not node.parm("batch"):
         recs.append(("W009", {}))
-    recs.append(("N011", {"name": name, "done": len(solved), "failed": len(failed),
-                          "missing": len(items) - len(solved) - len(failed)}))
+    recs.append(("N011", {"name": name if whole else f"{name}, work items {lo} to {hi if hi >= 0 else 'last'}",
+                          "done": len(solved), "failed": len(failed), "missing": len(items) - len(solved) - len(failed)}))
     report("batch", recs)
 
 

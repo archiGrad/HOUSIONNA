@@ -1,5 +1,4 @@
 # Houdini to Sionna RT
- 
 
 Run [Sionna RT](https://nvlabs.github.io/sionna/rt/) radio propagation simulations from a Houdini scene, compute them on the Techtile Spark GPU server, and bring the results back into Houdini as geometry with attributes.
 
@@ -196,7 +195,21 @@ For many scene variations from a TOP network (e.g. a Wedge TOP), next to the Nul
 
 The TOP node is the one with the display flag inside `../topnet1`; another can be set with a string parm `top_node`: a TOP network (its display node is used) or a TOP node, absolute or relative to the Null.
 
-Add a string parm `batch` to the Null. Batch export writes the new batch name into it, and all batch buttons and the `sionna_batch_*` File SOPs use that batch. To go back to an older batch, type its folder name. Without the parm the buttons use the latest batch, and the File SOPs find nothing (`W009`).
+Add a string parm `batch` to the Null. Batch export writes the new batch name into it, and all batch buttons and the `sionna_batch_*` File SOPs use that batch. Without the parm the buttons use the latest batch, and the File SOPs find nothing (`W009`).
+
+Give `batch` a menu to pick a batch: on its Menu tab "Use Menu", Replace (field and menu), Menu Script, Python:
+
+```python
+g = {}
+exec(open(hou.expandString('$HIP/sionna/sionna_sop.py')).read(), g)
+return g["batch_menu"]()
+```
+
+It lists the batch folders of this hip file on this machine, newest first, e.g. `pick_20261105_134219Z   6 items, 6 solved, 6 fetched, spark`: exported work items, work items with a result here (as of the last fetch for a remote batch), work items converted for the File SOPs, and where the batch was solved. Picking one switches the File SOPs at once to what was fetched of it; batch fetch updates it. Opening the menu never contacts a server.
+
+Batch solve records where it started the batch (`solved_on` in `batch.json`). Batch status and batch fetch use that machine, also when `target` has been changed since; batches solved before this have no record and use `target`.
+
+To fetch part of a batch, set the Integer parms `fetch_start` and `fetch_end` (work item indices, both included; `fetch_end` -1 = up to the last). The defaults 0 and -1, or no parms, fetch everything. Only those work items are copied and converted; the others stay as they are. They are separate from `batch_start` and `batch_end`, which set what batch export includes.
 
 Fetch makes the local batch folder a copy of the remote one: a result that no longer exists on the target (work item solved again and failed, or being solved) is removed locally too, with its `.bgeo.sc` files.
 
@@ -374,7 +387,8 @@ Defaults, each overridable by a parm of the same name on the Null:
 | `python_exe` | `$HIP/../venv/bin/python3` | Python for the local target |
 | `batch_start`, `batch_end` | all | Range of work item indices for batch export |
 | `top_node` | display node in `../topnet1` | TOP node whose work items are exported |
-| `batch` | set by batch export | Batch folder name used by the batch buttons and the `sionna_batch_*` File SOPs |
+| `batch` | set by batch export | Batch folder name used by the batch buttons and the `sionna_batch_*` File SOPs; with a menu to pick one, see Batches |
+| `fetch_start`, `fetch_end` | 0, -1 (all) | Range of work item indices that batch fetch copies and converts |
 | `batch_name` | empty | Session name in front of the batch timestamp; also selects what batch_clear deletes |
 
 ### Presets
@@ -561,6 +575,7 @@ Codes starting with N are information, W warnings (do not block), all others are
 | B002 | no work items in range | Check `batch_start` and `batch_end` against the work item indices |
 | B003 | no batch found | Batch export first, or check the `batch` parm |
 | B004 | batch already running | Wait for it, or stop it on the target |
+| B010 | no work items in the fetch range | Check `fetch_start` and `fetch_end` against the work item indices of the batch |
 | B009 | invalid `batch_name` | Use only letters, digits, `_` and `-` |
 | C001 | clear failed on the target | The target was reached but listing or deleting failed; the error is shown |
 | B007 | nothing to solve | Every work item failed at export or at the checks before sending (`S008`, `S010`) |
