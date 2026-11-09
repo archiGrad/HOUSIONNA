@@ -1,0 +1,222 @@
+batch: 20 work items, pid 22980
+[1/20] wi000
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 18 tx, 1 rx (0.2 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 42
+paths: 18 tx x 1 rx, 3e+06 samples per tx
+paths: 10018 valid paths over 18 links (1.5 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_result.npz (0.64 MB)
+radio map 'measure_floor': 58826 cells, 1e+07 samples per tx
+radio map 'measure_floor': 58135 of 58826 cells reached (4.6 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_radiomap.npz (3.75 MB)
+[2/20] wi001
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 18 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 42
+paths: 18 tx x 1 rx, 3e+06 samples per tx
+paths: 6326 valid paths over 18 links (1.5 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_result.npz (0.48 MB)
+radio map 'measure_floor': 58826 cells, 1e+07 samples per tx
+radio map 'measure_floor': 58091 of 58826 cells reached (3.2 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_radiomap.npz (3.75 MB)
+[3/20] wi002
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 18 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 42
+paths: 18 tx x 1 rx, 3e+06 samples per tx
+paths: 4047 valid paths over 18 links (1.7 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_result.npz (0.34 MB)
+radio map 'measure_floor': 58826 cells, 1e+07 samples per tx
+radio map 'measure_floor': 58058 of 58826 cells reached (2.8 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_radiomap.npz (3.75 MB)
+[4/20] wi003
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 18 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 42
+paths: 18 tx x 1 rx, 3e+06 samples per tx
+paths: 2583 valid paths over 18 links (1.7 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_result.npz (0.25 MB)
+radio map 'measure_floor': 58826 cells, 1e+07 samples per tx
+radio map 'measure_floor': 58004 of 58826 cells reached (2.1 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_radiomap.npz (3.74 MB)
+[5/20] wi004
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 18 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 42
+paths: 18 tx x 1 rx, 3e+06 samples per tx
+paths: 2659 valid paths over 18 links (1.6 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_result.npz (0.27 MB)
+radio map 'measure_floor': 58826 cells, 1e+07 samples per tx
+radio map 'measure_floor': 57846 of 58826 cells reached (1.5 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_radiomap.npz (3.47 MB)
+[6/20] wi005
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 18 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 42
+paths: 18 tx x 1 rx, 3e+06 samples per tx
+paths: 9876 valid paths over 18 links (1.4 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_result.npz (0.66 MB)
+radio map 'measure_floor': 58826 cells, 1e+07 samples per tx
+radio map 'measure_floor': 58117 of 58826 cells reached (3.3 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_radiomap.npz (3.76 MB)
+[7/20] wi006
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 18 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 42
+paths: 18 tx x 1 rx, 3e+06 samples per tx
+paths: 8030 valid paths over 18 links (1.5 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_result.npz (0.59 MB)
+radio map 'measure_floor': 58826 cells, 1e+07 samples per tx
+radio map 'measure_floor': 58105 of 58826 cells reached (2.8 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_radiomap.npz (3.75 MB)
+[8/20] wi007
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 18 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 42
+paths: 18 tx x 1 rx, 3e+06 samples per tx
+paths: 5336 valid paths over 18 links (1.6 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_result.npz (0.51 MB)
+radio map 'measure_floor': 58826 cells, 1e+07 samples per tx
+radio map 'measure_floor': 58037 of 58826 cells reached (2.2 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_radiomap.npz (3.74 MB)
+[9/20] wi008
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 18 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 42
+paths: 18 tx x 1 rx, 3e+06 samples per tx
+paths: 4542 valid paths over 18 links (1.7 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_result.npz (0.42 MB)
+radio map 'measure_floor': 58826 cells, 1e+07 samples per tx
+radio map 'measure_floor': 57956 of 58826 cells reached (2.0 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_radiomap.npz (3.71 MB)
+[10/20] wi009
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 18 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 42
+paths: 18 tx x 1 rx, 3e+06 samples per tx
+paths: 4066 valid paths over 18 links (1.7 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_result.npz (0.37 MB)
+radio map 'measure_floor': 58826 cells, 1e+07 samples per tx
+radio map 'measure_floor': 57955 of 58826 cells reached (1.7 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_radiomap.npz (3.56 MB)
+[11/20] wi010
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 18 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 42
+paths: 18 tx x 1 rx, 3e+06 samples per tx
+paths: 9595 valid paths over 18 links (1.8 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_result.npz (0.62 MB)
+radio map 'measure_floor': 58826 cells, 1e+07 samples per tx
+radio map 'measure_floor': 58130 of 58826 cells reached (3.3 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_radiomap.npz (3.75 MB)
+[12/20] wi011
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 18 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 42
+paths: 18 tx x 1 rx, 3e+06 samples per tx
+paths: 7952 valid paths over 18 links (1.5 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_result.npz (0.55 MB)
+radio map 'measure_floor': 58826 cells, 1e+07 samples per tx
+radio map 'measure_floor': 58092 of 58826 cells reached (3.1 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_radiomap.npz (3.74 MB)
+[13/20] wi012
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 18 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 42
+paths: 18 tx x 1 rx, 3e+06 samples per tx
+paths: 7628 valid paths over 18 links (1.6 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_result.npz (0.51 MB)
+radio map 'measure_floor': 58826 cells, 1e+07 samples per tx
+radio map 'measure_floor': 58093 of 58826 cells reached (3.1 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_radiomap.npz (3.73 MB)
+[14/20] wi013
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 18 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 42
+paths: 18 tx x 1 rx, 3e+06 samples per tx
+paths: 7661 valid paths over 18 links (1.6 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_result.npz (0.49 MB)
+radio map 'measure_floor': 58826 cells, 1e+07 samples per tx
+radio map 'measure_floor': 58111 of 58826 cells reached (3.2 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_radiomap.npz (3.74 MB)
+[15/20] wi014
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 18 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 42
+paths: 18 tx x 1 rx, 3e+06 samples per tx
+paths: 6724 valid paths over 18 links (1.9 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_result.npz (0.44 MB)
+radio map 'measure_floor': 58826 cells, 1e+07 samples per tx
+radio map 'measure_floor': 58122 of 58826 cells reached (3.0 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_radiomap.npz (3.73 MB)
+[16/20] wi015
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 18 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 42
+paths: 18 tx x 1 rx, 3e+06 samples per tx
+paths: 10188 valid paths over 18 links (1.3 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_result.npz (0.65 MB)
+radio map 'measure_floor': 58826 cells, 1e+07 samples per tx
+radio map 'measure_floor': 58147 of 58826 cells reached (3.4 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_radiomap.npz (3.76 MB)
+[17/20] wi016
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 18 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 42
+paths: 18 tx x 1 rx, 3e+06 samples per tx
+paths: 5944 valid paths over 18 links (1.5 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_result.npz (0.43 MB)
+radio map 'measure_floor': 58826 cells, 1e+07 samples per tx
+radio map 'measure_floor': 58101 of 58826 cells reached (3.2 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_radiomap.npz (3.75 MB)
+[18/20] wi017
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 18 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 42
+paths: 18 tx x 1 rx, 3e+06 samples per tx
+paths: 3121 valid paths over 18 links (1.7 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_result.npz (0.26 MB)
+radio map 'measure_floor': 58826 cells, 1e+07 samples per tx
+radio map 'measure_floor': 58058 of 58826 cells reached (2.5 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_radiomap.npz (3.74 MB)
+[19/20] wi018
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 18 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 42
+paths: 18 tx x 1 rx, 3e+06 samples per tx
+paths: 1716 valid paths over 18 links (1.8 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_result.npz (0.17 MB)
+radio map 'measure_floor': 58826 cells, 1e+07 samples per tx
+radio map 'measure_floor': 57940 of 58826 cells reached (1.7 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_radiomap.npz (3.58 MB)
+[20/20] wi019
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 18 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 42
+paths: 18 tx x 1 rx, 3e+06 samples per tx
+paths: 1149 valid paths over 18 links (1.7 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_result.npz (0.11 MB)
+radio map 'measure_floor': 58826 cells, 1e+07 samples per tx
+radio map 'measure_floor': 57853 of 58826 cells reached (1.5 s)
+wrote SIONNA_HOUDINI_BATCH_01-v2_radiomap.npz (2.77 MB)
+batch: finished, 20 solved, 0 skipped, 0 failed

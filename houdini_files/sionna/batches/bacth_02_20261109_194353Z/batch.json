@@ -1,0 +1,244 @@
+{
+  "created_utc": "bacth_02_20261109_194353Z",
+  "hip": "C:/Users/CreativeMakers/Downloads/HOUSIONNA_new/HOUSIONNA/houdini_files/SIONNA_HOUDINI_BATCH_01-v2.hipnc",
+  "top_node": "/obj/BATCH_2/topnet1/output0",
+  "range": [
+    0,
+    19
+  ],
+  "items": {
+    "wi000": {
+      "index": 0,
+      "id": 71,
+      "name": "output0_71",
+      "frequency": 868000000.0,
+      "settings": {},
+      "status": "exported",
+      "codes": [
+        "W010",
+        "W005"
+      ]
+    },
+    "wi001": {
+      "index": 1,
+      "id": 72,
+      "name": "output0_72",
+      "frequency": 868000000.0,
+      "settings": {},
+      "status": "exported",
+      "codes": [
+        "W010",
+        "W005"
+      ]
+    },
+    "wi002": {
+      "index": 2,
+      "id": 73,
+      "name": "output0_73",
+      "frequency": 868000000.0,
+      "settings": {},
+      "status": "exported",
+      "codes": [
+        "W010",
+        "W005"
+      ]
+    },
+    "wi003": {
+      "index": 3,
+      "id": 74,
+      "name": "output0_74",
+      "frequency": 868000000.0,
+      "settings": {},
+      "status": "exported",
+      "codes": [
+        "W010",
+        "W005"
+      ]
+    },
+    "wi004": {
+      "index": 4,
+      "id": 75,
+      "name": "output0_75",
+      "frequency": 868000000.0,
+      "settings": {},
+      "status": "exported",
+      "codes": [
+        "W010",
+        "W005"
+      ]
+    },
+    "wi005": {
+      "index": 5,
+      "id": 76,
+      "name": "output0_76",
+      "frequency": 915000000.0,
+      "settings": {},
+      "status": "exported",
+      "codes": [
+        "W010",
+        "W005"
+      ]
+    },
+    "wi006": {
+      "index": 6,
+      "id": 77,
+      "name": "output0_77",
+      "frequency": 915000000.0,
+      "settings": {},
+      "status": "exported",
+      "codes": [
+        "W010",
+        "W005"
+      ]
+    },
+    "wi007": {
+      "index": 7,
+      "id": 78,
+      "name": "output0_78",
+      "frequency": 915000000.0,
+      "settings": {},
+      "status": "exported",
+      "codes": [
+        "W010",
+        "W005"
+      ]
+    },
+    "wi008": {
+      "index": 8,
+      "id": 79,
+      "name": "output0_79",
+      "frequency": 915000000.0,
+      "settings": {},
+      "status": "exported",
+      "codes": [
+        "W010",
+        "W005"
+      ]
+    },
+    "wi009": {
+      "index": 9,
+      "id": 80,
+      "name": "output0_80",
+      "frequency": 915000000.0,
+      "settings": {},
+      "status": "exported",
+      "codes": [
+        "W010",
+        "W005"
+      ]
+    },
+    "wi010": {
+      "index": 10,
+      "id": 81,
+      "name": "output0_81",
+      "frequency": 2437000000.0,
+      "settings": {},
+      "status": "exported",
+      "codes": [
+        "W005"
+      ]
+    },
+    "wi011": {
+      "index": 11,
+      "id": 82,
+      "name": "output0_82",
+      "frequency": 2437000000.0,
+      "settings": {},
+      "status": "exported",
+      "codes": [
+        "W005"
+      ]
+    },
+    "wi012": {
+      "index": 12,
+      "id": 83,
+      "name": "output0_83",
+      "frequency": 2437000000.0,
+      "settings": {},
+      "status": "exported",
+      "codes": [
+        "W005"
+      ]
+    },
+    "wi013": {
+      "index": 13,
+      "id": 84,
+      "name": "output0_84",
+      "frequency": 2437000000.0,
+      "settings": {},
+      "status": "exported",
+      "codes": [
+        "W005"
+      ]
+    },
+    "wi014": {
+      "index": 14,
+      "id": 85,
+      "name": "output0_85",
+      "frequency": 2437000000.0,
+      "settings": {},
+      "status": "exported",
+      "codes": [
+        "W005"
+      ]
+    },
+    "wi015": {
+      "index": 15,
+      "id": 86,
+      "name": "output0_86",
+      "frequency": 5180000000.0,
+      "settings": {},
+      "status": "exported",
+      "codes": [
+        "W005"
+      ]
+    },
+    "wi016": {
+      "index": 16,
+      "id": 87,
+      "name": "output0_87",
+      "frequency": 5180000000.0,
+      "settings": {},
+      "status": "exported",
+      "codes": [
+        "W005"
+      ]
+    },
+    "wi017": {
+      "index": 17,
+      "id": 88,
+      "name": "output0_88",
+      "frequency": 5180000000.0,
+      "settings": {},
+      "status": "exported",
+      "codes": [
+        "W005"
+      ]
+    },
+    "wi018": {
+      "index": 18,
+      "id": 89,
+      "name": "output0_89",
+      "frequency": 5180000000.0,
+      "settings": {},
+      "status": "exported",
+      "codes": [
+        "W005"
+      ]
+    },
+    "wi019": {
+      "index": 19,
+      "id": 90,
+      "name": "output0_90",
+      "frequency": 5180000000.0,
+      "settings": {},
+      "status": "exported",
+      "codes": [
+        "W005"
+      ]
+    }
+  },
+  "commit": "da8a1e80f781709d325e1a11448d92ec23decb9f",
+  "dirty": true,
+  "solved_on": "local"
+}

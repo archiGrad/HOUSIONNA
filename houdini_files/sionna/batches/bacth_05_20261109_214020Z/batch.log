@@ -1,0 +1,236 @@
+batch: 26 work items, pid 24084
+[1/26] wi000
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 2 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 0
+paths: 2 tx x 1 rx, 3e+06 samples per tx
+paths: 1031 valid paths over 2 links (0.3 s)
+wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (0.08 MB)
+radio map: skipped, no measurement surface
+[2/26] wi001
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 4 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 1
+paths: 4 tx x 1 rx, 3e+06 samples per tx
+paths: 1892 valid paths over 4 links (0.4 s)
+wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (0.14 MB)
+radio map: skipped, no measurement surface
+[3/26] wi002
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 5 tx, 1 rx (0.4 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 2
+paths: 5 tx x 1 rx, 3e+06 samples per tx
+paths: 2744 valid paths over 5 links (0.5 s)
+wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (0.21 MB)
+radio map: skipped, no measurement surface
+[4/26] wi003
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 7 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 3
+paths: 7 tx x 1 rx, 3e+06 samples per tx
+paths: 3704 valid paths over 7 links (0.9 s)
+wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (0.27 MB)
+radio map: skipped, no measurement surface
+[5/26] wi004
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 15 tx, 2 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 4
+paths: 15 tx x 2 rx, 3e+06 samples per tx
+paths: 6708 valid paths over 30 links (1.2 s)
+wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (0.44 MB)
+radio map: skipped, no measurement surface
+[6/26] wi005
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 31 tx, 2 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 5
+paths: 31 tx x 2 rx, 3e+06 samples per tx
+paths: 12506 valid paths over 62 links (2.5 s)
+wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (0.87 MB)
+radio map: skipped, no measurement surface
+[7/26] wi006
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 47 tx, 2 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 6
+paths: 47 tx x 2 rx, 3e+06 samples per tx
+paths: 18480 valid paths over 94 links (3.9 s)
+wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (1.31 MB)
+radio map: skipped, no measurement surface
+[8/26] wi007
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 62 tx, 2 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 7
+paths: 62 tx x 2 rx, 3e+06 samples per tx
+paths: 23386 valid paths over 124 links (5.7 s)
+wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (1.71 MB)
+radio map: skipped, no measurement surface
+[9/26] wi008
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 4 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 8
+paths: 4 tx x 1 rx, 3e+06 samples per tx
+paths: 1756 valid paths over 4 links (0.4 s)
+wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (0.12 MB)
+radio map: skipped, no measurement surface
+[10/26] wi009
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 7 tx, 1 rx (0.5 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 9
+paths: 7 tx x 1 rx, 3e+06 samples per tx
+paths: 3455 valid paths over 7 links (0.7 s)
+wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (0.25 MB)
+radio map: skipped, no measurement surface
+[11/26] wi010
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 10 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 10
+paths: 10 tx x 1 rx, 3e+06 samples per tx
+paths: 4961 valid paths over 10 links (0.9 s)
+wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (0.36 MB)
+radio map: skipped, no measurement surface
+[12/26] wi011
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 15 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 11
+paths: 15 tx x 1 rx, 3e+06 samples per tx
+paths: 6985 valid paths over 15 links (1.4 s)
+wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (0.51 MB)
+radio map: skipped, no measurement surface
+[13/26] wi012
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 31 tx, 3 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 12
+paths: 31 tx x 3 rx, 3e+06 samples per tx
+paths: 13671 valid paths over 93 links (3.6 s)
+wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (0.92 MB)
+radio map: skipped, no measurement surface
+[14/26] wi013
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 62 tx, 3 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 13
+paths: 62 tx x 3 rx, 3e+06 samples per tx
+paths: 22838 valid paths over 186 links (7.0 s)
+wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (1.59 MB)
+radio map: skipped, no measurement surface
+[15/26] wi014
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 94 tx, 3 rx (0.5 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 14
+paths: 94 tx x 3 rx, 3e+06 samples per tx
+paths: 33266 valid paths over 282 links (10.4 s)
+wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (2.50 MB)
+radio map: skipped, no measurement surface
+[16/26] wi015
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 123 tx, 3 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 15
+paths: 123 tx x 3 rx, 3e+06 samples per tx
+paths: 42199 valid paths over 369 links (14.1 s)
+wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (3.30 MB)
+radio map: skipped, no measurement surface
+[17/26] wi016
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 5 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 16
+paths: 5 tx x 1 rx, 3e+06 samples per tx
+paths: 2393 valid paths over 5 links (0.5 s)
+wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (0.16 MB)
+radio map: skipped, no measurement surface
+[18/26] wi017
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 10 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 17
+paths: 10 tx x 1 rx, 3e+06 samples per tx
+paths: 4603 valid paths over 10 links (1.3 s)
+wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (0.32 MB)
+radio map: skipped, no measurement surface
+[19/26] wi018
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 18 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 18
+paths: 18 tx x 1 rx, 3e+06 samples per tx
+paths: 7921 valid paths over 18 links (1.5 s)
+wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (0.60 MB)
+radio map: skipped, no measurement surface
+[20/26] wi019
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 22 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 19
+paths: 22 tx x 1 rx, 3e+06 samples per tx
+paths: 9874 valid paths over 22 links (1.9 s)
+wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (0.73 MB)
+radio map: skipped, no measurement surface
+[21/26] wi020
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 47 tx, 4 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 20
+paths: 47 tx x 4 rx, 3e+06 samples per tx
+paths: 20242 valid paths over 188 links (5.5 s)
+wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (1.37 MB)
+radio map: skipped, no measurement surface
+[22/26] wi021
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 94 tx, 4 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 21
+paths: 94 tx x 4 rx, 3e+06 samples per tx
+paths: 34161 valid paths over 376 links (11.1 s)
+wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (2.46 MB)
+radio map: skipped, no measurement surface
+[23/26] wi022
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 140 tx, 4 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 22
+paths: 140 tx x 4 rx, 3e+06 samples per tx
+paths: 47454 valid paths over 560 links (16.7 s)
+wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (3.65 MB)
+radio map: skipped, no measurement surface
+[24/26] wi023
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 9 objects, 8 materials, 188 tx, 4 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 23
+paths: 188 tx x 4 rx, 3e+06 samples per tx
+paths: 62173 valid paths over 752 links (23.9 s)
+wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (4.76 MB)
+radio map: skipped, no measurement surface
+[25/26] wi024
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 6 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 24
+paths: 6 tx x 1 rx, 3e+06 samples per tx
+paths: 1782 valid paths over 6 links (2.4 s)
+wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (0.13 MB)
+radio map: skipped, no measurement surface
+[26/26] wi025
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 8 tx, 1 rx (0.1 s)
+settings: 0.915 GHz, max_depth 8, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 25
+paths: 8 tx x 1 rx, 3e+06 samples per tx
+paths: 2389 valid paths over 8 links (0.8 s)
+wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (0.17 MB)
+radio map: skipped, no measurement surface
+batch: finished, 26 solved, 0 skipped, 0 failed

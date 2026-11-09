@@ -1,0 +1,21 @@
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 10 objects, 8 materials, 6952 tx, 3 rx (0.1 s)
+settings: 2.437 GHz, max_depth 3, los, specular_reflection, refraction
+paths: 6952 tx x 3 rx, 1e+06 samples per tx
+Traceback (most recent call last):
+  File "/home/dramco_spark/Documents/HyROPA/runs/SIONNA_HOUDINI_ECA_batch_2/20261030_040410Z/sionna_run.py", line 304, in <module>
+    {"dump": dump, "solve": solve, "batch": batch}[sys.argv[1]](sys.argv[2])
+  File "/home/dramco_spark/Documents/HyROPA/runs/SIONNA_HOUDINI_ECA_batch_2/20261030_040410Z/sionna_run.py", line 159, in solve
+    trace(folder, scene, devs, s, common)
+  File "/home/dramco_spark/Documents/HyROPA/runs/SIONNA_HOUDINI_ECA_batch_2/20261030_040410Z/sionna_run.py", line 176, in trace
+    paths = PathSolver()(
+            ^^^^^^^^^^^^^
+  File "/home/dramco_spark/Documents/HyROPA/venv/lib/python3.12/site-packages/sionna/rt/path_solvers/path_solver.py", line 260, in __call__
+    paths_buffer = self._candidate_generator(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dramco_spark/Documents/HyROPA/venv/lib/python3.12/site-packages/sionna/rt/path_solvers/sb_candidate_generator.py", line 115, in __call__
+    self._sampler.seed(seed, num_samples)
+TypeError: seed(): incompatible function arguments. The following argument types are supported:
+    1. seed(self, seed: drjit.cuda.ad.UInt, wavefront_size: int = 4294967295) -> None
+
+Invoked with types: mitsuba.Sampler, int, int
