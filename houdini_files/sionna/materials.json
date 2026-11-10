@@ -823,8 +823,8 @@
     "kind": "vegetation",
     "moisture": 80.0,
     "thickness": 0.0003,
-    "source": "Ulaby and El-Rayes 1987, dual-dispersion model, 0.2 to 20 GHz",
-    "status": "model coefficients entered from memory, verify against the paper",
+    "source": "Ulaby and El-Rayes 1987, dual-dispersion model, 0.2 to 20 GHz; coefficients checked against the reproduction in Peden et al. 2021, J. Electromagn. Anal. Appl. 13, eqs 10-18; sigma 1.27 S/m = salinity 8.5 per mille",
+    "status": "model not validated for these crops; thickness 0.3 mm assumed, no source",
     "range_ghz": [
       0.2,
       20
@@ -834,8 +834,8 @@
     "kind": "vegetation",
     "moisture": 80.0,
     "thickness": 0.01,
-    "source": "Ulaby and El-Rayes 1987, dual-dispersion model, 0.2 to 20 GHz",
-    "status": "model coefficients entered from memory, verify against the paper",
+    "source": "Ulaby and El-Rayes 1987, dual-dispersion model, 0.2 to 20 GHz; coefficients checked against the reproduction in Peden et al. 2021, J. Electromagn. Anal. Appl. 13, eqs 10-18; sigma 1.27 S/m = salinity 8.5 per mille",
+    "status": "model not validated for these crops; thickness 1 cm assumed, no source",
     "range_ghz": [
       0.2,
       20

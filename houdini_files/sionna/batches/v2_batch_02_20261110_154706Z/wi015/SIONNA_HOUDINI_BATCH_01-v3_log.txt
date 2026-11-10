@@ -1,0 +1,3 @@
+N001 scene size: x 5.15 m, y 5.15 m, z 4.03 m (sionna axes, z up)
+W005 material 'leaf' is not confirmed: model not validated for these crops; thickness 0.3 mm assumed, no source
+N002 exported to C:/Users/CreativeMakers/Downloads/HOUSIONNA_new/HOUSIONNA/houdini_files/sionna/batches/v2_batch_02_20261110_154706Z/wi015

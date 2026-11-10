@@ -51945,3 +51945,147 @@
 2026-11-09 22:45:18 batch converted in 3.0 s
 2026-11-09 22:45:18 batch N011 batch 'bacth_05_20261109_214020Z, work items 0 to 25': 26 solved, 0 failed, 0 without result
 2026-11-09 22:45:18 batch batch passed (0 errors, 0 warnings) after 3.0 s
+2026-11-10 13:55:49 batch batch V2_batch_02_20261110_125549Z: 20 work items (0 to 19) from /obj/BATCH_1/topnet1/output0
+2026-11-10 13:55:50 batch   [1/20] wi000: exported, 0.915 GHz, 68136 prims, W010 W005 (0.5 s)
+2026-11-10 13:55:50 batch   [2/20] wi001: exported, 0.915 GHz, 78182 prims, W010 W005 (0.5 s)
+2026-11-10 13:55:52 batch   [3/20] wi002: exported, 0.915 GHz, 96508 prims, W010 W005 (1.5 s)
+2026-11-10 13:55:55 batch   [4/20] wi003: exported, 0.915 GHz, 139347 prims, W010 W005 (3.0 s)
+2026-11-10 13:56:01 batch   [5/20] wi004: exported, 0.915 GHz, 210426 prims, W010 W005 (5.7 s)
+2026-11-10 13:56:01 batch   [6/20] wi005: exported, 0.915 GHz, 66878 prims, W010 W005 (0.4 s)
+2026-11-10 13:56:01 batch   [7/20] wi006: exported, 0.915 GHz, 70950 prims, W010 W005 (0.4 s)
+2026-11-10 13:56:03 batch   [8/20] wi007: exported, 0.915 GHz, 87894 prims, W010 W005 (1.2 s)
+2026-11-10 13:56:06 batch   [9/20] wi008: exported, 0.915 GHz, 148814 prims, W010 W005 (3.4 s)
+2026-11-10 13:56:11 batch   [10/20] wi009: exported, 0.915 GHz, 177166 prims, W010 W005 (5.0 s)
+2026-11-10 13:56:11 batch   [11/20] wi010: exported, 0.915 GHz, 69768 prims, W010 W005 (0.4 s)
+2026-11-10 13:56:12 batch   [12/20] wi011: exported, 0.915 GHz, 76988 prims, W010 W005 (0.5 s)
+2026-11-10 13:56:13 batch   [13/20] wi012: exported, 0.915 GHz, 86562 prims, W010 W005 (0.8 s)
+2026-11-10 13:56:14 batch   [14/20] wi013: exported, 0.915 GHz, 103118 prims, W010 W005 (1.3 s)
+2026-11-10 13:56:17 batch   [15/20] wi014: exported, 0.915 GHz, 148978 prims, W010 W005 (3.1 s)
+2026-11-10 13:56:18 batch   [16/20] wi015: exported, 0.915 GHz, 67372 prims, W010 W005 (0.4 s)
+2026-11-10 13:56:19 batch   [17/20] wi016: exported, 0.915 GHz, 95436 prims, W010 W005 (1.1 s)
+2026-11-10 13:56:22 batch   [18/20] wi017: exported, 0.915 GHz, 150286 prims, W010 W005 (3.5 s)
+2026-11-10 13:56:31 batch   [19/20] wi018: exported, 0.915 GHz, 303568 prims, W010 W005 (8.9 s)
+2026-11-10 13:56:51 batch   [20/20] wi019: exported, 0.915 GHz, 578864 prims, W010 W005 (19.8 s)
+2026-11-10 13:56:51 batch parm 'batch' set to V2_batch_02_20261110_125549Z
+2026-11-10 13:56:51 batch N009 batch 'V2_batch_02_20261110_125549Z': 20 exported, 0 failed, written to C:/Users/CreativeMakers/Downloads/HOUSIONNA_new/HOUSIONNA/houdini_files/sionna/batches/V2_batch_02_20261110_125549Z
+2026-11-10 13:56:51 batch batch passed (0 errors, 0 warnings) after 61.6 s
+2026-11-10 13:56:56 batch batch V2_batch_02_20261110_125549Z: 20 work items queued, 20 of 20 exported, at 0.915 GHz (frequency as exported per work item)
+2026-11-10 13:56:56 batch S001 python executable not found 'C:/Users/CreativeMakers/Downloads/HOUSIONNA_new/HOUSIONNA/houdini_files/../venv/Scripts/python.exe'
+2026-11-10 13:56:56 batch batch FAILED (1 error, 0 warnings) after 0.0 s
+2026-11-10 14:19:36 batch batch V2_batch_02_20261110_125549Z: 20 work items queued, 20 of 20 exported, at 0.915 GHz (frequency as exported per work item)
+2026-11-10 14:19:36 batch watching batch V2_batch_02_20261110_125549Z on local every 15 s, a line follows each finished work item
+2026-11-10 14:19:36 batch N010 batch 'V2_batch_02_20261110_125549Z' started on 'local' (pid 14616): 20 work items queued, finished ones are skipped
+2026-11-10 14:19:36 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-10 14:19:51 watch batch V2_batch_02_20261110_125549Z on local: wi000 solved, 1 of 20 finished
+2026-11-10 14:20:06 watch batch V2_batch_02_20261110_125549Z on local: wi001, wi002, wi003 solved, 4 of 20 finished
+2026-11-10 14:20:21 watch batch V2_batch_02_20261110_125549Z on local: wi004, wi005 solved, 6 of 20 finished
+2026-11-10 14:20:36 watch batch V2_batch_02_20261110_125549Z on local: wi006, wi007, wi008 solved, 9 of 20 finished
+2026-11-10 14:20:51 watch batch V2_batch_02_20261110_125549Z on local: wi009, wi010, wi011 solved, 12 of 20 finished
+2026-11-10 14:21:06 watch batch V2_batch_02_20261110_125549Z on local: wi012, wi013 solved, 14 of 20 finished
+2026-11-10 14:21:21 watch batch V2_batch_02_20261110_125549Z on local: wi014, wi015, wi016 solved, 17 of 20 finished
+2026-11-10 14:21:37 watch batch V2_batch_02_20261110_125549Z on local: wi017, wi018, wi019 solved, 20 of 20 finished
+2026-11-10 14:21:37 watch batch V2_batch_02_20261110_125549Z on local: finished, 20 solved, 0 skipped, 0 failed (2.0 min), press batch fetch
+2026-11-10 14:27:56 batch batch V2_batch_02_20261110_125549Z on local: finished, 20 of 20 done (0 skipped as already solved), 0 failed
+2026-11-10 14:27:56 batch   5.94 s per work item
+2026-11-10 14:27:56 batch   log | wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (0.11 MB)
+2026-11-10 14:27:56 batch   log | radio map 'measure_floor': 58826 cells, 1e+07 samples per tx
+2026-11-10 14:27:56 batch   log | radio map 'measure_floor': 57853 of 58826 cells reached (1.5 s)
+2026-11-10 14:27:56 batch   log | wrote SIONNA_HOUDINI_BATCH_01-v3_radiomap.npz (2.77 MB)
+2026-11-10 14:27:56 batch   log | batch: finished, 20 solved, 0 skipped, 0 failed
+2026-11-10 14:27:56 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-10 14:27:58 batch work items 0 to 19: 20 work items
+2026-11-10 14:27:58 batch convert 20 work items to bgeo, the others are up to date or have no result
+2026-11-10 14:27:59 batch   [1/20] wi000 (0.4 s)
+2026-11-10 14:27:59 batch   [2/20] wi001 (0.5 s)
+2026-11-10 14:27:59 batch   [3/20] wi002 (0.4 s)
+2026-11-10 14:28:00 batch   [4/20] wi003 (0.4 s)
+2026-11-10 14:28:00 batch   [5/20] wi004 (0.4 s)
+2026-11-10 14:28:01 batch   [6/20] wi005 (0.4 s)
+2026-11-10 14:28:01 batch   [7/20] wi006 (0.4 s)
+2026-11-10 14:28:01 batch   [8/20] wi007 (0.4 s)
+2026-11-10 14:28:02 batch   [9/20] wi008 (0.4 s)
+2026-11-10 14:28:02 batch   [10/20] wi009 (0.4 s)
+2026-11-10 14:28:03 batch   [11/20] wi010 (0.4 s)
+2026-11-10 14:28:03 batch   [12/20] wi011 (0.4 s)
+2026-11-10 14:28:03 batch   [13/20] wi012 (0.4 s)
+2026-11-10 14:28:04 batch   [14/20] wi013 (0.5 s)
+2026-11-10 14:28:04 batch   [15/20] wi014 (0.4 s)
+2026-11-10 14:28:05 batch   [16/20] wi015 (0.4 s)
+2026-11-10 14:28:05 batch   [17/20] wi016 (0.4 s)
+2026-11-10 14:28:05 batch   [18/20] wi017 (0.4 s)
+2026-11-10 14:28:06 batch   [19/20] wi018 (0.4 s)
+2026-11-10 14:28:06 batch   [20/20] wi019 (0.4 s)
+2026-11-10 14:28:06 batch converted in 7.9 s
+2026-11-10 14:28:06 batch N011 batch 'V2_batch_02_20261110_125549Z, work items 0 to 19': 20 solved, 0 failed, 0 without result
+2026-11-10 14:28:06 batch batch passed (0 errors, 0 warnings) after 7.9 s
+2026-11-10 16:47:06 node display flag set on /obj/BATCH_2/COMPUTE
+2026-11-10 16:47:06 batch batch v2_batch_02_20261110_154706Z: 20 work items (0 to 19) from /obj/BATCH_2/topnet1/output0
+2026-11-10 16:47:07 batch   [1/20] wi000: exported, 0.868 GHz, 67372 prims, W010 W005 (0.4 s)
+2026-11-10 16:47:08 batch   [2/20] wi001: exported, 0.868 GHz, 95436 prims, W010 W005 (1.2 s)
+2026-11-10 16:47:12 batch   [3/20] wi002: exported, 0.868 GHz, 150286 prims, W010 W005 (3.6 s)
+2026-11-10 16:47:21 batch   [4/20] wi003: exported, 0.868 GHz, 303568 prims, W010 W005 (9.2 s)
+2026-11-10 16:47:41 batch   [5/20] wi004: exported, 0.868 GHz, 578864 prims, W010 W005 (20.6 s)
+2026-11-10 16:47:42 batch   [6/20] wi005: exported, 0.915 GHz, 67372 prims, W010 W005 (0.4 s)
+2026-11-10 16:47:43 batch   [7/20] wi006: exported, 0.915 GHz, 95436 prims, W010 W005 (1.1 s)
+2026-11-10 16:47:46 batch   [8/20] wi007: exported, 0.915 GHz, 150286 prims, W010 W005 (3.5 s)
+2026-11-10 16:47:55 batch   [9/20] wi008: exported, 0.915 GHz, 303568 prims, W010 W005 (9.0 s)
+2026-11-10 16:48:16 batch   [10/20] wi009: exported, 0.915 GHz, 578864 prims, W010 W005 (20.5 s)
+2026-11-10 16:48:16 batch   [11/20] wi010: exported, 2.437 GHz, 67372 prims, W005 (0.4 s)
+2026-11-10 16:48:17 batch   [12/20] wi011: exported, 2.437 GHz, 95436 prims, W005 (1.2 s)
+2026-11-10 16:48:21 batch   [13/20] wi012: exported, 2.437 GHz, 150286 prims, W005 (3.6 s)
+2026-11-10 16:48:30 batch   [14/20] wi013: exported, 2.437 GHz, 303568 prims, W005 (9.3 s)
+2026-11-10 16:48:51 batch   [15/20] wi014: exported, 2.437 GHz, 578864 prims, W005 (20.8 s)
+2026-11-10 16:48:52 batch   [16/20] wi015: exported, 5.18 GHz, 67372 prims, W005 (0.5 s)
+2026-11-10 16:48:53 batch   [17/20] wi016: exported, 5.18 GHz, 95436 prims, W005 (1.2 s)
+2026-11-10 16:48:57 batch   [18/20] wi017: exported, 5.18 GHz, 150286 prims, W005 (3.6 s)
+2026-11-10 16:49:06 batch   [19/20] wi018: exported, 5.18 GHz, 303568 prims, W005 (9.7 s)
+2026-11-10 16:49:26 batch   [20/20] wi019: exported, 5.18 GHz, 578864 prims, W005 (19.7 s)
+2026-11-10 16:49:26 batch parm 'batch' set to v2_batch_02_20261110_154706Z
+2026-11-10 16:49:26 batch N009 batch 'v2_batch_02_20261110_154706Z': 20 exported, 0 failed, written to C:/Users/CreativeMakers/Downloads/HOUSIONNA_new/HOUSIONNA/houdini_files/sionna/batches/v2_batch_02_20261110_154706Z
+2026-11-10 16:49:26 batch batch passed (0 errors, 0 warnings) after 139.6 s
+2026-11-10 16:49:31 batch batch v2_batch_02_20261110_154706Z: 20 work items queued, 20 of 20 exported, at 0.868, 0.915, 2.437, 5.18 GHz (frequency as exported per work item)
+2026-11-10 16:49:31 batch watching batch v2_batch_02_20261110_154706Z on local every 15 s, a line follows each finished work item
+2026-11-10 16:49:31 batch N010 batch 'v2_batch_02_20261110_154706Z' started on 'local' (pid 11564): 20 work items queued, finished ones are skipped
+2026-11-10 16:49:31 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-10 16:49:46 watch batch v2_batch_02_20261110_154706Z on local: wi000, wi001 solved, 2 of 20 finished
+2026-11-10 16:50:01 watch batch v2_batch_02_20261110_154706Z on local: wi002, wi003 solved, 4 of 20 finished
+2026-11-10 16:50:16 watch batch v2_batch_02_20261110_154706Z on local: wi004, wi005, wi006 solved, 7 of 20 finished
+2026-11-10 16:50:31 watch batch v2_batch_02_20261110_154706Z on local: wi007, wi008, wi009 solved, 10 of 20 finished
+2026-11-10 16:50:46 watch batch v2_batch_02_20261110_154706Z on local: wi010, wi011 solved, 12 of 20 finished
+2026-11-10 16:51:01 watch batch v2_batch_02_20261110_154706Z on local: wi012, wi013, wi014 solved, 15 of 20 finished
+2026-11-10 16:51:16 watch batch v2_batch_02_20261110_154706Z on local: wi015, wi016 solved, 17 of 20 finished
+2026-11-10 16:51:31 watch batch v2_batch_02_20261110_154706Z on local: wi017, wi018, wi019 solved, 20 of 20 finished
+2026-11-10 16:51:31 watch batch v2_batch_02_20261110_154706Z on local: finished, 20 solved, 0 skipped, 0 failed (2.0 min), press batch fetch
+2026-11-10 16:52:34 batch batch v2_batch_02_20261110_154706Z on local: finished, 20 of 20 done (0 skipped as already solved), 0 failed
+2026-11-10 16:52:34 batch   5.89 s per work item
+2026-11-10 16:52:34 batch   log | wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (0.12 MB)
+2026-11-10 16:52:34 batch   log | radio map 'measure_floor': 58826 cells, 1e+07 samples per tx
+2026-11-10 16:52:34 batch   log | radio map 'measure_floor': 57949 of 58826 cells reached (1.7 s)
+2026-11-10 16:52:34 batch   log | wrote SIONNA_HOUDINI_BATCH_01-v3_radiomap.npz (3.22 MB)
+2026-11-10 16:52:34 batch   log | batch: finished, 20 solved, 0 skipped, 0 failed
+2026-11-10 16:52:34 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-10 16:52:36 batch work items 0 to 19: 20 work items
+2026-11-10 16:52:36 batch convert 20 work items to bgeo, the others are up to date or have no result
+2026-11-10 16:52:37 batch   [1/20] wi000 (0.4 s)
+2026-11-10 16:52:37 batch   [2/20] wi001 (0.4 s)
+2026-11-10 16:52:37 batch   [3/20] wi002 (0.4 s)
+2026-11-10 16:52:38 batch   [4/20] wi003 (0.4 s)
+2026-11-10 16:52:38 batch   [5/20] wi004 (0.4 s)
+2026-11-10 16:52:39 batch   [6/20] wi005 (0.4 s)
+2026-11-10 16:52:39 batch   [7/20] wi006 (0.4 s)
+2026-11-10 16:52:39 batch   [8/20] wi007 (0.4 s)
+2026-11-10 16:52:40 batch   [9/20] wi008 (0.4 s)
+2026-11-10 16:52:40 batch   [10/20] wi009 (0.4 s)
+2026-11-10 16:52:41 batch   [11/20] wi010 (0.4 s)
+2026-11-10 16:52:41 batch   [12/20] wi011 (0.4 s)
+2026-11-10 16:52:41 batch   [13/20] wi012 (0.4 s)
+2026-11-10 16:52:42 batch   [14/20] wi013 (0.4 s)
+2026-11-10 16:52:42 batch   [15/20] wi014 (0.4 s)
+2026-11-10 16:52:42 batch   [16/20] wi015 (0.4 s)
+2026-11-10 16:52:43 batch   [17/20] wi016 (0.4 s)
+2026-11-10 16:52:43 batch   [18/20] wi017 (0.4 s)
+2026-11-10 16:52:44 batch   [19/20] wi018 (0.4 s)
+2026-11-10 16:52:44 batch   [20/20] wi019 (0.4 s)
+2026-11-10 16:52:44 batch converted in 7.7 s
+2026-11-10 16:52:44 batch N011 batch 'v2_batch_02_20261110_154706Z, work items 0 to 19': 20 solved, 0 failed, 0 without result
+2026-11-10 16:52:44 batch batch passed (0 errors, 0 warnings) after 7.7 s
