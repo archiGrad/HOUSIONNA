@@ -2,8 +2,8 @@
 
 Sionna RT drops every path with a segment shorter than 1 cm. A sensor node mounted just below a leaf therefore loses
 the direct path and every path through that leaf, and its gain drops by tens of dB although the leaf itself attenuates
-by well under 1 dB. This casts the straight line from each sensor node to the gateway through the exported scene and
-reports the distance to the first surface it meets; nodes below the limit are excluded from the use case.
+by well under 1 dB. This casts the straight line from each sensor node to every gateway through the exported scene and
+reports the shortest distance to the first surface it meets; nodes below the limit are excluded from the use case.
 """
 from __future__ import annotations
 
@@ -29,7 +29,8 @@ def run_folder(run_id: str) -> Path:
 
 
 def first_hit_m(folder: Path, gateway_prefix: str, sensor_prefix: str) -> dict[str, float]:
-    """Per sensor node: the distance from it to the first surface on the straight line to the gateway (inf if none)."""
+    """Per sensor node: the distance from it to the first surface on the straight line to a gateway (inf if none),
+    the shortest over all gateways."""
     import mitsuba as mi
     if mi.variant() is None:
         mi.set_variant("scalar_rgb")
@@ -41,15 +42,20 @@ def first_hit_m(folder: Path, gateway_prefix: str, sensor_prefix: str) -> dict[s
     scene = mi.load_dict(shapes)
     devices = json.loads(next(folder.glob("*_txrx.json")).read_text(encoding="utf-8"))
     everyone = devices["tx"] + devices["rx"]
-    gateway = np.array(next(d["position"] for d in everyone if d["name"].startswith(gateway_prefix)), dtype=float)
+    gateways = [np.array(d["position"], dtype=float) for d in everyone if d["name"].startswith(gateway_prefix)]
+    if not gateways:
+        raise ValueError(f"no gateway named {gateway_prefix}* in {folder}")
     out = {}
     for device in everyone:
         if not device["name"].startswith(sensor_prefix):
             continue
         origin = np.array(device["position"], dtype=float)
-        direction = (gateway - origin) / np.linalg.norm(gateway - origin)
-        hit = scene.ray_intersect(mi.Ray3f(mi.Point3f(*map(float, origin)), mi.Vector3f(*map(float, direction))))
-        out[device["name"]] = float(np.ravel(hit.t)[0]) if bool(np.ravel(hit.is_valid())[0]) else float("inf")
+        distances = []
+        for gateway in gateways:
+            direction = (gateway - origin) / np.linalg.norm(gateway - origin)
+            hit = scene.ray_intersect(mi.Ray3f(mi.Point3f(*map(float, origin)), mi.Vector3f(*map(float, direction))))
+            distances.append(float(np.ravel(hit.t)[0]) if bool(np.ravel(hit.is_valid())[0]) else float("inf"))
+        out[device["name"]] = min(distances)
     return out
 
 
