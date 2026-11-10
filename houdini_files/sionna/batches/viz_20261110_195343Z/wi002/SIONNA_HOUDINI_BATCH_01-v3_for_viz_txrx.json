@@ -1,0 +1,1094 @@
+{
+  "tx": [
+    {
+      "name": "robot_sensor_0",
+      "position": [
+        -1.743479,
+        -1.963,
+        -0.06
+      ],
+      "orientation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 14.0
+    },
+    {
+      "name": "robot_sensor_1",
+      "position": [
+        1.963,
+        1.152888,
+        -0.06
+      ],
+      "orientation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 14.0
+    },
+    {
+      "name": "robot_sensor_2",
+      "position": [
+        -1.963,
+        1.830513,
+        -0.06
+      ],
+      "orientation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 14.0
+    },
+    {
+      "name": "robot_sensor_3",
+      "position": [
+        1.963,
+        -1.532091,
+        -0.06
+      ],
+      "orientation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 14.0
+    },
+    {
+      "name": "person_cellphone_0",
+      "position": [
+        2.111417,
+        -1.047936,
+        0.468359
+      ],
+      "orientation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 14.0
+    },
+    {
+      "name": "person_cellphone_1",
+      "position": [
+        -2.118488,
+        0.746629,
+        0.209657
+      ],
+      "orientation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 14.0
+    },
+    {
+      "name": "person_cellphone_2",
+      "position": [
+        -0.914435,
+        2.161414,
+        0.263306
+      ],
+      "orientation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 14.0
+    },
+    {
+      "name": "person_cellphone_3",
+      "position": [
+        0.834784,
+        1.767788,
+        0.618854
+      ],
+      "orientation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 14.0
+    },
+    {
+      "name": "plant_sensor_0",
+      "position": [
+        -0.907658,
+        0.181592,
+        0.666569
+      ],
+      "orientation": [
+        -1.987242,
+        0.10624,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_1",
+      "position": [
+        -0.644077,
+        -0.164697,
+        0.066023
+      ],
+      "orientation": [
+        -1.507185,
+        0.216229,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_2",
+      "position": [
+        0.155653,
+        0.371514,
+        0.063431
+      ],
+      "orientation": [
+        0.758117,
+        0.462681,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_3",
+      "position": [
+        0.858289,
+        -0.594979,
+        1.291269
+      ],
+      "orientation": [
+        2.431412,
+        0.265806,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_4",
+      "position": [
+        -0.846422,
+        0.797794,
+        0.965025
+      ],
+      "orientation": [
+        1.6055,
+        0.569923,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_5",
+      "position": [
+        -0.203549,
+        0.294874,
+        0.666628
+      ],
+      "orientation": [
+        2.256966,
+        0.021752,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_6",
+      "position": [
+        -1.020653,
+        -0.960583,
+        0.975
+      ],
+      "orientation": [
+        1.682959,
+        0.325847,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_7",
+      "position": [
+        -0.536505,
+        -0.597453,
+        0.064189
+      ],
+      "orientation": [
+        -2.077505,
+        0.548575,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_8",
+      "position": [
+        -0.034808,
+        -0.518242,
+        0.078706
+      ],
+      "orientation": [
+        -1.377676,
+        0.330377,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_9",
+      "position": [
+        -0.817482,
+        -0.175364,
+        0.362364
+      ],
+      "orientation": [
+        1.220866,
+        0.328598,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_10",
+      "position": [
+        1.034969,
+        0.255008,
+        0.375
+      ],
+      "orientation": [
+        -2.743773,
+        0.246673,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_11",
+      "position": [
+        -0.069768,
+        -0.497078,
+        0.987505
+      ],
+      "orientation": [
+        -2.004867,
+        0.431767,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_12",
+      "position": [
+        -0.095726,
+        -0.142362,
+        1.266366
+      ],
+      "orientation": [
+        -2.853508,
+        0.286481,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_13",
+      "position": [
+        0.561569,
+        0.024738,
+        0.078452
+      ],
+      "orientation": [
+        1.696087,
+        0.481977,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_14",
+      "position": [
+        -0.643176,
+        -0.593584,
+        0.364182
+      ],
+      "orientation": [
+        -1.177101,
+        0.321664,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_15",
+      "position": [
+        -0.267408,
+        0.377186,
+        0.366873
+      ],
+      "orientation": [
+        2.220487,
+        0.322812,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_16",
+      "position": [
+        -0.347344,
+        -0.265252,
+        1.266337
+      ],
+      "orientation": [
+        -3.122008,
+        0.460678,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_17",
+      "position": [
+        1.036772,
+        -0.51615,
+        0.372055
+      ],
+      "orientation": [
+        -0.328289,
+        0.43884,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_18",
+      "position": [
+        0.703321,
+        -0.043167,
+        0.373628
+      ],
+      "orientation": [
+        0.586984,
+        0.414518,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_19",
+      "position": [
+        -0.689262,
+        0.081747,
+        1.264835
+      ],
+      "orientation": [
+        -1.159249,
+        0.44366,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_20",
+      "position": [
+        0.269187,
+        -0.401059,
+        0.665742
+      ],
+      "orientation": [
+        -3.041434,
+        0.487449,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_21",
+      "position": [
+        -0.847991,
+        0.212271,
+        0.068113
+      ],
+      "orientation": [
+        1.259851,
+        0.428829,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_22",
+      "position": [
+        -0.060867,
+        0.764382,
+        0.66795
+      ],
+      "orientation": [
+        0.876128,
+        0.072047,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_23",
+      "position": [
+        -0.310947,
+        -0.874828,
+        0.369436
+      ],
+      "orientation": [
+        0.21812,
+        0.177436,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_24",
+      "position": [
+        0.905884,
+        -0.844389,
+        1.291019
+      ],
+      "orientation": [
+        1.950784,
+        0.17853,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_25",
+      "position": [
+        0.867564,
+        0.352849,
+        0.666473
+      ],
+      "orientation": [
+        3.023405,
+        0.115235,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_26",
+      "position": [
+        -1.00928,
+        -0.362133,
+        0.377818
+      ],
+      "orientation": [
+        2.061123,
+        0.44231,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_27",
+      "position": [
+        -0.401967,
+        0.152577,
+        0.667648
+      ],
+      "orientation": [
+        1.848125,
+        0.049851,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_28",
+      "position": [
+        -0.219425,
+        0.124089,
+        0.664959
+      ],
+      "orientation": [
+        1.657264,
+        0.255351,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_29",
+      "position": [
+        -0.576013,
+        0.496619,
+        0.666708
+      ],
+      "orientation": [
+        2.707664,
+        0.322509,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_30",
+      "position": [
+        -0.187388,
+        0.472792,
+        0.065232
+      ],
+      "orientation": [
+        -1.679781,
+        0.097357,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_31",
+      "position": [
+        -1.006502,
+        -0.914776,
+        0.075255
+      ],
+      "orientation": [
+        2.76368,
+        0.489783,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_32",
+      "position": [
+        1.024153,
+        0.443327,
+        0.075
+      ],
+      "orientation": [
+        0.046817,
+        0.521116,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_33",
+      "position": [
+        0.106629,
+        -0.044405,
+        0.993468
+      ],
+      "orientation": [
+        -1.484004,
+        0.052007,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_34",
+      "position": [
+        -0.610845,
+        -0.911229,
+        0.364651
+      ],
+      "orientation": [
+        0.62761,
+        0.0876,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_35",
+      "position": [
+        -0.532769,
+        0.138745,
+        1.266386
+      ],
+      "orientation": [
+        2.712328,
+        0.165457,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_36",
+      "position": [
+        0.333057,
+        -0.175232,
+        0.666537
+      ],
+      "orientation": [
+        1.599201,
+        0.568856,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_37",
+      "position": [
+        0.596014,
+        0.542001,
+        0.967582
+      ],
+      "orientation": [
+        1.238033,
+        0.440023,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_38",
+      "position": [
+        0.508802,
+        0.873635,
+        0.964732
+      ],
+      "orientation": [
+        0.977849,
+        0.309589,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_39",
+      "position": [
+        -0.831284,
+        -0.597237,
+        0.064997
+      ],
+      "orientation": [
+        2.151846,
+        0.421813,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_40",
+      "position": [
+        0.384072,
+        0.493369,
+        0.064712
+      ],
+      "orientation": [
+        -1.941131,
+        0.33544,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_41",
+      "position": [
+        -0.252623,
+        0.543727,
+        0.364378
+      ],
+      "orientation": [
+        -2.042536,
+        0.487559,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_42",
+      "position": [
+        0.132452,
+        0.739881,
+        0.967982
+      ],
+      "orientation": [
+        -0.08192,
+        0.037649,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_43",
+      "position": [
+        -0.437997,
+        0.544561,
+        0.367183
+      ],
+      "orientation": [
+        2.362975,
+        0.21866,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_44",
+      "position": [
+        0.238777,
+        0.213261,
+        0.667915
+      ],
+      "orientation": [
+        -0.42351,
+        0.255108,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_45",
+      "position": [
+        -0.619225,
+        1.044823,
+        0.665233
+      ],
+      "orientation": [
+        2.589399,
+        0.204361,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_46",
+      "position": [
+        0.020168,
+        -0.046025,
+        0.375902
+      ],
+      "orientation": [
+        1.247958,
+        0.58226,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    },
+    {
+      "name": "plant_sensor_47",
+      "position": [
+        0.907257,
+        -0.641639,
+        0.692739
+      ],
+      "orientation": [
+        -2.176972,
+        0.33515,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "power_dbm": 0.0
+    }
+  ],
+  "rx": [
+    {
+      "name": "ap_0",
+      "position": [
+        0.307889,
+        -0.0,
+        3.193482
+      ],
+      "orientation": [
+        0.0,
+        1.570796,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        -0.0,
+        0.0
+      ]
+    }
+  ],
+  "antenna": {
+    "tx": {},
+    "rx": {
+      "antenna_pattern": "tr38901"
+    }
+  }
+}

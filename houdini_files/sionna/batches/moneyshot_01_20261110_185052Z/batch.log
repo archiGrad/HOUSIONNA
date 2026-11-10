@@ -1,0 +1,13 @@
+batch: 1 work items, pid 6436
+[1/1] wi055
+jitc_llvm_init(): LLVM API initialization failed ..
+sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+scene: 11 objects, 9 materials, 86 tx, 2 rx (0.3 s)
+settings: 5.18 GHz, max_depth 30, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 55
+paths: 86 tx x 2 rx, 1e+06 samples per tx
+paths: 11084 valid paths over 172 links (10.6 s)
+wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (1.05 MB)
+radio map 'measure_floor': 74004 cells, 1e+07 samples per tx
+radio map 'measure_floor': 73860 of 74004 cells reached (31.0 s)
+wrote SIONNA_HOUDINI_BATCH_01-v3_radiomap.npz (20.55 MB)
+batch: finished, 1 solved, 0 skipped, 0 failed

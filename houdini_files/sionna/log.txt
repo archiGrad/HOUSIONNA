@@ -52245,3 +52245,216 @@
 2026-11-10 17:31:22 batch converted in 0.1 s
 2026-11-10 17:31:22 batch N011 batch 'V2_batch_05_20261110_163053Z, work items 35 to 35': 1 solved, 0 failed, 0 without result
 2026-11-10 17:31:22 batch batch passed (0 errors, 0 warnings) after 0.1 s
+2026-11-10 18:12:17 batch batch moneyshot_01_20261110_171217Z: 1 work item (95 to 95) from /obj/BATCH_5/topnet1/output0
+2026-11-10 18:12:29 batch   [1/1] wi095: exported, 0.915 GHz, seed 95, 516961 prims, W010 W005 (12.6 s)
+2026-11-10 18:12:29 batch parm 'batch' set to moneyshot_01_20261110_171217Z
+2026-11-10 18:12:29 batch N009 batch 'moneyshot_01_20261110_171217Z': 1 exported, 0 failed, written to C:/Users/CreativeMakers/Downloads/HOUSIONNA_new/HOUSIONNA/houdini_files/sionna/batches/moneyshot_01_20261110_171217Z
+2026-11-10 18:12:29 batch batch passed (0 errors, 0 warnings) after 12.8 s
+2026-11-10 18:12:33 batch batch moneyshot_01_20261110_171217Z: 1 work item queued, 1 of 1 exported, at 0.915 GHz (frequency as exported per work item)
+2026-11-10 18:12:33 batch   set per work item at export: seed; the other settings from the Null
+2026-11-10 18:12:33 batch watching batch moneyshot_01_20261110_171217Z on local every 15 s, a line follows each finished work item
+2026-11-10 18:12:33 batch N010 batch 'moneyshot_01_20261110_171217Z' started on 'local' (pid 20080): 1 work items queued, finished ones are skipped
+2026-11-10 18:12:33 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-10 18:14:09 batch batch moneyshot_01_20261110_171217Z on local: finished, 1 of 1 done (0 skipped as already solved), 0 failed
+2026-11-10 18:14:09 batch   91.35 s per work item
+2026-11-10 18:14:09 batch   log | wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (4.29 MB)
+2026-11-10 18:14:09 batch   log | radio map 'measure_floor': 314144 cells, 1e+07 samples per tx
+2026-11-10 18:14:09 batch   log | radio map 'measure_floor': 313854 of 314144 cells reached (53.8 s)
+2026-11-10 18:14:09 batch   log | wrote SIONNA_HOUDINI_BATCH_01-v3_radiomap.npz (200.83 MB)
+2026-11-10 18:14:09 batch   log | batch: finished, 1 solved, 0 skipped, 0 failed
+2026-11-10 18:14:09 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-10 18:14:11 batch work items 95 to 95: 1 work item
+2026-11-10 18:14:11 batch convert 1 work item to bgeo, the others are up to date or have no result
+2026-11-10 18:14:18 batch   [1/1] wi095 (6.7 s)
+2026-11-10 18:14:18 batch converted in 6.7 s
+2026-11-10 18:14:18 batch N011 batch 'moneyshot_01_20261110_171217Z, work items 95 to 95': 1 solved, 0 failed, 0 without result
+2026-11-10 18:14:18 batch batch passed (0 errors, 0 warnings) after 6.7 s
+2026-11-10 18:14:18 watch batch moneyshot_01_20261110_171217Z on local: wi095 solved, 1 of 1 finished
+2026-11-10 18:14:18 watch batch moneyshot_01_20261110_171217Z on local: finished, 1 solved, 0 skipped, 0 failed (1.8 min), press batch fetch
+2026-11-10 18:57:10 batch batch moneyshot_01_20261110_175709Z: 1 work item (55 to 55) from /obj/BATCH_5/topnet1/output0
+2026-11-10 18:57:26 batch   [1/1] wi055: exported, 0.915 GHz, seed 55, 2942552 prims, W010 W005 (16.4 s)
+2026-11-10 18:57:26 batch parm 'batch' set to moneyshot_01_20261110_175709Z
+2026-11-10 18:57:26 batch N009 batch 'moneyshot_01_20261110_175709Z': 1 exported, 0 failed, written to C:/Users/CreativeMakers/Downloads/HOUSIONNA_new/HOUSIONNA/houdini_files/sionna/batches/moneyshot_01_20261110_175709Z
+2026-11-10 18:57:26 batch batch passed (0 errors, 0 warnings) after 16.6 s
+2026-11-10 18:57:30 batch batch moneyshot_01_20261110_175709Z: 1 work item queued, 1 of 1 exported, at 0.915 GHz (frequency as exported per work item)
+2026-11-10 18:57:30 batch   set per work item at export: seed; the other settings from the Null
+2026-11-10 18:57:30 batch watching batch moneyshot_01_20261110_175709Z on local every 15 s, a line follows each finished work item
+2026-11-10 18:57:30 batch N010 batch 'moneyshot_01_20261110_175709Z' started on 'local' (pid 20264): 1 work items queued, finished ones are skipped
+2026-11-10 18:57:30 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-10 18:58:15 watch batch moneyshot_01_20261110_175709Z on local: wi055 solved, 1 of 1 finished
+2026-11-10 18:58:15 watch batch moneyshot_01_20261110_175709Z on local: finished, 1 solved, 0 skipped, 0 failed (0.8 min), press batch fetch
+2026-11-10 18:58:20 batch batch moneyshot_01_20261110_175709Z on local: finished, 1 of 1 done (0 skipped as already solved), 0 failed
+2026-11-10 18:58:20 batch   44.20 s per work item
+2026-11-10 18:58:20 batch   log | wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (0.88 MB)
+2026-11-10 18:58:20 batch   log | radio map 'measure_floor': 203224 cells, 1e+07 samples per tx
+2026-11-10 18:58:20 batch   log | radio map 'measure_floor': 202883 of 203224 cells reached (24.9 s)
+2026-11-10 18:58:20 batch   log | wrote SIONNA_HOUDINI_BATCH_01-v3_radiomap.npz (56.67 MB)
+2026-11-10 18:58:20 batch   log | batch: finished, 1 solved, 0 skipped, 0 failed
+2026-11-10 18:58:20 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-10 18:58:21 batch work items 55 to 55: 1 work item
+2026-11-10 18:58:21 batch convert 1 work item to bgeo, the others are up to date or have no result
+2026-11-10 18:58:24 batch   [1/1] wi055 (2.3 s)
+2026-11-10 18:58:24 batch converted in 2.3 s
+2026-11-10 18:58:24 batch N011 batch 'moneyshot_01_20261110_175709Z, work items 55 to 55': 1 solved, 0 failed, 0 without result
+2026-11-10 18:58:24 batch batch passed (0 errors, 0 warnings) after 2.3 s
+2026-11-10 19:02:06 batch batch moneyshot_01_20261110_180206Z: 1 work item (55 to 55) from /obj/BATCH_5/topnet1/output0
+2026-11-10 19:02:22 batch   [1/1] wi055: exported, 0.915 GHz, seed 55, 2813332 prims, W010 W005 (15.6 s)
+2026-11-10 19:02:22 batch parm 'batch' set to moneyshot_01_20261110_180206Z
+2026-11-10 19:02:22 batch N009 batch 'moneyshot_01_20261110_180206Z': 1 exported, 0 failed, written to C:/Users/CreativeMakers/Downloads/HOUSIONNA_new/HOUSIONNA/houdini_files/sionna/batches/moneyshot_01_20261110_180206Z
+2026-11-10 19:02:22 batch batch passed (0 errors, 0 warnings) after 15.8 s
+2026-11-10 19:02:35 batch batch moneyshot_01_20261110_180206Z: 1 work item queued, 1 of 1 exported, at 0.915 GHz (frequency as exported per work item)
+2026-11-10 19:02:35 batch   set per work item at export: seed; the other settings from the Null
+2026-11-10 19:02:35 batch watching batch moneyshot_01_20261110_180206Z on local every 15 s, a line follows each finished work item
+2026-11-10 19:02:35 batch N010 batch 'moneyshot_01_20261110_180206Z' started on 'local' (pid 15276): 1 work items queued, finished ones are skipped
+2026-11-10 19:02:35 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-10 19:03:35 watch batch moneyshot_01_20261110_180206Z on local: wi055 solved, 1 of 1 finished
+2026-11-10 19:03:35 watch batch moneyshot_01_20261110_180206Z on local: finished, 1 solved, 0 skipped, 0 failed (1.0 min), press batch fetch
+2026-11-10 19:03:47 batch batch moneyshot_01_20261110_180206Z on local: finished, 1 of 1 done (0 skipped as already solved), 0 failed
+2026-11-10 19:03:47 batch   54.72 s per work item
+2026-11-10 19:03:47 batch   log | wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (0.78 MB)
+2026-11-10 19:03:47 batch   log | radio map 'measure_floor': 74004 cells, 1e+07 samples per tx
+2026-11-10 19:03:47 batch   log | radio map 'measure_floor': 73838 of 74004 cells reached (18.0 s)
+2026-11-10 19:03:47 batch   log | wrote SIONNA_HOUDINI_BATCH_01-v3_radiomap.npz (20.61 MB)
+2026-11-10 19:03:47 batch   log | batch: finished, 1 solved, 0 skipped, 0 failed
+2026-11-10 19:03:47 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-10 19:03:48 batch work items 55 to 55: 1 work item
+2026-11-10 19:03:48 batch convert 1 work item to bgeo, the others are up to date or have no result
+2026-11-10 19:03:49 batch   [1/1] wi055 (0.9 s)
+2026-11-10 19:03:49 batch converted in 0.9 s
+2026-11-10 19:03:49 batch N011 batch 'moneyshot_01_20261110_180206Z, work items 55 to 55': 1 solved, 0 failed, 0 without result
+2026-11-10 19:03:49 batch batch passed (0 errors, 0 warnings) after 0.9 s
+2026-11-10 19:26:23 node display flag set on /obj/BATCH_5/COMPUTE
+2026-11-10 19:26:23 preset   frequency            915000000.0 -> 5180000000.0
+2026-11-10 19:26:23 preset   bandwidth            125000.0 -> 20000000.0
+2026-11-10 19:26:23 preset band preset wifi_5g applied, 0 parms already had the preset value
+2026-11-10 19:26:23 preset preset passed (0 errors, 0 warnings) after 0.0 s
+2026-11-10 19:26:31 batch batch moneyshot_01_20261110_182631Z: 1 work item (55 to 55) from /obj/BATCH_5/topnet1/output0
+2026-11-10 19:28:23 batch   [1/1] wi055: exported, 5.18 GHz, seed 55, 2813332 prims, W005 (111.6 s)
+2026-11-10 19:28:23 batch parm 'batch' set to moneyshot_01_20261110_182631Z
+2026-11-10 19:28:23 batch N009 batch 'moneyshot_01_20261110_182631Z': 1 exported, 0 failed, written to C:/Users/CreativeMakers/Downloads/HOUSIONNA_new/HOUSIONNA/houdini_files/sionna/batches/moneyshot_01_20261110_182631Z
+2026-11-10 19:28:23 batch batch passed (0 errors, 0 warnings) after 111.8 s
+2026-11-10 19:28:33 batch batch moneyshot_01_20261110_182631Z: 1 work item queued, 1 of 1 exported, at 5.18 GHz (frequency as exported per work item)
+2026-11-10 19:28:33 batch   set per work item at export: seed; the other settings from the Null
+2026-11-10 19:28:33 batch watching batch moneyshot_01_20261110_182631Z on local every 15 s, a line follows each finished work item
+2026-11-10 19:28:33 batch N010 batch 'moneyshot_01_20261110_182631Z' started on 'local' (pid 13632): 1 work items queued, finished ones are skipped
+2026-11-10 19:28:33 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-10 19:31:32 batch batch moneyshot_01_20261110_182631Z on local: running, 0 of 1 done (0 skipped as already solved), 0 failed, now wi055
+2026-11-10 19:31:32 batch   log | jitc_llvm_init(): LLVM API initialization failed ..
+2026-11-10 19:31:32 batch   log | sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+2026-11-10 19:31:32 batch   log | scene: 11 objects, 9 materials, 86 tx, 2 rx (0.6 s)
+2026-11-10 19:31:32 batch   log | settings: 5.18 GHz, max_depth 100, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 55
+2026-11-10 19:31:32 batch   log | paths: 86 tx x 2 rx, 1e+07 samples per tx
+2026-11-10 19:31:32 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-10 19:33:03 batch batch moneyshot_01_20261110_182631Z on local: running, 0 of 1 done (0 skipped as already solved), 0 failed, now wi055
+2026-11-10 19:33:03 batch   log | jitc_llvm_init(): LLVM API initialization failed ..
+2026-11-10 19:33:03 batch   log | sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+2026-11-10 19:33:03 batch   log | scene: 11 objects, 9 materials, 86 tx, 2 rx (0.6 s)
+2026-11-10 19:33:03 batch   log | settings: 5.18 GHz, max_depth 100, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 55
+2026-11-10 19:33:03 batch   log | paths: 86 tx x 2 rx, 1e+07 samples per tx
+2026-11-10 19:33:03 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-10 19:47:54 batch batch moneyshot_01_20261110_182631Z on local: running, 0 of 1 done (0 skipped as already solved), 0 failed, now wi055
+2026-11-10 19:47:54 batch   log | jitc_llvm_init(): LLVM API initialization failed ..
+2026-11-10 19:47:54 batch   log | sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+2026-11-10 19:47:54 batch   log | scene: 11 objects, 9 materials, 86 tx, 2 rx (0.6 s)
+2026-11-10 19:47:54 batch   log | settings: 5.18 GHz, max_depth 100, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 55
+2026-11-10 19:47:54 batch   log | paths: 86 tx x 2 rx, 1e+07 samples per tx
+2026-11-10 19:47:54 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-10 19:48:12 batch batch moneyshot_01_20261110_182631Z on local: running, 0 of 1 done (0 skipped as already solved), 0 failed, now wi055
+2026-11-10 19:48:12 batch   log | jitc_llvm_init(): LLVM API initialization failed ..
+2026-11-10 19:48:12 batch   log | sionna 2.2.0, cuda_ad_mono_polarized, on the gpu
+2026-11-10 19:48:12 batch   log | scene: 11 objects, 9 materials, 86 tx, 2 rx (0.6 s)
+2026-11-10 19:48:12 batch   log | settings: 5.18 GHz, max_depth 100, los, specular_reflection, refraction, diffraction, antenna tx hw_dipole V, rx tr38901 V, seed 55
+2026-11-10 19:48:12 batch   log | paths: 86 tx x 2 rx, 1e+07 samples per tx
+2026-11-10 19:48:12 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-10 19:49:18 watch batch moneyshot_01_20261110_182631Z on local: stopped, process not running, see batch status
+2026-11-10 19:50:35 clear looking for batches of SIONNA_HOUDINI_BATCH_01-v3 in session 'moneyshot_01' on local
+2026-11-10 19:50:35 clear   C:/Users/CreativeMakers/Downloads/HOUSIONNA_new/HOUSIONNA/houdini_files/sionna/batches\moneyshot_01_20261110_171217Z  413.0 MB
+2026-11-10 19:50:35 clear   C:/Users/CreativeMakers/Downloads/HOUSIONNA_new/HOUSIONNA/houdini_files/sionna/batches\moneyshot_01_20261110_175709Z  185.4 MB
+2026-11-10 19:50:35 clear   C:/Users/CreativeMakers/Downloads/HOUSIONNA_new/HOUSIONNA/houdini_files/sionna/batches\moneyshot_01_20261110_180206Z  112.0 MB
+2026-11-10 19:50:35 clear   C:/Users/CreativeMakers/Downloads/HOUSIONNA_new/HOUSIONNA/houdini_files/sionna/batches\moneyshot_01_20261110_182631Z  70.0 MB
+2026-11-10 19:50:37 clear N012 cleared 4 folders (780.5 MB) on 'local'
+2026-11-10 19:50:37 clear clear passed (0 errors, 0 warnings) after 1.8 s
+2026-11-10 19:50:52 batch batch moneyshot_01_20261110_185052Z: 1 work item (55 to 55) from /obj/BATCH_5/topnet1/output0
+2026-11-10 19:52:41 batch   [1/1] wi055: exported, 5.18 GHz, seed 55, 2813332 prims, W005 (109.5 s)
+2026-11-10 19:52:41 batch parm 'batch' set to moneyshot_01_20261110_185052Z
+2026-11-10 19:52:41 batch N009 batch 'moneyshot_01_20261110_185052Z': 1 exported, 0 failed, written to C:/Users/CreativeMakers/Downloads/HOUSIONNA_new/HOUSIONNA/houdini_files/sionna/batches/moneyshot_01_20261110_185052Z
+2026-11-10 19:52:41 batch batch passed (0 errors, 0 warnings) after 109.7 s
+2026-11-10 19:52:51 batch batch moneyshot_01_20261110_185052Z: 1 work item queued, 1 of 1 exported, at 5.18 GHz (frequency as exported per work item)
+2026-11-10 19:52:51 batch   set per work item at export: seed; the other settings from the Null
+2026-11-10 19:52:51 batch watching batch moneyshot_01_20261110_185052Z on local every 15 s, a line follows each finished work item
+2026-11-10 19:52:51 batch N010 batch 'moneyshot_01_20261110_185052Z' started on 'local' (pid 13748): 1 work items queued, finished ones are skipped
+2026-11-10 19:52:51 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-10 19:53:36 watch batch moneyshot_01_20261110_185052Z on local: wi055 solved, 1 of 1 finished
+2026-11-10 19:53:36 watch batch moneyshot_01_20261110_185052Z on local: finished, 1 solved, 0 skipped, 0 failed (0.8 min), press batch fetch
+2026-11-10 19:53:39 batch batch moneyshot_01_20261110_185052Z on local: finished, 1 of 1 done (0 skipped as already solved), 0 failed
+2026-11-10 19:53:39 batch   43.77 s per work item
+2026-11-10 19:53:39 batch   log | wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (1.05 MB)
+2026-11-10 19:53:39 batch   log | radio map 'measure_floor': 74004 cells, 1e+07 samples per tx
+2026-11-10 19:53:39 batch   log | radio map 'measure_floor': 73860 of 74004 cells reached (31.0 s)
+2026-11-10 19:53:39 batch   log | wrote SIONNA_HOUDINI_BATCH_01-v3_radiomap.npz (20.55 MB)
+2026-11-10 19:53:39 batch   log | batch: finished, 1 solved, 0 skipped, 0 failed
+2026-11-10 19:53:39 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-10 19:53:41 batch work items 55 to 55: 1 work item
+2026-11-10 19:53:41 batch convert 1 work item to bgeo, the others are up to date or have no result
+2026-11-10 19:53:42 batch   [1/1] wi055 (0.9 s)
+2026-11-10 19:53:42 batch converted in 0.9 s
+2026-11-10 19:53:42 batch N011 batch 'moneyshot_01_20261110_185052Z, work items 55 to 55': 1 solved, 0 failed, 0 without result
+2026-11-10 19:53:42 batch batch passed (0 errors, 0 warnings) after 0.9 s
+2026-11-10 20:53:45 batch batch viz_20261110_195343Z: 16 work items (0 to 15) from /obj/moneyshot/topnet1/output0
+2026-11-10 20:53:46 batch   [1/16] wi000: exported, 5.18 GHz, seed 0, 66566 prims, W005 (1.3 s)
+2026-11-10 20:53:49 batch   [2/16] wi001: exported, 5.18 GHz, seed 1, 93274 prims, W005 (2.7 s)
+2026-11-10 20:53:52 batch   [3/16] wi002: exported, 5.18 GHz, seed 2, 122613 prims, W005 (3.6 s)
+2026-11-10 20:53:57 batch   [4/16] wi003: exported, 5.18 GHz, seed 3, 150855 prims, W005 (4.8 s)
+2026-11-10 20:53:58 batch   [5/16] wi004: exported, 5.18 GHz, seed 4, 62265 prims, W005 (1.0 s)
+2026-11-10 20:54:00 batch   [6/16] wi005: exported, 5.18 GHz, seed 5, 79565 prims, W005 (1.8 s)
+2026-11-10 20:54:03 batch   [7/16] wi006: exported, 5.18 GHz, seed 6, 98535 prims, W005 (2.8 s)
+2026-11-10 20:54:06 batch   [8/16] wi007: exported, 5.18 GHz, seed 7, 117076 prims, W005 (3.2 s)
+2026-11-10 20:54:13 batch   [9/16] wi008: exported, 5.18 GHz, seed 8, 204372 prims, W005 (7.0 s)
+2026-11-10 20:54:34 batch   [10/16] wi009: exported, 5.18 GHz, seed 9, 536686 prims, W005 (20.9 s)
+2026-11-10 20:55:07 batch   [11/16] wi010: exported, 5.18 GHz, seed 10, 894431 prims, W005 (33.3 s)
+2026-11-10 20:55:54 batch   [12/16] wi011: exported, 5.18 GHz, seed 11, 1232243 prims, W005 (46.8 s)
+2026-11-10 20:56:00 batch   [13/16] wi012: exported, 5.18 GHz, seed 12, 204377 prims, W005 (6.5 s)
+2026-11-10 20:56:20 batch   [14/16] wi013: exported, 5.18 GHz, seed 13, 536698 prims, W005 (19.8 s)
+2026-11-10 20:56:52 batch   [15/16] wi014: exported, 5.18 GHz, seed 14, 894424 prims, W005 (32.5 s)
+2026-11-10 20:57:40 batch   [16/16] wi015: exported, 5.18 GHz, seed 15, 1232237 prims, W005 (47.6 s)
+2026-11-10 20:57:40 batch parm 'batch' set to viz_20261110_195343Z
+2026-11-10 20:57:40 batch N009 batch 'viz_20261110_195343Z': 16 exported, 0 failed, written to C:/Users/CreativeMakers/Downloads/HOUSIONNA_new/HOUSIONNA/houdini_files/sionna/batches/viz_20261110_195343Z
+2026-11-10 20:57:40 batch batch passed (0 errors, 0 warnings) after 237.7 s
+2026-11-10 20:58:05 batch batch viz_20261110_195343Z: 16 work items queued, 16 of 16 exported, at 5.18 GHz (frequency as exported per work item)
+2026-11-10 20:58:05 batch   set per work item at export: seed; the other settings from the Null
+2026-11-10 20:58:05 batch watching batch viz_20261110_195343Z on local every 15 s, a line follows each finished work item
+2026-11-10 20:58:05 batch N010 batch 'viz_20261110_195343Z' started on 'local' (pid 21316): 16 work items queued, finished ones are skipped
+2026-11-10 20:58:05 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-10 20:58:20 watch batch viz_20261110_195343Z on local: wi000 solved, 1 of 16 finished
+2026-11-10 20:58:35 watch batch viz_20261110_195343Z on local: wi001, wi002 solved, 3 of 16 finished
+2026-11-10 20:58:50 watch batch viz_20261110_195343Z on local: wi003 solved, 4 of 16 finished
+2026-11-10 20:59:05 watch batch viz_20261110_195343Z on local: wi004, wi005 solved, 6 of 16 finished
+2026-11-10 20:59:20 watch batch viz_20261110_195343Z on local: wi006 solved, 7 of 16 finished
+2026-11-10 20:59:35 watch batch viz_20261110_195343Z on local: wi007, wi008 solved, 9 of 16 finished
+2026-11-10 20:59:50 watch batch viz_20261110_195343Z on local: wi009, wi010 solved, 11 of 16 finished
+2026-11-10 21:00:05 watch batch viz_20261110_195343Z on local: wi011 solved, 12 of 16 finished
+2026-11-10 21:00:20 watch batch viz_20261110_195343Z on local: wi012, wi013 solved, 14 of 16 finished
+2026-11-10 21:00:35 watch batch viz_20261110_195343Z on local: wi014 solved, 15 of 16 finished
+2026-11-10 21:00:46 batch work items 0 to 15: 16 work items
+2026-11-10 21:00:46 batch convert 16 work items to bgeo, the others are up to date or have no result
+2026-11-10 21:00:46 batch   [1/16] wi000 (0.3 s)
+2026-11-10 21:00:47 batch   [2/16] wi001 (0.4 s)
+2026-11-10 21:00:47 batch   [3/16] wi002 (0.6 s)
+2026-11-10 21:00:48 batch   [4/16] wi003 (0.9 s)
+2026-11-10 21:00:48 batch   [5/16] wi004 (0.2 s)
+2026-11-10 21:00:49 batch   [6/16] wi005 (0.4 s)
+2026-11-10 21:00:49 batch   [7/16] wi006 (0.6 s)
+2026-11-10 21:00:50 batch   [8/16] wi007 (0.8 s)
+2026-11-10 21:00:50 watch batch viz_20261110_195343Z on local: wi015 solved, 16 of 16 finished
+2026-11-10 21:00:50 watch batch viz_20261110_195343Z on local: finished, 16 solved, 0 skipped, 0 failed (2.8 min), press batch fetch
+2026-11-10 21:00:50 batch   [9/16] wi008 (0.2 s)
+2026-11-10 21:00:51 batch   [10/16] wi009 (0.4 s)
+2026-11-10 21:00:51 batch   [11/16] wi010 (0.5 s)
+2026-11-10 21:00:52 batch   [12/16] wi011 (0.6 s)
+2026-11-10 21:00:52 batch   [13/16] wi012 (0.2 s)
+2026-11-10 21:00:52 batch   [14/16] wi013 (0.3 s)
+2026-11-10 21:00:53 batch   [15/16] wi014 (0.5 s)
+2026-11-10 21:00:53 batch   [16/16] wi015 (0.6 s)
+2026-11-10 21:00:53 batch converted in 7.6 s
+2026-11-10 21:00:53 batch N011 batch 'viz_20261110_195343Z, work items 0 to 15': 16 solved, 0 failed, 0 without result
+2026-11-10 21:00:53 batch batch passed (0 errors, 0 warnings) after 7.6 s
