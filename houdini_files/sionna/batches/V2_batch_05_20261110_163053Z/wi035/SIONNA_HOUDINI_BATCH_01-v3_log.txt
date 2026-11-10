@@ -1,0 +1,4 @@
+N001 scene size: x 6.20 m, y 5.15 m, z 4.93 m (sionna axes, z up)
+W010 material 'concrete' at 0.915 GHz is outside its measured range (1 to 100, 110 to 330 GHz): values extrapolated
+W005 material 'leaf' is not confirmed: model not validated for these crops; thickness 0.3 mm assumed, no source
+N002 exported to C:/Users/CreativeMakers/Downloads/HOUSIONNA_new/HOUSIONNA/houdini_files/sionna/batches/V2_batch_05_20261110_163053Z/wi035

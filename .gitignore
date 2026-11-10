@@ -10,6 +10,5 @@ desktop.ini
 # Viewer (three.js): dependencies and build output
 viewer/node_modules/
 viewer/dist/
-houdini_files/prev_hips/SIONNA_HOUDINI_ECA_batch_1.hipnc
-houdini_files/backup/
-houdini_files/prev_hips/SIONNA_HOUDINI_ECA_batch_1b.hipnc
+houdini_files/prev_hips
+Houdini_files/backup/

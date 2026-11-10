@@ -1,0 +1,14 @@
+{
+  "pid": 20632,
+  "started": "2026-11-10 17:31:01",
+  "total": 1,
+  "done": [
+    "wi035"
+  ],
+  "skipped": [],
+  "failed": {},
+  "solve_seconds": 3.090059280395508,
+  "current": null,
+  "finished": true,
+  "updated": "2026-11-10 17:31:04"
+}

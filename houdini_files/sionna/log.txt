@@ -52217,3 +52217,31 @@
 2026-11-10 17:07:06 batch converted in 7.7 s
 2026-11-10 17:07:06 batch N011 batch 'bacth_04_20261110_160139Z, work items 0 to 19': 20 solved, 0 failed, 0 without result
 2026-11-10 17:07:06 batch batch passed (0 errors, 0 warnings) after 7.7 s
+2026-11-10 17:30:53 batch batch V2_batch_05_20261110_163053Z: 1 work item (35 to 35) from /obj/BATCH_5/topnet1/output0
+2026-11-10 17:30:54 batch   [1/1] wi035: exported, 0.915 GHz, seed 35, 32110 prims, W010 W005 (0.9 s)
+2026-11-10 17:30:54 batch parm 'batch' set to V2_batch_05_20261110_163053Z
+2026-11-10 17:30:54 batch N009 batch 'V2_batch_05_20261110_163053Z': 1 exported, 0 failed, written to C:/Users/CreativeMakers/Downloads/HOUSIONNA_new/HOUSIONNA/houdini_files/sionna/batches/V2_batch_05_20261110_163053Z
+2026-11-10 17:30:54 batch batch passed (0 errors, 0 warnings) after 1.1 s
+2026-11-10 17:31:01 batch batch V2_batch_05_20261110_163053Z: 1 work item queued, 1 of 1 exported, at 0.915 GHz (frequency as exported per work item)
+2026-11-10 17:31:01 batch   set per work item at export: seed; the other settings from the Null
+2026-11-10 17:31:01 batch watching batch V2_batch_05_20261110_163053Z on local every 15 s, a line follows each finished work item
+2026-11-10 17:31:01 batch N010 batch 'V2_batch_05_20261110_163053Z' started on 'local' (pid 19600): 1 work items queued, finished ones are skipped
+2026-11-10 17:31:01 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-10 17:31:08 batch batch V2_batch_05_20261110_163053Z on local: finished, 1 of 1 done (0 skipped as already solved), 0 failed
+2026-11-10 17:31:08 batch   3.09 s per work item
+2026-11-10 17:31:08 batch   log | paths: 19 tx x 1 rx, 3e+06 samples per tx
+2026-11-10 17:31:08 batch   log | paths: 6171 valid paths over 19 links (1.7 s)
+2026-11-10 17:31:08 batch   log | wrote SIONNA_HOUDINI_BATCH_01-v3_result.npz (0.45 MB)
+2026-11-10 17:31:08 batch   log | radio map: skipped, no measurement surface
+2026-11-10 17:31:08 batch   log | batch: finished, 1 solved, 0 skipped, 0 failed
+2026-11-10 17:31:08 batch batch passed (0 errors, 0 warnings) after 0.0 s
+2026-11-10 17:31:10 batch B010 no exported work items with index 0 to 15 in batch 'V2_batch_05_20261110_163053Z' (fetch_start, fetch_end)
+2026-11-10 17:31:10 batch batch FAILED (1 error, 0 warnings) after 0.0 s
+2026-11-10 17:31:16 watch batch V2_batch_05_20261110_163053Z on local: wi035 solved, 1 of 1 finished
+2026-11-10 17:31:16 watch batch V2_batch_05_20261110_163053Z on local: finished, 1 solved, 0 skipped, 0 failed (0.3 min), press batch fetch
+2026-11-10 17:31:22 batch work items 35 to 35: 1 work item
+2026-11-10 17:31:22 batch convert 1 work item to bgeo, the others are up to date or have no result
+2026-11-10 17:31:22 batch   [1/1] wi035 (0.1 s)
+2026-11-10 17:31:22 batch converted in 0.1 s
+2026-11-10 17:31:22 batch N011 batch 'V2_batch_05_20261110_163053Z, work items 35 to 35': 1 solved, 0 failed, 0 without result
+2026-11-10 17:31:22 batch batch passed (0 errors, 0 warnings) after 0.1 s
