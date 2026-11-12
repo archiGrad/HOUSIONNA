@@ -1,0 +1,55 @@
+/* Simple mode (the default, and the published website): one study picker instead of the research controls.
+   Open the viewer with ?advanced to get every control back (import, live Sionna reruns, run comparison). */
+
+.study-panel { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+.study-about { margin: 0 0 4px; }
+.study-param { display: flex; flex-direction: column; gap: 6px; }
+.study-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.study-chip { padding: 6px 10px; min-width: 34px; cursor: pointer; }
+:root[data-theme] .study-chip[aria-pressed="true"], :root[data-theme] .study-chip[aria-pressed="true"]:hover { background: var(--text); color: var(--bg); border-color: var(--text); }
+.study-chip:focus-visible { outline: 2px solid var(--data-1); outline-offset: 2px; }
+.study-loading { color: var(--faint); }
+body:not(.simple) .study-panel { display: none; }
+
+body.simple #sceneSourceSelect, body.simple label[for="sceneSourceSelect"], body.simple #builtinSceneControls,
+body.simple #scenarioDescription, body.simple .site-note, body.simple #scenarioTag,
+body.simple #housionnaControls > .section-title, body.simple label[for="housionnaRunSelect"], body.simple #housionnaRunSelect,
+body.simple .run-stepper, body.simple #housionnaRunChanges,
+body.simple label[for="housionnaExportSelect"], body.simple #housionnaExportSelect,
+body.simple #importSelectedHousionna, body.simple #importAllHousionna,
+body.simple label[for="housionnaResultVersion"], body.simple #housionnaResultVersion, body.simple #housionnaLiveComparison,
+body.simple #housionnaControls .housionna-actions, body.simple #housionnaRunMetadata, body.simple #housionnaImportStatus,
+body.simple .housionna-display, body.simple .comparison-panel,
+body.simple .toggle-subrow, body.simple #mapLevelRow, body.simple #mapHeightLabel, body.simple #mapHeight,
+body.simple #housionnaMapModeLabel, body.simple #housionnaMapMode,
+body.simple .simulation-panel, body.simple .section-rule:has(+ .simulation-panel),
+body.simple #visualWarning, body.simple #semanticList,
+body.simple .right-panel > .section-rule, body.simple .right-panel > .section-title,
+body.simple #legendSemantics, body.simple .bottom-note, body.simple .section-count,
+body.simple label[for="seriesAxis"], body.simple #seriesAxis, body.simple #seriesFilters, body.simple #seriesBatch {
+  display: none !important;
+}
+
+/* Showcase: no engineering readouts. The receiver details move into the right-panel result card. */
+body.simple #diagnosticsBtn, body.simple #analysisBtn, body.simple .right-footer, body.simple #sceneMeta,
+body.simple label[for="receiverSelect"], body.simple #receiverSelect, body.simple #receiverMetrics,
+body.simple label[for="pathFilter"], body.simple #pathFilter, body.simple .path-actions,
+body.simple label:has(> input[data-layer="shell"]), body.simple label:has(> input[data-layer="plants"]),
+body.simple label:has(> input[data-layer="rfProxy"]), body.simple label[for="mapOpacity"], body.simple #mapOpacity {
+  display: none !important;
+}
+.study-howto { margin: 14px 0 0; line-height: 1.5; }
+body.simple .viewport-legend { position: absolute; left: 16px; bottom: 52px; width: min(300px, calc(100% - 32px)); margin: 0; z-index: 3;
+  background: color-mix(in srgb, var(--bg, #0a0a0b) 82%, transparent); border: 1px solid var(--line, #2a2a2e); border-radius: 6px; padding: 10px 12px; }
+body.simple .viewport-legend.hidden { display: none; }
+body.simple .scale-chip { display: none; }
+body.simple #detailType { display: none; }
+@media (max-width: 620px) {
+  body.simple #captureBtn { display: none; }
+  body.simple .viewport-legend { bottom: 44px; }
+  /* The drawers sit above the scene labels and are opaque, so the controls stay readable. */
+  body.simple .left-panel, body.simple .right-panel { z-index: 30 !important; background: #111214 !important; }
+}
+
+/* Busy cursor while a run loads (set by main.js); progress keeps the page usable, unlike wait. */
+html.busy, html.busy * { cursor: progress !important; }

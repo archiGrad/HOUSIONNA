@@ -138,7 +138,7 @@ class HousionnaImportManager:
             if summary.get("scenario_order"):
                 housionna_viewer_payload(self.project_root, import_id, summary["scenario_order"][0])
             if self.jobs[job_id]["rebuild_scene"]:
-                self._set_stage(job_id, "updating_viewer", "Updating the existing digital-twin scene data")
+                self._set_stage(job_id, "updating_viewer", "Updating the existing viewer scene data")
                 build_viewer_scene(self.project_root)
             document = read_import(self.project_root, import_id)
             run_metadata = document.get("run_metadata", {})

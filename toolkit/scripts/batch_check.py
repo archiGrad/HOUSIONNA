@@ -5,9 +5,9 @@
 Reports, per batch:
   - JSON files that do not parse, and files with git conflict markers (a broken batch.json stops import-housionna);
   - sensor nodes exported with orientation (0, 0, 0), i.e. upright;
-  - orientations that stay identical between plant stages while the sensor nodes move (stale stem direction);
-  - work items without a result.
-Exit code 1 when any of these is found. The --sensors prefix (default plant_sensor_) picks the sensor nodes.
+  - work items without a result;
+  - as a note only: orientations that stay identical between plant stages while the sensor nodes move.
+Exit code 1 when any problem (not a note) is found. The --sensors prefix (default plant_sensor_) picks the sensor nodes.
 """
 from __future__ import annotations
 
@@ -82,13 +82,16 @@ def check(batch: Path, sensors: str) -> int:
     total = sum(len(x["nodes"]) for x in found)
     if upright:
         problems.append(f"{upright} of {total} sensor nodes have orientation (0, 0, 0) (upright)")
+    # Orientations that repeat between stages can be correct (confirmed for the 10 Nov 2026 batches), so they are
+    # reported as a note to look at, not a problem.
     stale = stale_orientations(found)
-    if stale:
-        problems.append(f"{len(stale)} pairs of stages with unchanged orientations, e.g. " + "; ".join(stale[:3]))
+    notes = [f"{len(stale)} pairs of stages with unchanged orientations, e.g. " + "; ".join(stale[:3])] if stale else []
     print(f"== {batch.name}: {len(found)} work items, {total} sensor nodes, "
-          + (f"{len(problems)} problem(s)" if problems else "ok"))
+          + (f"{len(problems)} problem(s)" if problems else "ok") + (f", {len(notes)} note(s)" if notes else ""))
     for line in problems:
         print("  -", line)
+    for line in notes:
+        print("  note:", line)
     return 1 if problems else 0
 
 

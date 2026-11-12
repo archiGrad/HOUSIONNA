@@ -7,17 +7,27 @@ import './style.css';
 import './housionna.css';
 import './theme.css';
 import './dramco.css';
+import './simple.css';
+import {STUDIES,PARAMS,studyOfBatch} from './studies.js';
 
 const app = document.querySelector('#app');
 app.innerHTML = `
   <header class="topbar">
-    <div class="brand"><img class="brand-logo" src="dramco-mark-white.png" alt="DRAMCO" width="32" height="32"><div><b>HOUSIONNA</b><span>INDOOR VERTICAL FARM TWIN</span></div></div>
+    <div class="brand"><img class="brand-logo" src="dramco-mark-white.png" alt="DRAMCO" width="32" height="32"><div><b>HOUSIONNA</b><span>PLANT SENSOR RF STUDIES</span></div></div>
     <div class="top-context"><span class="live-dot"></span><span id="scenarioHeading">Loading scene data</span><span class="separator">/</span><span id="frequencyHeading">RF propagation study</span></div>
     <div class="top-actions"><span id="visualWarning" class="visual-warning">VISUAL PLANTS ≠ RF MODEL</span><button id="layersBtn" class="quiet-button panel-button" aria-expanded="true">Layers</button><button id="inspectorBtn" class="quiet-button panel-button" aria-expanded="true">Inspector</button><button id="analysisBtn" class="quiet-button" aria-pressed="false" title="Black background, flat colours, ray hit points">Analysis view</button><button id="captureBtn" class="quiet-button">Capture view</button></div>
   </header>
   <main class="workspace">
     <aside class="left-panel">
       <div class="panel-heading"><div><p class="eyebrow">SCENE CONFIGURATION</p><h1 id="environmentHeading">Vertical farm</h1></div><span id="scenarioTag" class="tag">RF SCENE</span></div>
+      <section id="studyPanel" class="study-panel" aria-label="Choose a study">
+        <label class="field-label" for="studySelect">Study</label>
+        <select id="studySelect" class="select-control"></select>
+        <p id="studyAbout" class="muted-copy study-about"></p>
+        <div id="studyParams" class="study-params"></div>
+        <div id="studySensorSlot"></div>
+        <div id="studySlice" class="study-param"></div>
+      </section>
       <label class="field-label" for="sceneSourceSelect">Scene source</label>
       <select id="sceneSourceSelect" class="select-control"><option value="builtin">Built-in demo</option><option value="housionna">HOUSIONNA</option></select>
       <div id="builtinSceneControls">
@@ -37,6 +47,7 @@ app.innerHTML = `
           <p id="seriesBatch" class="series-batch muted-copy hidden"></p>
           <label class="field-label" for="seriesMetric">Value</label>
           <select id="seriesMetric" class="select-control">
+            <option value="best_link">Path gain to best gateway (dB)</option>
             <option value="median_map">Median radio map (dB)</option>
             <option value="mean_link">Mean link gain over RX (dB)</option>
             <option value="reached">Reached map cells (%)</option>
@@ -201,10 +212,44 @@ let housionnaRuns = [], housionnaImports = [], housionnaImportBusy = false;
 // The published website (run.py publish) is the same build with <html data-site="static">: it reads plain JSON
 // files next to the page and has no Python server, so import, rerun and simulation controls are hidden.
 const STATIC_SITE = document.documentElement.dataset.site === 'static';
-const SCENE_URL = STATIC_SITE ? 'data/viewer_scene.json' : '/outputs/digital_twin/viewer_scene.json';
+// Simple mode is the default: only the batches in studies.js, picked by study and parameter. ?advanced (local
+// only) brings back every run, the built-in demo scenes, import, live Sionna reruns and run comparison.
+const SIMPLE = STATIC_SITE || !new URLSearchParams(location.search).has('advanced');
+document.body.classList.toggle('simple', SIMPLE);
+const STUDY_BATCHES = new Set(STUDIES.map((study)=>study.batch));
+const SCENE_URL = STATIC_SITE ? 'data/viewer_scene.json.gz' : '/outputs/digital_twin/viewer_scene.json';
 const importViewerUrl = (importId, scenarioKey) => STATIC_SITE
-  ? `data/runs/${encodeURIComponent(importId)}/${encodeURIComponent(scenarioKey)}.json`
+  ? `data/runs/${encodeURIComponent(importId)}/${encodeURIComponent(scenarioKey)}.json.gz`
   : `/api/housionna/imports/${encodeURIComponent(importId)}/viewer?scenario=${encodeURIComponent(scenarioKey)}`;
+// The published site stores its data gzipped (static hosts cap the site size) and shares one geometry file per run.
+// A host that already decoded the file (Content-Encoding: gzip) hands over plain JSON, so check the gzip magic bytes.
+async function siteJson(url) {
+  const response=await fetch(url);
+  if(!response.ok)throw new Error(`HTTP ${response.status} while requesting ${url}`);
+  const bytes=new Uint8Array(await response.arrayBuffer());
+  const plain=bytes[0]===0x1f&&bytes[1]===0x8b
+    ?await new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'))).text()
+    :new TextDecoder().decode(bytes);
+  return JSON.parse(plain);
+}
+// Geometry is stored once by content hash (data/assets/<hash>.json.gz); many runs share the same room and plants.
+const siteAssetFiles=new Map(),siteAssetRefs=new Map();
+const cached=(map,key,load)=>{if(!map.has(key))map.set(key,load().catch((error)=>{map.delete(key);throw error;}));return map.get(key);};
+// Run files are small (about 90 kB); keep the recent ones so going back, and prefetched neighbours, open at once.
+const siteRuns=new Map(),SITE_RUN_CACHE=40;
+async function siteRun(importId,scenarioKey) {
+  const run=importViewerUrl(importId,scenarioKey);
+  if(!siteRuns.has(run)&&siteRuns.size>=SITE_RUN_CACHE)siteRuns.delete(siteRuns.keys().next().value);
+  const [refs,body]=await Promise.all([
+    cached(siteAssetRefs,importId,()=>siteJson(`data/runs/${encodeURIComponent(importId)}/assets.json`)),
+    cached(siteRuns,run,()=>siteJson(run))]);
+  const assets={};
+  await Promise.all(Object.entries(refs).flatMap(([kind,items])=>Object.entries(items).map(async([ref,hash])=>{
+    (assets[kind]??={})[ref]=await cached(siteAssetFiles,hash,()=>siteJson(`data/assets/${hash}.json.gz`));
+  })));
+  return {...body,assets};
+}
+const loadScene=async()=>STATIC_SITE?siteJson(SCENE_URL):(await apiJson(SCENE_URL)).body;
 const housionnaOriginalResults = new Map(), housionnaLatestResults = new Map();
 let renderedGeometry=null;
 let frameDirty=true;
@@ -244,6 +289,9 @@ function initRenderer() {
   camera = new THREE.PerspectiveCamera(42, 1, 0.1, 120);
   camera.up.set(0, 0, 1);
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, preserveDrawingBuffer: true });
+  // Checking every shader for errors waits on the GPU at each compile (about 0.4 s per run switch); the
+  // research mode keeps the check, the showcase does not need it.
+  renderer.debug.checkShaderErrors=!SIMPLE;
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.7));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -719,16 +767,21 @@ function applyHousionnaGeometryMode(scenario) {
     material.flatShading=true;
     // Glass walls stay see-through in Solid mode, so a greenhouse does not hide the rack and plants inside it.
     const glass=mode==='solid'&&(String(item.metadata?.itu_type||'').toLowerCase().includes('glass')||String(item.category||'')==='greenhouse_shell');
+    // Simple mode: the greenhouse frame, glazing and sprayers become a faint outline so the crop and map stay in view.
+    const ghost=SIMPLE&&(glass||isRoomShell(item));
     material.wireframe=mode==='wireframe';
-    material.transparent=mode==='transparent'||mode==='wireframe'||glass;
-    material.opacity=mode==='transparent'?0.32:(mode==='wireframe'?0.82:(glass?0.16:1));
-    material.depthWrite=mode!=='transparent'&&mode!=='wireframe'&&!glass;
+    material.transparent=mode==='transparent'||mode==='wireframe'||glass||ghost;
+    material.opacity=ghost?(glass?0.04:0.08):mode==='transparent'?0.32:(mode==='wireframe'?0.82:(glass?0.16:1));
+    material.depthWrite=mode!=='transparent'&&mode!=='wireframe'&&!glass&&!ghost;
     material.side=THREE.DoubleSide;
     material.needsUpdate=true;
     mesh.renderOrder=mode==='transparent'||glass?4:1;
     legendRows.push(`<div><i style="--object-color:${color}"></i><span>${esc(item.name||item.id)}</span><b>${esc(item.material_key||item.metadata?.material_name||item.category)}</b></div>`);
   });
   if(legend){legend.innerHTML=legendRows.join('');legend.classList.toggle('hidden',mode!=='object-colors'||!legendRows.length);}
+}
+function isRoomShell(item) {
+  return item.category==='greenhouse_shell'||/frame|sprayer|window|roof|wall/i.test(String(item.name||item.id||''));
 }
 function sameImportedRunEntries(scenario) {
   if(scenario?.source_type!=='housionna')return [];
@@ -777,7 +830,7 @@ function updateSceneSemantics(scenario) {
     $('#legendSemantics').innerHTML='HOUSIONNA PLY <b>RF GEOMETRY</b> &nbsp; DEVICE POSITIONS <b>EXPORTED</b> &nbsp; TRIANGLE MAP <b>SAVED PATH GAIN</b>';
     const shell=$('[data-layer="shell"]').closest('label');
     shell.hidden=true;
-    $('[data-layer="structure"]').closest('label').querySelector('.toggle-copy').lastChild.textContent=' Exported scene geometry';
+    $('[data-layer="structure"]').closest('label').querySelector('.toggle-copy').lastChild.textContent=SIMPLE?' Greenhouse and crop':' Exported scene geometry';
     $('[data-layer="plants"]').closest('label').hidden=true;
   } else {
     $('#semanticList').innerHTML='<div><i class="swatch swatch-glass"></i><span>Enclosure panels</span><b>VISUAL + RF</b></div><div><i class="swatch swatch-metal"></i><span>Rack, trays & lights</span><b>VISUAL + RF</b></div><div><i class="swatch swatch-plant"></i><span>Detailed plants</span><b>VISUAL ONLY</b></div><div><i class="swatch swatch-rf"></i><span>Coarse RF plant zones</span><b>RF ONLY</b></div><div><i class="swatch swatch-device"></i><span>TX / RX</span><b>RF</b></div>';
@@ -795,6 +848,7 @@ function buildScenario({preserveView = false} = {}) {
     buildDeviceMarkers(scenario);
     updateMap();setLayerVisibility();setScenarioSummary(scenario);buildReceiverSelector(scenario);refreshReceiverMetrics(scenario);refreshPaths();
     $('#scenarioHeading').textContent=scenario.label;$('#frequencyHeading').textContent=`${(scenario.frequency_hz/1e9).toFixed(2)} GHz propagation study`;
+    studyHeadings(scenario);
     $('#scenarioTag').textContent=scenario.material_status;
     $('#scenarioDescription').textContent=scenario.description||'Simulation-backed scene.';
     const triangles=scenario.geometry.objects.reduce((sum,item)=>sum+(item.triangle_count??item.faces?.length??0),0);
@@ -851,6 +905,7 @@ function buildScenario({preserveView = false} = {}) {
   $('#scenarioTag').textContent=scenario.material_status;
   $('#scenarioDescription').textContent=scenario.description||'Simulation-backed scene.';
   $('#environmentHeading').textContent=scenario.environment?.label||'CEA greenhouse';
+  studyHeadings(scenario);
   const d=sceneSize(scenario);
   const triangleCount=scenario.geometry.objects.reduce((sum,item)=>sum+(item.triangle_count??item.faces?.length??0),0);
   $('#sceneMeta').textContent=scenario.source_type==='housionna'
@@ -952,7 +1007,9 @@ function setLayerVisibility() {
   if(layerGroups.boundary)layerGroups.boundary.visible=$('#sceneBoundsToggle').checked;
   const scenario=data.scenarios[activeScenario];
   const labelMode=scenario?.source_type==='housionna'?$('#deviceLabelMode').value:'all';
-  const selectedDeviceNames=new Set([scenario?.transmitter?.name,...(scenario?.receivers||[]).map(row=>row.name)]);
+  // Simple mode labels the sensor and the gateway it would use; with 23 gateways every label would hide the scene.
+  const selectedDeviceNames=new Set([scenario?.transmitter?.name,...(SIMPLE&&scenario?.receivers?.length>1
+    ?[bestGateway(scenario)?.receiver]:(scenario?.receivers||[]).map(row=>row.name))]);
   layerGroups.devices.traverse(item=>{
     if(!item.isCSS2DObject)return;
     const label=item.userData||{};
@@ -963,12 +1020,13 @@ function setLayerVisibility() {
   $('#measurementMeshToggle').disabled=!measurementAvailable;
   if(!measurementAvailable)$('#measurementMeshToggle').checked=false;
   $('#mapControls').classList.toggle('hidden',!$('[data-layer="map"]').checked);
+  if(SIMPLE)$('#mapLegend').classList.toggle('hidden',!$('[data-layer="map"]').checked);
   const imported=scenario?.source_type==='housionna';
   const hasRfPlants=scenario?.geometry.objects.some(item=>item.category==='rf_plant_zone'||item.category==='vegetation');
   $('[data-layer="shell"]').closest('label').hidden=imported;
   $('[data-layer="plants"]').closest('label').hidden=imported||!scenario?.geometry.objects.some(item=>item.category==='vegetation');
   $('[data-layer="rfProxy"]').closest('label').hidden=imported||!hasRfPlants;
-  $('[data-layer="structure"]').closest('label').querySelector('.toggle-copy').lastChild.textContent=imported?' Exported scene geometry':' Rack, trays & lights';
+  $('[data-layer="structure"]').closest('label').querySelector('.toggle-copy').lastChild.textContent=imported?(SIMPLE?' Greenhouse and crop':' Exported scene geometry'):' Rack, trays & lights';
   $('#rfStatus').textContent=imported
     ?'Showing the exported HOUSIONNA scene meshes and saved RF results. No decorative plants are generated.'
     :$('[data-layer="rfProxy"]').checked
@@ -1121,8 +1179,58 @@ function updateMap() {
   layerGroups.map.visible=$('[data-layer="map"]').checked;
 }
 
+// The exported measurement surface is a lattice of planes (horizontal at several heights, vertical along x and y).
+// Simple mode shows one plane at a time; each face is classified once by its normal axis and position.
+const facePlanes=new WeakMap();
+function planesOf(meshData) {
+  if(facePlanes.has(meshData))return facePlanes.get(meshData);
+  const keys=new Array(meshData.faces.length),planes=new Map();
+  meshData.faces.forEach((face,index)=>{
+    const [a,b,c]=face.map((vertex)=>meshData.vertices_m[vertex]);
+    if(!a||!b||!c){keys[index]=null;return;}
+    const u=[b[0]-a[0],b[1]-a[1],b[2]-a[2]],v=[c[0]-a[0],c[1]-a[1],c[2]-a[2]];
+    const n=[Math.abs(u[1]*v[2]-u[2]*v[1]),Math.abs(u[2]*v[0]-u[0]*v[2]),Math.abs(u[0]*v[1]-u[1]*v[0])];
+    const axis=n.indexOf(Math.max(...n)),coord=Math.round((a[axis]+b[axis]+c[axis])/3*20)/20;
+    const key=`${axis}:${coord.toFixed(2)}`;keys[index]=key;
+    planes.set(key,{axis,coord,count:(planes.get(key)?.count||0)+1});
+  });
+  const result={keys,planes:[...planes.entries()].filter(([,p])=>p.count>=50).map(([key,p])=>({key,...p}))};
+  facePlanes.set(meshData,result);return result;
+}
+let mapSlice='sensor';
+const SIMPLE_MAP_RANGE=[-80,-20];   // fixed in simple mode, so colours compare between runs and studies
+function mapSliceOptions(scenario) {
+  const meshData=scenario?.radio_map?.surfaces?.[0]?.mesh;
+  if(!meshData?.faces)return [];
+  const planes=planesOf(meshData).planes,floor=Math.min(...planes.filter((p)=>p.axis===2).map((p)=>p.coord));
+  const options=planes.filter((p)=>p.axis===2).sort((a,b)=>a.coord-b.coord)
+    .map((p)=>({key:p.key,label:p.coord===floor?'Floor':`${(p.coord-floor).toFixed(1)} m`}));
+  return [{key:'sensor',label:'Through sensor'},...options];
+}
+function selectedSlicePlanes(scenario,meshData) {
+  const planes=planesOf(meshData).planes;
+  if(mapSlice!=='sensor')return new Set([mapSlice]);
+  // A vertical plane facing the default camera (normal along y), the one closest to the sensor.
+  const y=Number(scenario.transmitter?.position_m?.[1]||0);
+  const best=planes.filter((p)=>p.axis===1).sort((a,b)=>Math.abs(a.coord-y)-Math.abs(b.coord-y))[0];
+  return new Set(best?[best.key]:planes.map((p)=>p.key));
+}
+function renderMapSlice(scenario) {
+  const target=$('#studySlice');if(!SIMPLE||!target)return;
+  const options=mapSliceOptions(scenario);
+  if(!options.some((o)=>o.key===mapSlice))mapSlice='sensor';
+  target.innerHTML=options.length?`<span class="field-label" id="studySliceLabel">Radio map slice</span><div class="study-chips" role="group" aria-labelledby="studySliceLabel">${options.map((o)=>`<button type="button" class="small-button study-chip" data-slice="${esc(o.key)}" aria-pressed="${o.key===mapSlice}">${esc(o.label)}</button>`).join('')}</div>`:'';
+  target.querySelectorAll('[data-slice]').forEach((chip)=>chip.addEventListener('click',()=>{
+    mapSlice=chip.dataset.slice;
+    target.querySelectorAll('[data-slice]').forEach((other)=>other.setAttribute('aria-pressed',String(other===chip)));
+    if(!$('[data-layer="map"]').checked){$('[data-layer="map"]').checked=true;setLayerVisibility();}
+    updateMap();
+  }));
+}
+
 function updateTriangleRadioMap(scenario, map) {
-  const {min:minVal,max:maxVal,count:cellCount}=finiteRange(map.surfaces.flatMap(surface=>surface.values_db||[]));
+  let {min:minVal,max:maxVal,count:cellCount}=finiteRange(map.surfaces.flatMap(surface=>surface.values_db||[]));
+  if(SIMPLE&&map.quantity!=='path_gain_difference')[minVal,maxVal]=SIMPLE_MAP_RANGE;
   const range = Math.max(1e-6, maxVal - minVal);
   const centerZ = Number(map.center_m?.[2] || 0);
   const heightControl = $('#mapHeight');
@@ -1151,13 +1259,15 @@ function updateTriangleRadioMap(scenario, map) {
     const positions=mesh?null:new Float32Array(meshData.faces.length*9);
     const colors=mesh?mesh.geometry.getAttribute('color').array:new Float32Array(meshData.faces.length*12);
     let validCells = 0;
+    const sliceKeys=SIMPLE?planesOf(meshData).keys:null,shown=SIMPLE?selectedSlicePlanes(scenario,meshData):null;
     for (let faceIndex = 0; faceIndex < meshData.faces.length; faceIndex++) {
       const rawValue = surface.values_db?.[faceIndex];
       const value = Number(rawValue);
-      const valid=rawValue!=null&&Number.isFinite(value);
+      const valid=rawValue!=null&&Number.isFinite(value)&&(!shown||shown.has(sliceKeys[faceIndex]));
       const difference=map.quantity==='path_gain_difference';
       const maxAbs=Math.max(Math.abs(minVal),Math.abs(maxVal),1e-12);
-      const color=valid?(difference?diffColor(value/maxAbs):absoluteColor((value-minVal)/range)).map(channel=>channel/255):[0,0,0];
+      // Vertex colours are linear in three.js; the ramps are sRGB, so convert them or the map renders washed out.
+      const color=valid?(difference?diffColor(value/maxAbs):absoluteColor((value-minVal)/range)).map(channel=>srgbToLinear(channel/255)):[0,0,0];
       const face = meshData.faces[faceIndex];
       for (const [corner,vertexIndex] of face.entries()) {
         const point = meshData.vertices_m[vertexIndex];
@@ -1174,7 +1284,7 @@ function updateTriangleRadioMap(scenario, map) {
     geometry.setAttribute('color', new THREE.BufferAttribute(colors, 4).setUsage(THREE.DynamicDrawUsage));
     const material = new THREE.MeshBasicMaterial({
       vertexColors: true, transparent: true, opacity: Number($('#mapOpacity').value) / 100,
-      side: THREE.DoubleSide, depthWrite: false,
+      side: THREE.DoubleSide, depthWrite: false, toneMapped: false,
     });
     mesh = new THREE.Mesh(geometry, material);
     heatMesh.add(mesh);
@@ -1189,6 +1299,11 @@ function updateTriangleRadioMap(scenario, map) {
   const mapSource=map.metadata?`SIONNA RT ${esc(map.metadata.quality||'rerun')} · ${Number(map.metadata.samples_per_tx||0).toLocaleString()} samples`:'ORIGINAL HOUSIONNA EXPORT';
   const mapInputs=map.metadata?`${(map.metadata.frequency_hz/1e9).toFixed(3)} GHz · TX [${map.metadata.tx_position_m.map(v=>Number(v).toFixed(2)).join(', ')}] m · depth ${map.metadata.solver.max_depth}`:'Source frequency and TX placement';
   const difference=map.quantity==='path_gain_difference';
+  if(SIMPLE&&!difference){
+    $('#mapLegend').innerHTML=`<div class="legend-title">PATH GAIN FROM ${esc(scenario.transmitter.name.toUpperCase())} · dB</div><div class="legend-ramp abs-ramp"></div><div class="legend-range"><span>${minVal} weak</span><span>${(minVal+maxVal)/2}</span><span>strong ${maxVal}</span></div>`;
+    layerGroups.map.visible=$('[data-layer="map"]').checked;
+    return;
+  }
   $('#mapLegend').innerHTML = `<div class="legend-title">${difference?'RERUN − ORIGINAL':'TRIANGLE PATH GAIN'} TX ${esc(scenario.transmitter.name)} dB</div><div class="legend-range"><span>${mapSource}</span></div><div class="legend-ramp ${difference?'diff-ramp':'abs-ramp'}"></div><div class="legend-range"><span>${minVal.toFixed(1)}</span><span>${difference?'0.0':((minVal + maxVal) / 2).toFixed(1)}</span><span>${maxVal.toFixed(1)}</span></div>`;
   layerGroups.map.visible = $('[data-layer="map"]').checked;
   $('#mapLegend').insertAdjacentHTML('beforeend',`<div class="map-inputs">${esc(mapInputs)} · ${cellCount.toLocaleString()} valid / ${map.surfaces.reduce((n,s)=>n+s.values_db.length,0).toLocaleString()} triangles. Missing cells are transparent.</div>`);
@@ -1203,6 +1318,7 @@ function setRadioMapOpacity(opacity) {
   });
 }
 
+const srgbToLinear=(c)=>c<=0.04045?c/12.92:Math.pow((c+0.055)/1.055,2.4);
 function absoluteColor(t) {
   const stops=[[42,72,112],[42,125,142],[49,169,128],[156,201,82],[244,222,70]];
   const v=Math.max(0,Math.min(0.9999,t))*(stops.length-1), i=Math.floor(v), f=v-i;
@@ -1268,7 +1384,9 @@ function selectObject(object) {
   }
   const scenario=data.scenarios[activeScenario],d=sceneSize(scenario),imported=scenario.source_type==='housionna';
   let title=object.name||'Scene',type='OBJECT',subtitle='Selected element',body='',selectedReceiverMetric=null;
-  if(object.kind==='scene') {
+  if(object.kind==='scene'&&SIMPLE&&imported) {
+    ({title,type,subtitle,body}=studyResultCard(scenario));
+  } else if(object.kind==='scene') {
     const triangleCount=scenario.geometry.objects.reduce((sum,item)=>sum+(item.triangle_count??item.faces?.length??0),0);
     const plantCount=scenario.geometry.objects.filter(item=>item.category==='rf_plant_zone'||item.category==='vegetation').length;
     type='SCENE';title=scenario.environment?.label||'CEA greenhouse';subtitle=`${d.width.toFixed(2)} x ${d.depth.toFixed(2)} x ${d.height.toFixed(2)} m`;
@@ -1309,7 +1427,7 @@ function selectObject(object) {
     type='MEASUREMENT MESH';title=object.detail.surface;subtitle=`${Number(object.detail.triangle_count).toLocaleString()} source triangles`;
     body=showValue('Surface',object.detail.surface)+showValue('Triangles',object.detail.triangle_count)+showValue('Units',object.detail.units)+showValue('Coordinates','Source XYZ metres / no viewer translation');
   }
-  if(object.kind==='scene'&&scenario.provenance)body+=showValue('Source',scenario.provenance.pipeline)+showValue('Source Sionna RT',scenario.provenance.source_sionna_rt||'unknown');
+  if(object.kind==='scene'&&scenario.provenance&&!(SIMPLE&&imported))body+=showValue('Source',scenario.provenance.pipeline)+showValue('Source Sionna RT',scenario.provenance.source_sionna_rt||'unknown');
   if(object.kind==='receiver'&&selectedReceiverMetric?.link_metrics)body+=showValue('Coherent link gain',formatDb(selectedReceiverMetric.link_metrics.gain_db_coherent))+showValue('Incoherent link gain',formatDb(selectedReceiverMetric.link_metrics.gain_db_incoherent))+showValue('Delay spread',selectedReceiverMetric.link_metrics.delay_spread_ns==null?'\u2014':`${Number(selectedReceiverMetric.link_metrics.delay_spread_ns).toFixed(3)} ns`)+showValue('CFR samples',selectedReceiverMetric.link_metrics.cfr_db?.length||0);
   if(object.kind==='radio-map'&&object.detail.surface)body=showValue('Measurement surface',object.detail.surface)+showValue('Valid triangles',object.detail.cell_count||0)+showValue('Scenario',scenario.label)+showValue('Values','Saved HOUSIONNA/Sionna path gain')+showValue('Display','One color per source triangle; missing cells are omitted');
   $('#detailTitle').textContent=title;$('#detailType').textContent=type;$('#detailSubtitle').textContent=subtitle;$('#detailBody').innerHTML=body;
@@ -2118,6 +2236,7 @@ function housionnaGroups() {
     if(scenario?.source_type!=='housionna')continue;
     const id=scenario.import_id||scenario.run_metadata?.import_id;
     if(!id)continue;
+    if(SIMPLE&&!STUDY_BATCHES.has(scenario.run_metadata?.batch?.id))continue;
     if(!groups.has(id))groups.set(id,{import_id:id,run_id:scenario.run_metadata?.run_id||scenario.provenance?.run_folder_name||id,
       scene_name:scenario.run_metadata?.scene_name,imported_at_utc:scenario.run_metadata?.imported_at_utc,
       frequency_hz:scenario.frequency_hz,batch_id:scenario.run_metadata?.batch?.id||null,
@@ -2231,6 +2350,10 @@ function runChanges(previous,current) {
 // One series (a value per run of this scene), so no legend box: the Value selector names it.
 // Colour is DRAMCO --data-1, the guide's first data token for dark backgrounds (contrast checked on --card).
 const SERIES_METRICS={
+  best_link:{label:'Path gain to best gateway',unit:'dB',value:(scenario)=>{
+    if(scenario.stub)return scenario.summary?.best_link_db??null;
+    const gains=(scenario.links||[]).map((link)=>link.gain_db_incoherent??link.gain_db_coherent).filter((value)=>value!=null);
+    return gains.length?Math.max(...gains):null;}},
   median_map:{label:'Median radio map',unit:'dB',value:(scenario)=>medianDb(scenario)},
   mean_link:{label:'Mean link gain over RX',unit:'dB',value:(scenario)=>{
     if(scenario.stub)return scenario.summary?.mean_link_db??null;
@@ -2240,7 +2363,7 @@ const SERIES_METRICS={
     if(scenario.stub)return scenario.summary?.reached_pct??null;
     const values=(scenario.radio_map?.surfaces||[]).flatMap((surface)=>surface.values_db||[]);
     return values.length?100*values.filter((value)=>value!=null).length/values.length:null;}},
-  paths:{label:'Path count',unit:'',value:(scenario)=>scenario.stub?scenario.summary?.path_count??null:(scenario.paths||[]).length},
+  paths:{label:'Path count',unit:'',value:(scenario)=>scenario.stub?scenario.summary?.path_count??null:(scenario.published_path_count??(scenario.paths||[]).length)},
 };
 const SERIES_AXES={
   surface_x:{label:'Measurement surface x',unit:'m',value:(s)=>{const b=surfaceBounds(s);return b?(b.x_min+b.x_max)/2:null;}},
@@ -2256,7 +2379,8 @@ function niceTicks(min,max,count=4) {
   if(!(max>min)){const pad=Math.abs(min)*0.05||1;min-=pad;max+=pad;}
   const raw=(max-min)/count,power=10**Math.floor(Math.log10(raw)),step=[1,2,2.5,5,10].map((f)=>f*power).find((v)=>v>=raw);
   const start=Math.floor(min/step)*step,ticks=[];
-  for(let value=start;value<=max+step*0.5;value+=step)ticks.push(+value.toFixed(10));
+  // Up to the first tick at or above max, so the top point never lies outside the axis.
+  for(let value=start;;value+=step){ticks.push(+value.toFixed(10));if(value>=max-step*1e-9||ticks.length>50)break;}
   return {ticks,min:ticks[0],max:ticks.at(-1)};
 }
 // A batch (one Houdini cook) is its own series in work-item order; other runs group by scene name.
@@ -2291,10 +2415,15 @@ function renderRunSeries(scenario) {
   if(fresh||(batch&&seriesFilter.current!==currentId&&params.some((key)=>!['any',own[key]].includes(seriesFilter.values[key]))))
     seriesFilter={batch:batch.id,current:currentId,values:Object.fromEntries(params.map((key)=>[key,own[key]]))};
   seriesFilter.current=currentId;
-  $('#seriesSummary').textContent=batch?'Across this batch':'Across runs of this scene';
+  $('#seriesSummary').textContent=SIMPLE?'Across this study':batch?'Across this batch':'Across runs of this scene';
   // Offer an x axis for every quantity that actually varies across this series.
   const axisSelect=$('#seriesAxis'),kept=axisSelect.value;
-  const paramAxes=params.map((key)=>[`param:${key}`,{label:paramLabel(key),unit:'',param:key,value:(run,group)=>group?.parameters?.[key]??null}]);
+  const paramAxes=params.map((key)=>{
+    const custom=PARAMS[key]?.axis,raw=(group)=>group?.parameters?.[key]??null;
+    return [`param:${key}`,custom
+      ?{label:custom.label,unit:custom.unit,param:key,value:(run,group)=>raw(group)==null?null:custom.value(raw(group),run)}
+      :{label:paramName(key),unit:'',param:key,value:(run,group)=>raw(group)}];
+  });
   const varying=Object.entries(SERIES_AXES).filter(([,axis])=>{
     const values=allPoints.filter((p)=>p.run).map((p)=>axis.value(p.run)).filter((v)=>v!=null).map((v)=>v.toFixed(3));
     return new Set(values).size>1;});
@@ -2306,7 +2435,8 @@ function renderRunSeries(scenario) {
   // exported batch can have a single run along the attribute Houdini lists as wedged); ties go to that attribute.
   const sliceSize=(key)=>allPoints.filter((p)=>params.every((other)=>other===key||p.group.parameters?.[other]===own[other])).length;
   const best=paramAxes.map(([key,axis])=>[key,sliceSize(axis.param)+(key===wedged?0.5:0)]).sort((a,b)=>b[1]-a[1])[0]?.[0];
-  axisSelect.value=!fresh&&has(kept)?kept:best||(has(wedged)?wedged:has(kept)?kept:'order');
+  const studyAxis=SIMPLE&&studyOfBatch(batch?.id)?.axis?`param:${studyOfBatch(batch.id).axis}`:null;
+  axisSelect.value=!fresh&&has(kept)?kept:has(studyAxis)?studyAxis:best||(has(wedged)?wedged:has(kept)?kept:'order');
   const metric=SERIES_METRICS[$('#seriesMetric').value]||SERIES_METRICS.median_map,axisKey=axisSelect.value,axis=axes[axisKey];
   const filterKeys=params.filter((key)=>key!==axis?.param);
   $('#seriesFilters').innerHTML=filterKeys.map((key)=>{
@@ -2331,7 +2461,10 @@ function renderRunSeries(scenario) {
   if(plotted.length<2){chart.innerHTML=`<p class="muted-copy">Fewer than two runs ${filterKeys.length?'match these filters and ':''}have this value for the selected transmitter.</p>`;return;}
   const width=Math.max(220,chart.clientWidth||250),height=168,pad={l:38,r:12,t:12,b:34};
   const xs=niceTicks(Math.min(...plotted.map((r)=>r.x)),Math.max(...plotted.map((r)=>r.x)),axis?4:Math.min(plotted.length-1,5));
-  const ys=niceTicks(Math.min(...plotted.map((r)=>r.y)),Math.max(...plotted.map((r)=>r.y)),3);
+  // In simple mode a dB axis spans at least 10 dB, so a 0.3 dB wobble does not look like a trend.
+  let yMin=Math.min(...plotted.map((r)=>r.y)),yMax=Math.max(...plotted.map((r)=>r.y));
+  if(SIMPLE&&metric.unit==='dB'&&yMax-yMin<10){const mid=(yMin+yMax)/2;yMin=mid-5;yMax=mid+5;}
+  const ys=niceTicks(yMin,yMax,3);
   const sx=(v)=>pad.l+(v-xs.min)/(xs.max-xs.min||1)*(width-pad.l-pad.r),sy=(v)=>pad.t+(1-(v-ys.min)/(ys.max-ys.min||1))*(height-pad.t-pad.b);
   const xTicks=axis?xs.ticks:xs.ticks.filter((t)=>Number.isInteger(t)&&t>=1&&t<=points.length);
   const current=plotted.find((row)=>row.group.import_id===currentId);
@@ -2385,7 +2518,141 @@ function syncRunStepper(scenario) {
     :`<b>Since ${esc(runLabel(runs[index-1].run_id))}:</b> no change in settings, devices or measurement surface.`;
 }
 
+// ---- Simple mode: pick a study, then its parameters as buttons; the run select below does the loading.
+const paramName=(key)=>PARAMS[key]?.label||paramLabel(key);
+const paramText=(key,value,run)=>(PARAMS[key]?.value||paramValue)(value,run);
+const chipText=(key,value,run)=>(PARAMS[key]?.chip||PARAMS[key]?.value||paramValue)(value,run);
+// The study's own parameter first, the growth stage last.
+const paramOrder=(a,b)=>(a==='plant_stage')-(b==='plant_stage')||a.localeCompare(b);
+function studyRuns(study) { return study?stepperRuns(study.batch):[]; }
+function openStudyRun(group) {
+  if(!group||group.import_id===$('#housionnaRunSelect').value)return;
+  $('#housionnaRunSelect').value=group.import_id;$('#housionnaRunSelect').dispatchEvent(new Event('change'));
+}
+// The run of the study whose parameters match `wanted` exactly, else the one that matches most of them.
+// Fetch the runs one chip away (each parameter one step up or down) for the current sensor, so the next click is
+// instant. Static site only: on the local server every request would make the server build a payload.
+function prefetchStudyNeighbours(scenario) {
+  if(!STATIC_SITE||!SIMPLE||!scenario?.run_metadata)return;
+  const study=studyOfBatch(scenario.run_metadata.batch?.id),own=scenario.run_metadata.parameters||{},runs=studyRuns(study);
+  const targets=new Set();
+  for(const key of Object.keys(own)){
+    const values=[...new Set(runs.map((group)=>group.parameters?.[key]).filter((v)=>v!=null))].sort((a,b)=>a-b);
+    const at=values.indexOf(own[key]);
+    for(const value of [values[at-1],values[at+1]])if(value!=null){
+      const group=closestStudyRun(study,{...own,[key]:value});
+      if(group&&group.import_id!==scenario.import_id)targets.add(group.import_id);
+    }
+  }
+  const tx=scenario.transmitter?.name;
+  const run=()=>{for(const importId of targets)siteRun(importId,housionnaScenarioKey(importId,tx)).catch(()=>{});};
+  (window.requestIdleCallback||((callback)=>setTimeout(callback,300)))(run);
+}
+function closestStudyRun(study,wanted) {
+  const score=(group)=>Object.entries(wanted).filter(([key,value])=>group.parameters?.[key]===value).length;
+  return studyRuns(study).map((group)=>[group,score(group)]).sort((a,b)=>b[1]-a[1])[0]?.[0]||null;
+}
+// Readable headings instead of the batch and work-item id: study, its parameters, the sensor.
+function studyHeadings(scenario) {
+  if(!SIMPLE||!scenario)return;
+  const study=studyOfBatch(scenario.run_metadata?.batch?.id),own=scenario.run_metadata?.parameters||{};
+  const described=Object.keys(own).sort(paramOrder).map((key)=>`${paramName(key)} ${paramText(key,own[key],scenario)}`).join(' · ');
+  $('#environmentHeading').textContent=study?.label||'HOUSIONNA';
+  $('#scenarioHeading').textContent=`${described||study?.label||'Run'} · ${scenario.transmitter?.name||''}`;
+  $('#frequencyHeading').textContent=`${+(scenario.frequency_hz/1e9).toFixed(3)} GHz`;
+}
+function renderStudyControls(scenario) {
+  if(!SIMPLE)return;
+  const study=studyOfBatch(scenario?.run_metadata?.batch?.id);
+  const select=$('#studySelect');
+  if(!select.options.length){
+    select.innerHTML=STUDIES.filter((item)=>studyRuns(item).length).map((item)=>`<option value="${esc(item.key)}">${esc(item.label)}</option>`).join('')
+      ||'<option value="">No study runs imported</option>';
+  }
+  if(study)select.value=study.key;
+  $('#studyAbout').textContent=study?.about||'';
+  const own=scenario?.run_metadata?.parameters||{},runs=studyRuns(study);
+  studyHeadings(scenario);
+  const keys=[...new Set(runs.flatMap((group)=>Object.keys(group.parameters||{})))]
+    .filter((key)=>new Set(runs.map((group)=>JSON.stringify(group.parameters?.[key]??null))).size>1).sort(paramOrder);
+  $('#studyParams').innerHTML=keys.map((key)=>{
+    // A run with each value, for labels that need more than the value (the gateway count of a density).
+    const runOf=(value)=>data.scenarios[runs.find((group)=>group.parameters?.[key]===value)?.scenario_keys?.[0]];
+    const axis=PARAMS[key]?.axis,order=(value)=>axis?.value(value,runOf(value))??value;
+    const values=[...new Set(runs.map((group)=>group.parameters?.[key]).filter((value)=>value!=null))].sort((a,b)=>order(a)-order(b));
+    return `<div class="study-param"><span class="field-label" id="studyParam-${esc(key)}">${esc(paramName(key))}</span>
+      <div class="study-chips" role="group" aria-labelledby="studyParam-${esc(key)}">${values.map((value)=>`<button type="button" class="small-button study-chip" data-param="${esc(key)}" data-value="${esc(JSON.stringify(value))}" aria-pressed="${value===own[key]}">${esc(chipText(key,value,runOf(value)))}</button>`).join('')}</div></div>`;
+  }).join('');
+  $('#studyParams').querySelectorAll('.study-chip').forEach((chip)=>chip.addEventListener('click',()=>{
+    if(chip.getAttribute('aria-pressed')==='true')return;
+    openStudyRun(closestStudyRun(study,{...own,[chip.dataset.param]:JSON.parse(chip.dataset.value)}));
+  }));
+}
+function setupSimpleMode() {
+  if(!SIMPLE)return;
+  // The sensor picker moves up into the study panel; the receivers in these runs are the gateways.
+  $('#studySensorSlot').append($('label[for="housionnaTxSelect"]'),$('#housionnaTxSelect'));
+  $('label[for="housionnaTxSelect"]').textContent='Sensor';
+  $('label[for="receiverSelect"]').textContent='Gateway';
+  $('#seriesSummary').textContent='Across this study';
+  for(const value of ['mean_link','reached','paths'])$(`#seriesMetric option[value="${value}"]`)?.remove();
+  $('#seriesMetric option[value="median_map"]').textContent='Median of the radio map (dB)';
+  $('#seriesMetric').value='best_link';
+  // Showcase defaults: the radio map and the strongest paths are on; the map is nearly opaque.
+  $('[data-layer="map"]').checked=true;$('#pathsToggle').checked=true;$('#pathFilter').value='top5';
+  $('#mapOpacity').value='88';$('#opacityValue').textContent='88%';
+  $('[data-layer="structure"]').closest('label').querySelector('.toggle-copy').lastChild.textContent=' Greenhouse and crop';
+  $('[data-layer="devices"]').closest('label').querySelector('.toggle-copy').lastChild.textContent=' Sensor and gateway';
+  $('.right-panel .eyebrow').textContent='RESULT';
+  $('#layersBtn').textContent='Controls';$('#inspectorBtn').textContent='Result';
+  $('#pathsToggle').nextElementSibling.textContent='Show propagation paths';
+  // The colour scale belongs next to the picture, not at the bottom of the left panel.
+  $('.viewport-wrap').append($('#mapLegend'));$('#mapLegend').classList.add('viewport-legend');
+  // Camera views that only exist for the built-in demo scenes.
+  for(const value of ['selected-object','selected-rx','shelf','tx','RX_A','RX_B','RX_C'])$(`#cameraSelect option[value="${value}"]`)?.remove();
+  const tx=$('#cameraSelect option[value="selected-tx"]');if(tx)tx.textContent='Selected sensor';
+  $('#studySelect').addEventListener('change',(event)=>{
+    const study=STUDIES.find((item)=>item.key===event.target.value);if(!study)return;
+    const stage=data.scenarios[activeScenario]?.run_metadata?.parameters?.plant_stage;
+    openStudyRun(closestStudyRun(study,stage==null?{}:{plant_stage:stage}));
+  });
+}
+// The gateway a sensor would use: the receiver with the highest path gain (incoherent, as in the paper).
+function bestGateway(scenario) {
+  const gain=(row)=>Number(row.link_metrics?.gain_db_incoherent??row.aggregate_path_coefficient_power_db);
+  return (scenario?.receiver_metrics||[]).filter((row)=>row.path_count>0).sort((a,b)=>gain(b)-gain(a))[0]||null;
+}
+// Right panel in simple mode: what this run shows, in plain words, and its sensor-to-gateway link.
+function studyResultCard(scenario) {
+  const study=studyOfBatch(scenario.run_metadata?.batch?.id),own=scenario.run_metadata?.parameters||{};
+  const gain=(row)=>Number(row.link_metrics?.gain_db_incoherent??row.aggregate_path_coefficient_power_db);
+  const best=bestGateway(scenario);
+  let body=Object.keys(own).filter((key)=>PARAMS[key]).map((key)=>showValue(paramName(key),paramText(key,own[key],scenario))).join('');
+  if(own.frequency==null)body+=showValue('Frequency',`${+(Number(scenario.frequency_hz)/1e9).toFixed(3)} GHz`);
+  body+=showValue('Sensor',scenario.transmitter.name);
+  const gateways=scenario.receivers.length;
+  if(best){
+    body+=showValue(gateways>1?`Best of ${gateways} gateways`:'Gateway',best.receiver)
+      +showValue('Path gain to gateway',formatDb(gain(best)))
+      +showValue('Line of sight',best.los_present?'Yes':'No')
+      +showValue('Propagation paths',best.path_count);
+  } else body+=showValue('Gateway','No path found from this sensor');
+  body+=`<p class="study-howto muted-copy">Colours show how strongly this sensor reaches each point of the chosen slice; yellow is strong. Lines are the strongest paths to the gateway. Drag to orbit, scroll or pinch to zoom, click a path for its details.</p>`;
+  return {title:study?.label||'Result',type:'SIONNA RT',subtitle:study?.about||'',body};
+}
+// The run the viewer opens on: the first study's work item at growth stage 2, else its first run.
+function defaultStudyRun() {
+  for(const study of STUDIES){
+    const runs=studyRuns(study);
+    if(runs.length)return runs.find((group)=>group.parameters?.plant_stage===2)||runs[0];
+  }
+  return null;
+}
+
 function renderHousionnaMetadata(scenario) {
+  renderStudyControls(scenario);
+  renderMapSlice(scenario);
+  prefetchStudyNeighbours(scenario);
   syncRunStepper(scenario);
   const target=$('#housionnaRunMetadata');
   if(!scenario||scenario.source_type!=='housionna') {
@@ -2516,7 +2783,7 @@ async function loadHousionnaCatalog() {
 }
 
 async function refreshViewerScene(importId,txName) {
-  const {body:next}=await apiJson(SCENE_URL);
+  const next=await loadScene();
   if(next.schema_version!==1||!next.scenarios)throw new Error('Refreshed viewer data has an unsupported schema');
   resolveViewerAssets(next);data=next;rememberHousionnaStubs();
   await ensureHousionnaScenario(housionnaScenarioKey(importId,txName));
@@ -2641,13 +2908,35 @@ function housionnaScenarioKey(importId,transmitterName) {
   const keys=importScenarioKeys(importId);
   return keys.find((key)=>data.scenarios[key]?.transmitter?.name===transmitterName)||keys[0];
 }
+// Busy cursor: the pointer shows the spinning "progress" cursor from the click on a control until the run it asked
+// for is loaded and drawn, so a slow switch reads as loading rather than as a click that did nothing.
+let busyLoads=0;
+function settleBusy() {
+  // Two frames: the scene is rebuilt right after the load resolves, and the cursor should stay until it is painted.
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    if(busyLoads)return;
+    document.documentElement.classList.remove('busy');document.body.removeAttribute('aria-busy');
+  }));
+}
+function markBusy() {document.documentElement.classList.add('busy');document.body.setAttribute('aria-busy','true');}
+function wireBusyCursor() {
+  const control='button,select,input,label,.study-chip';
+  // pointerdown comes a moment before click, so the cursor changes before a synchronous rebuild blocks the page.
+  window.addEventListener('pointerdown',(event)=>{if(event.target.closest?.(control))markBusy();},true);
+  for(const type of ['click','change','pointerup','pointercancel'])window.addEventListener(type,settleBusy);
+}
 async function ensureHousionnaScenario(key) {
   const stub=data.scenarios[key];
   if(!stub||stub.source_type!=='housionna')return;
   if(!stub.stub){housionnaLoaded.set(key,performance.now());return;}
+  busyLoads++;markBusy();
+  try {await loadHousionnaScenario(key,stub);}
+  finally {busyLoads--;settleBusy();}
+}
+async function loadHousionnaScenario(key,stub) {
   if(!housionnaLoading.has(key))housionnaLoading.set(key,(async()=>{
     $('#housionnaImportStatus').textContent=`Loading ${stub.transmitter?.name||'the selected transmitter'}…`;
-    const {body}=await apiJson(importViewerUrl(stub.import_id,key),{timeoutMs:120000});
+    const body=STATIC_SITE?await siteRun(stub.import_id,key):(await apiJson(importViewerUrl(stub.import_id,key),{timeoutMs:120000})).body;
     resolveViewerAssets(body);
     for(const name of body.scenario_order)if(data.scenarios[name])data.scenarios[name]=body.scenarios[name];
     housionnaLoaded.set(key,performance.now());
@@ -2874,11 +3163,18 @@ function wireUI() {
 }
 
 async function start() {
+  markBusy();  // the first view takes a few seconds; settled once it is drawn
   try {
-    data=(await apiJson(SCENE_URL)).body;
+    data=await loadScene();
     if(data.schema_version!==1||!data.scenarios) throw new Error('Unsupported viewer scene data schema');
     resolveViewerAssets(data);rememberHousionnaStubs();
     activeScenario=data.featured_scenario||'current';
+    if(SIMPLE) {
+      const group=defaultStudyRun();
+      if(!group)throw new Error('None of the study batches in studies.js is imported. Import them, or open the viewer with ?advanced.');
+      activeScenario=group.scenario_keys[0];
+      setupSimpleMode();
+    }
     if(data.scenarios[activeScenario]?.stub) {
       try {await ensureHousionnaScenario(activeScenario);}
       catch(error) {
@@ -2897,6 +3193,7 @@ async function start() {
     buildScenario();
     syncSimulationControls(data.scenarios[activeScenario]);
     $('#sceneLoading').remove();
+    wireBusyCursor();settleBusy();
     if(STATIC_SITE) {
       const runs=housionnaGroups().length;
       setHousionnaStatus('ready',`Published results · ${runs} run${runs===1?'':'s'}. This public view is read-only.`);
@@ -2907,6 +3204,7 @@ async function start() {
     await restoreLatestHousionnaResults(activeScenario);
     await reconnectHousionnaJob();
   } catch(error) { showError(error); console.error('3D viewer failed to initialize',error); }
+  finally { settleBusy(); }
 }
 
 start();

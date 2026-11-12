@@ -5,18 +5,28 @@
     python run.py publish --no-single-runs         # batches only
     python run.py publish --out D:/site            # somewhere else
     python run.py publish --batch <id> --no-single-runs --deploy   # build the viewer, publish, push to GitHub Pages
+    python run.py publish --batch <id> --no-single-runs --serve    # publish and preview it at http://127.0.0.1:8766/
+    python run.py publish --viewer-only [--serve|--deploy]         # after a viewer-only change: swap the bundle
 
 With --deploy, the viewer is rebuilt first and the site is pushed as a single commit to the gh-pages branch of the
 repository's origin (https://archigrad.io/HOUSIONNA/), replacing the previous site.
 
 Upload the contents of the output folder to any static web host (one.com, GitHub Pages, a university server).
-The site needs no Python server: the viewer reads data/viewer_scene.json and one data/runs/<import>.json per
-HOUSIONNA run, and hides the import, rerun and simulation controls.
+The site needs no Python server: the viewer reads data/viewer_scene.json.gz, and per HOUSIONNA run one
+data/runs/<import>/assets.json (which geometry it uses) plus one <scenario>.json.gz per sensor. Geometry is stored
+once under its content hash in data/assets/, so runs with the same room, crop and stage share it.
+Files are gzipped because a site is capped (GitHub Pages: 1 GB); the browser unpacks them. The import, rerun and
+simulation controls are hidden.
 """
 
 from __future__ import annotations
 
 import argparse
+import hashlib
+import gzip
+import http.server
+import functools
+import webbrowser
 import json
 import os
 import re
@@ -43,6 +53,9 @@ HTACCESS = """# Written by run.py publish. Apache (one.com and most shared hosts
 <IfModule mod_mime.c>
   AddType application/json .json
   AddType application/javascript .js
+  # The data files are gzip files the viewer unpacks itself; serve them as they are.
+  AddType application/gzip .gz
+  RemoveEncoding .gz
 </IfModule>
 <IfModule mod_headers.c>
   # Hashed bundle files never change; data and the page are re-checked so a new upload shows up at once.
@@ -69,6 +82,28 @@ def _compact(value: Any) -> Any:
     return value
 
 
+SITE_PATHS_PER_RECEIVER = 20   # the viewer draws at most the 5 strongest; a few more stay clickable
+
+
+def _slim(scenario: dict[str, Any]) -> dict[str, Any]:
+    """Website copy of one transmitter: the strongest paths per receiver and radio-map values to 0.1 dB.
+    Link metrics and path counts keep the full result; this only trims what is drawn."""
+    out = dict(scenario)
+    paths = scenario.get("paths") or []
+    power = lambda path: float(path.get("magnitude_db", path.get("coefficient_magnitude_db_re_1", -300)) or -300)
+    kept = []
+    for receiver in dict.fromkeys(path.get("receiver") for path in paths):
+        kept += sorted((path for path in paths if path.get("receiver") == receiver), key=power, reverse=True)[:SITE_PATHS_PER_RECEIVER]
+    out["paths"], out["published_path_count"] = kept, len(paths)
+    if isinstance(scenario.get("radio_map"), dict):
+        radio_map = dict(scenario["radio_map"])
+        radio_map["surfaces"] = [{**surface, "values_db": [None if value is None else round(value, 1)
+                                                          for value in surface.get("values_db") or []]}
+                                 for surface in radio_map.get("surfaces") or []]
+        out["radio_map"] = radio_map
+    return out
+
+
 def _select(scene: dict[str, Any], batches: list[str] | None, single_runs: bool) -> dict[str, Any]:
     """Keep the built-in scenes plus the chosen HOUSIONNA runs; the rest leave the published scene file."""
     def keep(row: dict[str, Any]) -> bool:
@@ -91,13 +126,15 @@ def _select(scene: dict[str, Any], batches: list[str] | None, single_runs: bool)
 
 
 def _write_json(path: Path, value: Any) -> int:
+    """Write gzipped JSON (path ends in .json.gz); mtime 0 keeps unchanged files byte-identical between publishes."""
     text = json.dumps(value, separators=(",", ":"), ensure_ascii=False)
     leak = LOCAL_PATH.search(text)
     if leak:
         raise ValueError(f"{path.name} contains a local path ({leak.group(0)!r}); refusing to publish it")
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text, encoding="utf-8")
-    return len(text.encode("utf-8"))
+    data = gzip.compress(text.encode("utf-8"), compresslevel=9, mtime=0)
+    path.write_bytes(data)
+    return len(data)
 
 
 def _clear(out: Path) -> None:
@@ -113,6 +150,30 @@ def _make_writable(function, path, _error) -> None:
     """Git stores its objects read-only, which Windows refuses to delete (a deployment repo in the site folder)."""
     os.chmod(path, stat.S_IWRITE)
     function(path)
+
+
+def _copy_bundle(bundle: Path, out: Path) -> None:
+    # Source maps would publish the full viewer source; the site does not need them.
+    shutil.copytree(bundle, out, ignore=shutil.ignore_patterns("*.map"), dirs_exist_ok=True)
+    index = out / "index.html"
+    html = index.read_text(encoding="utf-8")
+    if '<html lang="en">' not in html:
+        raise ValueError("Unexpected index.html: could not mark it as the static site")
+    index.write_text(html.replace('<html lang="en">', '<html lang="en" data-site="static">', 1), encoding="utf-8")
+
+
+def refresh_viewer(project_root: Path = ROOT, out: Path | None = None) -> Path:
+    """Swap the viewer bundle of an existing published site and keep its data (a viewer-only change)."""
+    project_root = Path(project_root).resolve()
+    out = Path(out or project_root / "outputs" / "site").resolve()
+    bundle = project_root.parent / "viewer" / "dist"
+    if not (out / MARKER).is_file() or not (out / "data" / "viewer_scene.json.gz").is_file():
+        raise ValueError(f"{out} has no published data yet; run a full publish first")
+    if not (bundle / "index.html").is_file():
+        raise FileNotFoundError("The viewer bundle is missing. Build it first: npm --prefix ../viewer run build")
+    shutil.rmtree(out / "assets", ignore_errors=True)        # hashed bundle files of the previous build
+    _copy_bundle(bundle, out)
+    return out
 
 
 def publish(project_root: Path = ROOT, out: Path | None = None, *,
@@ -131,23 +192,37 @@ def publish(project_root: Path = ROOT, out: Path | None = None, *,
             raise ValueError(f"Import id {import_id!r} is not safe as a file name")
 
     _clear(out)
-    # Source maps would publish the full viewer source; the site does not need them.
-    shutil.copytree(bundle, out, ignore=shutil.ignore_patterns("*.map"))
-    index = out / "index.html"
-    html = index.read_text(encoding="utf-8")
-    if '<html lang="en">' not in html:
-        raise ValueError("Unexpected index.html: could not mark it as the static site")
-    index.write_text(html.replace('<html lang="en">', '<html lang="en" data-site="static">', 1), encoding="utf-8")
+    _copy_bundle(bundle, out)
 
     # The scene file's run summaries get the same rounding as the run files, so values compare equal in the viewer.
-    sizes = {"scene": _write_json(out / "data" / "viewer_scene.json", _compact(scene))}
-    # One file per transmitter, matching how the viewer loads runs (data/runs/<import>/<scenario>.json).
-    for name, row in scene["scenarios"].items():
-        if row.get("source_type") == "housionna" and row.get("import_id"):
+    sizes = {"scene": _write_json(out / "data" / "viewer_scene.json.gz", _compact(scene))}
+    # Per run: the geometry its sensors share once, then one small file per transmitter, matching how the viewer
+    # loads runs (data/runs/<import>/assets.json.gz and <scenario>.json.gz).
+    for number, import_id in enumerate(import_ids, 1):
+        names = [name for name, row in scene["scenarios"].items()
+                 if row.get("source_type") == "housionna" and row.get("import_id") == import_id]
+        for name in names:
             if not SAFE_ID.match(name):
                 raise ValueError(f"Scenario name {name!r} is not safe as a file name")
-            sizes[name] = _write_json(out / "data" / "runs" / row["import_id"] / f"{name}.json",
-                                      _compact(housionna_viewer_payload(project_root, row["import_id"], name)))
+        payload = housionna_viewer_payload(project_root, import_id)
+        folder = out / "data" / "runs" / import_id
+        refs: dict[str, dict[str, str]] = {}
+        for kind in ("geometries", "meshes"):
+            refs[kind] = {}
+            for ref, value in (payload.get("assets", {}).get(kind) or {}).items():
+                value = _compact(value)
+                digest = hashlib.sha256(json.dumps(value, separators=(",", ":"), sort_keys=True).encode()).hexdigest()[:20]
+                target = out / "data" / "assets" / f"{digest}.json.gz"
+                if not target.is_file():
+                    _write_json(target, value)
+                refs[kind][ref] = digest
+        folder.mkdir(parents=True, exist_ok=True)
+        (folder / "assets.json").write_text(json.dumps(refs, separators=(",", ":")), encoding="utf-8")
+        for name in names:
+            _write_json(folder / f"{name}.json.gz", _compact({
+                "schema_version": payload.get("schema_version", 1), "import_id": import_id,
+                "scenario_order": [name], "scenarios": {name: _slim(payload["scenarios"][name])}}))
+        print(f"  {number}/{len(import_ids)} {import_id}: {len(names)} sensor(s)", flush=True)
     (out / ".htaccess").write_text(HTACCESS, encoding="utf-8")
     (out / ".nojekyll").write_text("", encoding="utf-8")       # GitHub Pages: serve the files as they are
     (out / MARKER).write_text("Made by run.py publish; the next publish replaces this whole folder.\n", encoding="utf-8")
@@ -181,15 +256,51 @@ def deploy(out: Path, project_root: Path = ROOT, message: str = "Publish viewer"
     return remote
 
 
+def serve(out: Path, port: int = 8766) -> None:
+    """Serve the published folder as plain files, the way a web host would."""
+    handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(out))
+    with http.server.ThreadingHTTPServer(("127.0.0.1", port), handler) as server:
+        url = f"http://127.0.0.1:{port}/"
+        print(f"Previewing the site at {url} (Ctrl+C to stop)")
+        webbrowser.open(url)
+        try:
+            server.serve_forever()
+        except KeyboardInterrupt:
+            pass
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="run.py publish", description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--out", type=Path, help="output folder (default: outputs/site)")
     parser.add_argument("--batch", action="append", metavar="ID", help="publish only this batch (repeatable)")
     parser.add_argument("--no-single-runs", action="store_true", help="leave out runs that are not in a batch")
+    parser.add_argument("--viewer-only", action="store_true",
+                        help="only replace the viewer bundle in the existing site (keeps its data; fast)")
+    parser.add_argument("--serve", action="store_true", help="preview the published site at http://127.0.0.1:8766/")
     parser.add_argument("--deploy", action="store_true",
                         help="rebuild the viewer first and push the site to the gh-pages branch (GitHub Pages)")
     args = parser.parse_args(argv)
+    if args.viewer_only:
+        try:
+            if args.deploy:
+                build_viewer(ROOT)
+            out = refresh_viewer(ROOT, args.out)
+        except (ValueError, FileNotFoundError, subprocess.CalledProcessError) as error:
+            print(f"Publish failed: {error}", file=sys.stderr)
+            return 2
+        print(f"Replaced the viewer in {out}; the data is unchanged.")
+        if args.serve:
+            serve(out)
+            return 0
+        if args.deploy:
+            try:
+                remote = deploy(out, ROOT, "Publish viewer: viewer update")
+            except (ValueError, subprocess.CalledProcessError) as error:
+                print(f"Deploy failed: {error}", file=sys.stderr)
+                return 2
+            print(f"Pushed to {PAGES_BRANCH} of {remote}.")
+        return 0
     try:
         if args.deploy:
             build_viewer(ROOT)
@@ -201,6 +312,9 @@ def main(argv: list[str] | None = None) -> int:
     print(f"Total {result['total_bytes']/1e6:.1f} MB.")
     if result["total_bytes"] > 300e6:
         print("That is a large site; --batch publishes only the batches you name.")
+    if args.serve:
+        serve(result["out"])
+        return 0
     if not args.deploy:
         print("Upload the folder's contents (including .htaccess) to your web host, or add --deploy for GitHub Pages.")
         return 0

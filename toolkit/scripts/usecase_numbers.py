@@ -41,13 +41,14 @@ from engine.application_engine import (  # noqa: E402
 )
 from engine.screening import too_close  # noqa: E402
 
-# The studies of the paper, each one evaluated on its own: the batches of 9 Nov 2026 (sensor nodes 2 cm from the
-# mesh), every one wedged over plant_stage and one more parameter.
+# The studies of the paper, each one evaluated on its own: the final batches of 10 Nov 2026 (hip v3, sensor nodes
+# 2 cm from the mesh and oriented along the stem), every one wedged over plant_stage and one more parameter.
+# The viewer shows the same four (viewer/src/studies.js).
 STUDIES = {
-    "species": ["batch_01_20261109_192137Z"],        # plant_species
-    "frequency": ["bacth_02_20261109_194353Z"],      # 868 MHz, 915 MHz, 2.437 GHz, 5.18 GHz
-    "ap_density": ["bacth_03_20261109_200824Z"],     # 1 to 23 gateways
-    "moisture": ["bacth_04_20261109_202143Z"],       # leaf moisture 20 to 90 %
+    "species": ["V2_batch_01_20261110_125549Z"],     # plant_species
+    "frequency": ["v2_batch_02_20261110_154706Z"],   # 868 MHz, 915 MHz, 2.437 GHz, 5.18 GHz
+    "ap_density": ["V2_batch_03_20261110_155715Z"],  # 1 to 23 gateways
+    "moisture": ["bacth_04_20261110_160139Z"],       # leaf moisture 20 to 90 %
 }
 HARVESTERS = ("aem40940_921_fit", "p1110b_915_fit")
 STRATEGIES = ("single_best", "coherent_mrt")
@@ -261,12 +262,14 @@ def study(batches: list[str], args: argparse.Namespace, names: list[str]) -> int
     (out / "usecase_numbers.json").write_text(json.dumps(_jsonable(summary), indent=2), encoding="utf-8")
     tex = ["% python scripts/usecase_numbers.py: rows of the use-case table. Worst gain and BLE margin are over the",
            "% sensor nodes with a path (-- when none has one); no path: sensor nodes without any path, not powered",
-           "% group & n & no path & gain median & worst & BLE worst & P_RF median & " + " & ".join(names)]
+           "% The same sensor nodes recur in every row, so the counts are out of the row's n (x/n) and not summed.",
+           "% group & no path & gain median & worst & BLE worst & P_RF median & " + " & ".join(names)]
     for row in evaluated:
-        cells = [row["group"].replace("_", "\\_"), str(row["sensor_nodes"]), str(row["no_path"]),
+        n = row["sensor_nodes"]
+        cells = [row["group"].replace("_", "\\_"), str(row["no_path"]),
                  fmt(row["gain_median_db"]), fmt(row["gain_worst_db"]),
                  fmt(row.get("ble_worst_margin_db"), math=False), fmt(row["p_rf_median_dbm"])] \
-            + [str(row["within_hour"][name]) for name in names]
+            + [f"{row['within_hour'][name]}/{n}" for name in names]
         tex.append(" & ".join(cells) + " \\\\")
     (out / "usecase_rows.tex").write_text("\n".join(tex) + "\n", encoding="utf-8")
     written = [out / "usecase_numbers.json", out / "usecase_rows.tex"]

@@ -200,11 +200,14 @@ def _scenario_stub(scenario: dict[str, Any], assets: dict[str, Any]) -> dict[str
     values = sorted(value for row in surfaces for value in row.get("values_db") or [] if value is not None)
     cells = sum(len(row.get("values_db") or []) for row in surfaces)
     gains = [row["gain_db_coherent"] for row in scenario.get("links", []) or [] if row.get("gain_db_coherent") is not None]
+    incoherent = [row.get("gain_db_incoherent", row.get("gain_db_coherent")) for row in scenario.get("links", []) or []]
+    incoherent = [value for value in incoherent if value is not None]
     stub = {key: scenario.get(key) for key in STUB_FIELDS}
     stub.update(stub=True, summary={
         "surface_bounds": bounds,
         "median_db": values[len(values)//2] if values else None,  # same rule as the viewer's medianDb
         "mean_link_db": sum(gains)/len(gains) if gains else None,
+        "best_link_db": max(incoherent) if incoherent else None,   # the gateway this sensor would use
         "reached_pct": 100.0*len(values)/cells if cells else None,
         "path_count": len(scenario.get("paths", []) or []),
     })

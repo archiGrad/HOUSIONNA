@@ -1,4 +1,4 @@
-"""Import HOUSIONNA run folders into the local digital-twin scene format.
+"""Import HOUSIONNA run folders into the local viewer scene format.
 
 This module is the only code that reads HOUSIONNA's files. The viewer consumes
 the normalized payload written under ``outputs/integrations/housionna``.

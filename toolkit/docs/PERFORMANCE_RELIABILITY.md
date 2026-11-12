@@ -298,7 +298,7 @@ workers are not reattached by the new server. Keep the terminal running during a
 node scripts/test_rf_inputs.mjs
 .\.venv\Scripts\python.exe scripts/benchmark_housionna.py --force-recompute --timeout 60
 # Supply another saved request.json with --request to benchmark another imported scene.
-node scripts/browser_check.mjs http://127.0.0.1:8765/digital-twin/ outputs/performance_refinement/manual-browser regression
+node scripts/browser_check.mjs http://127.0.0.1:8765/viewer/ outputs/performance_refinement/manual-browser regression
 ```
 
 The browser script uses installed Chrome and a disposable system-temp profile,

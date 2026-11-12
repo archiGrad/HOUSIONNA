@@ -1,4 +1,4 @@
-"""Serve the local 3D digital twin viewer and its generated data."""
+"""Serve the local 3D viewer and its generated data."""
 
 from __future__ import annotations
 
@@ -173,15 +173,16 @@ class DashboardHandler(BaseHTTPRequestHandler):
                    else self.housionna_simulations.result(job_id))
             self._send_json(200 if job else 404, job or {"error": "HOUSIONNA simulation was not found"})
             return
-        if route in ("/", "/digital-twin") and self.digital_twin_root and (self.digital_twin_root / "index.html").is_file():
-            # The 3D twin is the only view. The trailing slash matters: the bundle uses relative asset paths.
+        if route in ("/", "/viewer", "/digital-twin", "/digital-twin/") and self.digital_twin_root and (self.digital_twin_root / "index.html").is_file():
+            # The 3D viewer is the only view (old /digital-twin/ links land here too). The trailing slash
+            # matters: the bundle uses relative asset paths.
             self.send_response(302)
-            self.send_header("Location", "/digital-twin/")
+            self.send_header("Location", "/viewer/")
             self.end_headers()
             return
         target = self.routes.get(route)
-        if target is None and route.startswith("/digital-twin/") and self.digital_twin_root:
-            relative = unquote(route.removeprefix("/digital-twin/")).strip("/")
+        if target is None and route.startswith("/viewer/") and self.digital_twin_root:
+            relative = unquote(route.removeprefix("/viewer/")).strip("/")
             requested = (self.digital_twin_root / relative).resolve()
             try:
                 requested.relative_to(self.digital_twin_root.resolve())
@@ -338,9 +339,9 @@ def serve(project_root: Path, *, open_browser: bool = True, port: int | None = N
         build_viewer_scene(project_root)
     except FileNotFoundError as error:
         # The 3D view still opens if the optional study outputs are missing; it shows the remedy in the page.
-        print(f"Digital Twin data is not ready yet: {error}")
+        print(f"Viewer data is not ready yet: {error}")
     routes = {
-        "/digital-twin/": digital_twin_root / "index.html",
+        "/viewer/": digital_twin_root / "index.html",
         "/outputs/digital_twin/viewer_scene.json": project_root / "outputs" / "digital_twin" / "viewer_scene.json",
     }
 
@@ -370,7 +371,7 @@ def serve(project_root: Path, *, open_browser: bool = True, port: int | None = N
         raise OSError("Could not find an available local port between 8765 and 8784")
 
     url = f"http://127.0.0.1:{server.server_port}/"
-    print(f"Opening the local digital twin viewer at {url}")
+    print(f"Opening the local viewer at {url}")
     print("Leave this terminal running while you use the page. Press Ctrl+C to stop it.")
     if open_browser:
         Timer(0.8, webbrowser.open_new_tab, args=(url,)).start()

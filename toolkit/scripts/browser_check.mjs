@@ -5,7 +5,7 @@ import path from 'node:path';
 import os from 'node:os';
 import { mkdtemp,rm } from 'node:fs/promises';
 
-const url=process.argv[2]||'http://127.0.0.1:8765/digital-twin/';
+const url=process.argv[2]||'http://127.0.0.1:8765/viewer/';
 const output=path.resolve(process.argv[3]||'outputs/performance_refinement/browser');
 const mode=process.argv[4]||'smoke';
 await mkdir(output,{recursive:true});

@@ -27,7 +27,7 @@ The model uses **x/y as horizontal axes and z as up**, with meters for positions
 - `compare`: repeats the room run after moving only the panel by 1.8 m and saves a radio-map difference.
 - `cea`: generates empty, narrow-canopy, and wide-canopy greenhouse scenarios with separate material categories and a comparison figure.
 - `canopy-physics`: runs the transparent/weak-loss/current material study, solver-sensitivity repeats, and an isolated Sionna slab transmission check.
-- `digital twin`: a local Three.js 3D viewer that reads generated scene geometry and saved Sionna paths/maps and is the only viewer (the 2D dashboard was removed).
+- `viewer`: a local Three.js 3D viewer that reads generated scene geometry and saved Sionna paths/maps and is the only viewer (the 2D dashboard was removed).
 - CSV/JSON path and CIR output, raw linear path-gain arrays, cell-center coordinates, metadata, and PNG geometry/channel/map visualizations.
 
 The radio-map array is **path gain** (linear power ratio), not received power or RSS. The PNG converts it to `10 log10(path_gain)` for display. The CIR stores the complex baseband path coefficients and delays; it does not apply the transmitter power to create RSS.
@@ -54,7 +54,7 @@ In the VS Code terminal, run:
 .\.venv\Scripts\python.exe run.py view
 ```
 
-It opens the 3D digital twin at `http://127.0.0.1:8765/` (see [Three-dimensional digital twin](#three-dimensional-digital-twin)). Keep the terminal open while viewing; press **Ctrl+C** there when finished. The page is served only from `127.0.0.1`. It loads the Archivo font from Google Fonts; everything else is local. The older 2D dashboard was removed; the `basic`, `room` and `compare` runs still write their PNG figures under `outputs/`.
+It opens the 3D viewer at `http://127.0.0.1:8765/viewer/` (see [Three-dimensional viewer](#three-dimensional-viewer)). Keep the terminal open while viewing; press **Ctrl+C** there when finished. The page is served only from `127.0.0.1`. It loads the Archivo font from Google Fonts; everything else is local. The older 2D dashboard was removed; the `basic`, `room` and `compare` runs still write their PNG figures under `outputs/`.
 
 To create the environment on another Windows x64 machine, install Python 3.12, extract the LLVM 18.1.8 Windows x64 release so that `.runtime\llvm-18.1.8\bin\LLVM-C.dll` exists, then run:
 
@@ -163,7 +163,7 @@ The canopy meshes are closed boxes. Sionna's material thickness models a plane s
 
 The expanded diagnosis, including direct TX/RX-to-canopy intersections, exact transparent-control map statistics, sensitivity reruns, isolated slab results, assumptions, and the recommended next representation, is saved in `CANOPY_PHYSICS_FINDINGS.md`. These results use software-demo inputs. No material value or measurement is taken from the papers.
 
-## Three-dimensional digital twin
+## Three-dimensional viewer
 
 Generate all data used by the viewer, build its local JavaScript bundle, and open it:
 
