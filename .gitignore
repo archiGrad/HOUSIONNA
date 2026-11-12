@@ -10,5 +10,5 @@ desktop.ini
 # Viewer (three.js): dependencies and build output
 viewer/node_modules/
 viewer/dist/
-houdini_files/prev_hips
+houdini_files/prev_hips/
 Houdini_files/backup/
