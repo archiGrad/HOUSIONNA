@@ -1,11 +1,6 @@
 {
-<<<<<<<< HEAD:houdini_files/sionna/batches/bacth_02_20261109_194353Z/status.json
-  "pid": 22048,
-  "started": "2026-11-09 20:48:06",
-========
   "pid": 10896,
   "started": "2026-11-10 16:49:31",
->>>>>>>> 495720e (ver2_batch_01 and batch_02):houdini_files/sionna/batches/v2_batch_02_20261110_154706Z/status.json
   "total": 20,
   "done": [
     "wi001",
@@ -32,15 +27,8 @@
     "wi000"
   ],
   "failed": {},
-<<<<<<<< HEAD:houdini_files/sionna/batches/bacth_02_20261109_194353Z/status.json
-  "solve_seconds": 109.45699739456177,
-  "current": null,
-  "finished": true,
-  "updated": "2026-11-09 20:49:56"
-========
   "solve_seconds": 117.89258289337158,
   "current": null,
   "finished": true,
   "updated": "2026-11-10 16:51:29"
->>>>>>>> 495720e (ver2_batch_01 and batch_02):houdini_files/sionna/batches/v2_batch_02_20261110_154706Z/status.json
 }
