@@ -142,23 +142,25 @@ def cdf_figure(groups: dict[str, np.ndarray], thresholds: dict[str, float], out:
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    fig, ax = plt.subplots(figsize=(3.5, 2.4))
+    # Wide enough for the legend beside the axes: one line per row, so the curves stay readable.
+    fig, ax = plt.subplots(figsize=(7.0, 4.2))
     for name, values in groups.items():
         values = np.sort(values[np.isfinite(values)])
         if values.size:
-            ax.step(values, np.arange(1, values.size + 1) / values.size, where="post", label=name, linewidth=1.3)
+            ax.step(values, np.arange(1, values.size + 1) / values.size, where="post", label=name, linewidth=1.2)
     for harvester, level in thresholds.items():
         ax.axvline(level, color="0.5", linewidth=0.8, linestyle="--")
-        ax.text(level + 0.5, 0.98, harvester, rotation=90, fontsize=6, color="0.4", va="top",
+        ax.text(level + 0.3, 0.02, harvester, rotation=90, fontsize=7, color="0.35", va="bottom",
                 transform=ax.get_xaxis_transform())
     ax.set_xlabel("RF power at the sensor node (dBm)")
     ax.set_ylabel("Fraction of sensor nodes")
+    ax.set_ylim(0, 1.02)
     ax.grid(alpha=0.3, linewidth=0.5)
-    ax.legend(fontsize=6.5, frameon=False, loc="upper left")
+    ax.legend(fontsize=7, frameon=False, loc="upper left", bbox_to_anchor=(1.01, 1.0), borderaxespad=0.0)
     fig.tight_layout()
     written = []
     for suffix in ("pdf", "png"):
-        fig.savefig(out / f"usecase_rf_cdf.{suffix}", dpi=200)
+        fig.savefig(out / f"usecase_rf_cdf.{suffix}", dpi=200, bbox_inches="tight")
         written.append(out / f"usecase_rf_cdf.{suffix}")
     plt.close(fig)
     return written

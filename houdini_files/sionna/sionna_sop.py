@@ -121,6 +121,7 @@ CODES = {
     "W001": "scene diagonal is {diag:.3g} m (expected 1 m to 50 km): check units",
     "W002": "{name}: smaller than one wavelength ({lam:.3f} m)",
     "W003": "device '{name}': {dist:.3g} m away from the geometry",
+    "W016": "{count} devices have orientation (0, 0, 0), exported upright: {names}; set the point attribute 'orientation' (yaw, pitch, roll in radians) if they should tilt",
     "V001": "no primitives to simulate",
     "V002": "missing prim attribute '{attr}'",
     "V003": "prim {prim}: not a triangle",
@@ -602,6 +603,15 @@ def validate(geo, frequency=FREQUENCY, base=None):
     recs += [("V105", {"tx": str(pnames[tx][i]), "rx": str(pnames[rx][j])}) for i, j in zip(*np.nonzero(close))]
     dist = np.linalg.norm(P[dev] - np.clip(P[dev], lo, hi), axis=1)
     recs += [("W003", {"name": str(n), "dist": float(d)}) for n, d in zip(pnames[dev], dist) if d > diag]
+    # Missing or zero orientation is exported as (0, 0, 0) without complaint, so say so: an upright antenna is rarely
+    # what was meant when other devices are tilted (the 9 Nov 2026 batches lost every sensor's stem direction).
+    if dev.any():
+        ori = (np.array(geo.pointFloatAttribValues("orientation")).reshape(-1, 3) if geo.findPointAttrib("orientation")
+               else np.zeros((len(roles), 3)))
+        upright = pnames[dev & np.all(ori == 0, axis=1)]
+        if upright.size:
+            shown = ", ".join(upright[:5].tolist()) + (f" and {upright.size - 5} more" if upright.size > 5 else "")
+            recs.append(("W016", {"count": int(upright.size), "names": shown}))
     recs += antennas(geo, base or base_antennas({}))[0]
     return recs
 

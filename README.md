@@ -519,6 +519,7 @@ Codes starting with N are information, W warnings (do not block), all others are
 | W011 | moisture set on a material that does not use it | `moisture` only affects vegetation and soil materials |
 | W008 | node exists but is not a File SOP | A node next to the Null already has the name `sionna_previz`, `sionna_paths`, `sionna_links`, `sionna_radiomap` or `sionna_batch_scene`, `_paths`, `_links`, `_radiomap`. The result file is written but not loaded; rename that node. |
 | W015 | preset parm has an expression | The preset did not overwrite it, e.g. `frequency` driven by `@frequency`; set the value by hand or remove the expression |
+| W016 | device with orientation (0, 0, 0) | Missing `orientation` point attribute is exported as upright without error; set it (yaw, pitch, roll in radians, Sionna axes) on devices that should tilt, e.g. a sensor along its stem |
 | W014 | running batch not cleared | Clear again after it finished, or stop it first |
 | W009 | no `batch` parm on the Null | Add a string parm `batch`; the `sionna_batch_*` File SOPs read the batch name from it |
 | V013 | frequency not valid | The `frequency` parm is 0 or below, or an expression such as `@frequency` has no selected work item |
