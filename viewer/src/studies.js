@@ -1,6 +1,6 @@
 // The studies the viewer shows by default (and the published website): one batch each, in this order.
 // axis: the parameter the study is about, used as the chart's x axis.
-// Update the batch ids here when Joris re-exports; everything else follows from the batch's own parameters.
+// Update the batch ids here after a re-export; everything else follows from the batch's own parameters.
 export const STUDIES = [
   {key: 'species', label: 'Plant species', batch: 'V2_batch_01_20261110_125549Z', axis: 'plant_stage',
     about: 'Four crops through growth stages 0–4. One ceiling gateway, 915 MHz.'},

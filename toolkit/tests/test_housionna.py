@@ -300,7 +300,9 @@ class HousionnaRealExportTests(PointAssertions):
         scene = json.loads(scene_file.read_text(encoding="utf-8"))
         self.assertIn("farm_proxy", scene["scenarios"])
         self.assertIn("empty", scene["scenarios"])
-        self.assertTrue(any(row.get("source_type") == "housionna" for row in scene["scenarios"].values()))
+        # Imported runs are local (ignored by git): a fresh checkout has none, so only check them when present.
+        if any((PROJECT_ROOT / "outputs" / "integrations" / "housionna").glob("*/viewer_import.json")):
+            self.assertTrue(any(row.get("source_type") == "housionna" for row in scene["scenarios"].values()))
         self.assertNotIn("source_run_folder", json.dumps(scene))
 
 

@@ -258,7 +258,7 @@ def _scenario_payload(import_id: str, name: str, scenario: dict[str, Any], asset
 def housionna_viewer_payload(project_root: Path, import_id: str, scenario: str | None = None) -> dict[str, Any]:
     """Viewer data for one import (all transmitters), or for one of its scenarios when ``scenario`` is given.
 
-    Joris's multi-TX runs reach 76 MB (15 TX, 70k paths), too much for a browser to parse at once, so the viewer
+    Multi-TX runs reach 76 MB (15 TX, 70k paths), too much for a browser to parse at once, so the viewer
     asks for one transmitter. The first such request splits the import into viewer_split/<n>.json, one file per
     scenario, rebuilt whenever viewer_import.json changes.
     """
