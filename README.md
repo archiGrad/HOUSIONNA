@@ -674,17 +674,17 @@ if (tx >= 0) {
 - **Remote targets need `ssh` and `rsync`** on your machine: standard on Linux; on Windows, rsync runs inside WSL (see Windows).
 - Developed against Sionna RT 2.2.0.
 
-## Update #1 (21-10-2026)
+# images
 
 Procedural greenhouse variations from a TOP network, exported, solved as one batch on the Spark and loaded back per work item.
 
-### Video
+## Video
 
 [![Video of the pipeline](https://img.youtube.com/vi/GcwktsATHTg/0.jpg)](https://www.youtube.com/watch?v=GcwktsATHTg)
 
 https://www.youtube.com/watch?v=GcwktsATHTg
 
-### Presentation
+## Presentation
 
 ![Slide 1](docs/presentation_21-10-2026/HyROPA_presentatie_1.png)
 ![Slide 2](docs/presentation_21-10-2026/HyROPA_presentatie_2.png)
@@ -706,7 +706,7 @@ https://www.youtube.com/watch?v=GcwktsATHTg
 ![Slide 18](docs/presentation_21-10-2026/HyROPA_presentatie_18.png)
 ![Slide 19](docs/presentation_21-10-2026/HyROPA_presentatie_19.png)
 
-### Annotated screenshots
+## Annotated screenshots
 
 Front view: greenhouse shell, TX frame with TX, RX, racks with plants
 
@@ -745,13 +745,13 @@ https://www.youtube.com/watch?v=GcwktsATHTg
 
 
 
-### Previews
+## Previews
 
 ![2preview](docs/2preview.png)
 ![prev](docs/prev.png)
 ![sim](docs/sim.png)
 
-### Screenshots
+## Screenshots
 
 ![Screenshot 2026-10-20-212001](docs/presentation_21-10-2026/2026-10-20-212001_1300x940_scrot.png)
 ![Screenshot 2026-10-20-212214](docs/presentation_21-10-2026/2026-10-20-212214_1296x970_scrot.png)
@@ -767,7 +767,7 @@ https://www.youtube.com/watch?v=GcwktsATHTg
 ![Screenshot 2026-10-21-102655](docs/presentation_21-10-2026/2026-10-21-102655_1920x1028_scrot.png)
 ![Screenshot 2026-10-21-102800](docs/presentation_21-10-2026/2026-10-21-102800_1917x1033_scrot.png)
 
-### Presentation 21-10-2026
+## Presentation 21-10-2026
 
 ![HyROPA_presentatie_1](docs/presentation_21-10-2026/HyROPA_presentatie_1.png)
 ![HyROPA_presentatie_2](docs/presentation_21-10-2026/HyROPA_presentatie_2.png)
@@ -789,7 +789,7 @@ https://www.youtube.com/watch?v=GcwktsATHTg
 ![HyROPA_presentatie_18](docs/presentation_21-10-2026/HyROPA_presentatie_18.png)
 ![HyROPA_presentatie_19](docs/presentation_21-10-2026/HyROPA_presentatie_19.png)
 
-### Annotated images
+## Annotated images
 
 ![annotated_00bbc1c9](docs/presentation_21-10-2026/annotated_images/annotated_00bbc1c9.png)
 ![annotated_1e853020](docs/presentation_21-10-2026/annotated_images/annotated_1e853020.png)
@@ -802,7 +802,7 @@ https://www.youtube.com/watch?v=GcwktsATHTg
 
 [Video 2026-10-21](docs/presentation_21-10-2026/vids/2026-10-21_10-33-44.mp4)
 
-### Procedural batch 2
+## Procedural batch 2
 
 ![0_0](docs/batch_2_imgs/procedural/0_0.png)
 ![0_1](docs/batch_2_imgs/procedural/0_1.png)
@@ -820,7 +820,7 @@ https://www.youtube.com/watch?v=GcwktsATHTg
 ![4_1](docs/batch_2_imgs/procedural/4_1.png)
 ![4_2](docs/batch_2_imgs/procedural/4_2.png)
 
-### Plant generations
+## Plant generations
 
 ![fragaria_x_ananassa_overview](docs/plant%20generations/plant_generations/fragaria_x_ananassa_overview.png)
 ![fragaria_x_ananassa_v1_gen1](docs/plant%20generations/plant_generations/fragaria_x_ananassa_v1_gen1.png)
@@ -863,7 +863,7 @@ https://www.youtube.com/watch?v=GcwktsATHTg
 ![solanum_lycopersicum_v3_gen2](docs/plant%20generations/plant_generations/solanum_lycopersicum_v3_gen2.png)
 ![solanum_lycopersicum_v3_gen3](docs/plant%20generations/plant_generations/solanum_lycopersicum_v3_gen3.png)
 
-### Updates 02-11-2026
+## Updates 02-11-2026
 
 ![2026-11-02-120135](docs/updates%2002-11-2026/2026-11-02-120135_818x941_scrot.png)
 ![2026-11-02-174129](docs/updates%2002-11-2026/2026-11-02-174129_1301x945_scrot.png)
@@ -885,7 +885,7 @@ https://www.youtube.com/watch?v=GcwktsATHTg
 ![2026-11-02-220348](docs/updates%2002-11-2026/2026-11-02-220348_1920x1029_scrot.png)
 ![2026-11-02-220507](docs/updates%2002-11-2026/2026-11-02-220507_1275x1007_scrot.png)
 
-### Updates 10-11-2026
+## Updates 10-11-2026
 
 ![combined](docs/updates%2010_11_2026/combined.png)
 ![combined2](docs/updates%2010_11_2026/combined2.png)
@@ -929,7 +929,7 @@ https://www.youtube.com/watch?v=GcwktsATHTg
 ![snapshot2](docs/updates%2010_11_2026/snapshot2.png)
 ![snapshot combined](docs/updates%2010_11_2026/snapshot%20combined.png)
 
-### Showcase video
+## Showcase video
 
 https://www.youtube.com/watch?v=GcwktsATHTg
 
