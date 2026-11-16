@@ -1,0 +1,1021 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{none/global//global/global}
+    \entry{salagovic2024}{article}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{1}{}{%
+        {{hash=13c957c7081e341364a033f740d0d3c3}{%
+           family={{Šalagovič}},
+           familyi={Š\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{759edbdc239c69d82b4b177139c3bfe1}
+      \strng{fullhash}{759edbdc239c69d82b4b177139c3bfe1}
+      \strng{bibnamehash}{759edbdc239c69d82b4b177139c3bfe1}
+      \strng{authorbibnamehash}{759edbdc239c69d82b4b177139c3bfe1}
+      \strng{authornamehash}{759edbdc239c69d82b4b177139c3bfe1}
+      \strng{authorfullhash}{759edbdc239c69d82b4b177139c3bfe1}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eid}{1425285}
+      \field{journaltitle}{Frontiers in Horticulture}
+      \field{title}{{Microclimate monitoring in commercial tomato ({Solanum Lycopersicum L.}) greenhouse production and its effect on plant growth, yield and fruit quality}}
+      \field{volume}{3}
+      \field{year}{2024}
+      \verb{doi}
+      \verb 10.3389/fhort.2024.1425285
+      \endverb
+    \endentry
+    \entry{geldhof2021}{article}{}
+      \name{author}{5}{}{%
+        {{hash=3028448742b0135b5282df60c5274935}{%
+           family={Geldhof},
+           familyi={G\bibinitperiod},
+           given={B.},
+           giveni={B\bibinitperiod}}}%
+        {{hash=8aac3f66fd0dfdc67cc81fca7a3fd52f}{%
+           family={Pattyn},
+           familyi={P\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=0c44c088ca6f1ef2d4ea3a2884e2c5e7}{%
+           family={Eyland},
+           familyi={E\bibinitperiod},
+           given={D.},
+           giveni={D\bibinitperiod}}}%
+        {{hash=391250f26ba631fb9f5cc132996b2f1e}{%
+           family={Carpentier},
+           familyi={C\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=fdab771f14b275c375f2d83f1b5733d7}{%
+           family={{Van de Poel}},
+           familyi={V\bibinitperiod},
+           given={B.},
+           giveni={B\bibinitperiod}}}%
+      }
+      \strng{namehash}{1fe1e855995304ec7c5124f2f6cb96c5}
+      \strng{fullhash}{1fe1e855995304ec7c5124f2f6cb96c5}
+      \strng{bibnamehash}{1fe1e855995304ec7c5124f2f6cb96c5}
+      \strng{authorbibnamehash}{1fe1e855995304ec7c5124f2f6cb96c5}
+      \strng{authornamehash}{1fe1e855995304ec7c5124f2f6cb96c5}
+      \strng{authorfullhash}{1fe1e855995304ec7c5124f2f6cb96c5}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Plant Physiology}
+      \field{number}{3}
+      \field{title}{{A digital sensor to measure real-time leaf movements and detect abiotic stress in plants}}
+      \field{volume}{187}
+      \field{year}{2021}
+      \field{pages}{1131\bibrangedash 1148}
+      \range{pages}{18}
+      \verb{doi}
+      \verb 10.1093/plphys/kiab407
+      \endverb
+    \endentry
+    \entry{lu2020}{article}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{1}{}{%
+        {{hash=a1d6a8772a89bf1aded588e464a1eba5}{%
+           family={Lu},
+           familyi={L\bibinitperiod},
+           given={Y.},
+           giveni={Y\bibinitperiod}}}%
+      }
+      \strng{namehash}{8b42ba2b0e1c75ef1c9ce0189fb51cd9}
+      \strng{fullhash}{8b42ba2b0e1c75ef1c9ce0189fb51cd9}
+      \strng{bibnamehash}{8b42ba2b0e1c75ef1c9ce0189fb51cd9}
+      \strng{authorbibnamehash}{8b42ba2b0e1c75ef1c9ce0189fb51cd9}
+      \strng{authornamehash}{8b42ba2b0e1c75ef1c9ce0189fb51cd9}
+      \strng{authorfullhash}{8b42ba2b0e1c75ef1c9ce0189fb51cd9}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{{ACS Nano}}
+      \field{number}{9}
+      \field{title}{{Multimodal plant healthcare flexible sensor system}}
+      \field{volume}{14}
+      \field{year}{2020}
+      \field{pages}{10966\bibrangedash 10975}
+      \range{pages}{10}
+      \verb{doi}
+      \verb 10.1021/acsnano.0c03757
+      \endverb
+    \endentry
+    \entry{cappelle2025}{inproceedings}{}
+      \name{author}{8}{}{%
+        {{hash=cd6f8e5ed3d2cdbcdadce86f1115c684}{%
+           family={Cappelle},
+           familyi={C\bibinitperiod},
+           given={Jona},
+           giveni={J\bibinitperiod}}}%
+        {{hash=a10c2b55a9c1fab4282659d2cdf7e07b}{%
+           family={Van\bibnamedelima Mulders},
+           familyi={V\bibinitperiod\bibinitdelim M\bibinitperiod},
+           given={Jarne},
+           giveni={J\bibinitperiod}}}%
+        {{hash=eafd875f7e0bec1d1856c5d5315764da}{%
+           family={Goossens},
+           familyi={G\bibinitperiod},
+           given={Sarah},
+           giveni={S\bibinitperiod}}}%
+        {{hash=cff2f5acdcb90bf67b04d77dcce7c744}{%
+           family={Reher},
+           familyi={R\bibinitperiod},
+           given={Thomas},
+           giveni={T\bibinitperiod}}}%
+        {{hash=f73ded9dfb6161802f1a34f1f9b7a8d0}{%
+           family={Van\bibnamedelimb der\bibnamedelima Perre},
+           familyi={V\bibinitperiod\bibinitdelim d\bibinitperiod\bibinitdelim P\bibinitperiod},
+           given={Liesbet},
+           giveni={L\bibinitperiod}}}%
+        {{hash=f52a0574bad119e4c7f2646d977788a8}{%
+           family={De\bibnamedelima Strycker},
+           familyi={D\bibinitperiod\bibinitdelim S\bibinitperiod},
+           given={Lieven},
+           giveni={L\bibinitperiod}}}%
+        {{hash=9aac8f25ae09fe5c9eaf8315eb6c039e}{%
+           family={Van\bibnamedelimb de\bibnamedelima Poel},
+           familyi={V\bibinitperiod\bibinitdelim d\bibinitperiod\bibinitdelim P\bibinitperiod},
+           given={Bram},
+           giveni={B\bibinitperiod}}}%
+        {{hash=a39328df385494a5c30a07f12c09da16}{%
+           family={Callebaut},
+           familyi={C\bibinitperiod},
+           given={Gilles},
+           giveni={G\bibinitperiod}}}%
+      }
+      \strng{namehash}{14c11dbffba9e4b3d9d4312b8d8bf34f}
+      \strng{fullhash}{0512e6ae172b91c550faaf97ab5509d6}
+      \strng{bibnamehash}{14c11dbffba9e4b3d9d4312b8d8bf34f}
+      \strng{authorbibnamehash}{14c11dbffba9e4b3d9d4312b8d8bf34f}
+      \strng{authornamehash}{14c11dbffba9e4b3d9d4312b8d8bf34f}
+      \strng{authorfullhash}{0512e6ae172b91c550faaf97ab5509d6}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proc. {IEEE} SENSORS}
+      \field{title}{{RF-Powered Batteryless Plant Movement Sensor for Precision Agriculture}}
+      \field{year}{2025}
+      \field{pages}{1\bibrangedash 4}
+      \range{pages}{4}
+      \verb{doi}
+      \verb 10.1109/SENSORS59705.2025.11330430
+      \endverb
+    \endentry
+    \entry{liu2013}{inproceedings}{}
+      \name{author}{6}{}{%
+        {{hash=60f32a93442f2125ef91e89940197089}{%
+           family={Liu},
+           familyi={L\bibinitperiod},
+           given={V.},
+           giveni={V\bibinitperiod}}}%
+        {{hash=9c176ba859d47684ace4213b84260624}{%
+           family={Parks},
+           familyi={P\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+        {{hash=03c434b8cd7236b638952fe04488d9ab}{%
+           family={Talla},
+           familyi={T\bibinitperiod},
+           given={V.},
+           giveni={V\bibinitperiod}}}%
+        {{hash=770663357d844751f78555b9aafb5799}{%
+           family={Gollakota},
+           familyi={G\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=2e14921ea1b5af8b148dae96c2f100f0}{%
+           family={Wetherall},
+           familyi={W\bibinitperiod},
+           given={D.},
+           giveni={D\bibinitperiod}}}%
+        {{hash=b1d40e2563234362589533b889caf2e1}{%
+           family={Smith},
+           familyi={S\bibinitperiod},
+           given={J.\bibnamedelimi R.},
+           giveni={J\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+      }
+      \strng{namehash}{3f449ce65d80d61eac9d778af09c86ab}
+      \strng{fullhash}{3f449ce65d80d61eac9d778af09c86ab}
+      \strng{bibnamehash}{3f449ce65d80d61eac9d778af09c86ab}
+      \strng{authorbibnamehash}{3f449ce65d80d61eac9d778af09c86ab}
+      \strng{authornamehash}{3f449ce65d80d61eac9d778af09c86ab}
+      \strng{authorfullhash}{3f449ce65d80d61eac9d778af09c86ab}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proc. {ACM SIGCOMM}}
+      \field{title}{{Ambient backscatter: Wireless communication out of thin air}}
+      \field{year}{2013}
+      \field{pages}{39\bibrangedash 50}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1145/2486001.2486015
+      \endverb
+    \endentry
+    \entry{callebaut2024}{inproceedings}{}
+      \name{author}{6}{}{%
+        {{hash=36b7dd378106431ca363712f6091b9e4}{%
+           family={Callebaut},
+           familyi={C\bibinitperiod},
+           given={G.},
+           giveni={G\bibinitperiod}}}%
+        {{hash=c890e99953c360c6394f14a61dc84c96}{%
+           family={{Van Mulders}},
+           familyi={V\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=6231db71778af60f5f7e29ec2dbc9e5a}{%
+           family={Cox},
+           familyi={C\bibinitperiod},
+           given={B.},
+           giveni={B\bibinitperiod}}}%
+        {{hash=65e1cc239980db332240c2dc49a0c638}{%
+           family={{Van der Perre}},
+           familyi={V\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod}}}%
+        {{hash=dfb68d0933625e80caaf2f07090c4e62}{%
+           family={{De Strycker}},
+           familyi={D\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod}}}%
+        {{hash=e823a35cbe531e07676f70b53e14499c}{%
+           family={Rottenberg},
+           familyi={R\bibinitperiod},
+           given={F.},
+           giveni={F\bibinitperiod}}}%
+      }
+      \strng{namehash}{0af7bfa656e05002d7315f559abd8e28}
+      \strng{fullhash}{0af7bfa656e05002d7315f559abd8e28}
+      \strng{bibnamehash}{0af7bfa656e05002d7315f559abd8e28}
+      \strng{authorbibnamehash}{0af7bfa656e05002d7315f559abd8e28}
+      \strng{authornamehash}{0af7bfa656e05002d7315f559abd8e28}
+      \strng{authorfullhash}{0af7bfa656e05002d7315f559abd8e28}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proc. {IEEE SPAWC}}
+      \field{title}{{How to perform distributed precoding to wirelessly power shelf labels: Signal processing and measurements}}
+      \field{year}{2024}
+      \field{pages}{526\bibrangedash 530}
+      \range{pages}{5}
+      \verb{doi}
+      \verb 10.1109/SPAWC60668.2024.10693966
+      \endverb
+    \endentry
+    \entry{wilson2010}{article}{}
+      \name{author}{2}{}{%
+        {{hash=29671919caaa69837adef041db17a906}{%
+           family={Wilson},
+           familyi={W\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=cd11a457a887cc5702af3a1ed8bd92df}{%
+           family={Patwari},
+           familyi={P\bibinitperiod},
+           given={N.},
+           giveni={N\bibinitperiod}}}%
+      }
+      \strng{namehash}{b516beeccb1ed57343a3286ef19f8f39}
+      \strng{fullhash}{b516beeccb1ed57343a3286ef19f8f39}
+      \strng{bibnamehash}{b516beeccb1ed57343a3286ef19f8f39}
+      \strng{authorbibnamehash}{b516beeccb1ed57343a3286ef19f8f39}
+      \strng{authornamehash}{b516beeccb1ed57343a3286ef19f8f39}
+      \strng{authorfullhash}{b516beeccb1ed57343a3286ef19f8f39}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{{IEEE Trans. Mobile Comput.}}
+      \field{number}{5}
+      \field{title}{{Radio tomographic imaging with wireless networks}}
+      \field{volume}{9}
+      \field{year}{2010}
+      \field{pages}{621\bibrangedash 632}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1109/TMC.2009.174
+      \endverb
+    \endentry
+    \entry{cama2019}{article}{}
+      \name{author}{5}{}{%
+        {{hash=0effdf745a496f44ddde38933fd1e00b}{%
+           family={Cama-Pinto},
+           familyi={C\bibinithyphendelim P\bibinitperiod},
+           given={D.},
+           giveni={D\bibinitperiod}}}%
+        {{hash=e3e4d4e16bd45a41a9d6964e6be04051}{%
+           family={Damas},
+           familyi={D\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=ec529cbb49b0d6881e7af9e94851207c}{%
+           family={Holgado-Terriza},
+           familyi={H\bibinithyphendelim T\bibinitperiod},
+           given={J.\bibnamedelimi A.},
+           giveni={J\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=8f796a3de046107a22f4536a27354e14}{%
+           family={Gómez-Mula},
+           familyi={G\bibinithyphendelim M\bibinitperiod},
+           given={F.},
+           giveni={F\bibinitperiod}}}%
+        {{hash=632c188eb4039f51dd1fd41c013f5d0a}{%
+           family={Cama-Pinto},
+           familyi={C\bibinithyphendelim P\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{e3a37e30f66662c893315793094b0063}
+      \strng{fullhash}{e3a37e30f66662c893315793094b0063}
+      \strng{bibnamehash}{e3a37e30f66662c893315793094b0063}
+      \strng{authorbibnamehash}{e3a37e30f66662c893315793094b0063}
+      \strng{authornamehash}{e3a37e30f66662c893315793094b0063}
+      \strng{authorfullhash}{e3a37e30f66662c893315793094b0063}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eid}{1744}
+      \field{journaltitle}{Int. J. Environ. Res. Public Health}
+      \field{number}{10}
+      \field{title}{{Path loss determination using linear and cubic regression inside a classic tomato greenhouse}}
+      \field{volume}{16}
+      \field{year}{2019}
+      \verb{doi}
+      \verb 10.3390/ijerph16101744
+      \endverb
+    \endentry
+    \entry{ribas2026sionnartbridge}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=6361910bf7bdad38b85212870c8a97c3}{%
+           family={Oliveira\bibnamedelima Ribas},
+           familyi={O\bibinitperiod\bibinitdelim R\bibinitperiod},
+           given={Felipe},
+           giveni={F\bibinitperiod}}}%
+      }
+      \strng{namehash}{6361910bf7bdad38b85212870c8a97c3}
+      \strng{fullhash}{6361910bf7bdad38b85212870c8a97c3}
+      \strng{bibnamehash}{6361910bf7bdad38b85212870c8a97c3}
+      \strng{authorbibnamehash}{6361910bf7bdad38b85212870c8a97c3}
+      \strng{authornamehash}{6361910bf7bdad38b85212870c8a97c3}
+      \strng{authorfullhash}{6361910bf7bdad38b85212870c8a97c3}
+      \field{sortinit}{9}
+      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{day}{3}
+      \field{howpublished}{Zenodo, version 1.8.2}
+      \field{month}{9}
+      \field{title}{{{SionnaRT-Bridge}: A {Blender} workflow for radio-propagation simulation and visualization}}
+      \field{year}{2026}
+      \field{dateera}{ce}
+      \verb{doi}
+      \verb 10.5281/zenodo.20125209
+      \endverb
+      \verb{urlraw}
+      \verb https://zenodo.org/records/20125209
+      \endverb
+      \verb{url}
+      \verb https://zenodo.org/records/20125209
+      \endverb
+    \endentry
+    \entry{lyu2026scenebaker}{misc}{}
+      \name{author}{4}{}{%
+        {{hash=15ab817b32aaa3dd527be754d70ebe56}{%
+           family={Lyu},
+           familyi={L\bibinitperiod},
+           given={Hyeonsu},
+           giveni={H\bibinitperiod}}}%
+        {{hash=7beb6096a07ed11e6db1ae7b7c747ef2}{%
+           family={Kim},
+           familyi={K\bibinitperiod},
+           given={Minwoo},
+           giveni={M\bibinitperiod}}}%
+        {{hash=3270320aebcb0bf30970dd51002a7a7c}{%
+           family={Park},
+           familyi={P\bibinitperiod},
+           given={Sojeong},
+           giveni={S\bibinitperiod}}}%
+        {{hash=d2b260f95f60851323cf5e899c79dcea}{%
+           family={Yang},
+           familyi={Y\bibinitperiod},
+           given={Hyun\bibnamedelima Jong},
+           giveni={H\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+      }
+      \strng{namehash}{2806df88666f46ab2962a090aea43da8}
+      \strng{fullhash}{2806df88666f46ab2962a090aea43da8}
+      \strng{bibnamehash}{2806df88666f46ab2962a090aea43da8}
+      \strng{authorbibnamehash}{2806df88666f46ab2962a090aea43da8}
+      \strng{authornamehash}{2806df88666f46ab2962a090aea43da8}
+      \strng{authorfullhash}{2806df88666f46ab2962a090aea43da8}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{day}{5}
+      \field{eprintclass}{eess.SP}
+      \field{eprinttype}{arXiv}
+      \field{month}{8}
+      \field{title}{{{SceneBaker}: Radio-Ready Scene Generation for {Sionna} Ray-Tracing}}
+      \field{year}{2026}
+      \field{dateera}{ce}
+      \verb{eprint}
+      \verb 2608.04546
+      \endverb
+    \endentry
+    \entry{housionna}{software}{}
+      \name{author}{2}{}{%
+        {{hash=804ae083aecfdeb43ae12d131896f7fc}{%
+           family={Putteneers},
+           familyi={P\bibinitperiod},
+           given={Joris},
+           giveni={J\bibinitperiod}}}%
+        {{hash=670439fdd922ce386ac6055c4aa1d1d5}{%
+           family={Forrez},
+           familyi={F\bibinitperiod},
+           given={Beau},
+           giveni={B\bibinitperiod}}}%
+      }
+      \strng{namehash}{f93d1992b81a518b03e427c94d3ca1cd}
+      \strng{fullhash}{f93d1992b81a518b03e427c94d3ca1cd}
+      \strng{bibnamehash}{f93d1992b81a518b03e427c94d3ca1cd}
+      \strng{authorbibnamehash}{f93d1992b81a518b03e427c94d3ca1cd}
+      \strng{authornamehash}{f93d1992b81a518b03e427c94d3ca1cd}
+      \strng{authorfullhash}{f93d1992b81a518b03e427c94d3ca1cd}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{day}{13}
+      \field{month}{11}
+      \field{title}{{{HOUSIONNA}: {Houdini} to {Sionna RT}}}
+      \field{version}{1.0}
+      \field{year}{2026}
+      \field{dateera}{ce}
+      \verb{urlraw}
+      \verb https://github.com/HyROPA/HOUSIONNA
+      \endverb
+      \verb{url}
+      \verb https://github.com/HyROPA/HOUSIONNA
+      \endverb
+    \endentry
+    \entry{hoydis2023}{inproceedings}{}
+      \name{author}{7}{}{%
+        {{hash=39a54c6c151cb166bb30eb0789cb92a4}{%
+           family={Hoydis},
+           familyi={H\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=c1ff4d001204f92a023504f75c01349b}{%
+           family={{Aït Aoudia}},
+           familyi={A\bibinitperiod},
+           given={F.},
+           giveni={F\bibinitperiod}}}%
+        {{hash=dfc1f52df7a2842d0181f36177440f6a}{%
+           family={Cammerer},
+           familyi={C\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=fb12d4f2c0f81ff3213cf56ef2beb1eb}{%
+           family={Nimier-David},
+           familyi={N\bibinithyphendelim D\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=1940b775c424512a44f1d274071f496f}{%
+           family={Binder},
+           familyi={B\bibinitperiod},
+           given={N.},
+           giveni={N\bibinitperiod}}}%
+        {{hash=403e7754475953328feedcb5cb96e3e5}{%
+           family={Marcus},
+           familyi={M\bibinitperiod},
+           given={G.},
+           giveni={G\bibinitperiod}}}%
+        {{hash=0777fb43d5c0e76a14a41a776a468fde}{%
+           family={Keller},
+           familyi={K\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{2961e8d4ba66b95c45915ac4537d34e7}
+      \strng{fullhash}{37af6926b2810e6f97f0f36334c9fa92}
+      \strng{bibnamehash}{2961e8d4ba66b95c45915ac4537d34e7}
+      \strng{authorbibnamehash}{2961e8d4ba66b95c45915ac4537d34e7}
+      \strng{authornamehash}{2961e8d4ba66b95c45915ac4537d34e7}
+      \strng{authorfullhash}{37af6926b2810e6f97f0f36334c9fa92}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proc. {IEEE} Globecom Workshops}
+      \field{title}{{{Sionna RT}: Differentiable Ray Tracing for Radio Propagation Modeling}}
+      \field{year}{2023}
+      \field{pages}{317\bibrangedash 321}
+      \range{pages}{5}
+      \verb{doi}
+      \verb 10.1109/GCWkshps58843.2023.10465179
+      \endverb
+    \endentry
+    \entry{aoudia2025}{misc}{}
+      \name{author}{6}{}{%
+        {{hash=c1ff4d001204f92a023504f75c01349b}{%
+           family={{Aït Aoudia}},
+           familyi={A\bibinitperiod},
+           given={F.},
+           giveni={F\bibinitperiod}}}%
+        {{hash=39a54c6c151cb166bb30eb0789cb92a4}{%
+           family={Hoydis},
+           familyi={H\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=fb12d4f2c0f81ff3213cf56ef2beb1eb}{%
+           family={Nimier-David},
+           familyi={N\bibinithyphendelim D\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=66ccff1b632a0f671c25f21ceb8aafdc}{%
+           family={Nicolet},
+           familyi={N\bibinitperiod},
+           given={B.},
+           giveni={B\bibinitperiod}}}%
+        {{hash=dfc1f52df7a2842d0181f36177440f6a}{%
+           family={Cammerer},
+           familyi={C\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=0777fb43d5c0e76a14a41a776a468fde}{%
+           family={Keller},
+           familyi={K\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{c89238662cf115e4256ff3264643d756}
+      \strng{fullhash}{c89238662cf115e4256ff3264643d756}
+      \strng{bibnamehash}{c89238662cf115e4256ff3264643d756}
+      \strng{authorbibnamehash}{c89238662cf115e4256ff3264643d756}
+      \strng{authornamehash}{c89238662cf115e4256ff3264643d756}
+      \strng{authorfullhash}{c89238662cf115e4256ff3264643d756}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprinttype}{arXiv}
+      \field{title}{{{Sionna RT}: Technical report}}
+      \field{year}{2025}
+      \verb{eprint}
+      \verb 2504.21719v3
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/2504.21719v3
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/2504.21719v3
+      \endverb
+    \endentry
+    \entry{itu2040}{report}{}
+      \name{author}{1}{}{%
+        {{hash=af469a1d13dee029a04c2ee68e619f40}{%
+           family={{ITU-R}},
+           familyi={I\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {International Telecommunication Union}%
+      }
+      \strng{namehash}{af469a1d13dee029a04c2ee68e619f40}
+      \strng{fullhash}{af469a1d13dee029a04c2ee68e619f40}
+      \strng{bibnamehash}{af469a1d13dee029a04c2ee68e619f40}
+      \strng{authorbibnamehash}{af469a1d13dee029a04c2ee68e619f40}
+      \strng{authornamehash}{af469a1d13dee029a04c2ee68e619f40}
+      \strng{authorfullhash}{af469a1d13dee029a04c2ee68e619f40}
+      \field{extraname}{1}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{8}
+      \field{number}{P.2040-3}
+      \field{title}{{Effects of building materials and structures on radiowave propagation above about 100 MHz}}
+      \field{type}{Recommendation}
+      \field{year}{2023}
+      \verb{urlraw}
+      \verb https://www.itu.int/rec/R-REC-P.2040-3-202308-S/en
+      \endverb
+      \verb{url}
+      \verb https://www.itu.int/rec/R-REC-P.2040-3-202308-S/en
+      \endverb
+    \endentry
+    \entry{zhekov2020}{article}{}
+      \name{author}{3}{}{%
+        {{hash=076da7b49085ca6c53246eb2f8eb19af}{%
+           family={Zhekov},
+           familyi={Z\bibinitperiod},
+           given={Stanislav\bibnamedelima Stefanov},
+           giveni={S\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=30d233d540d17f612e5805ceff5cda81}{%
+           family={Franek},
+           familyi={F\bibinitperiod},
+           given={Ondrej},
+           giveni={O\bibinitperiod}}}%
+        {{hash=f87a82c91ef1c6e6c91c8b01c978dc35}{%
+           family={Pedersen},
+           familyi={P\bibinitperiod},
+           given={Gert\bibnamedelima Fr{ø}lund},
+           giveni={G\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
+      }
+      \strng{namehash}{a506fe5a6d04eba47e8107d54b9de17f}
+      \strng{fullhash}{a506fe5a6d04eba47e8107d54b9de17f}
+      \strng{bibnamehash}{a506fe5a6d04eba47e8107d54b9de17f}
+      \strng{authorbibnamehash}{a506fe5a6d04eba47e8107d54b9de17f}
+      \strng{authornamehash}{a506fe5a6d04eba47e8107d54b9de17f}
+      \strng{authorfullhash}{a506fe5a6d04eba47e8107d54b9de17f}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Antennas and Propagation Magazine}
+      \field{number}{1}
+      \field{title}{{Dielectric Properties of Common Building Materials for Ultrawideband Propagation Studies [Measurements Corner]}}
+      \field{volume}{62}
+      \field{year}{2020}
+      \field{pages}{72\bibrangedash 81}
+      \range{pages}{10}
+      \verb{doi}
+      \verb 10.1109/MAP.2019.2955680
+      \endverb
+    \endentry
+    \entry{liebe1991}{article}{}
+      \name{author}{3}{}{%
+        {{hash=ba0effadb7e0ef4b6c39d33d9ec2188b}{%
+           family={Liebe},
+           familyi={L\bibinitperiod},
+           given={H.\bibnamedelimi J.},
+           giveni={H\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=77d0cfce3ddb7999491fe044483421a5}{%
+           family={Hufford},
+           familyi={H\bibinitperiod},
+           given={G.\bibnamedelimi A.},
+           giveni={G\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=fc827ceabeee96f77ee61cec4d4feed5}{%
+           family={Manabe},
+           familyi={M\bibinitperiod},
+           given={T.},
+           giveni={T\bibinitperiod}}}%
+      }
+      \strng{namehash}{5cc6b58665368ba443e96177087a5771}
+      \strng{fullhash}{5cc6b58665368ba443e96177087a5771}
+      \strng{bibnamehash}{5cc6b58665368ba443e96177087a5771}
+      \strng{authorbibnamehash}{5cc6b58665368ba443e96177087a5771}
+      \strng{authornamehash}{5cc6b58665368ba443e96177087a5771}
+      \strng{authorfullhash}{5cc6b58665368ba443e96177087a5771}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{International Journal of Infrared and Millimeter Waves}
+      \field{number}{7}
+      \field{title}{{A Model for the Complex Permittivity of Water at Frequencies below 1 {THz}}}
+      \field{volume}{12}
+      \field{year}{1991}
+      \field{pages}{659\bibrangedash 675}
+      \range{pages}{17}
+      \verb{doi}
+      \verb 10.1007/BF01008897
+      \endverb
+    \endentry
+    \entry{itu527}{report}{}
+      \name{author}{1}{}{%
+        {{hash=af469a1d13dee029a04c2ee68e619f40}{%
+           family={{ITU-R}},
+           familyi={I\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {International Telecommunication Union}%
+      }
+      \strng{namehash}{af469a1d13dee029a04c2ee68e619f40}
+      \strng{fullhash}{af469a1d13dee029a04c2ee68e619f40}
+      \strng{bibnamehash}{af469a1d13dee029a04c2ee68e619f40}
+      \strng{authorbibnamehash}{af469a1d13dee029a04c2ee68e619f40}
+      \strng{authornamehash}{af469a1d13dee029a04c2ee68e619f40}
+      \strng{authorfullhash}{af469a1d13dee029a04c2ee68e619f40}
+      \field{extraname}{2}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{9}
+      \field{number}{P.527-6}
+      \field{title}{{Electrical characteristics of the surface of the Earth}}
+      \field{type}{Recommendation}
+      \field{year}{2021}
+      \verb{urlraw}
+      \verb https://www.itu.int/rec/R-REC-P.527-6-202109-I/en
+      \endverb
+      \verb{url}
+      \verb https://www.itu.int/rec/R-REC-P.527-6-202109-I/en
+      \endverb
+    \endentry
+    \entry{ulaby1987}{article}{}
+      \name{author}{2}{}{%
+        {{hash=d361c53d8c466a05ac57da823092e4d4}{%
+           family={Ulaby},
+           familyi={U\bibinitperiod},
+           given={F.\bibnamedelimi T.},
+           giveni={F\bibinitperiod\bibinitdelim T\bibinitperiod}}}%
+        {{hash=a96a60f2014eb7e89ab9820da96b4b5f}{%
+           family={El-Rayes},
+           familyi={E\bibinithyphendelim R\bibinitperiod},
+           given={M.\bibnamedelimi A.},
+           giveni={M\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \strng{namehash}{fc10e88a712138d1a9913d60a3feb1c6}
+      \strng{fullhash}{fc10e88a712138d1a9913d60a3feb1c6}
+      \strng{bibnamehash}{fc10e88a712138d1a9913d60a3feb1c6}
+      \strng{authorbibnamehash}{fc10e88a712138d1a9913d60a3feb1c6}
+      \strng{authornamehash}{fc10e88a712138d1a9913d60a3feb1c6}
+      \strng{authorfullhash}{fc10e88a712138d1a9913d60a3feb1c6}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Geoscience and Remote Sensing}
+      \field{number}{5}
+      \field{title}{{Microwave Dielectric Spectrum of Vegetation---{Part II}: Dual-Dispersion Model}}
+      \field{volume}{GE-25}
+      \field{year}{1987}
+      \field{pages}{550\bibrangedash 557}
+      \range{pages}{8}
+      \verb{doi}
+      \verb 10.1109/TGRS.1987.289833
+      \endverb
+    \endentry
+    \entry{gabriel1996}{article}{}
+      \name{author}{3}{}{%
+        {{hash=db3da8a9a21797505980e2af834ba3c1}{%
+           family={Gabriel},
+           familyi={G\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=19d22cd075a96f0753b97aa314b0eb57}{%
+           family={Lau},
+           familyi={L\bibinitperiod},
+           given={R.\bibnamedelimi W.},
+           giveni={R\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+        {{hash=4938953b2229d9f3c90fa7f0788bed5f}{%
+           family={Gabriel},
+           familyi={G\bibinitperiod},
+           given={C.},
+           giveni={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{8dac1714ca29bca46402781c1f7dbb3e}
+      \strng{fullhash}{8dac1714ca29bca46402781c1f7dbb3e}
+      \strng{bibnamehash}{8dac1714ca29bca46402781c1f7dbb3e}
+      \strng{authorbibnamehash}{8dac1714ca29bca46402781c1f7dbb3e}
+      \strng{authornamehash}{8dac1714ca29bca46402781c1f7dbb3e}
+      \strng{authorfullhash}{8dac1714ca29bca46402781c1f7dbb3e}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Physics in Medicine and Biology}
+      \field{number}{11}
+      \field{title}{{The dielectric properties of biological tissues: {III}. Parametric models for the dielectric spectrum of tissues}}
+      \field{volume}{41}
+      \field{year}{1996}
+      \field{pages}{2271\bibrangedash 2293}
+      \range{pages}{23}
+      \verb{doi}
+      \verb 10.1088/0031-9155/41/11/003
+      \endverb
+    \endentry
+    \entry{itu833}{report}{}
+      \name{author}{1}{}{%
+        {{hash=af469a1d13dee029a04c2ee68e619f40}{%
+           family={{ITU-R}},
+           familyi={I\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {International Telecommunication Union}%
+      }
+      \strng{namehash}{af469a1d13dee029a04c2ee68e619f40}
+      \strng{fullhash}{af469a1d13dee029a04c2ee68e619f40}
+      \strng{bibnamehash}{af469a1d13dee029a04c2ee68e619f40}
+      \strng{authorbibnamehash}{af469a1d13dee029a04c2ee68e619f40}
+      \strng{authornamehash}{af469a1d13dee029a04c2ee68e619f40}
+      \strng{authorfullhash}{af469a1d13dee029a04c2ee68e619f40}
+      \field{extraname}{3}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{9}
+      \field{number}{P.833-10}
+      \field{title}{{Attenuation in vegetation}}
+      \field{type}{Recommendation}
+      \field{year}{2021}
+      \verb{urlraw}
+      \verb https://www.itu.int/rec/R-REC-P.833-10-202109-I/en
+      \endverb
+      \verb{url}
+      \verb https://www.itu.int/rec/R-REC-P.833-10-202109-I/en
+      \endverb
+    \endentry
+    \entry{tr38901}{report}{}
+      \name{author}{1}{}{%
+        {{hash=49952770ed51bcb32792566644a0032e}{%
+           family={{3GPP}},
+           familyi={3\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {3rd Generation Partnership Project}%
+      }
+      \strng{namehash}{49952770ed51bcb32792566644a0032e}
+      \strng{fullhash}{49952770ed51bcb32792566644a0032e}
+      \strng{bibnamehash}{49952770ed51bcb32792566644a0032e}
+      \strng{authorbibnamehash}{49952770ed51bcb32792566644a0032e}
+      \strng{authornamehash}{49952770ed51bcb32792566644a0032e}
+      \strng{authorfullhash}{49952770ed51bcb32792566644a0032e}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{3}
+      \field{number}{TR 38.901 V17.0.0}
+      \field{title}{{Study on channel model for frequencies from 0.5 to 100 {GHz}}}
+      \field{type}{Technical Report}
+      \field{year}{2022}
+    \endentry
+    \entry{sionnaRadioMaps}{online}{}
+      \list{organization}{1}{%
+        {NVIDIA}%
+      }
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labeltitlesource}{title}
+      \field{title}{{Radio Maps}}
+      \field{urlday}{30}
+      \field{urlmonth}{10}
+      \field{urlyear}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://nvlabs.github.io/sionna/rt/api/radio_maps.html
+      \endverb
+      \verb{url}
+      \verb https://nvlabs.github.io/sionna/rt/api/radio_maps.html
+      \endverb
+    \endentry
+    \entry{boshkovska2015}{article}{}
+      \name{author}{4}{}{%
+        {{hash=36ff66c1fd3dce4fee90255b74733ea6}{%
+           family={Boshkovska},
+           familyi={B\bibinitperiod},
+           given={Elena},
+           giveni={E\bibinitperiod}}}%
+        {{hash=606f6294da5666449e3851433d155758}{%
+           family={Ng},
+           familyi={N\bibinitperiod},
+           given={Derrick\bibnamedelimb Wing\bibnamedelima Kwan},
+           giveni={D\bibinitperiod\bibinitdelim W\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
+        {{hash=663a811c383085ec636d4227db27a060}{%
+           family={Zlatanov},
+           familyi={Z\bibinitperiod},
+           given={Nikola},
+           giveni={N\bibinitperiod}}}%
+        {{hash=2bbcbd688ed10b2616a700b227ee54aa}{%
+           family={Schober},
+           familyi={S\bibinitperiod},
+           given={Robert},
+           giveni={R\bibinitperiod}}}%
+      }
+      \strng{namehash}{df091c1028ed09f97ec129b1e554f581}
+      \strng{fullhash}{df091c1028ed09f97ec129b1e554f581}
+      \strng{bibnamehash}{df091c1028ed09f97ec129b1e554f581}
+      \strng{authorbibnamehash}{df091c1028ed09f97ec129b1e554f581}
+      \strng{authornamehash}{df091c1028ed09f97ec129b1e554f581}
+      \strng{authorfullhash}{df091c1028ed09f97ec129b1e554f581}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Communications Letters}
+      \field{number}{12}
+      \field{title}{{Practical Non-Linear Energy Harvesting Model and Resource Allocation for SWIPT Systems}}
+      \field{volume}{19}
+      \field{year}{2015}
+      \field{pages}{2082\bibrangedash 2085}
+      \range{pages}{4}
+      \verb{doi}
+      \verb 10.1109/LCOMM.2015.2478460
+      \endverb
+    \endentry
+    \entry{ambient6g}{online}{}
+      \name{author}{1}{}{%
+        {{hash=665c9c30189f83c9ad6624298de94218}{%
+           family={{AMBIENT-6G}},
+           familyi={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{665c9c30189f83c9ad6624298de94218}
+      \strng{fullhash}{665c9c30189f83c9ad6624298de94218}
+      \strng{bibnamehash}{665c9c30189f83c9ad6624298de94218}
+      \strng{authorbibnamehash}{665c9c30189f83c9ad6624298de94218}
+      \strng{authornamehash}{665c9c30189f83c9ad6624298de94218}
+      \strng{authorfullhash}{665c9c30189f83c9ad6624298de94218}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{{Dataset Several (RF) Harvesters}}
+      \field{urlday}{22}
+      \field{urlmonth}{10}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://github.com/AMBIENT-6G/dataset-harvesters
+      \endverb
+      \verb{url}
+      \verb https://github.com/AMBIENT-6G/dataset-harvesters
+      \endverb
+    \endentry
+    \entry{wagih2021}{article}{}
+      \name{author}{5}{}{%
+        {{hash=7a1483c0304fa08e175b120ef5b72f36}{%
+           family={Wagih},
+           familyi={W\bibinitperiod},
+           given={Mahmoud},
+           giveni={M\bibinitperiod}}}%
+        {{hash=842e2375b6c4c49aa3a42be188f1a075}{%
+           family={Hillier},
+           familyi={H\bibinitperiod},
+           given={Nicholas},
+           giveni={N\bibinitperiod}}}%
+        {{hash=7ca28ce90a11fccbff2f80d28710ae51}{%
+           family={Yong},
+           familyi={Y\bibinitperiod},
+           given={Sheng},
+           giveni={S\bibinitperiod}}}%
+        {{hash=d49c304bd1c6bc2c3539ad6e0d0dfa26}{%
+           family={Weddell},
+           familyi={W\bibinitperiod},
+           given={Alex\bibnamedelima S.},
+           giveni={A\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=9c39258469d71cbd202af6eb3bf4e262}{%
+           family={Beeby},
+           familyi={B\bibinitperiod},
+           given={Steve},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{e4066593c6f3319c6863d0b95a54d6e6}
+      \strng{fullhash}{e4066593c6f3319c6863d0b95a54d6e6}
+      \strng{bibnamehash}{e4066593c6f3319c6863d0b95a54d6e6}
+      \strng{authorbibnamehash}{e4066593c6f3319c6863d0b95a54d6e6}
+      \strng{authornamehash}{e4066593c6f3319c6863d0b95a54d6e6}
+      \strng{authorfullhash}{e4066593c6f3319c6863d0b95a54d6e6}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Open Journal of Antennas and Propagation}
+      \field{title}{{RF-Powered Wearable Energy Harvesting and Storage Module Based on E-Textile Coplanar Waveguide Rectenna and Supercapacitor}}
+      \field{volume}{2}
+      \field{year}{2021}
+      \field{pages}{302\bibrangedash 314}
+      \range{pages}{13}
+      \verb{doi}
+      \verb 10.1109/OJAP.2021.3059501
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

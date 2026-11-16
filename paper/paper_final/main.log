@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2026.1.31)  16 NOV 2026 13:41
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2026.1.31)  16 NOV 2026 13:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1601,8 +1601,7 @@ Package translations Info: No language package found. I am going to use `englis
 h' as default language. on input line 17.
 \@quotelevel=\count519
 \@quotereset=\count520
-
-No file main.aux.
+ (./main.aux)
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 17.
@@ -1623,6 +1622,7 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 17.
 LaTeX Font Info:    ... okay on input line 17.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 17.
 LaTeX Font Info:    ... okay on input line 17.
+
 -- Lines per column: 56 (exact).
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -1665,9 +1665,8 @@ Package biblatex Info: Automatic encoding selection.
 \openout3 = `main.bcf'.
 
 Package biblatex Info: Trying to load bibliographic data...
-Package biblatex Info: ... file 'main.bbl' not found.
-
-No file main.bbl.
+Package biblatex Info: ... file 'main.bbl' found.
+ (./main.bbl)
 Package biblatex Info: Reference section=0 on input line 17.
 Package biblatex Info: Reference segment=0 on input line 17.
 Package hyperref Info: Link coloring OFF on input line 17.
@@ -1685,6 +1684,8 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 17.
 LaTeX Info: Redefining \pageref on input line 17.
 LaTeX Info: Redefining \nameref on input line 17.
+
+(./main.out) (./main.out)
 \@outlinefile=\write5
 \openout5 = `main.out'.
 
@@ -1706,209 +1707,77 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 41.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 (./01_introduction.tex
-
-LaTeX Warning: Citation 'salagovic2024' on page 1 undefined on input line 2.
-
-
-LaTeX Warning: Citation 'geldhof2021' on page 1 undefined on input line 2.
-
-
-LaTeX Warning: Citation 'lu2020' on page 1 undefined on input line 2.
-
-
-LaTeX Warning: Citation 'cappelle2025' on page 1 undefined on input line 2.
-
-<figures/screenshots/combined3.png, id=42, 2177.13374pt x 1276.01718pt>
+<figures/screenshots/combined3.png, id=114, 2177.13374pt x 1276.01718pt>
 File: figures/screenshots/combined3.png Graphic file (type png)
 <use figures/screenshots/combined3.png>
 Package pdftex.def Info: figures/screenshots/combined3.png  used on input line 
 6.
 (pdftex.def)             Requested size: 246.95892pt x 144.7237pt.
-(./figures/v3workflow.tex
+ (./figures/v3workflow.tex
 LaTeX Font Info:    Trying to load font information for OT1+phv on input line 4
 4.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1phv.fd
 File: ot1phv.fd 2020/03/25 scalable font definitions for OT1/phv.
 )
-
-LaTeX Warning: Hyper reference `sec:procedural' on page 1 undefined on input li
-ne 44.
-
-
-LaTeX Warning: Hyper reference `sec:raytracing' on page 1 undefined on input li
-ne 45.
-
-
-LaTeX Warning: Hyper reference `sec:evaluation' on page 1 undefined on input li
-ne 46.
-
-<figures/icons/scene.pdf, id=44, 18.0675pt x 18.0675pt>
+<figures/icons/scene.pdf, id=119, 18.0675pt x 18.0675pt>
 File: figures/icons/scene.pdf Graphic file (type pdf)
 <use figures/icons/scene.pdf>
 Package pdftex.def Info: figures/icons/scene.pdf  used on input line 49.
 (pdftex.def)             Requested size: 17.07248pt x 17.07164pt.
-
-LaTeX Warning: Hyper reference `sec:geometry' on page 1 undefined on input line
- 49.
-
-<figures/icons/export.pdf, id=45, 18.0675pt x 18.0675pt>
+<figures/icons/export.pdf, id=121, 18.0675pt x 18.0675pt>
 File: figures/icons/export.pdf Graphic file (type pdf)
 <use figures/icons/export.pdf>
 Package pdftex.def Info: figures/icons/export.pdf  used on input line 50.
 (pdftex.def)             Requested size: 17.07248pt x 17.07164pt.
-
-LaTeX Warning: Hyper reference `sec:scene' on page 1 undefined on input line 50
-.
-
-<figures/icons/calibrate.pdf, id=46, 18.0675pt x 18.0675pt>
+<figures/icons/calibrate.pdf, id=123, 18.0675pt x 18.0675pt>
 File: figures/icons/calibrate.pdf Graphic file (type pdf)
 <use figures/icons/calibrate.pdf>
 Package pdftex.def Info: figures/icons/calibrate.pdf  used on input line 51.
 (pdftex.def)             Requested size: 17.07248pt x 17.07164pt.
-
-LaTeX Warning: Hyper reference `sec:twin' on page 1 undefined on input line 51.
-
-
-<figures/icons/raytrace.pdf, id=47, 18.0675pt x 18.0675pt>
+<figures/icons/raytrace.pdf, id=125, 18.0675pt x 18.0675pt>
 File: figures/icons/raytrace.pdf Graphic file (type pdf)
 <use figures/icons/raytrace.pdf>
 Package pdftex.def Info: figures/icons/raytrace.pdf  used on input line 53.
 (pdftex.def)             Requested size: 17.07248pt x 17.07164pt.
-
-LaTeX Warning: Hyper reference `sec:execution' on page 1 undefined on input lin
-e 53.
-
-<figures/icons/results.pdf, id=48, 18.0675pt x 18.0675pt>
+<figures/icons/results.pdf, id=127, 18.0675pt x 18.0675pt>
 File: figures/icons/results.pdf Graphic file (type pdf)
 <use figures/icons/results.pdf>
 Package pdftex.def Info: figures/icons/results.pdf  used on input line 55.
 (pdftex.def)             Requested size: 17.07248pt x 17.07164pt.
-
-LaTeX Warning: Hyper reference `sec:returned' on page 1 undefined on input line
- 55.
-
-<figures/icons/viewer.pdf, id=49, 18.0675pt x 18.0675pt>
+<figures/icons/viewer.pdf, id=129, 18.0675pt x 18.0675pt>
 File: figures/icons/viewer.pdf Graphic file (type pdf)
 <use figures/icons/viewer.pdf>
 Package pdftex.def Info: figures/icons/viewer.pdf  used on input line 56.
 (pdftex.def)             Requested size: 17.07248pt x 17.07164pt.
-
-LaTeX Warning: Hyper reference `sec:inspection' on page 1 undefined on input li
-ne 56.
-
-<figures/icons/engine.pdf, id=50, 18.0675pt x 18.0675pt>
+<figures/icons/engine.pdf, id=131, 18.0675pt x 18.0675pt>
 File: figures/icons/engine.pdf Graphic file (type pdf)
 <use figures/icons/engine.pdf>
 Package pdftex.def Info: figures/icons/engine.pdf  used on input line 57.
 (pdftex.def)             Requested size: 17.07248pt x 17.07164pt.
-
-LaTeX Warning: Hyper reference `sec:metrics' on page 1 undefined on input line 
-57.
-
-<figures/icons/houdini.pdf, id=51, 18.0675pt x 18.0675pt>
+<figures/icons/houdini.pdf, id=133, 18.0675pt x 18.0675pt>
 File: figures/icons/houdini.pdf Graphic file (type pdf)
 <use figures/icons/houdini.pdf>
 Package pdftex.def Info: figures/icons/houdini.pdf  used on input line 58.
 (pdftex.def)             Requested size: 17.07248pt x 17.07164pt.
-
-LaTeX Warning: Hyper reference `sec:inspection' on page 1 undefined on input li
-ne 58.
-
-<figures/icons/measure.pdf, id=52, 18.0675pt x 18.0675pt>
+<figures/icons/measure.pdf, id=135, 18.0675pt x 18.0675pt>
 File: figures/icons/measure.pdf Graphic file (type pdf)
 <use figures/icons/measure.pdf>
 Package pdftex.def Info: figures/icons/measure.pdf  used on input line 60.
 (pdftex.def)             Requested size: 17.07248pt x 17.07164pt.
-
-LaTeX Warning: Hyper reference `sec:twin' on page 1 undefined on input line 60.
-
-
 LaTeX Font Info:    Font shape `OT1/phv/m/it' in size <7> not available
 (Font)              Font shape `OT1/phv/m/sl' tried instead on input line 73.
-<figures/icons/iterate.pdf, id=53, 18.0675pt x 18.0675pt>
+<figures/icons/iterate.pdf, id=137, 18.0675pt x 18.0675pt>
 File: figures/icons/iterate.pdf Graphic file (type pdf)
 <use figures/icons/iterate.pdf>
 Package pdftex.def Info: figures/icons/iterate.pdf  used on input line 73.
 (pdftex.def)             Requested size: 6.82849pt x 6.82864pt.
-)
-
-LaTeX Warning: Citation 'liu2013' on page 1 undefined on input line 15.
+) [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
 
 
-LaTeX Warning: Citation 'callebaut2024' on page 1 undefined on input line 15.
-
-
-LaTeX Warning: Citation 'wilson2010' on page 1 undefined on input line 15.
-
-
-LaTeX Warning: Citation 'cama2019' on page 1 undefined on input line 17.
-
-
-LaTeX Warning: Citation 'ribas2026sionnartbridge' on page 1 undefined on input 
-line 22.
-
-
-LaTeX Warning: Citation 'lyu2026scenebaker' on page 1 undefined on input line 2
-2.
-
-[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
-
-
- <./figures/screenshots/combined3.png>]
-
-LaTeX Warning: Citation 'housionna' on page 2 undefined on input line 24.
-
-
-LaTeX Warning: Citation 'hoydis2023' on page 2 undefined on input line 24.
-
-
-LaTeX Warning: Citation 'aoudia2025' on page 2 undefined on input line 24.
-
-
-LaTeX Warning: Reference `fig:pipeline' on page 1 undefined on input line 26.
-
-
-LaTeX Warning: Reference `fig:scene-example' on page 1 undefined on input line 
-26.
-
-
-LaTeX Warning: Reference `sec:evaluation' on page 1 undefined on input line 26.
-
-
-
-LaTeX Warning: Reference `sec:raytracing' on page 1 undefined on input line 26.
-
-
-
-LaTeX Warning: Reference `sec:procedural' on page 1 undefined on input line 26.
-
-
-
-LaTeX Warning: Reference `sec:casestudy' on page 1 undefined on input line 26.
-
-
-LaTeX Warning: Reference `sec:conclusion' on page 1 undefined on input line 26.
-
-
-) (./02_scene_generation.tex
-
-LaTeX Warning: Reference `sec:execution' on page 1 undefined on input line 7.
-
-
-LaTeX Warning: Citation 'housionna' on page 2 undefined on input line 22.
-
-
-LaTeX Warning: Reference `fig:growth_stages' on page 1 undefined on input line 
-22.
-
-
-LaTeX Warning: Reference `sec:materials' on page 1 undefined on input line 22.
-
-
-LaTeX Warning: Reference `sec:solver' on page 1 undefined on input line 22.
-
-[2 <./figures/icons/scene.pdf> <./figures/icons/export.pdf
+ <./figures/screenshots/combined3.png>])
+(./02_scene_generation.tex [2 <./figures/icons/scene.pdf> <./figures/icons/expo
+rt.pdf
 
 pdfTeX warning: pdflatex (file ./figures/icons/export.pdf): PDF inclusion: mult
 iple pdfs with page group included in a single page
@@ -1945,129 +1814,30 @@ tiple pdfs with page group included in a single page
 pdfTeX warning: pdflatex (file ./figures/icons/iterate.pdf): PDF inclusion: mul
 tiple pdfs with page group included in a single page
 >]
-<figures/screenshots/combined5.png, id=95, 1443.89438pt x 395.22656pt>
+<figures/screenshots/combined5.png, id=209, 1443.89438pt x 395.22656pt>
 File: figures/screenshots/combined5.png Graphic file (type png)
 <use figures/screenshots/combined5.png>
 Package pdftex.def Info: figures/screenshots/combined5.png  used on input line 
 134.
 (pdftex.def)             Requested size: 246.95892pt x 67.5977pt.
-
-
-LaTeX Warning: Citation 'itu2040' on page 3 undefined on input line 147.
-
-
-LaTeX Warning: Citation 'zhekov2020' on page 3 undefined on input line 147.
-
-
-LaTeX Warning: Citation 'liebe1991' on page 3 undefined on input line 147.
-
-
-LaTeX Warning: Citation 'itu527' on page 3 undefined on input line 147.
-
-
-LaTeX Warning: Citation 'ulaby1987' on page 3 undefined on input line 147.
-
-
-LaTeX Warning: Citation 'gabriel1996' on page 3 undefined on input line 147.
-
-
-LaTeX Warning: Citation 'itu833' on page 3 undefined on input line 147.
-
-) (./03_ray_tracing.tex
-
-LaTeX Warning: Citation 'tr38901' on page 3 undefined on input line 22.
-
-
-LaTeX Warning: Reference `sec:geometry' on page 1 undefined on input line 24.
-
-
-LaTeX Warning: Citation 'housionna' on page 3 undefined on input line 24.
-
-) (./04_evaluation.tex
-
-LaTeX Warning: Citation 'callebaut2024' on page 3 undefined on input line 7.
-
-[3 <./figures/screenshots/combined5.png>]
-
-LaTeX Warning: Reference `sec:casestudy' on page 1 undefined on input line 13.
-
-
-LaTeX Warning: Citation 'housionna' on page 4 undefined on input line 13.
-
-
-LaTeX Warning: Citation 'aoudia2025' on page 4 undefined on input line 28.
-
-
-LaTeX Warning: Citation 'sionnaRadioMaps' on page 4 undefined on input line 28.
-
-
-
-LaTeX Warning: Citation 'boshkovska2015' on page 4 undefined on input line 51.
-
-
-LaTeX Warning: Citation 'ambient6g' on page 4 undefined on input line 51.
-
-
-LaTeX Warning: Citation 'wagih2021' on page 4 undefined on input line 53.
-
-
-LaTeX Warning: Reference `sec:casestudy' on page 1 undefined on input line 61.
-
-) (./05_use_case.tex
-
-LaTeX Warning: Citation 'cappelle2025' on page 4 undefined on input line 16.
-
-
-LaTeX Warning: Reference `fig:usecase-paths' on page 1 undefined on input line 
-19.
-
-
-LaTeX Warning: Reference `sec:materials' on page 1 undefined on input line 19.
-
-
-LaTeX Warning: Citation 'itu2040' on page 4 undefined on input line 19.
-
-[4]
-<figures/screenshots/snapshot combined.png, id=130, 2050.66125pt x 606.76688pt>
+) (./03_ray_tracing.tex) (./04_evaluation.tex [3 <./figures/screenshots/combine
+d5.png>]) (./05_use_case.tex [4]
+<figures/screenshots/snapshot combined.png, id=267, 2050.66125pt x 606.76688pt>
 
 File: figures/screenshots/snapshot combined.png Graphic file (type png)
 <use figures/screenshots/snapshot combined.png>
 Package pdftex.def Info: figures/screenshots/snapshot combined.png  used on inp
 ut line 23.
 (pdftex.def)             Requested size: 246.95892pt x 73.06812pt.
-
-
-LaTeX Warning: Reference `sec:solver' on page 1 undefined on input line 30.
-
-
-LaTeX Warning: Reference `sec:returned' on page 1 undefined on input line 33.
-
-
-LaTeX Warning: Reference `fig:harvester_efficiency' on page 1 undefined on inpu
-t line 33.
-
-
-LaTeX Warning: Citation 'ambient6g' on page 5 undefined on input line 33.
-
 LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 3
 3.
+
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
 (./figures/harvester-efficiency.tex
 PGFPlots: reading {figures/harvester-chart-data.csv}
-
-
-LaTeX Warning: Citation 'ambient6g' on page 5 undefined on input line 64.
-
-
-LaTeX Warning: Citation 'ambient6g' on page 5 undefined on input line 64.
-
-)
-
-LaTeX Warning: Reference `tab:usecase' on page 1 undefined on input line 61.
-
-) (./06_conclusion.tex
+)) (./06_conclusion.tex
 Underfull \vbox (badness 1048) has occurred while \output is active []
 
 
@@ -2075,17 +1845,13 @@ Underfull \vbox (badness 1048) has occurred while \output is active []
 Package balance Warning: You have called \balance in second column
 (balance)                Columns might not be balanced.
 
-[5 <./figures/screenshots/snapshot combined.png>]
+[5 <./figures/screenshots/snapshot combined.png>])
+LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 6
+6.
 
-LaTeX Warning: Citation 'hoydis2023' on page 6 undefined on input line 10.
-
-
-LaTeX Warning: Citation 'aoudia2025' on page 6 undefined on input line 10.
-
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1pcr.fd
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
-
-LaTeX Warning: Empty bibliography on input line 66.
-
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -2102,36 +1868,23 @@ Package glossaries Warning: No \printnoidxglossary or \printnoidxglossaries
  found. (Remove \makenoidxglossaries if you don't want any glossaries.)
 This document will not have a glossary.
 
+
+Overfull \vbox (15.46898pt too high) has occurred while \output is active []
+
+
 [6] (./main.aux)
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-
-Package rerunfilecheck Warning: File `main.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `main.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  CAB6F75C9938B3E8B41142C4BBC8A39B;2843.
-
-Package biblatex Warning: Please (re)run Biber on the file:
-(biblatex)                main
-(biblatex)                and rerun LaTeX afterwards.
-
+Package rerunfilecheck Info: File `main.out' has not changed.
+(rerunfilecheck)             Checksum: CAB6F75C9938B3E8B41142C4BBC8A39B;2843.
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 82635 strings out of 478287
- 1710815 string characters out of 5849289
- 2429729 words of memory out of 5000000
- 99829 multiletter control sequences out of 15000+600000
- 526084 words of font info for 128 fonts, out of 8000000 for 9000
+ 82836 strings out of 478287
+ 1716105 string characters out of 5849289
+ 2440823 words of memory out of 5000000
+ 99991 multiletter control sequences out of 15000+600000
+ 527245 words of font info for 131 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  104i,19n,120p,1678b,2465s stack positions out of 5000i,500n,10000p,200000b,80000s
 pdfTeX warning (dest): name{glo:wpt} has been referenced but does not exist, 
@@ -2156,16 +1909,17 @@ fb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr
 exlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive
 /texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-
 dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fo
-nts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/ur
-w/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/u
-hvro8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></us
-r/share/texlive/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texliv
-e/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fo
-nts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (6 pages, 5304516 bytes).
+nts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw
+/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uh
+vr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb></
+usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-dist/
+fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw
+/times/utmri8a.pfb>
+Output written on main.pdf (6 pages, 5322794 bytes).
 PDF statistics:
- 252 PDF objects out of 1000 (max. 8388607)
- 163 compressed objects within 2 object streams
- 37 named destinations out of 1000 (max. 500000)
- 174 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 442 PDF objects out of 1000 (max. 8388607)
+ 348 compressed objects within 4 object streams
+ 63 named destinations out of 1000 (max. 500000)
+ 310 words of extra memory for PDF output out of 10000 (max. 10000000)
 

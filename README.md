@@ -739,6 +739,17 @@ Paths in several variations at once
 Radio map under four racks
 
 ![Radio map under four racks](docs/presentation_21-10-2026/annotated_images/annotated_1e853020.png)
+showcase video
+https://www.youtube.com/watch?v=GcwktsATHTg
+
+
+
+
+### Previews
+
+![2preview](docs/2preview.png)
+![prev](docs/prev.png)
+![sim](docs/sim.png)
 
 ### Screenshots
 
@@ -756,10 +767,7 @@ Radio map under four racks
 ![Screenshot 2026-10-21-102655](docs/presentation_21-10-2026/2026-10-21-102655_1920x1028_scrot.png)
 ![Screenshot 2026-10-21-102800](docs/presentation_21-10-2026/2026-10-21-102800_1917x1033_scrot.png)
 
-
-
-
-
+### Presentation 21-10-2026
 
 ![HyROPA_presentatie_1](docs/presentation_21-10-2026/HyROPA_presentatie_1.png)
 ![HyROPA_presentatie_2](docs/presentation_21-10-2026/HyROPA_presentatie_2.png)
@@ -781,9 +789,152 @@ Radio map under four racks
 ![HyROPA_presentatie_18](docs/presentation_21-10-2026/HyROPA_presentatie_18.png)
 ![HyROPA_presentatie_19](docs/presentation_21-10-2026/HyROPA_presentatie_19.png)
 
+### Annotated images
 
-showcase video
+![annotated_00bbc1c9](docs/presentation_21-10-2026/annotated_images/annotated_00bbc1c9.png)
+![annotated_1e853020](docs/presentation_21-10-2026/annotated_images/annotated_1e853020.png)
+![annotated_23cd7903](docs/presentation_21-10-2026/annotated_images/annotated_23cd7903.png)
+![annotated_298ad846](docs/presentation_21-10-2026/annotated_images/annotated_298ad846.png)
+![annotated_7a2c2e1c](docs/presentation_21-10-2026/annotated_images/annotated_7a2c2e1c.png)
+![annotated_7f4aaac7](docs/presentation_21-10-2026/annotated_images/annotated_7f4aaac7.png)
+![annotated_92642889](docs/presentation_21-10-2026/annotated_images/annotated_92642889.png)
+![annotated_cbe7a67c](docs/presentation_21-10-2026/annotated_images/annotated_cbe7a67c.png)
+
+[Video 2026-10-21](docs/presentation_21-10-2026/vids/2026-10-21_10-33-44.mp4)
+
+### Procedural batch 2
+
+![0_0](docs/batch_2_imgs/procedural/0_0.png)
+![0_1](docs/batch_2_imgs/procedural/0_1.png)
+![0_2](docs/batch_2_imgs/procedural/0_2.png)
+![1_0](docs/batch_2_imgs/procedural/1_0.png)
+![1_1](docs/batch_2_imgs/procedural/1_1.png)
+![1_2](docs/batch_2_imgs/procedural/1_2.png)
+![2_0](docs/batch_2_imgs/procedural/2_0.png)
+![2_1](docs/batch_2_imgs/procedural/2_1.png)
+![2_2](docs/batch_2_imgs/procedural/2_2.png)
+![3_0](docs/batch_2_imgs/procedural/3_0.png)
+![3_1](docs/batch_2_imgs/procedural/3_1.png)
+![3_2](docs/batch_2_imgs/procedural/3_2.png)
+![4_0](docs/batch_2_imgs/procedural/4_0.png)
+![4_1](docs/batch_2_imgs/procedural/4_1.png)
+![4_2](docs/batch_2_imgs/procedural/4_2.png)
+
+### Plant generations
+
+![fragaria_x_ananassa_overview](docs/plant%20generations/plant_generations/fragaria_x_ananassa_overview.png)
+![fragaria_x_ananassa_v1_gen1](docs/plant%20generations/plant_generations/fragaria_x_ananassa_v1_gen1.png)
+![fragaria_x_ananassa_v1_gen2](docs/plant%20generations/plant_generations/fragaria_x_ananassa_v1_gen2.png)
+![fragaria_x_ananassa_v1_gen3](docs/plant%20generations/plant_generations/fragaria_x_ananassa_v1_gen3.png)
+![fragaria_x_ananassa_v2_gen1](docs/plant%20generations/plant_generations/fragaria_x_ananassa_v2_gen1.png)
+![fragaria_x_ananassa_v2_gen2](docs/plant%20generations/plant_generations/fragaria_x_ananassa_v2_gen2.png)
+![fragaria_x_ananassa_v2_gen3](docs/plant%20generations/plant_generations/fragaria_x_ananassa_v2_gen3.png)
+![fragaria_x_ananassa_v3_gen1](docs/plant%20generations/plant_generations/fragaria_x_ananassa_v3_gen1.png)
+![fragaria_x_ananassa_v3_gen2](docs/plant%20generations/plant_generations/fragaria_x_ananassa_v3_gen2.png)
+![fragaria_x_ananassa_v3_gen3](docs/plant%20generations/plant_generations/fragaria_x_ananassa_v3_gen3.png)
+![lactuca_sativa_overview](docs/plant%20generations/plant_generations/lactuca_sativa_overview.png)
+![lactuca_sativa_v1_gen1](docs/plant%20generations/plant_generations/lactuca_sativa_v1_gen1.png)
+![lactuca_sativa_v1_gen2](docs/plant%20generations/plant_generations/lactuca_sativa_v1_gen2.png)
+![lactuca_sativa_v1_gen3](docs/plant%20generations/plant_generations/lactuca_sativa_v1_gen3.png)
+![lactuca_sativa_v2_gen1](docs/plant%20generations/plant_generations/lactuca_sativa_v2_gen1.png)
+![lactuca_sativa_v2_gen2](docs/plant%20generations/plant_generations/lactuca_sativa_v2_gen2.png)
+![lactuca_sativa_v2_gen3](docs/plant%20generations/plant_generations/lactuca_sativa_v2_gen3.png)
+![lactuca_sativa_v3_gen1](docs/plant%20generations/plant_generations/lactuca_sativa_v3_gen1.png)
+![lactuca_sativa_v3_gen2](docs/plant%20generations/plant_generations/lactuca_sativa_v3_gen2.png)
+![lactuca_sativa_v3_gen3](docs/plant%20generations/plant_generations/lactuca_sativa_v3_gen3.png)
+![ocimum_basilicum_overview](docs/plant%20generations/plant_generations/ocimum_basilicum_overview.png)
+![ocimum_basilicum_v1_gen1](docs/plant%20generations/plant_generations/ocimum_basilicum_v1_gen1.png)
+![ocimum_basilicum_v1_gen2](docs/plant%20generations/plant_generations/ocimum_basilicum_v1_gen2.png)
+![ocimum_basilicum_v1_gen3](docs/plant%20generations/plant_generations/ocimum_basilicum_v1_gen3.png)
+![ocimum_basilicum_v2_gen1](docs/plant%20generations/plant_generations/ocimum_basilicum_v2_gen1.png)
+![ocimum_basilicum_v2_gen2](docs/plant%20generations/plant_generations/ocimum_basilicum_v2_gen2.png)
+![ocimum_basilicum_v2_gen3](docs/plant%20generations/plant_generations/ocimum_basilicum_v2_gen3.png)
+![ocimum_basilicum_v3_gen1](docs/plant%20generations/plant_generations/ocimum_basilicum_v3_gen1.png)
+![ocimum_basilicum_v3_gen2](docs/plant%20generations/plant_generations/ocimum_basilicum_v3_gen2.png)
+![ocimum_basilicum_v3_gen3](docs/plant%20generations/plant_generations/ocimum_basilicum_v3_gen3.png)
+![solanum_lycopersicum_overview](docs/plant%20generations/plant_generations/solanum_lycopersicum_overview.png)
+![solanum_lycopersicum_v1_gen1](docs/plant%20generations/plant_generations/solanum_lycopersicum_v1_gen1.png)
+![solanum_lycopersicum_v1_gen2](docs/plant%20generations/plant_generations/solanum_lycopersicum_v1_gen2.png)
+![solanum_lycopersicum_v1_gen3](docs/plant%20generations/plant_generations/solanum_lycopersicum_v1_gen3.png)
+![solanum_lycopersicum_v2_gen1](docs/plant%20generations/plant_generations/solanum_lycopersicum_v2_gen1.png)
+![solanum_lycopersicum_v2_gen2](docs/plant%20generations/plant_generations/solanum_lycopersicum_v2_gen2.png)
+![solanum_lycopersicum_v2_gen3](docs/plant%20generations/plant_generations/solanum_lycopersicum_v2_gen3.png)
+![solanum_lycopersicum_v3_gen1](docs/plant%20generations/plant_generations/solanum_lycopersicum_v3_gen1.png)
+![solanum_lycopersicum_v3_gen2](docs/plant%20generations/plant_generations/solanum_lycopersicum_v3_gen2.png)
+![solanum_lycopersicum_v3_gen3](docs/plant%20generations/plant_generations/solanum_lycopersicum_v3_gen3.png)
+
+### Updates 02-11-2026
+
+![2026-11-02-120135](docs/updates%2002-11-2026/2026-11-02-120135_818x941_scrot.png)
+![2026-11-02-174129](docs/updates%2002-11-2026/2026-11-02-174129_1301x945_scrot.png)
+![2026-11-02-180535](docs/updates%2002-11-2026/2026-11-02-180535_1299x941_scrot.png)
+![2026-11-02-180606](docs/updates%2002-11-2026/2026-11-02-180606_1301x942_scrot.png)
+![2026-11-02-184107](docs/updates%2002-11-2026/2026-11-02-184107_781x745_scrot.png)
+![2026-11-02-185055](docs/updates%2002-11-2026/2026-11-02-185055_813x634_scrot.png)
+![2026-11-02-185103](docs/updates%2002-11-2026/2026-11-02-185103_796x668_scrot.png)
+![2026-11-02-185349](docs/updates%2002-11-2026/2026-11-02-185349_898x912_scrot.png)
+![2026-11-02-185404](docs/updates%2002-11-2026/2026-11-02-185404_900x934_scrot.png)
+![2026-11-02-185413](docs/updates%2002-11-2026/2026-11-02-185413_899x898_scrot.png)
+![2026-11-02-185436](docs/updates%2002-11-2026/2026-11-02-185436_901x890_scrot.png)
+![2026-11-02-194041](docs/updates%2002-11-2026/2026-11-02-194041_1101x988_scrot.png)
+![2026-11-02-194218](docs/updates%2002-11-2026/2026-11-02-194218_1107x1017_scrot.png)
+![2026-11-02-194547](docs/updates%2002-11-2026/2026-11-02-194547_1109x1028_scrot.png)
+![2026-11-02-194802](docs/updates%2002-11-2026/2026-11-02-194802_1107x971_scrot.png)
+![2026-11-02-194837](docs/updates%2002-11-2026/2026-11-02-194837_1108x966_scrot.png)
+![2026-11-02-214855](docs/updates%2002-11-2026/2026-11-02-214855_1197x839_scrot.png)
+![2026-11-02-220348](docs/updates%2002-11-2026/2026-11-02-220348_1920x1029_scrot.png)
+![2026-11-02-220507](docs/updates%2002-11-2026/2026-11-02-220507_1275x1007_scrot.png)
+
+### Updates 10-11-2026
+
+![combined](docs/updates%2010_11_2026/combined.png)
+![combined2](docs/updates%2010_11_2026/combined2.png)
+![combined3](docs/updates%2010_11_2026/combined3.png)
+![combined4](docs/updates%2010_11_2026/combined4.png)
+![combined5](docs/updates%2010_11_2026/combined5.png)
+![q (1)](docs/updates%2010_11_2026/q%20%281%29.png)
+![q (2)](docs/updates%2010_11_2026/q%20%282%29.png)
+![q (3)](docs/updates%2010_11_2026/q%20%283%29.png)
+![q (4)](docs/updates%2010_11_2026/q%20%284%29.png)
+![q (5)](docs/updates%2010_11_2026/q%20%285%29.png)
+![q (6)](docs/updates%2010_11_2026/q%20%286%29.png)
+![q (7)](docs/updates%2010_11_2026/q%20%287%29.png)
+![q (8)](docs/updates%2010_11_2026/q%20%288%29.png)
+![q (9)](docs/updates%2010_11_2026/q%20%289%29.png)
+![q (10)](docs/updates%2010_11_2026/q%20%2810%29.png)
+![q (11)](docs/updates%2010_11_2026/q%20%2811%29.png)
+![q (12)](docs/updates%2010_11_2026/q%20%2812%29.png)
+![q (13)](docs/updates%2010_11_2026/q%20%2813%29.png)
+![q (14)](docs/updates%2010_11_2026/q%20%2814%29.png)
+![q (15)](docs/updates%2010_11_2026/q%20%2815%29.png)
+![q (16)](docs/updates%2010_11_2026/q%20%2816%29.png)
+![q (17)](docs/updates%2010_11_2026/q%20%2817%29.png)
+![q (18)](docs/updates%2010_11_2026/q%20%2818%29.png)
+![q (19)](docs/updates%2010_11_2026/q%20%2819%29.png)
+![q (20)](docs/updates%2010_11_2026/q%20%2820%29.png)
+![q (21)](docs/updates%2010_11_2026/q%20%2821%29.png)
+![q (22)](docs/updates%2010_11_2026/q%20%2822%29.png)
+![q (23)](docs/updates%2010_11_2026/q%20%2823%29.png)
+![q (24)](docs/updates%2010_11_2026/q%20%2824%29.png)
+![q (25)](docs/updates%2010_11_2026/q%20%2825%29.png)
+![q (26)](docs/updates%2010_11_2026/q%20%2826%29.png)
+![q (27)](docs/updates%2010_11_2026/q%20%2827%29.png)
+![q (28)](docs/updates%2010_11_2026/q%20%2828%29.png)
+![q (29)](docs/updates%2010_11_2026/q%20%2829%29.png)
+![q (30)](docs/updates%2010_11_2026/q%20%2830%29.png)
+![q (31)](docs/updates%2010_11_2026/q%20%2831%29.png)
+![q (32)](docs/updates%2010_11_2026/q%20%2832%29.png)
+![Screenshot 2026-11-10 225203](docs/updates%2010_11_2026/Screenshot%202026-11-10%20225203.png)
+![snapshot1](docs/updates%2010_11_2026/snapshot1.png)
+![snapshot2](docs/updates%2010_11_2026/snapshot2.png)
+![snapshot combined](docs/updates%2010_11_2026/snapshot%20combined.png)
+
+### Showcase video
+
 https://www.youtube.com/watch?v=GcwktsATHTg
+
+
+
 
 
 

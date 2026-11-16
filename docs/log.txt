@@ -1,0 +1,175 @@
+.
+├── 2preview.png
+├── batch_2_imgs
+│   ├── procedural
+│   │   ├── 0_0.png
+│   │   ├── 0_1.png
+│   │   ├── 0_2.png
+│   │   ├── 1_0.png
+│   │   ├── 1_1.png
+│   │   ├── 1_2.png
+│   │   ├── 2_0.png
+│   │   ├── 2_1.png
+│   │   ├── 2_2.png
+│   │   ├── 3_0.png
+│   │   ├── 3_1.png
+│   │   ├── 3_2.png
+│   │   ├── 4_0.png
+│   │   ├── 4_1.png
+│   │   └── 4_2.png
+│   └── procedural.zip
+├── IEEE_SAS___HyROPA.pdf
+├── log.txt
+├── plant generations
+│   ├── plant_generations
+│   │   ├── fragaria_x_ananassa_overview.png
+│   │   ├── fragaria_x_ananassa_v1_gen1.png
+│   │   ├── fragaria_x_ananassa_v1_gen2.png
+│   │   ├── fragaria_x_ananassa_v1_gen3.png
+│   │   ├── fragaria_x_ananassa_v2_gen1.png
+│   │   ├── fragaria_x_ananassa_v2_gen2.png
+│   │   ├── fragaria_x_ananassa_v2_gen3.png
+│   │   ├── fragaria_x_ananassa_v3_gen1.png
+│   │   ├── fragaria_x_ananassa_v3_gen2.png
+│   │   ├── fragaria_x_ananassa_v3_gen3.png
+│   │   ├── lactuca_sativa_overview.png
+│   │   ├── lactuca_sativa_v1_gen1.png
+│   │   ├── lactuca_sativa_v1_gen2.png
+│   │   ├── lactuca_sativa_v1_gen3.png
+│   │   ├── lactuca_sativa_v2_gen1.png
+│   │   ├── lactuca_sativa_v2_gen2.png
+│   │   ├── lactuca_sativa_v2_gen3.png
+│   │   ├── lactuca_sativa_v3_gen1.png
+│   │   ├── lactuca_sativa_v3_gen2.png
+│   │   ├── lactuca_sativa_v3_gen3.png
+│   │   ├── ocimum_basilicum_overview.png
+│   │   ├── ocimum_basilicum_v1_gen1.png
+│   │   ├── ocimum_basilicum_v1_gen2.png
+│   │   ├── ocimum_basilicum_v1_gen3.png
+│   │   ├── ocimum_basilicum_v2_gen1.png
+│   │   ├── ocimum_basilicum_v2_gen2.png
+│   │   ├── ocimum_basilicum_v2_gen3.png
+│   │   ├── ocimum_basilicum_v3_gen1.png
+│   │   ├── ocimum_basilicum_v3_gen2.png
+│   │   ├── ocimum_basilicum_v3_gen3.png
+│   │   ├── solanum_lycopersicum_overview.png
+│   │   ├── solanum_lycopersicum_v1_gen1.png
+│   │   ├── solanum_lycopersicum_v1_gen2.png
+│   │   ├── solanum_lycopersicum_v1_gen3.png
+│   │   ├── solanum_lycopersicum_v2_gen1.png
+│   │   ├── solanum_lycopersicum_v2_gen2.png
+│   │   ├── solanum_lycopersicum_v2_gen3.png
+│   │   ├── solanum_lycopersicum_v3_gen1.png
+│   │   ├── solanum_lycopersicum_v3_gen2.png
+│   │   └── solanum_lycopersicum_v3_gen3.png
+│   └── plant_generations.zip
+├── presentation_21-10-2026
+│   ├── 2026-10-20-212001_1300x940_scrot.png
+│   ├── 2026-10-20-212214_1296x970_scrot.png
+│   ├── 2026-10-20-212229_1295x995_scrot.png
+│   ├── 2026-10-20-215721_1920x1034_scrot.png
+│   ├── 2026-10-20-215730_1920x1032_scrot.png
+│   ├── 2026-10-20-215744_1920x1028_scrot.png
+│   ├── 2026-10-20-215809_1920x1031_scrot.png
+│   ├── 2026-10-20-215850_1920x1032_scrot.png
+│   ├── 2026-10-20-215912_1920x1029_scrot.png
+│   ├── 2026-10-21-102447_1920x1061_scrot.png
+│   ├── 2026-10-21-102633_1920x1060_scrot.png
+│   ├── 2026-10-21-102655_1920x1028_scrot.png
+│   ├── 2026-10-21-102800_1917x1033_scrot.png
+│   ├── annotated_images
+│   │   ├── annotated_00bbc1c9.png
+│   │   ├── annotated_1e853020.png
+│   │   ├── annotated_23cd7903.png
+│   │   ├── annotated_298ad846.png
+│   │   ├── annotated_7a2c2e1c.png
+│   │   ├── annotated_7f4aaac7.png
+│   │   ├── annotated_92642889.png
+│   │   └── annotated_cbe7a67c.png
+│   ├── HyROPA_presentatie_10.png
+│   ├── HyROPA_presentatie_11.png
+│   ├── HyROPA_presentatie_12.png
+│   ├── HyROPA_presentatie_13.png
+│   ├── HyROPA_presentatie_14.png
+│   ├── HyROPA_presentatie_15.png
+│   ├── HyROPA_presentatie_16.png
+│   ├── HyROPA_presentatie_17.png
+│   ├── HyROPA_presentatie_18.png
+│   ├── HyROPA_presentatie_19.png
+│   ├── HyROPA_presentatie_1.png
+│   ├── HyROPA_presentatie_2.png
+│   ├── HyROPA_presentatie_3.png
+│   ├── HyROPA_presentatie_4.png
+│   ├── HyROPA_presentatie_5.png
+│   ├── HyROPA_presentatie_6.png
+│   ├── HyROPA_presentatie_7.png
+│   ├── HyROPA_presentatie_8.png
+│   ├── HyROPA_presentatie_9.png
+│   └── vids
+│       └── 2026-10-21_10-33-44.mp4
+├── prev.png
+├── sim.png
+├── updates 02-11-2026
+│   ├── 2026-11-02-120135_818x941_scrot.png
+│   ├── 2026-11-02-174129_1301x945_scrot.png
+│   ├── 2026-11-02-180535_1299x941_scrot.png
+│   ├── 2026-11-02-180606_1301x942_scrot.png
+│   ├── 2026-11-02-184107_781x745_scrot.png
+│   ├── 2026-11-02-185055_813x634_scrot.png
+│   ├── 2026-11-02-185103_796x668_scrot.png
+│   ├── 2026-11-02-185349_898x912_scrot.png
+│   ├── 2026-11-02-185404_900x934_scrot.png
+│   ├── 2026-11-02-185413_899x898_scrot.png
+│   ├── 2026-11-02-185436_901x890_scrot.png
+│   ├── 2026-11-02-194041_1101x988_scrot.png
+│   ├── 2026-11-02-194218_1107x1017_scrot.png
+│   ├── 2026-11-02-194547_1109x1028_scrot.png
+│   ├── 2026-11-02-194802_1107x971_scrot.png
+│   ├── 2026-11-02-194837_1108x966_scrot.png
+│   ├── 2026-11-02-214855_1197x839_scrot.png
+│   ├── 2026-11-02-220348_1920x1029_scrot.png
+│   └── 2026-11-02-220507_1275x1007_scrot.png
+└── updates 10_11_2026
+    ├── combined2.png
+    ├── combined3.png
+    ├── combined4.png
+    ├── combined5.png
+    ├── combined.png
+    ├── q (10).png
+    ├── q (11).png
+    ├── q (12).png
+    ├── q (13).png
+    ├── q (14).png
+    ├── q (15).png
+    ├── q (16).png
+    ├── q (17).png
+    ├── q (18).png
+    ├── q (19).png
+    ├── q (1).png
+    ├── q (20).png
+    ├── q (21).png
+    ├── q (22).png
+    ├── q (23).png
+    ├── q (24).png
+    ├── q (25).png
+    ├── q (26).png
+    ├── q (27).png
+    ├── q (28).png
+    ├── q (29).png
+    ├── q (2).png
+    ├── q (30).png
+    ├── q (31).png
+    ├── q (32).png
+    ├── q (3).png
+    ├── q (4).png
+    ├── q (5).png
+    ├── q (6).png
+    ├── q (7).png
+    ├── q (8).png
+    ├── q (9).png
+    ├── Screenshot 2026-11-10 225203.png
+    ├── snapshot1.png
+    ├── snapshot2.png
+    └── snapshot combined.png
+
+9 directories, 163 files
