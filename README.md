@@ -6,7 +6,8 @@ Houdini is the procedural generator: geometry, materials and devices are built w
 
 ![2026-11-02-185436](<docs/updates 02-11-2026/2026-11-02-185436_901x890_scrot.png>)
 
-## What it is
+<details>
+<summary><b>What it is</b></summary>
 
 A set of Python functions called from buttons on one Houdini node, plus a solver script that runs in a separate Python environment, either on the same machine or on a remote GPU server over SSH. Houdini handles geometry, device placement and visualisation. Sionna RT handles the physics on the GPU.
 
@@ -28,7 +29,10 @@ A set of Python functions called from buttons on one Houdini node, plus a solver
 
 Export never contacts the server; previz, solve and the batch buttons except export do. The first six buttons are for testing one scene step by step; run does the same in one press.
 
-## Folder structure
+</details>
+
+<details>
+<summary><b>Folder structure</b></summary>
 
 ```
 .
@@ -86,7 +90,10 @@ On a remote target the folders are mirrored to:
 └── batches/<hip>/<stamp>/
 ```
 
-## Setup
+</details>
+
+<details>
+<summary><b>Setup</b></summary>
 
 Requires Houdini, and on the machine that computes: Python 3.11 or later and Sionna RT. Sionna RT 2.2.0 installs on Python 3.10 but fails on import there (`cannot import name 'Self' from 'typing'`). Sionna RT is only needed on that machine, your own PC (local target) or a server (remote target). An NVIDIA GPU is optional: without one, Sionna runs on the CPU (see Compute target).
 
@@ -111,7 +118,10 @@ Start Houdini from a terminal. All feedback is printed there and appended to `si
 
 Validate and export read the geometry in bulk. To get which points belong to which triangle, they create a temporary Attribute Wrangle `sionna_scan` next to the node that feeds the Null, cook it and delete it again. This adds no undo steps, but marks the hip file as changed.
 
-## Compute target
+</details>
+
+<details>
+<summary><b>Compute target</b></summary>
 
 A string parm `target` on the Null selects where the solver runs:
 
@@ -176,7 +186,10 @@ The OS is detected automatically; buttons, parms and folders are the same as on 
 
 Tested on Linux only, with Windows behaviour simulated (WSL rsync path and options); the Windows-only parts (process checks, detaching, LLVM lookup, CPU name) are untested.
 
-## Batches
+</details>
+
+<details>
+<summary><b>Batches</b></summary>
 
 For many scene variations from a TOP network (e.g. a Wedge TOP), next to the Null:
 
@@ -242,7 +255,10 @@ Both buttons work on the selected `target` only: local deletes folders on this m
 
 The folders and their size are listed in the terminal and in a dialog; nothing is deleted until you press Delete. A batch that is still running is kept (`W014`). File SOPs that pointed at deleted results load nothing.
 
-## Scene: supported attributes
+</details>
+
+<details>
+<summary><b>Scene: supported attributes</b></summary>
 
 Everything Sionna receives comes from the attributes below. Any other attribute (`Cd`, `N`, `uv`, groups) is ignored.
 
@@ -285,7 +301,12 @@ Solve computes paths when there is at least one RX, and a radio map when there i
 
 `xpd_coefficient`, and the model inputs `temperature_c`, `ionic_conductivity` and the soil texture (`sand`, `clay`, `silt`, densities), exist only per entry in `materials.json`.
 
-## Plant models (L-systems)
+</details>
+
+<a id="vegetation"></a>
+
+<details>
+<summary><b>Plant models (L-systems)</b></summary>
 
 Plants are generated with Houdini's L-system SOP, with rules written for this project, in five growth stages (0 to 4). Formalism: P. Prusinkiewicz and A. Lindenmayer, *The Algorithmic Beauty of Plants*, Springer, 1990. Rules are in L-system SOP syntax; a trailing `:p` is the probability of a stochastic rule.
 
@@ -327,7 +348,10 @@ Plants are generated with Houdini's L-system SOP, with rules written for this pr
 | | | 12 | `K(s):s<0.3=K(s+0.05)` |
 | | | 13 | `W(n):n<10=TW(n+1)` |
 
-## Materials
+</details>
+
+<details>
+<summary><b>Materials</b></summary>
 
 Every material name is looked up in `sionna/materials.json`. Values are computed at export for the run `frequency` and written to `<hip>_materials.json`, so changing the frequency requires a new export (`S008`). Every entry has a `source` and a `status`; a status other than `confirmed` gives warning `W005`. Entries with a measured frequency range give `W010` when the run frequency lies outside it: the values are then extrapolated and the solve still runs.
 
@@ -400,7 +424,10 @@ A value becomes `confirmed` only when it comes from a measurement or a source th
 2. Peer-reviewed values at the right frequency: ITU-R P.2040 and P.527, Zhekov et al. 2020, Ulaby and El-Rayes 1987, Peng et al. 2013 (tomato), manufacturer data at GHz frequencies.
 3. Datasheet values at 1 MHz (plastics) are not enough for 433 MHz to 5 GHz.
 
-## Settings
+</details>
+
+<details>
+<summary><b>Settings</b></summary>
 
 Defaults, each overridable by a parm of the same name on the Null:
 
@@ -483,7 +510,10 @@ For `band` and `antenna`, replace `"quality"` with `"band"` or `"antenna"` in bo
 | `half_wave_link` | hw_dipole V | hw_dipole V | half-wave dipoles on both sides |
 | `cross_pol` | dipole V | dipole H | polarisation mismatch |
 
-## Terminal output
+</details>
+
+<details>
+<summary><b>Terminal output</b></summary>
 
 Every message, including all error and warning codes, is printed to the terminal and appended to `sionna/log.txt` with a timestamp. Each button ends with a line such as `solve passed (0 errors, 1 warning) after 21.4 s` or `export FAILED (2 errors, 0 warnings) after 0.3 s`; the time counts from the button press.
 
@@ -503,7 +533,10 @@ Every message, including all error and warning codes, is printed to the terminal
 | watch | work items solved or failed since the last check, then finished or stopped with totals |
 | clear | folders found with size (running ones marked), then the number deleted |
 
-## Results
+</details>
+
+<details>
+<summary><b>Results</b></summary>
 
 **`sionna_paths`**: one polyline per propagation path, from TX through every interaction point to RX.
 Prim: `tx`, `rx`, `gain_db`, `tau` (delay, s), `a_re`, `a_im` (complex amplitude), `bounces`, `theta_t`, `phi_t` (departure angles, rad), `theta_r`, `phi_r` (arrival angles, rad), `doppler` (Hz). Angles are in Sionna's frame (z up).
@@ -533,7 +566,10 @@ d["link_gain_db_incoherent"]   # [rx, tx], order of d["rx"] and d["tx"]
 
 Positions are in Sionna axes (z up).
 
-## Messages
+</details>
+
+<details>
+<summary><b>Messages</b></summary>
 
 Codes starting with N are information, W warnings (do not block), all others are errors (stop the button).
 
@@ -624,7 +660,10 @@ Codes starting with N are information, W warnings (do not block), all others are
 | B007 | nothing to solve | Every work item failed at export or at the checks before sending (`S008`, `S010`) |
 | B008 | input did not cook | The SOP network gave an error for this work item; it is skipped |
 
-## Tests
+</details>
+
+<details>
+<summary><b>Tests</b></summary>
 
 Analytic cases with known answers. Each should get its own hip file in `tests/`. Positions are given in Sionna coordinates (z up) with y = 0, so in Houdini a Sionna point (x, 0, z) is (x, z, 0). Frequency 3.5 GHz (wavelength 8.565 cm) unless stated. Expected values are computed independently: free-space loss with Friis, the wall with the exact plane-wave slab formula, concrete parameters from the ITU table above.
 
@@ -658,7 +697,10 @@ if (tx >= 0) {
 }
 ```
 
-## Current limitations
+</details>
+
+<details>
+<summary><b>Current limitations</b></summary>
 
 - **One isotropic, vertically polarised antenna per device.** Every TX and RX is an ideal antenna radiating equally in all directions. Real antennas (dipoles, patches, arrays for wireless power transfer) have directional gain and their own polarisation. Sionna supports antenna patterns and arrays; the plugin does not expose them yet. Needed for the polarisation and multi-antenna parts of CELSA.
 - **Below 1 GHz most building materials are extrapolated** (`W010`). For concrete the extrapolation still matches 3GPP (see Materials); for ground use the `soil_*` materials.
@@ -674,20 +716,24 @@ if (tx >= 0) {
 - **Remote targets need `ssh` and `rsync`** on your machine: standard on Linux; on Windows, rsync runs inside WSL (see Windows).
 - Developed against Sionna RT 2.2.0.
 
+</details>
 
-
-
-# images
+<details>
+<summary><b>Images</b></summary>
 
 Procedural greenhouse variations from a TOP network, exported, solved as one batch on the Spark and loaded back per work item.
 
-## Video
+<details>
+<summary><b>Video</b></summary>
 
 [![Video of the pipeline](https://img.youtube.com/vi/GcwktsATHTg/0.jpg)](https://www.youtube.com/watch?v=GcwktsATHTg)
 
 https://www.youtube.com/watch?v=GcwktsATHTg
 
-## Presentation
+</details>
+
+<details>
+<summary><b>Presentation</b></summary>
 
 ![Slide 1](docs/presentation_21-10-2026/HyROPA_presentatie_1.png)
 ![Slide 2](docs/presentation_21-10-2026/HyROPA_presentatie_2.png)
@@ -709,7 +755,10 @@ https://www.youtube.com/watch?v=GcwktsATHTg
 ![Slide 18](docs/presentation_21-10-2026/HyROPA_presentatie_18.png)
 ![Slide 19](docs/presentation_21-10-2026/HyROPA_presentatie_19.png)
 
-## Annotated screenshots
+</details>
+
+<details>
+<summary><b>Annotated screenshots</b></summary>
 
 Front view: greenhouse shell, TX frame with TX, RX, racks with plants
 
@@ -745,16 +794,19 @@ Radio map under four racks
 showcase video
 https://www.youtube.com/watch?v=GcwktsATHTg
 
+</details>
 
-
-
-## Previews
+<details>
+<summary><b>Previews</b></summary>
 
 ![2preview](docs/2preview.png)
 ![prev](docs/prev.png)
 ![sim](docs/sim.png)
 
-## Screenshots
+</details>
+
+<details>
+<summary><b>Screenshots</b></summary>
 
 ![Screenshot 2026-10-20-212001](docs/presentation_21-10-2026/2026-10-20-212001_1300x940_scrot.png)
 ![Screenshot 2026-10-20-212214](docs/presentation_21-10-2026/2026-10-20-212214_1296x970_scrot.png)
@@ -770,7 +822,10 @@ https://www.youtube.com/watch?v=GcwktsATHTg
 ![Screenshot 2026-10-21-102655](docs/presentation_21-10-2026/2026-10-21-102655_1920x1028_scrot.png)
 ![Screenshot 2026-10-21-102800](docs/presentation_21-10-2026/2026-10-21-102800_1917x1033_scrot.png)
 
-## Presentation 21-10-2026
+</details>
+
+<details>
+<summary><b>Presentation 21-10-2026</b></summary>
 
 ![HyROPA_presentatie_1](docs/presentation_21-10-2026/HyROPA_presentatie_1.png)
 ![HyROPA_presentatie_2](docs/presentation_21-10-2026/HyROPA_presentatie_2.png)
@@ -792,7 +847,10 @@ https://www.youtube.com/watch?v=GcwktsATHTg
 ![HyROPA_presentatie_18](docs/presentation_21-10-2026/HyROPA_presentatie_18.png)
 ![HyROPA_presentatie_19](docs/presentation_21-10-2026/HyROPA_presentatie_19.png)
 
-## Annotated images
+</details>
+
+<details>
+<summary><b>Annotated images</b></summary>
 
 ![annotated_00bbc1c9](docs/presentation_21-10-2026/annotated_images/annotated_00bbc1c9.png)
 ![annotated_1e853020](docs/presentation_21-10-2026/annotated_images/annotated_1e853020.png)
@@ -805,7 +863,10 @@ https://www.youtube.com/watch?v=GcwktsATHTg
 
 [Video 2026-10-21](docs/presentation_21-10-2026/vids/2026-10-21_10-33-44.mp4)
 
-## Procedural batch 2
+</details>
+
+<details>
+<summary><b>Procedural batch 2</b></summary>
 
 ![0_0](docs/batch_2_imgs/procedural/0_0.png)
 ![0_1](docs/batch_2_imgs/procedural/0_1.png)
@@ -823,7 +884,10 @@ https://www.youtube.com/watch?v=GcwktsATHTg
 ![4_1](docs/batch_2_imgs/procedural/4_1.png)
 ![4_2](docs/batch_2_imgs/procedural/4_2.png)
 
-## Plant generations
+</details>
+
+<details>
+<summary><b>Plant generations</b></summary>
 
 ![fragaria_x_ananassa_overview](docs/plant%20generations/plant_generations/fragaria_x_ananassa_overview.png)
 ![fragaria_x_ananassa_v1_gen1](docs/plant%20generations/plant_generations/fragaria_x_ananassa_v1_gen1.png)
@@ -866,7 +930,10 @@ https://www.youtube.com/watch?v=GcwktsATHTg
 ![solanum_lycopersicum_v3_gen2](docs/plant%20generations/plant_generations/solanum_lycopersicum_v3_gen2.png)
 ![solanum_lycopersicum_v3_gen3](docs/plant%20generations/plant_generations/solanum_lycopersicum_v3_gen3.png)
 
-## Updates 02-11-2026
+</details>
+
+<details>
+<summary><b>Updates 02-11-2026</b></summary>
 
 ![2026-11-02-120135](docs/updates%2002-11-2026/2026-11-02-120135_818x941_scrot.png)
 ![2026-11-02-174129](docs/updates%2002-11-2026/2026-11-02-174129_1301x945_scrot.png)
@@ -888,7 +955,10 @@ https://www.youtube.com/watch?v=GcwktsATHTg
 ![2026-11-02-220348](docs/updates%2002-11-2026/2026-11-02-220348_1920x1029_scrot.png)
 ![2026-11-02-220507](docs/updates%2002-11-2026/2026-11-02-220507_1275x1007_scrot.png)
 
-## Updates 10-11-2026
+</details>
+
+<details>
+<summary><b>Updates 10-11-2026</b></summary>
 
 ![combined](docs/updates%2010_11_2026/combined.png)
 ![combined2](docs/updates%2010_11_2026/combined2.png)
@@ -932,26 +1002,13 @@ https://www.youtube.com/watch?v=GcwktsATHTg
 ![snapshot2](docs/updates%2010_11_2026/snapshot2.png)
 ![snapshot combined](docs/updates%2010_11_2026/snapshot%20combined.png)
 
-## Showcase video
+</details>
+
+<details>
+<summary><b>Showcase video</b></summary>
 
 https://www.youtube.com/watch?v=GcwktsATHTg
 
+</details>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</details>
