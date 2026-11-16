@@ -674,6 +674,9 @@ if (tx >= 0) {
 - **Remote targets need `ssh` and `rsync`** on your machine: standard on Linux; on Windows, rsync runs inside WSL (see Windows).
 - Developed against Sionna RT 2.2.0.
 
+
+
+
 # images
 
 Procedural greenhouse variations from a TOP network, exported, solved as one batch on the Spark and loaded back per work item.
