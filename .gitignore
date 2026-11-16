@@ -1,6 +1,4 @@
 venv
-# Local copies of the paper; Overleaf holds the source until publication
-paper/
 # Operating system and editor files
 .DS_Store
 Thumbs.db

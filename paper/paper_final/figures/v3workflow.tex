@@ -1,0 +1,92 @@
+\begin{figure*}[t]
+\centering
+\newcommand{\icon}[1]{\includegraphics[height=6mm]{figures/icons/#1.pdf}}
+\newcommand{\card}[4][sub]{\vspace*{1.5pt}\icon{#2}\\[5pt]\textbf{#3}\\[0.5pt]{\fontsize{6.3}{7.5}\selectfont\color{#1}#4\par}}
+\newcommand{\cardw}{2.45cm}\newcommand{\cardh}{1.82cm}
+% Tools (jet hues as in the ray-tracing renders)
+\definecolor{houdini}{HTML}{FF5A1F}\definecolor{sionna}{HTML}{76B900}\definecolor{browser}{HTML}{6A5BFF}\definecolor{analysis}{HTML}{EBCB00}
+\definecolor{ink}{HTML}{000000}\definecolor{sub}{HTML}{595959}\definecolor{frame}{HTML}{A6A6A6}\definecolor{dim}{HTML}{8C8C8C}\definecolor{subdim}{HTML}{B3B3B3}\definecolor{panel}{HTML}{F0F0F0}
+\begin{tikzpicture}[
+  font=\fontfamily{phv}\selectfont\scriptsize,color=ink,
+  every node/.append style={outer sep=0pt},
+  card/.style={fill=white,draw=ink,line width=0.4pt,text=ink,inner sep=3pt,
+               execute at begin node={\begin{minipage}[c][\cardh][t]{\cardw}\centering
+                 \hyphenpenalty=10000\exhyphenpenalty=10000},
+               execute at end node={\end{minipage}}},
+  % A step: a card with a bar in the colour of the tool that performs it
+  bar/.style={path picture={\fill[#1] (path picture bounding box.north west)
+               rectangle ([yshift=-2.8pt]path picture bounding box.north east);}},
+  step/.style={card,bar=#1},
+  output/.style={card},
+  % Not yet implemented: only the dashed border marks it, text and icon stay readable
+  todo/.style={card,draw=dim,dash pattern=on 2pt off 1.5pt},
+  arr/.style={-{Latex[length=1.5mm,width=1.1mm]},line width=0.45pt,ink,shorten >=1.5pt,shorten <=1.5pt},
+  todoarr/.style={arr,dim,dash pattern=on 2pt off 1.5pt},
+  lbl/.style={font=\fontfamily{phv}\selectfont\scriptsize\itshape,inner sep=2.5pt},
+  % Stages are borderless panels, so arrows between stages cross no lines
+  stage/.style={fill=panel},
+  stagelabel/.style={font=\fontfamily{phv}\selectfont\scriptsize\bfseries,anchor=north west,inner xsep=0.2cm,inner ysep=4pt,align=left},
+  num/.style={fill=black,text=white,font=\fontfamily{phv}\selectfont\tiny\bfseries,minimum size=3.2mm,inner sep=0pt},
+  swatch/.style={fill=white,draw=ink,line width=0.4pt,minimum width=3.6mm,minimum height=2.6mm,inner sep=0pt},
+  % The whole box links to the section that describes it.
+  link/.style={alias=linked,append after command={
+    let \p1=(linked.north west),\p2=(linked.south east),\n1={\x2-\x1},\n2={\y1-\y2} in
+    node[inner sep=0pt,outer sep=0pt,anchor=north west] at (\p1)
+      {\hyperref[#1]{\phantom{\rule{\n1}{\n2}}}}}},
+]
+% Grid: cards 2.66 cm wide, 0.2 cm inside each stage panel, 0.55 cm apart within a stage.
+% Columns at x = 1.53, 4.74 | 8.25 | 12.41, 15.62; rows at y = 0 and -3. Every card lies inside one stage;
+% the wider gap before stage 3 leaves room for the "compare" label.
+\fill[stage] (0,1.6)     rectangle (6.27,-4.22);   % 1: scene and export (Houdini)
+\fill[stage] (6.72,1.6)  rectangle (9.78,-1.22);   % 2: ray tracing only, top row
+\fill[stage] (10.88,1.6) rectangle (17.15,-4.22);  % 3: results and their use
+
+\node[stagelabel,link=sec:procedural] at (0,1.6)     {\tikz[baseline=(n.base)]\node[num](n){1};\enspace Procedural scene generation};
+\node[stagelabel,link=sec:raytracing] at (6.72,1.6)  {\tikz[baseline=(n.base)]\node[num](n){2};\enspace Ray tracing};
+\node[stagelabel,link=sec:evaluation] at (10.88,1.6) {\tikz[baseline=(n.base)]\node[num](n){3};\enspace Evaluation};
+
+% 1 Procedural scene generation
+\node[step=houdini,link=sec:geometry] (proc) at (1.53,0)  {\card{scene}{Procedural scene}{crops, greenhouse\\and devices}};
+\node[step=houdini,link=sec:scene]    (exp)  at (4.74,0)  {\card{export}{Check and export}{geometry and materials}};
+\node[todo,link=sec:twin]             (cal)  at (1.53,-3) {\card{calibrate}{Calibrate}{materials and antennas}};
+% 2 Ray tracing
+\node[step=sionna,link=sec:execution] (rt)   at (8.25,0)  {\card{raytrace}{Ray tracing}{GPU/CPU execution,\\local, remote, batched}};
+% 3 Evaluation
+\node[output,link=sec:returned]         (out)  at (12.41,0)  {\card{results}{Results}{paths, links, radio maps}};
+\node[step=browser,link=sec:inspection] (view) at (15.62,0)  {\card{viewer}{Web viewer}{explore scenes,\\paths and maps}};
+\node[step=analysis,link=sec:metrics]   (eng)  at (12.41,-3) {\card{engine}{Application engine}{coverage and\\RF energy metrics}};
+\node[step=houdini,link=sec:inspection] (hou)  at (15.62,-3) {\card{houdini}{Inspect in Houdini}{results on the scene}};
+% Towards a digital twin: outside the stages, below ray tracing
+\node[todo,link=sec:twin]               (meas) at (8.25,-3)  {\card{measure}{Field measurements}{RF and crop state}};
+
+\draw[arr] (proc)--(exp);
+\draw[arr] (exp)--(rt);
+\draw[arr] (rt)--(out);
+\draw[arr] (out)--(view);
+% Results feed both the application engine and Houdini: two arrows, no junction
+\draw[arr] (out.south) -- (eng.north);
+\draw[arr] ([xshift=5mm]out.south) |- (15.62,-1.5) -- (hou.north);
+
+% Iteration back to the scene, from the top of the evaluation stage
+\draw[arr] (14.015,1.6) -- (14.015,2.1)
+  -- node[lbl,above]{\raisebox{\dimexpr 0.55ex-1.2mm\relax}{\includegraphics[height=2.4mm]{figures/icons/iterate.pdf}}\enspace iterate: change the scene or sweep parameters}
+  (-0.4,2.1) -- (-0.4,0) -- (proc.west);
+
+% Field measurements: compared with the predictions, then calibrate the scene
+\draw[todoarr] (meas) -- node[lbl,above,ink,pos=0.42]{compare} (eng);
+\draw[todoarr] (meas) -- node[lbl,above,ink,pos=0.62]{calibrate} (cal);
+\draw[todoarr] (cal) -- node[lbl,left,ink]{update} (proc);
+
+% Legend: tools | output and status
+\node[anchor=north,inner sep=0pt] at (8.375,-4.5) {\textbf{Tool}\quad
+  \raisebox{-0.35mm}{\tikz\node[swatch,bar=houdini]{};}\enspace Houdini\quad
+  \raisebox{-0.35mm}{\tikz\node[swatch,bar=sionna]{};}\enspace Sionna RT\quad
+  \raisebox{-0.35mm}{\tikz\node[swatch,bar=browser]{};}\enspace Browser\quad
+  \raisebox{-0.35mm}{\tikz\node[swatch,bar=analysis]{};}\enspace Python or other
+  \qquad\textcolor{frame}{\rule[-0.5mm]{0.4pt}{3.5mm}}\qquad
+  \raisebox{-0.35mm}{\tikz\node[swatch]{};}\enspace Output data\quad
+  \raisebox{-0.35mm}{\tikz\node[swatch,draw=dim,dash pattern=on 1.2pt off 0.9pt]{};}\enspace Not yet implemented};
+\end{tikzpicture}
+\caption{The \housionna{} workflow in three stages. The bar on each step shows the tool that performs it; the box without a bar is output data. Dashed elements are needed for an agricultural digital twin, in which field measurements calibrate the materials and antennas of the scene. Each box and stage title links to the section that describes it.}
+\label{fig:pipeline}
+\end{figure*}

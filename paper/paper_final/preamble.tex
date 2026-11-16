@@ -1,0 +1,98 @@
+%— Encoding & Fonts (if needed):
+% \usepackage[T1]{fontenc}       % T1 font encoding
+% \usepackage[utf8]{inputenc}    % UTF-8 input encoding
+
+%— Core LaTeX enhancements
+\usepackage{amsmath,amssymb,amsfonts}   % advanced math symbols & environments
+\usepackage{textcomp}                   % extra text symbols (e.g. \textregistered)
+
+%— Graphics & Colors
+\usepackage{graphicx}                   % include graphics (\includegraphics)
+\usepackage[table,xcdraw,dvipsnames,svgnames]{xcolor} % driver-independent color extensions
+
+%— Tables & alignment
+\usepackage{array}                      % extended array/tabular features
+\newcolumntype{H}{>{\setbox0=\hbox\bgroup}c<{\egroup}@{}} % ‘H’ column type hides content
+\usepackage{booktabs}                   % \toprule, \midrule, \bottomrule
+\usepackage{siunitx}                    % consistent typesetting of units & numbers
+  \DeclareSIUnit{\dBm}{dBm}
+  \DeclareSIUnit{\dBi}{dBi}
+  \DeclareSIUnit{\dBsm}{dBsm}
+
+%— Highlighting & syntax
+\usepackage{soul}                       % underlining, striking out, highlighting (\hl)
+\newcommand{\syntaxHighlight}[1]{%
+  \colorbox{black!10}{#1}%             % custom syntax highlight box
+}
+
+%— Citations & bibliography
+\usepackage[backend=biber,
+            language=english,
+            autolang=other,
+            maxnames=6,
+            style=ieee]{biblatex}       % IEEE‐style bibliography
+  \addbibresource{bib.bib}
+
+%— Hyperlinks & cross‐refs
+\usepackage[hidelinks]{hyperref}       % clickable links without colored boxes
+\usepackage[capitalize]{cleveref}      % intelligent \cref, \Cref autolabels
+
+%— Algorithms
+\usepackage{algorithmic}                % pseudocode environments
+
+%— TikZ & PGFPlots (graphics and plotting)
+\usepackage{pgfplots}                   % high‐quality plots
+  \pgfplotsset{compat=newest}
+\usepgfplotslibrary{groupplots,dateplot} % extra plotting features
+\usepackage{pgfplotstable}              % table support for PGFPlots
+  \pgfplotsset{compat=1.18}              % specify version for stability
+
+\usetikzlibrary{%
+  patterns,          % fill patterns
+  shapes.arrows,     % arrow tip libraries
+  spy,               % zoom‐in—spyglass
+  external,          % externalize figures
+  calc,              % coordinate calculations
+  shadings,          % custom shading
+  shadows.blur,      % blurred shadows
+  decorations.pathreplacing % decorative braces, etc.
+}
+
+%— Glossaries & acronyms
+\usepackage[xindy,nonumberlist]{glossaries} % acronym & glossary management
+  \makenoidxglossaries            % no index file for glossaries
+  \loadglsentries{abbr}           % load definitions from abbr.tex
+
+%— Custom names / macros
+\input{auto_names}                  % user-defined commands, names, etc.
+
+
+\AtBeginBibliography{\footnotesize}
+\AtEveryBibitem{\iffieldundef{doi}{\iffieldundef{eprint}{}{\clearfield{url}\clearfield{urlyear}}}{\clearfield{url}\clearfield{urlyear}}}
+
+% IEEE specific
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+
+\input{definitions/def-colors}
+\input{definitions/def-tikz}
+
+\usepackage[font=small]{caption}
+\usepackage{subcaption}
+
+\usepackage{fontawesome}
+\usetikzlibrary {patterns,patterns.meta}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\usetikzlibrary{intersections}
+\usepackage{placeins}
+
+
+\usepackage{orcidlink}
+
+
+
+\usepackage{xcolor}
+\usepackage{soul}
+\sethlcolor{red!30}
+\soulregister\cref7

@@ -1,0 +1,111 @@
+\section{Evaluation}
+\label{sec:evaluation}
+The third stage makes the simulated channels available for inspection and application analysis. Results can be examined in Houdini or in a web viewer, while an application engine converts the propagation outputs into relevant application metrics, e.g., coverage and energy metrics. 
+
+\subsection{Returned Quantities}
+\label{sec:returned}
+Propagation paths are imported as polylines carrying gateway and sensor node identifiers, complex amplitudes, delays, interaction types, and object associations. Per-link outputs include path counts, coherent and incoherent gains, RMS delay spread, and frequency-response magnitudes. Radio maps provide path gain per gateway over triangular measurement surfaces. Radio maps average power over cells and do not retain phase, but under maximum-ratio transmission the local mean RF power at the sensor node is $P_{\mathrm{GW}}\sum_i g_{ij}$, where $P_{\mathrm{GW}}$ is the total RF power budget of the gateways. Mean RF power can therefore be evaluated over an area from the per-gateway maps. Maximum-ratio transmission assumes ideal channel knowledge at all gateways and is an upper bound for distributed operation~\cite{callebaut2024}.
+
+% The distinction between link and map outputs matters. Coherent link quantities depend on relative path phase and can vary over small spatial displacements. Radio maps average power over cells and do not retain the phase information required for coherent \gls{wpt} from multiple gateways. Nor does a map of the strongest gateway represent the combined field of several synchronised gateways. Per-gateway maps can nevertheless be combined: with maximum-ratio transmission, the RF power at the sensor node equals the total gateway RF power times the sum of the per-gateway gains, so its local average follows from the maps without phase information. The application engine in \cref{sec:metrics} uses this to evaluate strategies for multiple gateways over an area, and the link outputs to evaluate them at individual sensor nodes.
+
+\subsection{Visual Inspection and Run Browsing}
+\label{sec:inspection}
+The compressed result arrays are imported into Houdini as attributed geometry, allowing paths and radio maps to be inspected in the original scene. A web viewer built on three.js displays the same paths, radio maps, and link metrics without a Houdini installation, steps through the runs of a batch, and can be published as a read-only website, as for the use-case results of \cref{sec:casestudy}~\cite{housionna}.
+
+\subsection{Application Engine and Metrics}\label{sec:metrics}
+The application engine converts the raw RF propagation channels between gateways and sensor nodes into metrics relevant for different applications and technologies.
+
+\subsubsection{Radio Coverage}
+Coverage can be evaluated at specified sensor locations or over a measurement surface using Sionna RT's radio map solver.
+
+\emph{Per-link evaluation:} explicit sensor nodes are placed at candidate sensing locations, including on leaves or within the canopy. The path solver returns the paths between each gateway and each sensor node, with the configured antenna patterns and orientations. For crop configuration $s$, the incoherent power gain from gateway $i$ to sensor node $j$ is
+\begin{equation}
+ g_{ij}^{(s)}=\sum_k\left|a_{ijk}^{(s)}\right|^2,
+ \label{eq:coveragegain}
+\end{equation}
+where $a_{ijk}^{(s)}$ is the coefficient of path $k$. The effective path loss to the gateway with the largest gain is $L_{\mathrm{best},j}^{(s)}=-10\log_{10}\!\left(\max_i g_{ij}^{(s)}\right)$ in decibels. Summing path powers omits their phase cross terms, so this metric excludes fast fading. The complex path coefficients and delays can instead be used to reconstruct the coherent channel and examine constructive and destructive interference at a particular sensor position. Per-link evaluation therefore supports detailed checks of actual mounting positions and antenna orientations, but assesses only the sensor node locations supplied to the solver.
+
+\emph{Radio maps:} the solver estimates the average incoherent path gain from each gateway over cells of a measurement surface~\cite{aoudia2025}. Sionna supports rectangular cells on a plane or triangular cells on a mesh; \housionna{} uses the latter. This provides an overview of candidate deployment regions without placing an explicit sensor node at every location. Coarse cells can conceal local shadowing, whereas finer cells resolve smaller features but require more ray samples for stable estimates.\footnote{A cell average does not establish that every location within that cell is covered, and reducing the cell size does not restore multipath phase interference. Moreover, Sionna RT's radio maps do not apply the configured sensor node antenna pattern or combining vector~\cite{sionnaRadioMaps}. Their gains must therefore be interpreted with care when assessing a plant-mounted antenna with a particular orientation or polarisation.}
+
+For either approach, coverage requires a device-specific link budget. Using the selected point gain or cell-average gain, the link margin is
+ \begin{equation}
+  M_{ij}^{(s)}=P_{\mathrm{GW},i}+10\log_{10}g_{ij}^{(s)}
+        -S_j-L_{\mathrm{impl}}-M_{\mathrm{reserve}},
+  \label{eq:margin}
+ \end{equation}
+where $P_{\mathrm{GW},i}$ and sensor node sensitivity $S_j$ are in dBm (by reciprocity, the uplink uses the sensor node power and gateway sensitivity), and $L_{\mathrm{impl}}$ and $M_{\mathrm{reserve}}$ are implementation losses and a design reserve in decibels. A non-negative margin indicates coverage under these assumptions. When gateway powers differ, the best gateway maximises the margin rather than the path gain alone.
+
+Across a set of crop configurations, the worst margin $\min_s\min_j\max_i M_{ij}^{(s)}$ tests whether every sensor location has an adequate gateway in every simulated configuration.
+
+% \subsubsection{RF Power and Gateway Strategies}
+% For independent or time-separated sources, RF powers at a sensor node may be combined under the corresponding averaging assumptions. Coherent operation with multiple gateways instead requires
+% \begin{equation}
+%  P_{\mathrm{RF},j}=\left|\sum_i h_{ij}w_i\right|^2,
+%  \qquad \sum_i |w_i|^2=P_{\mathrm{GW}},
+%  \label{eq:wpt}
+% \end{equation}
+% where $h_{ij}=\sum_k a_k e^{-\mathrm{j}2\pi f\tau_k}$ is the narrowband channel, summed coherently over the paths with amplitudes $a_k$ and delays $\tau_k$,\footnote{The path coefficients of Sionna RT exclude the propagation phase, so the factor $e^{-\mathrm{j}2\pi f\tau_k}$ must be applied explicitly.} and $w_i$ is a gateway weight with units $\sqrt{\mathrm{W}}$.
+% With $N$ gateways and the same total power $P_{\mathrm{GW}}$, the engine compares four strategies: all power on the best gateway, $P_{\mathrm{GW}}\max_i|h_{ij}|^2$; an equal split without phase alignment, $(P_{\mathrm{GW}}/N)\sum_i g_{ij}$; an equal split with identical weights and no channel knowledge, $(P_{\mathrm{GW}}/N)|\sum_i h_{ij}|^2$; and maximum-ratio transmission (MRT) with $w_i\propto h_{ij}^*$, which gives $P_{\mathrm{GW}}\sum_i|h_{ij}|^2$. MRT assumes ideal channel knowledge at all gateways and focuses the power on one sensor node at a time, so it is an upper bound for distributed operation~\cite{callebaut2024}. Each gateway has a single isotropic antenna; arrays per gateway and the validation of simulated phases remain future work.
+
+\subsubsection{Energy Harvesting over RF}
+For \gls{wpt}, RF power at a sensor node must be combined with a measured rectifier or harvester response. Practical responses are nonlinear, with an operating threshold, power-dependent conversion efficiency, and saturation at high input powers~\cite{boshkovska2015}. Measurements~\cite{ambient6g} can parameterise $F_{\mathrm{EH}}(P_{\mathrm{RF}},f)$, which maps RF input power and frequency to usable DC power under specified load conditions.
+
+During charging, the changing buffer voltage can also affect the conversion response~\cite{wagih2021}. For a given waveform and harvester, we therefore include the buffer voltage $V_{\mathrm{buf}}(t)$ in the response and write the charging energy balance as
+\begin{equation}
+ \int_0^T F_{\mathrm{EH}}\!\left(P_{\mathrm{RF}}(t),f,V_{\mathrm{buf}}(t)\right)\,dt
+ \geq \Delta E_{\mathrm{buf}}+E_{\mathrm{loss}}(T),
+ \label{eq:energy}
+\end{equation}
+where $\Delta E_{\mathrm{buf}}$ is the required increase in stored energy from the initial state to the target operating level, sufficient for a measurement-and-transmission cycle. $E_{\mathrm{loss}}(T)$ accounts for leakage and quiescent consumption not already included in $F_{\mathrm{EH}}$.
+
+The charge time is the earliest $T$ satisfying this balance and the harvester's startup requirements. Because the response is nonlinear, evaluating it at the average RF input power generally gives a different result from averaging the harvested power. Charging estimates should therefore follow the RF power and buffer state over time. For a static channel and a response measured at a single output voltage, as for datasheet curves, the balance reduces to a constant-power charge time $T=\Delta E_{\mathrm{buf}}/F_{\mathrm{EH}}(P_{\mathrm{RF}},f)$, an approximation used in \cref{sec:casestudy}.
+
+% \subsubsection{Gateway Placement}
+% Candidate gateway subsets are compared using the precomputed channels, applying the same communication and energy requirements to each subset. Reporting the preferred subset for each number of gateways shows whether the locations that support connectivity also provide sufficient RF power. The comparison uses the coverage criterion in \eqref{eq:worstmargin} and the reporting intervals derived from \eqref{eq:energy}. Candidate positions, the number of active gateways, and the required margins or reporting intervals are specified for each deployment.
+
+% \subsubsection{Backscattering}
+% The gains from the illuminating device to the sensor node and from the sensor node to the gateway follow from a single run. Paths are computed from the illuminating device \gilles{sensor node or gateway?} and the gateway to the sensor nodes; reciprocity provides the reverse link from each sensor node to the gateway. A simple narrowband bistatic model is
+% \begin{equation}
+%  P_{\mathrm{mod},i}\approx P_{\mathrm{ill}}\,
+%  g_{\mathrm{ill},j}\,g_{j,i}\,\eta_{\mathrm{mod}},
+%  \label{eq:backscatter}
+% \end{equation}
+% where $j$ identifies the sensor node, $i$ the gateway, and $\eta_{\mathrm{mod}}$ the effective differential modulation of the sensor node under consistent antenna normalisation. The engine does not yet implement a modulating backscatter sensor node; a backscatter study needs a scattering model for the sensor node, polarisation, gateway noise, the direct illuminating signal, and validation against the deployed geometry.
+
+% \section{Validation Protocol and Proposed Application Studies}
+% \label{sec:validation}
+% \subsection{Analytical Reference Cases}
+% Validation should first isolate the scene transfer and solver configuration. Free space checks units, distance, frequency scaling, and delay. With isotropic antennas, the reference gain and delay are
+% \begin{equation}
+%  g_{\mathrm{FS}}(d,f)=\left(\frac{c}{4\pi fd}\right)^2,
+%  \qquad \tau_{\mathrm{FS}}=\frac{d}{c}.
+% \end{equation}
+% Table~\ref{tab:analytic} lists independently calculated targets for the 10~m geometry described in the repository. They are theoretical values, not outputs from a HOUSIONNA validation run.
+
+% A ground-reflection case should check the direct and reflected path lengths and the material-dependent reflection coefficient. A plane-wall case should compare transmission against the finite-slab solution, including the specified thickness. Each test should inspect path topology as well as aggregate gain: a plausible power value can conceal an incorrect scene or missing path.
+
+% \begin{table}[t]
+% \caption{Analytical free-space targets at 10~m using $c=299\,792\,458$~m/s. No simulated or measured results are reported here.}
+% \label{tab:analytic}
+% \centering
+% \begin{tabular}{@{}lrr@{}}
+% \toprule
+% Frequency & Path loss (dB) & Delay (ns)\\
+% \midrule
+% 3.5 GHz & 63.33 & 33.36\\
+% 2.4 GHz & 60.05 & 33.36\\
+% \bottomrule
+% \end{tabular}
+% \end{table}
+
+% \subsection{Measurement-Based Calibration and Validation}
+% Following the RF programme in \hyropa{}, the proposed campaign spans 433~MHz, 868~MHz, 2.4~GHz, and 5~GHz, subject to suitable antennas, instrumentation, and material models. The 915~MHz plant-harvester example should be treated as a separate hardware-specific case. Frequency selection must remain consistent with the intended equipment and deployment conditions.
+
+% Measurements should pair RF observations with recorded geometry, crop stage, canopy dimensions, water-related reference quantities, and antenna placement. VNA- or SDR-based sounding can provide path gain and delay-domain observations after appropriate calibration. Repeated placements and repeated measurements help separate instrumentation variation from crop effects.
+
+% Calibration scenes should be separated from held-out validation scenes, preferably including unseen canopy layouts or growth stages. Otherwise material fitting can hide errors in the geometry or antenna model. Report prediction bias and RMSE in dB, delay-spread error where measurable, and the influence of measurement uncertainty and censoring at device detection thresholds \gilles{sensor node or gateway?}.
+
+% \subsection{Computational Performance and Evidence to Report}
+% Runtime evaluation should separate scene generation, export, transfer, solver execution, import, and application analysis. Record GPU type, scene complexity, gateway and sensor node counts, ray budgets, interaction depth, measurement-cell count, and software versions. Repeat sampling configurations to assess convergence; a faster run is useful only if its accuracy is adequate.
+
+% The completed evaluation should provide measured-versus-predicted gain, canopy-representation comparisons, communication and energy maps, and timing results with their scene parameters. No numerical speedup, greenhouse accuracy, or batteryless operating range can be concluded from the source inspection and analytical targets alone.

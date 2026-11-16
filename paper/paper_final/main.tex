@@ -1,0 +1,68 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+
+
+\input{preamble}
+\usepackage{booktabs,array,tabularx}
+\usepackage{xspace}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\housionna}{\textsc{HOUSIONNA}\xspace}
+\newcommand{\hyropa}{HyROPA\xspace}
+\usepackage{balance}
+\Crefname{figure}{Fig.}{Figs.}
+
+\defineauthors[false]{gilles}
+    
+\begin{document}
+
+\title{Open-Source Procedural Radio Propagation Modelling for Sensor Networks in Smart Agriculture
+\thanks{This work was supported by KU Leuven Internal Funds through HYROPA (CELSA/26/011) and a Starting Grant (STG/25/045), and by the Smart Networks and Services Joint Undertaking (SNS JU) through the European Union’s Horizon Europe programme under AMBIENT-6G (Grant Agreement No. 101192113) and SUSTAIN-6G (Grant Agreement No. 101191936).}%
+\thanks{For the purpose of open access, the authors have applied a CC BY public copyright license to any Author Accepted Manuscript version arising from this submission.} % https://www.kuleuven.be/open-science/what-is-open-science/scholarly-publishing-and-open-access/faq#What-is-Rights-Retention
+}
+
+\author{
+%%%% AUTHORS %%%%
+\IEEEauthorblockN{%
+Joris Putteneers\,\orcidlink{0009-0000-8963-9094},
+Beau Forrez\,\orcidlink{0009-0008-7210-6070},
+Gilles Callebaut\,\orcidlink{0000-0003-2413-986X}
+}
+%%%% AFFILIATIONS %%%%% ...
+\IEEEauthorblockA{% 2nd affiliations
+Department of Electrical Engineering, KU Leuven, Belgium}
+% \IEEEauthorblockA{\IEEEauthorrefmark{2}% 2nd affiliations
+% Univerisity, World} %\\
+}
+
+\maketitle
+
+\begin{abstract}
+Wireless sensing for smart agriculture, such as in greenhouses and vertical farms, must operate through crop canopies whose geometry and electromagnetic properties change with growth and water content. The same propagation conditions affect sensor connectivity, \gls{rf} energy delivery, and the feasibility of sensing the crop through changes in the wireless channel. This paper presents \housionna{}, a workflow connecting procedural scene generation in Houdini with GPU-accelerated radio ray tracing in Sionna RT. Batch execution supports systematic exploration of alternative crop and infrastructure configurations. The evaluation stage combines visual inspection of paths and radio maps with application metrics for sensor coverage and RF energy harvesting. In a simulated batteryless plant-sensor use case, canopy growth lowers the median RF power at the sensor nodes by \SI{31}{dB}, and the number charged within one hour from 17 of 18 to one, showing that deployments must be assessed over the crop's growth and motivating procedural modelling towards agricultural digital twins.
+
+\end{abstract}
+
+\begin{IEEEkeywords}
+Smart agriculture, environmental monitoring, Internet of Things, sensor networks, RF energy harvesting, flexible plant sensors, wireless sensing, digital twins, ray tracing, procedural modelling.
+\end{IEEEkeywords}
+
+% \gilles{JUST to see the structure of the document, will be removed later.}
+% \tableofcontents
+
+\input{01_introduction}
+
+\input{02_scene_generation}
+
+\input{03_ray_tracing}
+
+\input{04_evaluation}
+
+\input{05_use_case}
+\balance
+\input{06_conclusion}
+
+% \section*{Acknowledgment}
+
+\printbibliography%
+
+\end{document}

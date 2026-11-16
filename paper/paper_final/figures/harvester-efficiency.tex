@@ -1,0 +1,66 @@
+% Read the original CSV directly; select each curve by its harvester column.
+% text indicator handles commas inside the quoted series descriptions.
+% RF input power is read directly from the level_dbm column.
+\begin{figure}[t]
+\centering
+\pgfplotstableread[col sep=comma,text indicator="]
+  {figures/harvester-chart-data.csv}\harvesterchartdata
+\begin{tikzpicture}
+\pgfplotsset{
+  harvester series/.style={
+    x filter/.code={
+      \pgfplotstablegetelem{\coordindex}{harvester}\of\harvesterchartdata
+      \edef\currentharvester{\pgfplotsretval}%
+      \edef\selectedharvester{#1}%
+      \ifnum\pdfstrcmp{\currentharvester}{\selectedharvester}=0
+      \else
+        \def\pgfmathresult{nan}%
+      \fi
+    },
+    unbounded coords=discard,
+    filter discard warning=false,
+  },
+}
+\begin{axis}[
+  width=\columnwidth,
+  height=3.5cm,
+  font=\footnotesize,
+  xlabel={RF input power (dBm)},
+  ylabel={Efficiency (\%)},
+  label style={font=\footnotesize},
+  tick label style={font=\scriptsize},
+  xmin=-22, xmax=10,
+  ymin=0, ymax=70,
+  xtick={-25,-20,-15,-10,-5,0,5,10},
+  ytick={0,20,...,60},
+  grid=major,
+  major grid style={draw=black!12},
+  axis line style={draw=black!70},
+  tick align=outside,
+  tick pos=left,
+  legend cell align=left,
+  legend style={
+    at={(0.03,0.97)}, anchor=north west,
+    font=\scriptsize,
+    draw=none, fill=white, fill opacity=0.9, text opacity=1,
+    nodes={scale=1,transform shape},
+    row sep=1pt,
+  },
+]
+\addplot+[line width=0.9pt,draw={rgb,255:red,117;green,112;blue,179},solid,mark=*,mark size=1.3pt,harvester series=AEM40940]
+table[x=level_dbm,y=efficiency] {\harvesterchartdata};
+\addlegendentry{AEM40940}
+
+\addplot+[line width=0.9pt,draw={rgb,255:red,217;green,95;blue,2},dashed,mark=square*,mark repeat=7,mark size=1.4pt,harvester series=P1110B]
+table[x=level_dbm,y=efficiency] {\harvesterchartdata};
+\addlegendentry{P1110B}
+
+% \addplot+[line width=0.9pt,draw={rgb,255:red,27;green,158;blue,119},densely dotted,mark=triangle*,mark repeat=7,mark size=1.6pt,harvester series=SMS7630005LF]
+% table[x=level_dbm,y=efficiency] {\harvesterchartdata};
+% \addlegendentry{Low-power rectifier}
+
+\end{axis}
+\end{tikzpicture}
+\caption{RF-to-DC efficiencies from the AMBIENT-6G harvester dataset~\cite{ambient6g}, at \SI{921}{MHz} for the AEM40940 and \SI{915}{MHz} for the P1110B.}
+\label{fig:harvester_efficiency}
+\end{figure}

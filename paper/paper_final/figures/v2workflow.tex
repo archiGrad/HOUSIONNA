@@ -1,0 +1,82 @@
+\begin{figure*}[t]
+\centering
+\newcommand{\icon}[1]{\includegraphics[height=8.5mm]{figures/icons/#1.pdf}}
+\definecolor{houdini}{HTML}{E07B39}\definecolor{sionna}{HTML}{2F9E44}\definecolor{browser}{HTML}{2563EB}\definecolor{analysis}{HTML}{7C3AED}
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  font=\scriptsize,
+  box/.style={draw=#1,fill=#1!7,rounded corners=3pt,align=center,text width=2.3cm,
+              minimum height=1.95cm,inner sep=2pt,line width=0.9pt,
+              execute at begin node={\hyphenpenalty=10000\exhyphenpenalty=10000}},
+  box/.default=gray,
+  todo/.style={box=gray,dashed,fill=white},
+  arr/.style={-{Stealth[length=1.8mm,width=1.4mm]},line width=0.7pt,black!80},
+  todoarr/.style={arr,dashed},
+  dot/.style={circle,fill=black!80,inner sep=0pt,minimum size=1.3mm},
+  stage/.style={fill=black!5,rounded corners=5pt},
+  stagelabel/.style={font=\scriptsize\bfseries,anchor=north west,inner sep=4pt,text=black!70,align=left},
+  swatch/.style={draw=#1,fill=#1!7,line width=0.9pt,rounded corners=1.5pt,minimum width=3.2mm,minimum height=2.4mm},
+  % The whole box links to the section that describes it.
+  link/.style={alias=linked,append after command={
+    let \p1=(linked.north west),\p2=(linked.south east),\n1={\x2-\x1},\n2={\y1-\y2} in
+    node[inner sep=0pt,outer sep=0pt,anchor=north west] at (\p1)
+      {\hyperref[#1]{\phantom{\rule{\n1}{\n2}}}}}},
+]
+% Stages: what happens (the box colour shows which tool does it)
+\fill[stage] (-1.35,2.0) rectangle (1.35,-3.9);
+\fill[stage] (1.6,2.0)   rectangle (7.3,-3.7);
+\fill[stage] (7.55,2.0)  rectangle (13.2,-3.9);
+\node[stagelabel] at (-1.35,2.0) {1 Procedural\\scene generation};
+\node[stagelabel] at (1.6,2.0)   {2 Ray tracing};
+\node[stagelabel] at (7.55,2.0)  {3 Evaluation};
+
+% 1 Procedural scene generation
+\node[box=houdini,link=sec:procedural] (proc) at (0,0)
+  {\icon{scene}\\[1pt]\textbf{Procedural scene}\\crops, greenhouse, devices};
+\node[todo,link=sec:twin] (cal) at (0,-2.75)
+  {\icon{calibrate}\\[1pt]\textbf{Calibrate}\\materials and antennas};
+% 2 Ray tracing
+\node[box=houdini,link=sec:scene] (exp) at (2.95,0)
+  {\icon{export}\\[1pt]\textbf{Check and export}\\geometry and materials};
+\node[box=sionna,link=sec:execution] (rt) at (5.9,0)
+  {\icon{raytrace}\\[1pt]\textbf{Ray tracing}\\on a GPU or CPU (LLVM backend), local or remote and in batches};
+% 3 Evaluation
+\node[box=browser,link=sec:returned] (out) at (8.85,0)
+  {\icon{results}\\[1pt]\textbf{Results}\\paths, links, radio maps};
+\node[box=browser,link=sec:inspection] (view) at (11.8,0)
+  {\icon{viewer}\\[1pt]\textbf{Web viewer}\\explore scenes, paths and maps};
+\node[box=analysis,link=sec:metrics] (eng) at (11.8,-2.75)
+  {\icon{engine}\\[1pt]\textbf{Application engine}\\coverage, RF power;\\Python or other tools};
+\node[box=houdini,link=sec:inspection] (hou) at (8.85,-2.75)
+  {\icon{houdini}\\[1pt]\textbf{Inspect in Houdini}\\results on the scene};
+% Field measurements close the proposed calibration loop
+\node[todo,link=sec:twin] (meas) at (11.8,-5.35)
+  {\icon{measure}\\[1pt]\textbf{Field measurements}\\RF and crop state};
+
+\draw[arr] (proc)--(exp);
+\draw[arr] (exp)--(rt);
+\draw[arr] (rt)--(out);
+\draw[arr] (out)--(view);
+\draw[arr] (out.south) -- (8.85,-1.3) node[dot]{} -- (hou.north);
+\draw[arr] (8.85,-1.3) -| (eng.north);
+% Iteration back to the scene, around the left of the stages
+\draw[arr] (view.north) -- (11.8,2.5) -- node[above,inner sep=2pt]
+  {\raisebox{\dimexpr 0.55ex-1.2mm\relax}{\includegraphics[height=2.4mm]{figures/icons/iterate.pdf}}\enspace iterate: change the scene or sweep parameters}
+  (-1.65,2.5) -- (-1.65,0) -- (proc.west);
+% Field measurements are compared with the predictions and calibrate the scene
+\draw[todoarr] (meas.north) -- node[right,inner sep=2pt]{compare} (eng.south);
+\draw[todoarr] (meas.west) -| (cal.south);
+\draw[todoarr] (cal) -- node[left,inner sep=2pt]{update} (proc);
+
+% Legend: the tool behind each box
+\node[anchor=north west,inner sep=0pt,align=left] at (13.5,2.0) {\textbf{Tool}\\[3pt]
+  \tikz\node[swatch=houdini]{};\enspace Houdini\\[3pt]
+  \tikz\node[swatch=sionna]{};\enspace Sionna RT\\[3pt]
+  \tikz\node[swatch=browser]{};\enspace HOUSIONNA toolkit\\[3pt]
+  \tikz\node[swatch=analysis]{};\enspace Python or other\\[6pt]
+  \tikz\node[swatch=gray,fill=white,dash pattern=on 1.4pt off 1pt]{};\enspace not yet implemented};
+\end{tikzpicture}%
+}
+\caption{The three stages of \housionna{}, described in \cref{sec:procedural,sec:raytracing,sec:evaluation}. The colour of each box identifies the tool responsible for the step. An agricultural digital twin also needs field measurements to calibrate the materials and antennas of the scene. Each box links to the section that describes it.}
+\label{fig:pipeline}
+\end{figure*}

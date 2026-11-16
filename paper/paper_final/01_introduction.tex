@@ -1,0 +1,28 @@
+\section{Introduction}
+Controlled environment agriculture relies on sensing and control to manage crop production in greenhouses and vertical farms. Spatial microclimate differences motivate measurements at multiple locations~\cite{salagovic2024}, while plant-mounted sensors provide observations of the crop itself. Leaf movement measurements can support studies of abiotic stress~\cite{geldhof2021}, and flexible sensors can monitor plant conditions~\cite{lu2020}. An RF-powered batteryless plant movement sensor combines inertial measurements with \gls{ble} telemetry~\cite{cappelle2025}. The placement of such sensors is driven by the measurement task, which may put them deep inside a canopy. We use \emph{sensor node} for a measurement device and \emph{gateway} for the network infrastructure, regardless of link direction.
+
+\begin{figure}[hbtp]
+    \centering
+    \includegraphics[width=0.98\linewidth]{figures/screenshots/combined3.png}%
+    \caption{Procedurally generated cultivation scenes in Houdini, with plants on trays, infrastructure, people, robots, and devices, and the traced paths.}
+    \label{fig:scene-example}
+\end{figure}
+
+% \input{figures/v1workflow}
+
+\input{figures/v3workflow}
+
+These applications impose different RF requirements. Active telemetry needs sufficient link margin, and batteryless operation also requires enough harvested energy per observation. Backscatter reduces the need for a sensor node to generate its own carrier~\cite{liu2013}, but requires both illumination and a return link to the gateway. Distributed \gls{wpt} depends on spatial channels and coherent combining~\cite{callebaut2024}. The propagation channel can also provide observations of the environment, as illustrated by radio tomography~\cite{wilson2010}; relating channel changes to crop conditions requires crop-specific models and independent reference measurements.
+
+The cultivation environment affects all these links. Leaves, stems, growing trays, support structures, and greenhouse surfaces alter line-of-sight visibility and multipath. Growth changes the geometry, while water content changes the electromagnetic properties of plant tissue. Measurements in a tomato greenhouse show substantial differences from conventional propagation models~\cite{cama2019}. Deployment analysis therefore needs site-specific channels and should account for changes in the crop, device positions, and infrastructure.
+
+Parameterised models can vary species, growth stage, spacing, leaf water content, room layout, occupancy, gateway density, and device placement without rebuilding each scene. Controlled sweeps then change selected properties while the others stay fixed, exposing placements that work for one crop configuration but fail as the canopy develops.
+   
+
+Existing workflows also address scene preparation and integration with Sionna RT. SionnaRT-Bridge connects Blender scene preparation, radio-material assignment, transmitter and receiver configuration, Sionna RT simulation, and result visualisation~\cite{ribas2026sionnartbridge}. SceneBaker generates Sionna RT-ready scenes programmatically from map and terrain data~\cite{lyu2026scenebaker}. Neither generates crop geometry or sweeps crop growth.
+
+This paper presents \housionna{}, a workflow connecting procedural scene generation in Houdini with GPU-accelerated radio ray tracing in Sionna RT~\cite{housionna}. Its contribution is the combination of parameterised agricultural geometry, controlled crop and infrastructure sweeps, and analysis of sensor coverage and RF energy harvesting. The workflow integrates scene preparation and export, batch execution, run provenance, and inspection of paths, link metrics, and radio maps in Houdini or a web viewer; Sionna RT provides the electromagnetic solver~\cite{hoydis2023,aoudia2025}. A batteryless plant-sensor use case brings these stages together to examine connectivity, charge time, and the choice of harvester.
+
+\Cref{fig:pipeline} outlines the workflow, and \cref{fig:scene-example} shows example scenes. \Cref{sec:procedural,sec:raytracing,sec:evaluation} describe procedural scene generation, ray tracing, and evaluation, respectively. \Cref{sec:casestudy} applies the workflow to the plant-sensor use case, and \cref{sec:conclusion} discusses limitations and the steps towards an agricultural digital twin.
+
+

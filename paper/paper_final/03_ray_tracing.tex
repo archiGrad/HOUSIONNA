@@ -1,0 +1,44 @@
+\section{Ray Tracing}
+\label{sec:raytracing}
+The second stage transfers the procedural scene to Sionna RT, computes propagation paths and radio maps, and records each run for subsequent inspection and analysis.
+
+
+
+
+\subsection{Scene Checks and Export}
+\label{sec:scene}
+The exporter groups triangular geometry by object name and writes meshes, a scene description, material parameters, device definitions, and solver settings.
+
+Export checks include triangulation, object names, material consistency, and device definitions. These are checks of simulation input integrity; they do not establish biological realism or material accuracy. A preview stage loads the exported scene in Sionna and returns its geometry for inspection in Houdini.
+
+% \subsection{Solver Configuration and Geometry Interactions}
+% The current implementation uses Sionna RT 2.2.0 and a single isotropic, vertically polarised antenna at each gateway and sensor node~\cite{housionna}. The solver accepts controls for line of sight, specular and diffuse reflection, transmission/refraction, diffraction, interaction depth, and sampling budgets. Enabling an interaction does not guarantee that a chosen scene representation models the corresponding canopy physics accurately.
+
+% Sionna models interactions with surfaces: each surface a ray crosses acts as a slab with the full thickness of its radio material. A closed canopy shell, internal sheets, and explicit leaf geometry can produce different depth-dependent attenuation. Refining the mesh alone does not resolve this modelling choice. When a leaf or stem is small relative to wavelength, a surface ray approximation may miss relevant scattering behaviour. Sionna RT also discards paths containing a segment shorter than \SI{1}{cm}, so every path through a closed leaf or stem thinner than this is lost. The slab behaviour and the \SI{1}{cm} limit were confirmed with analytical reference cases (free space, a single slab, a closed block, and thin glass) included in the repository~\cite{housionna}. Representation and material uncertainty must be assessed together.
+
+
+
+\subsection{Solver Configuration and Geometry Interactions}\label{sec:solver}
+The implementation uses Sionna RT 2.2.0. Antenna pattern (isotropic, short dipole, half-wave dipole, or the 3GPP TR 38.901 element pattern~\cite{tr38901}) and polarisation are set per device role, as Sionna RT uses one antenna array for all transmitters and one for all receivers; orientation is set per device. The solver accepts controls for line of sight, specular and diffuse reflection, refraction, diffraction, interaction depth, sampling budget, and random seed. Enabling an interaction does not guarantee that the scene representation models the corresponding canopy physics accurately.
+
+Sionna models interactions with surfaces: each surface a ray crosses acts as a slab with the full thickness of its radio material and counts as one interaction, so the depth limit bounds the number of leaves a path can cross. A closed canopy shell, internal sheets, and explicit leaf geometry produce different depth-dependent attenuation, and refining the mesh alone does not resolve this choice. When a leaf or stem is small relative to the wavelength, the surface approximation may miss relevant scattering. Sionna RT also discards paths with a segment shorter than \SI{1}{cm}, so paths through closed objects thinner than this are lost; leaves are therefore single surfaces (\cref{sec:geometry}). Radio maps apply this limit only to diffraction, so thin closed objects can affect paths and radio maps differently. The slab behaviour and the \SI{1}{cm} limit were confirmed with analytical reference cases included in the repository~\cite{housionna}. Representation and material uncertainty must be assessed together.
+
+\subsection{Execution and Reproducibility}\label{sec:execution}
+The solver runs in a separate Python environment, locally on a GPU or CPU or on a remote GPU host. A batch process solves each PDG work item in its own process and skips items already solved with the same settings. Run records store the exported scene, resolved materials, devices, solver settings including the seed, the work-item parameters, and software versions, so each result can be traced to its inputs.
+
+
+% \subsection{Execution and Reproducibility}
+% \label{sec:execution}
+% The solver runs in a separate Python environment, locally on an NVIDIA GPU or a CPU under Linux, or on a remote GPU host. Results are written as compressed NumPy arrays for the evaluation stage. This separation allows the modelling workstation and compute machine to differ.
+
+% For parameter sweeps, Houdini task-operator (TOP) work items, one per parameter combination, are exported to individual run folders. A background batch process solves work items sequentially within one Sionna session. Successful items can be skipped when their recorded solver settings match, and failed items are recorded for later retry.
+
+% Run records include the exported scene, resolved material properties, devices, settings, a solver copy, and software provenance. Batch records also preserve work-item parameters. Recording these assets makes the simulated geometry inspectable even after the procedural node network has changed. The records do not yet include the random seed of the path solver or hardware details, which a complete release should add.
+
+
+% \subsection{\texorpdfstring{\protect\hl{Execution and Reproducibility}}{Execution and Reproducibility}}\label{sec:execution}
+% \hl{The solver runs in a separate Python environment, locally on an NVIDIA GPU or a CPU, or on a remote GPU host over SSH, so the modelling workstation and the compute machine can differ. Results are written as compressed NumPy arrays for the evaluation stage.}
+
+% \hl{For parameter sweeps, PDG work items, one per parameter combination, are exported to individual run folders. Each work item carries the parameter values of its variant, which drive both the scene network and the solver settings, such as growth stage and frequency in the use case (\cref{sec:usecase}). Together with the seeds, these values fully define the run. A background batch process solves each work item in its own process, so a failure ends only that item. When GPU memory runs out, the transmitters are split into smaller groups and the item is restarted; paths are unaffected, and radio maps differ only by sampling noise. Items whose recorded settings match are skipped, and failed items are recorded for later retry.}
+
+% \hl{Run records include the exported scene, resolved material properties, devices, settings including the random seed, a solver copy, and software provenance (code commit, Houdini, Sionna RT, and Mitsuba versions). Batch records also store the work-item parameters and the machine that solved them. These records keep the simulated geometry inspectable after the procedural network has changed. The GPU model is not yet recorded, and results can differ slightly between GPU and CPU.}

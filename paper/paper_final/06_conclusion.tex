@@ -1,0 +1,27 @@
+\section{Discussion and Conclusions}
+\label{sec:conclusion}
+\housionna{} connects procedural scene generation, GPU radio ray tracing, batch execution, inspection of paths and radio maps in Houdini and a web viewer, and an application engine for communication and \gls{wpt} metrics. This provides a practical basis for studying the RF infrastructure serving agricultural sensors across changing crop configurations. In the use case, canopy growth, species, and gateway density changed which sensor nodes could be powered, whereas leaf water content barely did. One solver limitation holds independently of the scene: the path solver discards paths through closed structures thinner than \SI{1}{cm}, which affects sensor nodes mounted directly on leaves.
+
+\emph{Towards an Agricultural Digital Twin. }\label{sec:twin}
+Procedural simulation supports controlled comparisons and reproducible scenario generation, but a digital twin also requires a maintained relationship with the physical environment. In this setting, that relationship would connect observed crop geometry and operating conditions to calibrated RF materials, antenna models, and validated predictions. Periodic updates could then test whether an existing network remains adequate as the crop develops.
+
+None of the results has yet been compared with measurements. Three limits are particularly relevant. First, the present vegetation materials are provisional, and surface-based canopy representations need evaluation across the intended frequencies, in particular for thin leaves; stems are not modelled. Second, the antenna models are ideal patterns: they do not capture plant-mounted antenna detuning or efficiency, and each device has a single antenna element, so array-based power delivery is not modelled. Third, a sequence of static scenes does not provide continuous state estimation or validated dynamic sensing.
+
+Sionna RT supports differentiable modelling~\cite{hoydis2023,aoudia2025}, but the file-based wrapper described here does not provide an end-to-end differentiable Houdini pipeline. Gateway placement can be compared by searching subsets of candidate positions on precomputed channels; gradient-based material fitting or continuous placement would need a deliberate integration with the solver. Protocol performance, backscatter modulation, and RF crop inference likewise remain separate modelling tasks.
+
+% The broader \hyropa{} programme also covers optical propagation; optical energy harvesting and hybrid links are possible extensions.
+
+% \subsection{Remote Canopy Sensing}
+% The remote-sensing application considered here is proximal RF observation of crop canopies. For a channel feature vector $\mathbf{z}$, one can investigate the response
+% \begin{equation}
+%  \Delta\mathbf{z}
+%  =\mathbf{z}(\boldsymbol{\theta}+\Delta\boldsymbol{\theta})
+%   -\mathbf{z}(\boldsymbol{\theta}),
+% \end{equation}
+% where $\boldsymbol{\theta}$ describes crop geometry and calibrated material parameters. Candidate features include link attenuation, delay spread, and frequency-selective response. In \housionna{}, $\boldsymbol{\theta}$ corresponds to the parameters of a batch sweep, so $\Delta\mathbf{z}$ follows from neighbouring work items of the same batch.
+
+
+% Sensitivity is only the first step. Similar channel changes can arise from plant growth, water content, antenna displacement, people, or equipment; since people and robots can be placed in the scenes, their effect can be simulated alongside that of the crop. An inference study must quantify these ambiguities against independent canopy observations.
+
+% \emph{Future Work. }
+% The next scientific step is to validate canopy representations and material parameters, then evaluate communication, energy, and sensing metrics against physical observations.
